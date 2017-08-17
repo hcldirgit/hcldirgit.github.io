@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/56. apache rewrite 出现死循环/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/58. apache的rewrite规则/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -306,7 +306,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/56. apache rewrite 出现死循环/" itemprop="url">apache rewrite 出现死循环</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/58. apache的rewrite规则/" itemprop="url">apache的rewrite规则</a></h1>
         
 
         <div class="post-meta">
@@ -355,14 +355,12 @@
       
         
           
-          apache rewrite 出现死循环&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我的一条规则
-1RewriteRule ^(.*) /111/$1 [R,L]
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用curl测试，没有问题，但是使用浏览器访问时，出现了无限循环。
-&#160;&#16
+          apache的rewrite规则&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;rewrite的规则：   
+12345678910111213&lt;IfModule mod_rewrite.c&gt;      RewriteEngine on      RewriteCond %&#123;HTTP_USER_AGENT&#125;  ^.*F
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/56. apache rewrite 出现死循环/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/58. apache的rewrite规则/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -408,7 +406,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/52. http协议的状态码—400,401,403,404,500,502,503,301,302等常见网页错误代码/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/55. rewirete规则不生效/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -427,7 +425,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/52. http协议的状态码—400,401,403,404,500,502,503,301,302等常见网页错误代码/" itemprop="url">http协议的状态码—400,401,403,404,500,502,503,301,302等常见网页错误代码</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/55. rewirete规则不生效/" itemprop="url">rewirete规则不生效</a></h1>
         
 
         <div class="post-meta">
@@ -476,22 +474,12 @@
       
         
           
-          http协议的状态码—400,401,403,404,500,502,503,301,302等常见网页错误代码http协议的状态码1xx（临时响应）&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;表示临时响应并需要请求者继续执行操作的状态码。
-
-
-
-状态码
-注释
-
-
-
-
-100（继续）
-请求者应当继续提出请求。服务器返回此代码表示已收到请求的第一部分
+          %{REQUEST_FILENAME} -f 不生效&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在虚拟主机中，配置了rewirete规则
+12RewriteCond %&#123;REQUEST_FILENAME&#125; !-fRewriteRule !\.(js|ico|gif|jpg|png|css|xml|swf)$ /index.ph
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/52. http协议的状态码—400,401,403,404,500,502,503,301,302等常见网页错误代码/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/55. rewirete规则不生效/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -775,6 +763,135 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/52. http协议的状态码—400,401,403,404,500,502,503,301,302等常见网页错误代码/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/10/Apache/52. http协议的状态码—400,401,403,404,500,502,503,301,302等常见网页错误代码/" itemprop="url">http协议的状态码—400,401,403,404,500,502,503,301,302等常见网页错误代码</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:49+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          http协议的状态码—400,401,403,404,500,502,503,301,302等常见网页错误代码http协议的状态码1xx（临时响应）&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;表示临时响应并需要请求者继续执行操作的状态码。
+
+
+
+状态码
+注释
+
+
+
+
+100（继续）
+请求者应当继续提出请求。服务器返回此代码表示已收到请求的第一部分
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/10/Apache/52. http协议的状态码—400,401,403,404,500,502,503,301,302等常见网页错误代码/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/51. apache限制某个目录下的php文件没有执行权限/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -853,125 +970,6 @@
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/08/10/Apache/51. apache限制某个目录下的php文件没有执行权限/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/55. rewirete规则不生效/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="失落的乐章">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/0.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="失落的乐章">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/10/Apache/55. rewirete规则不生效/" itemprop="url">rewirete规则不生效</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:49+08:00">
-                2017-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          %{REQUEST_FILENAME} -f 不生效&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在虚拟主机中，配置了rewirete规则
-12RewriteCond %&#123;REQUEST_FILENAME&#125; !-fRewriteRule !\.(js|ico|gif|jpg|png|css|xml|swf)$ /index.ph
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/55. rewirete规则不生效/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1255,6 +1253,127 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/56. apache rewrite 出现死循环/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/10/Apache/56. apache rewrite 出现死循环/" itemprop="url">apache rewrite 出现死循环</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:49+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          apache rewrite 出现死循环&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我的一条规则
+1RewriteRule ^(.*) /111/$1 [R,L]
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用curl测试，没有问题，但是使用浏览器访问时，出现了无限循环。
+&#160;&#16
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/10/Apache/56. apache rewrite 出现死循环/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/49. apache 禁止解析 php/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1365,125 +1484,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/5. apache编译安装参数说明/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="失落的乐章">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/0.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="失落的乐章">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/10/Apache/5. apache编译安装参数说明/" itemprop="url">apache编译安装参数说明</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
-                2017-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          apache编译安装参数说明&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;apache编译安装参数说明
-12345678910111213141516171819202122./configure #配置源代码树--prefix=/usr/local/apache2 #体系无关文件的顶级安装目录prefix ，也就apache的安装目录。如果没有指
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/5. apache编译安装参数说明/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1533,7 +1533,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">648</span>
+                <span class="site-state-item-count">649</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
