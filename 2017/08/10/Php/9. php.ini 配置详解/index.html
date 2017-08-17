@@ -1,0 +1,1094 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="LAMP,Php," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="php.ini 配置详解&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;这个文件必须命名为’’php.ini’’并放置在httpd.conf中的PHPIniDir指令指定的目录中。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;最新版本的php.ini可以在下面两个位置查看： http://cvs.p">
+<meta name="keywords" content="LAMP,Php">
+<meta property="og:type" content="article">
+<meta property="og:title" content="php.ini 配置详解">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/08/10/Php/9. php.ini 配置详解/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="php.ini 配置详解&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;这个文件必须命名为’’php.ini’’并放置在httpd.conf中的PHPIniDir指令指定的目录中。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;最新版本的php.ini可以在下面两个位置查看： http://cvs.p">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-08-13T17:23:54.468Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="php.ini 配置详解">
+<meta name="twitter:description" content="php.ini 配置详解&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;这个文件必须命名为’’php.ini’’并放置在httpd.conf中的PHPIniDir指令指定的目录中。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;最新版本的php.ini可以在下面两个位置查看： http://cvs.p">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/08/10/Php/9. php.ini 配置详解/"/>
+
+
+
+
+
+  <title>php.ini 配置详解 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Php/9. php.ini 配置详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">php.ini 配置详解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="php-ini-配置详解"><a href="#php-ini-配置详解" class="headerlink" title="php.ini 配置详解"></a>php.ini 配置详解</h1><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个文件必须命名为’’php.ini’’并放置在httpd.conf中的PHPIniDir指令指定的目录中。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;最新版本的php.ini可以在下面两个位置查看：</p>
+<p><a href="http://cvs.php.net/viewvc.cgi/php-src/php.ini-recommended?view=co" target="_blank" rel="external">http://cvs.php.net/viewvc.cgi/php-src/php.ini-recommended?view=co</a></p>
+<p><a href="http://cvs.php.net/viewvc.cgi/php-src/php.ini-dist?view=co" target="_blank" rel="external">http://cvs.php.net/viewvc.cgi/php-src/php.ini-dist?view=co</a></p>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;该文件的语法非常简单。空白字符和以分号开始的行被简单地忽略。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;章节标题(例如: [php])也被简单地忽略，即使将来它们可能有某种意义。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;设置指令的格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">directive = value</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;指令名(directive)是大小写敏感的！所以”foo=bar”不同于”FOO=bar”。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;值(value)可以是：</p>
+<ol>
+<li>用引号界定的字符串(如：”foo”)</li>
+<li>一个数字(整数或浮点数，如：0, 1, 34, -1, 33.55)</li>
+<li>一个PHP常量(如：E_ALL, M_PI)</li>
+<li>一个INI常量(On, Off, none)</li>
+<li>一个表达式(如：E_ALL &amp; ~E_NOTICE)</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;INI文件中的表达式仅使用：位运算符、逻辑非、圆括号：</p>
+<ul>
+<li>| 位或</li>
+<li>&amp; 位与</li>
+<li>~ 位非</li>
+<li>! 逻辑非</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;布尔标志用 On 表示打开，用 Off 表示关闭。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一个空字符串可以用在等号后不写任何东西表示，或者用 none 关键字：</p>
+<ul>
+<li>foo =　　　　 ; 将foo设为空字符串</li>
+<li>foo = none　　; 将foo设为空字符串</li>
+<li>foo = “none”　; 将foo设为字符串’’none’’</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果在指令值中使用动态扩展(PHP扩展或Zend扩展)中的常量，那么只能在加载这些动态扩展的指令行之后使用这些常量。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">httpd.conf　;;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;还可以在httpd.conf中覆盖php.ini的值，以进行更灵活的配置：</p>
+<ul>
+<li>php_value name value　;设置非bool型的指令，将value设为none则清除先前的设定</li>
+<li>php_flag　name on|off ;仅用于设置bool型的指令</li>
+<li>PHP常量(如E_ALL)仅能在php.ini中使用，在httpd.conf中必须使用相应的掩码值。</li>
+<li>带”SYS”标志的指令只能在httpd.conf中的全局配置部分使用，</li>
+<li>带”ini”标志的指令不能在httpd.conf中使用，它们仅能用于php.ini中。</li>
+</ul>
+<h2 id="配置指令详解"><a href="#配置指令详解" class="headerlink" title="配置指令详解"></a>配置指令详解</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下每个指令的设定值都与 PHP-5.2.0 内建的默认值相同。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;也就是说，如果’’php.ini’’不存在，或者你删掉了某些行，默认值与之相同。</p>
+<h3 id="Apache"><a href="#Apache" class="headerlink" title="Apache"></a>Apache</h3><h4 id="Apache-1"><a href="#Apache-1" class="headerlink" title="[Apache]"></a>[Apache]</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;仅在将PHP作为Apache模块时才有效。</p>
+<h5 id="engine-On"><a href="#engine-On" class="headerlink" title="engine = On"></a>engine = On</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否启用PHP解析引擎。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以在httpd.conf中基于目录或者虚拟主机来打开或者关闭PHP解析引擎。</p>
+<h5 id="last-modified-Off"><a href="#last-modified-Off" class="headerlink" title="last_modified = Off"></a>last_modified = Off</h5><p> 是否在Last-Modified应答头中放置该PHP脚本的最后修改时间。</p>
+<h5 id="xbithack-Off"><a href="#xbithack-Off" class="headerlink" title="xbithack = Off"></a>xbithack = Off</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否不管文件结尾是什么，都作为PHP可执行位组来解析。</p>
+<h5 id="child-terminate-Off"><a href="#child-terminate-Off" class="headerlink" title="child_terminate = Off"></a>child_terminate = Off</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PHP脚本在请求结束后是否允许使用apache_child_terminate()函数终止子进程。该指令仅在UNIX平台上将PHP安装为Apache1.3的模块时可用。其他情况下皆不存在。</p>
+<h3 id="PHP核心"><a href="#PHP核心" class="headerlink" title="PHP核心"></a>PHP核心</h3><h4 id="PHP-Core-DateTime"><a href="#PHP-Core-DateTime" class="headerlink" title="[PHP-Core-DateTime]"></a>[PHP-Core-DateTime]</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;前四个配置选项目前仅用于date_sunrise()和date_sunset()函数。</p>
+<h5 id="date-default-latitude-31-7667"><a href="#date-default-latitude-31-7667" class="headerlink" title="date.default_latitude = 31.7667"></a>date.default_latitude = 31.7667</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认纬度</p>
+<h5 id="date-default-longitude-35-2333"><a href="#date-default-longitude-35-2333" class="headerlink" title="date.default_longitude = 35.2333"></a>date.default_longitude = 35.2333</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认经度</p>
+<h5 id="date-sunrise-zenith-90-583333"><a href="#date-sunrise-zenith-90-583333" class="headerlink" title="date.sunrise_zenith = 90.583333"></a>date.sunrise_zenith = 90.583333</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认日出天顶</p>
+<h5 id="date-sunset-zenith-90-583333"><a href="#date-sunset-zenith-90-583333" class="headerlink" title="date.sunset_zenith = 90.583333"></a>date.sunset_zenith = 90.583333</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认日落天顶</p>
+<h5 id="date-timezone"><a href="#date-timezone" class="headerlink" title="date.timezone ="></a>date.timezone =</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;未设定TZ环境变量时用于所有日期和时间函数的默认时区。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;中国大陆应当使用”PRC”，应用时区的优先顺序为：</p>
+<ol>
+<li>用date_default_timezone_set()函数设定的时区(如果设定了的话)</li>
+<li>TZ 环境变量(如果非空的话)</li>
+<li>该指令的值(如果设定了的话)</li>
+<li>PHP自己推测(如果操作系统支持)</li>
+<li>如果以上都不成功，则使用 UTC</li>
+</ol>
+<h4 id="PHP-Core-Assert"><a href="#PHP-Core-Assert" class="headerlink" title="[PHP-Core-Assert]"></a>[PHP-Core-Assert]</h4><h5 id="assert-active-On"><a href="#assert-active-On" class="headerlink" title="assert.active = On"></a>assert.active = On</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否启用assert()断言评估</p>
+<h5 id="assert-bail-Off"><a href="#assert-bail-Off" class="headerlink" title="assert.bail = Off"></a>assert.bail = Off</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否在发生失败断言时中止脚本的执行</p>
+<h5 id="assert-callback"><a href="#assert-callback" class="headerlink" title="assert.callback ="></a>assert.callback =</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;发生失败断言时执行的回调函数</p>
+<h5 id="assert-quiet-eval-Off"><a href="#assert-quiet-eval-Off" class="headerlink" title="assert.quiet_eval = Off"></a>assert.quiet_eval = Off</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否使用安静评估(不显示任何错误信息，相当于error_reporting=0)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;若关闭则在评估断言表达式的时候使用当前的error_reporting指令值。</p>
+<h5 id="assert-warning-On"><a href="#assert-warning-On" class="headerlink" title="assert.warning = On"></a>assert.warning = On</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否对每个失败断言都发出警告</p>
+<h5 id="PHP-Core-SafeMode"><a href="#PHP-Core-SafeMode" class="headerlink" title="[PHP-Core-SafeMode]"></a>[PHP-Core-SafeMode]</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安全模式是为了解决共享服务器的安全问题而设立的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;但试图在PHP层解决这个问题在结构上是不合理的，</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;正确的做法应当是修改web服务器层和操作系统层。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;因此在PHP6中废除了安全模式，并打算使用open_basedir指令取代之。</p>
+<h5 id="safe-mode-Off"><a href="#safe-mode-Off" class="headerlink" title="safe_mode = Off"></a>safe_mode = Off</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SYS</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否启用安全模式。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;打开时，PHP将检查当前脚本的拥有者是否和被操作的文件的拥有者相同，</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;相同则允许操作，不同则拒绝操作。</p>
+<h5 id="safe-mode-gid-Off"><a href="#safe-mode-gid-Off" class="headerlink" title="safe_mode_gid = Off"></a>safe_mode_gid = Off</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SYS</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在安全模式下，默认在访问文件时会做UID比较检查。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;但有些情况下严格的UID检查反而是不适合的，宽松的GID检查已经足够。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果想将其放宽到仅做GID比较，可以打开这个参数。</p>
+<h5 id="safe-mode-allowed-envvars-“PHP“"><a href="#safe-mode-allowed-envvars-“PHP“" class="headerlink" title="safe_mode_allowed_envvars = “PHP“"></a>safe_mode_allowed_env<em>vars = “PHP</em>“</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SYS</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在安全模式下，用户仅可以更改的环境变量的前缀列表(逗号分隔)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;允许用户设置某些环境变量，可能会导致潜在的安全漏洞。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意: 如果这一参数值为空，PHP将允许用户更改任意环境变量！</p>
+<h5 id="safe-mode-protected-env-vars-“LD-LIBRARY-PATH”"><a href="#safe-mode-protected-env-vars-“LD-LIBRARY-PATH”" class="headerlink" title="safe_mode_protected_env_vars = “LD_LIBRARY_PATH”"></a>safe_mode_protected_env_vars = “LD_LIBRARY_PATH”</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SYS</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在安全模式下，用户不能更改的环境变量列表(逗号分隔)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这些变量即使在safe_mode_allowed_env_vars指令设置为允许的情况下也会得到保护。</p>
+<h5 id="safe-mode-exec-dir-“-usr-local-php-bin”"><a href="#safe-mode-exec-dir-“-usr-local-php-bin”" class="headerlink" title="safe_mode_exec_dir = “/usr/local/php/bin”"></a>safe_mode_exec_dir = “/usr/local/php/bin”</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SYS</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在安全模式下，只有该目录下的可执行程序才允许被执行系统程序的函数执行。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这些函数是：system, escapeshellarg, escapeshellcmd, exec, passthru,proc_close, proc_get_status, proc_nice, proc_open, proc_terminate, shell_exec</p>
+<h5 id="safe-mode-include-dir"><a href="#safe-mode-include-dir" class="headerlink" title="safe_mode_include_dir ="></a>safe_mode_include_dir =</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SYS</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在安全模式下，该组目录和其子目录下的文件被包含时，将跳过UID/GID检查。换句话说，如果此处的值为空，任何UID/GID不符合的文件都不允许被包含。这里设置的目录必须已经存在于include_path指令中或者用完整路径来包含。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;多个目录之间用冒号(Win下为分号)隔开。指定的限制实际上是一个前缀，而非一个目录名，也就是说”/dir/incl”将允许访问”/dir/include”和”/dir/incls”如果您希望将访问控制在一个指定的目录，那么请在结尾加上斜线。</p>
+<h5 id="sql-safe-mode-Off"><a href="#sql-safe-mode-Off" class="headerlink" title="sql.safe_mode = Off"></a>sql.safe_mode = Off</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SYS</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否使用SQL安全模式。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果打开，指定默认值的数据库连接函数将会使用这些默认值代替支持的参数。对于每个不同数据库的连接函数，其默认值请参考相应的手册页面。</p>
+<h4 id="PHP-Core-Safe"><a href="#PHP-Core-Safe" class="headerlink" title="[PHP-Core-Safe]"></a>[PHP-Core-Safe]</h4><h5 id="allow-url-fopen-On"><a href="#allow-url-fopen-On" class="headerlink" title="allow_url_fopen = On"></a>allow_url_fopen = On</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;ni</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否允许打开远程文件</p>
+<h5 id="allow-url-include-Off"><a href="#allow-url-include-Off" class="headerlink" title="allow_url_include = Off"></a>allow_url_include = Off</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SYS</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否允许include/require远程文件。<br>disable_classes =</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;ini<br>    该指令接受一个用逗号分隔的类名列表，以禁用特定的类。<br>disable_functions =</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;ini</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;该指令接受一个用逗号分隔的函数名列表，以禁用特定的函数。</p>
+<h5 id="enable-dl-On"><a href="#enable-dl-On" class="headerlink" title="enable_dl = On"></a>enable_dl = On</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SYS</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否允许使用dl()函数。dl()函数仅在将PHP作为apache模块安装时才有效。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;禁用dl()函数主要是出于安全考虑，因为它可以绕过open_basedir指令的限制。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在安全模式下始终禁用dl()函数，而不管此处如何设置。</p>
+<h5 id="expose-php-On"><a href="#expose-php-On" class="headerlink" title="expose_php = On"></a>expose_php = On</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;ini</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否暴露PHP被安装在服务器上的事实(在http头中加上其签名)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;它不会有安全上的直接威胁，但它使得客户端知道服务器上安装了PHP。</p>
+<h5 id="open-basedir"><a href="#open-basedir" class="headerlink" title="open_basedir ="></a>open_basedir =</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SYS</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;将PHP允许操作的所有文件(包括文件自身)都限制在此组目录列表下。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当一个脚本试图打开一个指定目录树之外的文件时，将遭到拒绝。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; 所有的符号连接都会被解析，所以不可能通过符号连接来避开此限制。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;特殊值’’.’’指定了存放该脚本的目录将被当做基准目录。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;但这有些危险，因为脚本的工作目录可以轻易被chdir()改变。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;对于共享服务器，在httpd.conf中灵活设置该指令将变得非常有用。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在Windows中用分号分隔目录，UNIX系统中用冒号分隔目录。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;作为Apache模块时，父目录中的open_basedir路径将自动被继承。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;指定的限制实际上是一个前缀，而非一个目录名，</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;也就是说”/dir/incl”将允许访问”/dir/include”和”/dir/incls”，</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果希望将访问控制在一个指定的目录，那么请在结尾加上一个斜线。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认是允许打开所有文件。</p>
+<h4 id="PHP-Core-Error"><a href="#PHP-Core-Error" class="headerlink" title="[PHP-Core-Error]"></a>[PHP-Core-Error]</h4><h5 id="error-reporting-E-ALL-amp-E-NOTICE"><a href="#error-reporting-E-ALL-amp-E-NOTICE" class="headerlink" title="error_reporting = E_ALL &amp; ~E_NOTICE"></a>error_reporting = E_ALL &amp; ~E_NOTICE</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;错误报告级别是位字段的叠加，推荐使用 E_ALL | E_STRICT</p>
+<ul>
+<li>1　E_ERROR　　　　　　 致命的运行时错误</li>
+<li>2　E_WARNING　　　　　 运行时警告(非致命性错误)</li>
+<li>4　E_PARSE　　　　　　 编译时解析错误</li>
+<li>8　E_NOTICE　　　　　　运行时提醒(经常是bug，也可能是有意的)</li>
+<li>16　E_CORE_ERROR　　　　PHP启动时初始化过程中的致命错误</li>
+<li>32　E_CORE_WARNING　　　PHP启动时初始化过程中的警告(非致命性错)</li>
+<li>64　E_COMPILE_ERROR　　 编译时致命性错</li>
+<li>128　E_COMPILE_WARNING　 编译时警告(非致命性错)</li>
+<li>256　E_USER_ERROR　　　　用户自定义的致命错误</li>
+<li>512　E_USER_WARNING　　　用户自定义的警告(非致命性错误)</li>
+<li>1024　E_USER_NOTICE　　　 用户自定义的提醒(经常是bug，也可能是有意的)</li>
+<li>2048　E_STRICT　　　　　　编码标准化警告(建议如何修改以向前兼容)</li>
+<li>4096　E_RECOVERABLE_ERROR 接近致命的运行时错误，若未被捕获则视同E_ERROR</li>
+<li>6143　E_ALL　　　　　　　 除E_STRICT外的所有错误(PHP6中为8191,即包含所有)</li>
+</ul>
+<h5 id="track-errors-Off"><a href="#track-errors-Off" class="headerlink" title="track_errors = Off"></a>track_errors = Off</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否在变量$php_errormsg中保存最近一个错误或警告消息。</p>
+<h5 id="display-errors-On"><a href="#display-errors-On" class="headerlink" title="display_errors = On"></a>display_errors = On</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否将错误信息作为输出的一部分显示。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在最终发布的web站点上，强烈建议你关掉这个特性，并使用错误日志代替(参看下面)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在最终发布的web站点打开这个特性可能暴露一些安全信息，</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例如web服务上的文件路径、数据库规划或别的信息。</p>
+<h5 id="display-startup-errors-Off"><a href="#display-startup-errors-Off" class="headerlink" title="display_startup_errors = Off"></a>display_startup_errors = Off</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否显示PHP启动时的错误。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;即使display_errors指令被打开，关闭此参数也将不显示PHP启动时的错误。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;建议关掉这个特性，除非必须要用于调试中。</p>
+<h5 id="report-memleaks-On"><a href="#report-memleaks-On" class="headerlink" title="report_memleaks = On"></a>report_memleaks = On</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否报告内存泄漏。这个参数只在以调试方式编译的PHP中起作用，</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;并且必须在error_reporting指令中包含 E_WARNING</p>
+<h5 id="report-zend-debug-On"><a href="#report-zend-debug-On" class="headerlink" title="report_zend_debug = On"></a>report_zend_debug = On</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;尚无说明文档</p>
+<h5 id="html-errors-On"><a href="#html-errors-On" class="headerlink" title="html_errors = On"></a>html_errors = On</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否在出错信息中使用HTML标记。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意: 不要在发布的站点上使用这个特性！</p>
+<h5 id="docref-root-”http-localhost-phpmanual-“"><a href="#docref-root-”http-localhost-phpmanual-“" class="headerlink" title="docref_root =　;”http://localhost/phpmanual/“"></a>docref_root =　;”<a href="http://localhost/phpmanual/" target="_blank" rel="external">http://localhost/phpmanual/</a>“</h5><h5 id="docref-ext-”-html”"><a href="#docref-ext-”-html”" class="headerlink" title="docref_ext =　 ;”.html”"></a>docref_ext =　 ;”.html”</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果打开了html_errors指令，PHP将会在出错信息上显示超连接，</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;直接链接到一个说明这个错误或者导致这个错误的函数的页面。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以从<a href="http://www.php.net/docs.php下载php手册，" target="_blank" rel="external">http://www.php.net/docs.php下载php手册，</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;并将docref_root指令指向本地的手册所在的URL目录。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;还必须设置docref_ext指令来指定文件的扩展名(必须含有’’.’’)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意: 不要在发布的站点上使用这个特性。</p>
+<h5 id="error-prepend-string-”“"><a href="#error-prepend-string-”“" class="headerlink" title="error_prepend_string =　;”“"></a>error_prepend_string =　;”<font color="#f00">“</font></h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用于错误信息前输出的字符串</p>
+<h5 id="error-append-string-”“"><a href="#error-append-string-”“" class="headerlink" title="error_append_string =　 ;”“"></a>error_append_string =　 ;”“</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用于错误信息后输出的字符串</p>
+<h5 id="xmlrpc-errors-Off"><a href="#xmlrpc-errors-Off" class="headerlink" title="xmlrpc_errors = Off"></a>xmlrpc_errors = Off</h5><h5 id="xmlrpc-error-number-0"><a href="#xmlrpc-error-number-0" class="headerlink" title="xmlrpc_error_number = 0"></a>xmlrpc_error_number = 0</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;尚无文档</p>
+<h4 id="PHP-Core-Logging"><a href="#PHP-Core-Logging" class="headerlink" title="[PHP-Core-Logging]"></a>[PHP-Core-Logging]</h4><h5 id="define-syslog-variables-Off"><a href="#define-syslog-variables-Off" class="headerlink" title="define_syslog_variables = Off"></a>define_syslog_variables = Off</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否定义各种系统日志变量，如：$LOG_PID, $LOG_CRON 等等。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关掉它以提高效率的好主意。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以在运行时调用define_syslog_variables()函数来定义这些变量。</p>
+<h5 id="error-log"><a href="#error-log" class="headerlink" title="error_log ="></a>error_log =</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;将错误日志记录到哪个文件中。该文件必须对Web服务器用户可写。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;syslog 表示记录到系统日志中(NT下的事件日志, Unix下的syslog(3))</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果此处未设置任何值，则错误将被记录到Web服务器的错误日志中。</p>
+<h5 id="log-errors-Off"><a href="#log-errors-Off" class="headerlink" title="log_errors = Off"></a>log_errors = Off</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否在日志文件里记录错误，具体在哪里记录取决于error_log指令。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;强烈建议你在最终发布的web站点时使用日志记录错误而不是直接输出，</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样可以让你既知道那里出了问题，又不会暴露敏感信息。</p>
+<h5 id="log-errors-max-len-1024"><a href="#log-errors-max-len-1024" class="headerlink" title="log_errors_max_len = 1024"></a>log_errors_max_len = 1024</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;设置错误日志中附加的与错误信息相关联的错误源的最大长度。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里设置的值对显示的和记录的错误以及$php_errormsg都有效。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;设为 0 可以允许无限长度。</p>
+<h5 id="ignore-repeated-errors-Off"><a href="#ignore-repeated-errors-Off" class="headerlink" title="ignore_repeated_errors = Off"></a>ignore_repeated_errors = Off</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;记录错误日志时是否忽略重复的错误信息。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;错误信息必须出现在同一文件的同一行才被被视为重复。</p>
+<h5 id="ignore-repeated-source-Off"><a href="#ignore-repeated-source-Off" class="headerlink" title="ignore_repeated_source = Off"></a>ignore_repeated_source = Off</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否在忽略重复的错误信息时忽略重复的错误源。</p>
+<h4 id="PHP-Core-Mail"><a href="#PHP-Core-Mail" class="headerlink" title="[PHP-Core-Mail]"></a>[PHP-Core-Mail]</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要使邮件函数可用，PHP必须在编译时能够访问sendmail程序。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果使用其它的邮件程序，如qmail或postfix，确保使用了相应的sendmail包装。PHP首先会在系统的PATH环境变量中搜索 sendmail，接着按以下顺序搜索：/usr/bin:/usr/sbin:/usr/etc:/etc:/usr/ucblib:/usr/lib</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;强烈建议在PATH中能够找到sendmail。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另外，编译PHP的用户必须能够访问sendmail程序。</p>
+<h5 id="SMTP-“localhost”"><a href="#SMTP-“localhost”" class="headerlink" title="SMTP = “localhost”"></a>SMTP = “localhost”</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mail()函数中用来发送邮件的SMTP服务器的主机名称或者IP地址。仅用于win32。</p>
+<h5 id="smtp-port-25"><a href="#smtp-port-25" class="headerlink" title="smtp_port = 25"></a>smtp_port = 25</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SMTP服务器的端口号。仅用于win32。</p>
+<h5 id="sendmail-from"><a href="#sendmail-from" class="headerlink" title="sendmail_from ="></a>sendmail_from =</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;发送邮件时使用的”From:”头中的邮件地址。仅用于win32</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;该选项还同时设置了”Return-Path:”头。</p>
+<h5 id="sendmail-path-“-t-i”"><a href="#sendmail-path-“-t-i”" class="headerlink" title="sendmail_path = “-t -i”"></a>sendmail_path = “-t -i”</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SYS</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;仅用于unix，也可支持参数(默认的是’’sendmail -t -i’’)</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;sendmail程序的路径，通常为”/usr/sbin/sendmail或/usr/lib/sendmail”。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;configure脚本会尝试找到该程序并设定为默认值，但是如果失败的话，可以在这里设定。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;不使用sendmail的系统应将此指令设定为sendmail替代程序(如果有的话)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例如，Qmail用户通常可以设为”/var/qmail/bin/sendmail”或”/var/qmail/bin/qmail-inject”。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;qmail-inject 不需要任何选项就能正确处理邮件。</p>
+<h5 id="mail-force-extra-parameters"><a href="#mail-force-extra-parameters" class="headerlink" title="mail.force_extra_parameters ="></a>mail.force_extra_parameters =</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;作为额外的参数传递给sendmail库的强制指定的参数附加值。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这些参数总是会替换掉mail()的第5个参数，即使在安全模式下也是如此。</p>
+<h4 id="PHP-Core-ResourceLimit"><a href="#PHP-Core-ResourceLimit" class="headerlink" title="[PHP-Core-ResourceLimit]"></a>[PHP-Core-ResourceLimit]</h4><h5 id="default-socket-timeout-60"><a href="#default-socket-timeout-60" class="headerlink" title="default_socket_timeout = 60"></a>default_socket_timeout = 60</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认socket超时(秒)</p>
+<h5 id="max-execution-time-30"><a href="#max-execution-time-30" class="headerlink" title="max_execution_time = 30"></a>max_execution_time = 30</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;每个脚本最大允许执行时间(秒)，0 表示没有限制。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个参数有助于阻止劣质脚本无休止的占用服务器资源。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;该指令仅影响脚本本身的运行时间，任何其它花费在脚本运行之外的时间，</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如用system()/sleep()函数的使用、数据库查询、文件上传等，都不包括在内。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在安全模式下，你不能用ini_set()在运行时改变这个设置。</p>
+<h5 id="memory-limit-16M"><a href="#memory-limit-16M" class="headerlink" title="memory_limit = 16M"></a>memory_limit = 16M</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一个脚本所能够申请到的最大内存字节数(可以使用K和M作为单位)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这有助于防止劣质脚本消耗完服务器上的所有内存。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要能够使用该指令必须在编译时使用”–enable-memory-limit”配置选项。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果要取消内存限制，则必须将其设为 -1 。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;设置了该指令后，memory_get_usage()函数将变为可用。</p>
+<h5 id="max-input-time-1"><a href="#max-input-time-1" class="headerlink" title="max_input_time = -1"></a>max_input_time = -1</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;每个脚本解析输入数据(POST, GET, upload)的最大允许时间(秒)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;-1 表示不限制。</p>
+<h5 id="post-max-size-8M"><a href="#post-max-size-8M" class="headerlink" title="post_max_size = 8M"></a>post_max_size = 8M</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;允许的POST数据最大字节长度。此设定也影响到文件上传。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果POST数据超出限制，那么$_POST和$_FILES将会为空。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要上传大文件，该值必须大于upload_max_filesize指令的值。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果启用了内存限制，那么该值应当小于memory_limit指令的值。</p>
+<h5 id="realpath-cache-size-16K"><a href="#realpath-cache-size-16K" class="headerlink" title="realpath_cache_size = 16K"></a>realpath_cache_size = 16K</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SYS</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;指定PHP使用的realpath(规范化的绝对路径名)缓冲区大小。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在PHP打开大量文件的系统上应当增大该值以提高性能。</p>
+<h5 id="realpath-cache-ttl-120"><a href="#realpath-cache-ttl-120" class="headerlink" title="realpath_cache_ttl = 120"></a>realpath_cache_ttl = 120</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SYS</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;realpath缓冲区中信息的有效期(秒)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;对文件很少变动的系统，可以增大该值以提高性能。</p>
+<h4 id="PHP-Core-FileUpLoad"><a href="#PHP-Core-FileUpLoad" class="headerlink" title="[PHP-Core-FileUpLoad]"></a>[PHP-Core-FileUpLoad]</h4><h5 id="file-uploads-On"><a href="#file-uploads-On" class="headerlink" title="file_uploads = On"></a>file_uploads = On</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SYS</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否允许HTTP文件上传。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;参见upload_max_filesize, upload_tmp_dir, post_max_size指令</p>
+<h5 id="upload-max-filesize-2M"><a href="#upload-max-filesize-2M" class="headerlink" title="upload_max_filesize = 2M"></a>upload_max_filesize = 2M</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;允许上传的文件的最大尺寸。</p>
+<h5 id="upload-tmp-dir"><a href="#upload-tmp-dir" class="headerlink" title="upload_tmp_dir ="></a>upload_tmp_dir =</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SYS</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;文件上传时存放文件的临时目录(必须是PHP进程用户可写的目录)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果未指定则PHP使用系统默认的临时目录。</p>
+<h4 id="PHP-Core-MagicQuotes"><a href="#PHP-Core-MagicQuotes" class="headerlink" title="[PHP-Core-MagicQuotes]"></a>[PHP-Core-MagicQuotes]</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PHP6将取消魔术引号，相当于下列指令全部为 Off</p>
+<h5 id="magic-quotes-gpc-On"><a href="#magic-quotes-gpc-On" class="headerlink" title="magic_quotes_gpc = On"></a>magic_quotes_gpc = On</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否对输入的GET/POST/Cookie数据使用自动字符串转义( ‘’　“　　NULL )。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里的设置将自动影响 $_GEST $_POST $_COOKIE 数组的值。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;若将本指令与magic_quotes_sybase指令同时打开，则仅将单引号(‘’)转义为(‘’’’)，</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其它特殊字符将不被转义，即( “　　NULL )将保持原样！！</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;建议关闭此特性，并使用自定义的过滤函数。</p>
+<h5 id="magic-quotes-runtime-Off"><a href="#magic-quotes-runtime-Off" class="headerlink" title="magic_quotes_runtime = Off"></a>magic_quotes_runtime = Off</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否对运行时从外部资源产生的数据使用自动字符串转义( ‘’　“　　NULL )。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;若打开本指令，则大多数函数从外部资源(数据库,文本文件等)返回数据都将被转义。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例如：用SQL查询得到的数据，用exec()函数得到的数据，等等—www.bianceng.cn</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;若将本指令与magic_quotes_sybase指令同时打开，则仅将单引号(‘’)转义为(‘’’’)，</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其它特殊字符将不被转义，即( “　　NULL )将保持原样！！</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;建议关闭此特性，并视具体情况使用自定义的过滤函数。</p>
+<h5 id="magic-quotes-sybase-Off"><a href="#magic-quotes-sybase-Off" class="headerlink" title="magic_quotes_sybase = Off"></a>magic_quotes_sybase = Off</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否采用Sybase形式的自动字符串转义(用 ‘’’’ 表示 ‘’)</p>
+<h4 id="PHP-Core-HighLight"><a href="#PHP-Core-HighLight" class="headerlink" title="[PHP-Core-HighLight]"></a>[PHP-Core-HighLight]</h4><p><strong>highlight.bg = “#FFFFFF”</strong><br><strong>highlight.comment = “#FF8000”</strong><br><strong>highlight.default = “#0000BB”</strong><br><strong>highlight.html = “#000000”</strong><br><strong>highlight.keyword = “#007700”</strong><br><strong>highlight.string = “#DD0000”</strong>    </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;语法高亮模式的色彩(通常用于显示 .phps 文件)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;只要能被<font color="xxx">接受的东西就能正常工作。</font></p>
+<h4 id="PHP-Core-Langue"><a href="#PHP-Core-Langue" class="headerlink" title="[PHP-Core-Langue]"></a>[PHP-Core-Langue]</h4><h5 id="short-open-tag-On"><a href="#short-open-tag-On" class="headerlink" title="short_open_tag = On"></a>short_open_tag = On</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否允许使用”&lt;? ?&gt;”短标识。否则必须使用”&lt;?php ?&gt;”长标识。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;除非你的php程序仅在受控环境下运行，且只供自己使用，否则请不要使用短标记。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果要和XML结合使用PHP，可以选择关闭此选项以方便直接嵌入”&lt;?xml … ?&gt;”，不然你必须用PHP来输出：&lt;? echo ‘’&lt;?xml version=”1.0”‘’; ?&gt;</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;本指令也会影响到缩写形式”&lt;?=”，它和”&lt;? echo”等价，要使用它也必须打开短标记。</p>
+<h5 id="asp-tags-Off"><a href="#asp-tags-Off" class="headerlink" title="asp_tags = Off"></a>asp_tags = Off</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否允许ASP风格的标记”&lt;% %&gt;”，这也会影响到缩写形式”&lt;%=”。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PHP6中将删除此指令</p>
+<h5 id="arg-separator-output-“-amp-”"><a href="#arg-separator-output-“-amp-”" class="headerlink" title="arg_separator.output = “&amp;”"></a>arg_separator.output = “&amp;”</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PHP所产生的URL中用来分隔参数的分隔符。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另外还可以用”&amp;”或”,”等等。</p>
+<h5 id="arg-separator-input-“-amp-”"><a href="#arg-separator-input-“-amp-”" class="headerlink" title="arg_separator.input = “&amp;”"></a>arg_separator.input = “&amp;”</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PHP解析URL中的变量时使用的分隔符列表。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;字符串中的每一个字符都会被当作分割符。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另外还可以用”,&amp;”等等。</p>
+<h5 id="allow-call-time-pass-reference-On"><a href="#allow-call-time-pass-reference-On" class="headerlink" title="allow_call_time_pass_reference = On"></a>allow_call_time_pass_reference = On</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否强迫在函数调用时按引用传递参数(每次使用此特性都会收到一条警告)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;php反对这种做法，并在将来的版本里不再支持，因为它影响到了代码的整洁。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;鼓励的方法是在函数声明里明确指定哪些参数按引用传递。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们鼓励你关闭这一选项，以保证你的脚本在将来版本的语言里仍能正常工作。</p>
+<h5 id="auto-globals-jit-On"><a href="#auto-globals-jit-On" class="headerlink" title="auto_globals_jit = On"></a>auto_globals_jit = On</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否仅在使用到$_SERVER和$_ENV变量时才创建(而不是在脚本一启动时就自动创建)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果并未在脚本中使用这两个数组，打开该指令将会获得性能上的提升。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要想该指令生效，必须关闭register_globals和register_long_arrays指令。</p>
+<h5 id="auto-prepend-file"><a href="#auto-prepend-file" class="headerlink" title="auto_prepend_file ="></a>auto_prepend_file =</h5><h5 id="auto-append-file"><a href="#auto-append-file" class="headerlink" title="auto_append_file　="></a>auto_append_file　=</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;指定在主文件之前/后自动解析的文件名。为空表示禁用该特性。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;该文件就像调用了include()函数被包含进来一样，因此会使用include_path指令的值。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意：如果脚本通过exit()终止，那么自动后缀将不会发生。—www.bianceng.cn</p>
+<h5 id="variables-order-“EGPCS”"><a href="#variables-order-“EGPCS”" class="headerlink" title="variables_order = “EGPCS”"></a>variables_order = “EGPCS”</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PHP注册 Environment, GET, POST, Cookie, Server 变量的顺序。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;分别用 E, G, P, C, S 表示，按从左到右注册，新值覆盖旧值。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;举例说，设为”GP”将会导致用POST变量覆盖同名的GET变量，</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;并完全忽略 Environment, Cookie, Server 变量。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;推荐使用”GPC”或”GPCS”，并使用getenv()函数访问环境变量。</p>
+<h5 id="register-globals-Off"><a href="#register-globals-Off" class="headerlink" title="register_globals = Off"></a>register_globals = Off</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否将 E, G, P, C, S 变量注册为全局变量。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;打开该指令可能会导致严重的安全问题，除非你的脚本经过非常仔细的检查。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;推荐使用预定义的超全局变量：$_ENV, $_GET, $_POST, $_COOKIE, $_SERVER</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;该指令受variables_order指令的影响。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PHP6中已经删除此指令。</p>
+<h5 id="register-argc-argv-On"><a href="#register-argc-argv-On" class="headerlink" title="register_argc_argv = On"></a>register_argc_argv = On</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否声明$argv和$argc全局变量(包含用GET方法的信息)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;建议不要使用这两个变量，并关掉该指令以提高性能。</p>
+<h5 id="register-long-arrays-On"><a href="#register-long-arrays-On" class="headerlink" title="register_long_arrays = On"></a>register_long_arrays = On</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否启用旧式的长式数组(HTTP_*_VARS)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;鼓励使用短式的预定义超全局数组，并关闭该特性以获得更好的性能。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PHP6中已经删除此指令。</p>
+<h5 id="always-populate-raw-post-data-Off"><a href="#always-populate-raw-post-data-Off" class="headerlink" title="always_populate_raw_post_data = Off"></a>always_populate_raw_post_data = Off</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否总是生成$HTTP_RAW_POST_DATA变量(原始POST数据)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;否则，此变量仅在遇到不能识别的MIME类型的数据时才产生。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;不过，访问原始POST数据的更好方法是 php://input 。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;$HTTP_RAW_POST_DATA对于enctype=”multipart/form-data”的表单数据不可用。</p>
+<h5 id="unserialize-callback-func"><a href="#unserialize-callback-func" class="headerlink" title="unserialize_callback_func ="></a>unserialize_callback_func =</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果解序列化处理器需要实例化一个未定义的类，</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里指定的回调函数将以该未定义类的名字作为参数被unserialize()调用，</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以免得到不完整的”__PHP_Incomplete_Class”对象。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果这里没有指定函数，或指定的函数不包含(或实现)那个未定义的类，将会显示警告信息。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;所以仅在确实需要实现这样的回调函数时才设置该指令。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;若要禁止这个特性，只需置空即可。</p>
+<h5 id="y2k-compliance-On"><a href="#y2k-compliance-On" class="headerlink" title="y2k_compliance = On"></a>y2k_compliance = On</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否强制打开2000年适应(可能在非Y2K适应的浏览器中导致问题)。</p>
+<h5 id="zend-ze1-compatibility-mode-Off"><a href="#zend-ze1-compatibility-mode-Off" class="headerlink" title="zend.ze1_compatibility_mode = Off"></a>zend.ze1_compatibility_mode = Off</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否使用兼容Zend引擎I(PHP 4.x)的模式。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这将影响对象的复制、构造(无属性的对象会产生FALSE或0)、比较。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;兼容模式下，对象将按值传递，而不是默认的按引用传递。</p>
+<h5 id="precision-14"><a href="#precision-14" class="headerlink" title="precision = 14"></a>precision = 14</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;浮点型数据显示的有效位数。</p>
+<h5 id="serialize-precision-100"><a href="#serialize-precision-100" class="headerlink" title="serialize_precision = 100"></a>serialize_precision = 100</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;将浮点型和双精度型数据序列化存储时的精度(有效位数)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认值能够确保浮点型数据被解序列化程序解码时不会丢失数据。</p>
+<h4 id="PHP-Core-OutputControl"><a href="#PHP-Core-OutputControl" class="headerlink" title="[PHP-Core-OutputControl]"></a>[PHP-Core-OutputControl]</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出控制函数很有用，特别是在已经输出了信息之后再发送HTTP头的情况下。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出控制函数不会作用于header()或setcookie()等函数发送的HTTP头，</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;而只会影响类似于echo()函数输出的信息和嵌入在PHP代码之间的信息。</p>
+<h5 id="implicit-flush-Off"><a href="#implicit-flush-Off" class="headerlink" title="implicit_flush = Off"></a>implicit_flush = Off</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否要求PHP输出层在每个输出块之后自动刷新数据。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这等效于在每个 print()、echo()、HTML块 之后自动调用flush()函数。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;打开这个选项对程序执行的性能有严重的影响，通常只推荐在调试时使用。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在CLI SAPI的执行模式下，该指令默认为 On 。</p>
+<h5 id="output-buffering-0"><a href="#output-buffering-0" class="headerlink" title="output_buffering = 0"></a>output_buffering = 0</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出缓冲区大小(字节)。建议值为4096~8192。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出缓冲允许你甚至在输出正文内容之后再发送HTTP头(包括cookies)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其代价是输出层减慢一点点速度。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;设置输出缓冲可以减少写入，有时还能减少网络数据包的发送。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个参数的实际收益很大程度上取决于你使用的是什么Web服务器以及什么样的脚本。</p>
+<h5 id="output-handler"><a href="#output-handler" class="headerlink" title="output_handler ="></a>output_handler =</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;将所有脚本的输出重定向到一个输出处理函数。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;比如，重定向到mb_output_handler()函数时，字符编码将被透明地转换为指定的编码。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一旦你在这里指定了输出处理程序，输出缓冲将被自动打开(output_buffering=4096)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意0: 此处仅能使用PHP内置的函数，自定义函数应在脚本中使用ob_start()指定。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意1: 可移植脚本不能依赖该指令，而应使用ob_start()函数明确指定输出处理函数。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用这个指令可能会导致某些不熟悉的脚本出错。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意2: 不能同时使用”mb_output_handler”和”ob_iconv_handler”两个输出处理函数。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;也不能同时使用”ob_gzhandler”输出处理函数和zlib.output_compression指令。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意3: 如果使用zlib.output_handler指令开启zlib输出压缩，该指令必须为空。</p>
+<h4 id="PHP-Core-Directory"><a href="#PHP-Core-Directory" class="headerlink" title="[PHP-Core-Directory]"></a>[PHP-Core-Directory]</h4><h5 id="doc-root"><a href="#doc-root" class="headerlink" title="doc_root ="></a>doc_root =</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SYS</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PHP的”根目录”。仅在非空时有效。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果safe_mode=On，则此目录之外的文件一概被拒绝。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果编译PHP时没有指定FORCE_REDIRECT，并且在非IIS服务器上以CGI方式运行，则必须设置此指令(参见手册中的安全部分)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;替代方案是使用的cgi.force_redirect指令。</p>
+<h5 id="include-path-“-path-to-php-pear”"><a href="#include-path-“-path-to-php-pear”" class="headerlink" title="include_path = “.:/path/to/php/pear”"></a>include_path = “.:/path/to/php/pear”</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;指定一组目录用于require(), include(), fopen_with_path()函数寻找文件。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;格式和系统的PATH环境变量类似(UNIX下用冒号分隔，Windows下用分号分隔)：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;UNIX: “/path1:/path2”</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Windows: “path1;path2”</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在包含路径中使用’’.’’可以允许相对路径，它代表当前目录。</p>
+<h5 id="user-dir"><a href="#user-dir" class="headerlink" title="user_dir ="></a>user_dir =</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SYS</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;告诉php在使用 /~username 打开脚本时到哪个目录下去找，仅在非空时有效。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;也就是在用户目录之下使用PHP文件的基本目录名，例如：”public_html”</p>
+<h5 id="extension-dir-“-path-to-php”"><a href="#extension-dir-“-path-to-php”" class="headerlink" title="extension_dir = “/path/to/php”"></a>extension_dir = “/path/to/php”</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SYS</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;存放扩展库(模块)的目录，也就是PHP用来寻找动态扩展模块的目录。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Windows下默认为”C:/php5”</p>
+<h4 id="PHP-Core-HTTP"><a href="#PHP-Core-HTTP" class="headerlink" title="[PHP-Core-HTTP]"></a>[PHP-Core-HTTP]</h4><h5 id="default-mimetype-“text-html”"><a href="#default-mimetype-“text-html”" class="headerlink" title="default_mimetype = “text/html”"></a>default_mimetype = “text/html”</h5><h5 id="default-charset-”gb2312”"><a href="#default-charset-”gb2312”" class="headerlink" title="default_charset =　;”gb2312”"></a>default_charset =　;”gb2312”</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PHP默认会自动输出”Content-Type: text/html” HTTP头。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果将default_charset指令设为”gb2312”，</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;那么将会自动输出”Content-Type: text/html; charset=gb2312”。</p>
+<h4 id="PHP-Core-Unicode"><a href="#PHP-Core-Unicode" class="headerlink" title="[PHP-Core-Unicode]"></a>[PHP-Core-Unicode]</h4><h5 id="detect-unicode-On"><a href="#detect-unicode-On" class="headerlink" title="detect_unicode = On"></a>detect_unicode = On</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;尚无文档</p>
+<h4 id="PHP-Core-Misc"><a href="#PHP-Core-Misc" class="headerlink" title="[PHP-Core-Misc]"></a>[PHP-Core-Misc]</h4><h5 id="auto-detect-line-endings-Off"><a href="#auto-detect-line-endings-Off" class="headerlink" title="auto_detect_line_endings = Off"></a>auto_detect_line_endings = Off</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否让PHP自动侦测行结束符(EOL)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果的你脚本必须处理Macintosh文件，</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;或者你运行在Macintosh上，同时又要处理unix或win32文件，</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;打开这个指令可以让PHP自动侦测EOL，以便fgets()和file()函数可以正常工作。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;但同时也会导致在Unix系统下使用回车符(CR)作为项目分隔符的人遭遇不兼容行为。</p>
+<h5 id="cgi-rfc2616-headers-0"><a href="#cgi-rfc2616-headers-0" class="headerlink" title="cgi.rfc2616_headers = 0"></a>cgi.rfc2616_headers = 0</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;指定PHP在发送HTTP响应代码时使用何种报头。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;0 表示发送一个”Status: “报头，Apache和其它web服务器都支持。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;若设为1，则PHP使用RFC2616标准的头。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;除非你知道自己在做什么，否则保持其默认值 0</p>
+<h5 id="cgi-nph-Off"><a href="#cgi-nph-Off" class="headerlink" title="cgi.nph = Off"></a>cgi.nph = Off</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在CGI模式下是否强制对所有请求都发送”Status: 200”状态码。</p>
+<h5 id="fastcgi-impersonate-Off"><a href="#fastcgi-impersonate-Off" class="headerlink" title="fastcgi.impersonate = Off"></a>fastcgi.impersonate = Off</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;IIS中的FastCGI支持模仿客户端安全令牌的能力。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这使得IIS能够定义运行时所基于的请求的安全上下文。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Apache中的mod_fastcgi不支持此特性(03/17/2002)</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果在IIS中运行则设为On，默认为Off。</p>
+<h5 id="fastcgi-logging-On"><a href="#fastcgi-logging-On" class="headerlink" title="fastcgi.logging = On"></a>fastcgi.logging = On</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否记录通过FastCGI进行的连接。</p>
+<h4 id="PHP-Core-Weirdy"><a href="#PHP-Core-Weirdy" class="headerlink" title="[PHP-Core-Weirdy]"></a>[PHP-Core-Weirdy]</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这些选项仅存在于文档中，却不存在于phpinfo()函数的输出中</p>
+<h5 id="async-send-Off"><a href="#async-send-Off" class="headerlink" title="async_send = Off"></a>async_send = Off</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否异步发送。</p>
+<h5 id="from-”john-doe-com”"><a href="#from-”john-doe-com”" class="headerlink" title="from =　;”john@doe.com”"></a>from =　;”john@doe.com”</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;定义匿名ftp的密码(一个email地址)</p>
+<h3 id="近核心模块"><a href="#近核心模块" class="headerlink" title="近核心模块"></a>近核心模块</h3><h4 id="Pcre"><a href="#Pcre" class="headerlink" title="[Pcre]"></a>[Pcre]</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Perl兼容正则表达式模块</p>
+<h5 id="pcre-backtrack-limit-100000"><a href="#pcre-backtrack-limit-100000" class="headerlink" title="pcre.backtrack_limit = 100000"></a>pcre.backtrack_limit = 100000</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PCRE的最大回溯(backtracking)步数。</p>
+<h5 id="pcre-recursion-limit-100000"><a href="#pcre-recursion-limit-100000" class="headerlink" title="pcre.recursion_limit = 100000"></a>pcre.recursion_limit = 100000</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PCRE的最大递归(recursion)深度。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果你将该值设的非常高，将可能耗尽进程的栈空间，导致PHP崩溃。</p>
+<h4 id="Session"><a href="#Session" class="headerlink" title="[Session]"></a>[Session]</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;除非使用session_register()或$_SESSION注册了一个变量。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;否则不管是否使用了session_start()，都不会自动添加任何session记录。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;包括resource变量或有循环引用的对象包含指向自身的引用的对象，不能保存在会话中。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;register_globals指令会影响到会话变量的存储和恢复。</p>
+<h5 id="session-save-handler-“files”"><a href="#session-save-handler-“files”" class="headerlink" title="session.save_handler = “files”"></a>session.save_handler = “files”</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;存储和检索与会话关联的数据的处理器名字。默认为文件(“files”)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果想要使用自定义的处理器(如基于数据库的处理器)，可用”user”。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有一个使用PostgreSQL的处理器：<a href="http://sourceforge.net/projects/phpform-ext/" target="_blank" rel="external">http://sourceforge.net/projects/phpform-ext/</a></p>
+<h5 id="session-save-path-“-tmp”"><a href="#session-save-path-“-tmp”" class="headerlink" title="session.save_path = “/tmp”"></a>session.save_path = “/tmp”</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;传递给存储处理器的参数。对于files处理器，此值是创建会话数据文件的路径。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Windows下默认为临时文件夹路径。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;你可以使用”N;[MODE;]/path”这样模式定义该路径(N是一个整数)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;N表示使用N层深度的子目录，而不是将所有数据文件都保存在一个目录下。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;[MODE;]可选，必须使用8进制数，默认600(=384)，表示每个目录下最多保存的会话文件数量。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这是一个提高大量会话性能的好主意。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/LAMP/" rel="tag"># LAMP</a>
+          
+            <a href="/tags/Php/" rel="tag"># Php</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/10/Php/11. php的错误日志级别 error_report/" rel="next" title="php的错误日志级别 error_report">
+                <i class="fa fa-chevron-left"></i> php的错误日志级别 error_report
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/10/Nginx/7. nginx启动脚本和配置文件/" rel="prev" title="nginx启动脚本和配置文件">
+                nginx启动脚本和配置文件 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#php-ini-配置详解"><span class="nav-number">1.</span> <span class="nav-text">php.ini 配置详解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#语法"><span class="nav-number">1.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置指令详解"><span class="nav-number">1.2.</span> <span class="nav-text">配置指令详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Apache"><span class="nav-number">1.2.1.</span> <span class="nav-text">Apache</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Apache-1"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">[Apache]</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#engine-On"><span class="nav-number">1.2.1.1.1.</span> <span class="nav-text">engine = On</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#last-modified-Off"><span class="nav-number">1.2.1.1.2.</span> <span class="nav-text">last_modified = Off</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#xbithack-Off"><span class="nav-number">1.2.1.1.3.</span> <span class="nav-text">xbithack = Off</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#child-terminate-Off"><span class="nav-number">1.2.1.1.4.</span> <span class="nav-text">child_terminate = Off</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP核心"><span class="nav-number">1.2.2.</span> <span class="nav-text">PHP核心</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#PHP-Core-DateTime"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">[PHP-Core-DateTime]</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#date-default-latitude-31-7667"><span class="nav-number">1.2.2.1.1.</span> <span class="nav-text">date.default_latitude = 31.7667</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#date-default-longitude-35-2333"><span class="nav-number">1.2.2.1.2.</span> <span class="nav-text">date.default_longitude = 35.2333</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#date-sunrise-zenith-90-583333"><span class="nav-number">1.2.2.1.3.</span> <span class="nav-text">date.sunrise_zenith = 90.583333</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#date-sunset-zenith-90-583333"><span class="nav-number">1.2.2.1.4.</span> <span class="nav-text">date.sunset_zenith = 90.583333</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#date-timezone"><span class="nav-number">1.2.2.1.5.</span> <span class="nav-text">date.timezone =</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PHP-Core-Assert"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">[PHP-Core-Assert]</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#assert-active-On"><span class="nav-number">1.2.2.2.1.</span> <span class="nav-text">assert.active = On</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#assert-bail-Off"><span class="nav-number">1.2.2.2.2.</span> <span class="nav-text">assert.bail = Off</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#assert-callback"><span class="nav-number">1.2.2.2.3.</span> <span class="nav-text">assert.callback =</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#assert-quiet-eval-Off"><span class="nav-number">1.2.2.2.4.</span> <span class="nav-text">assert.quiet_eval = Off</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#assert-warning-On"><span class="nav-number">1.2.2.2.5.</span> <span class="nav-text">assert.warning = On</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#PHP-Core-SafeMode"><span class="nav-number">1.2.2.2.6.</span> <span class="nav-text">[PHP-Core-SafeMode]</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#safe-mode-Off"><span class="nav-number">1.2.2.2.7.</span> <span class="nav-text">safe_mode = Off</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#safe-mode-gid-Off"><span class="nav-number">1.2.2.2.8.</span> <span class="nav-text">safe_mode_gid = Off</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#safe-mode-allowed-envvars-“PHP“"><span class="nav-number">1.2.2.2.9.</span> <span class="nav-text">safe_mode_allowed_envvars = “PHP“</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#safe-mode-protected-env-vars-“LD-LIBRARY-PATH”"><span class="nav-number">1.2.2.2.10.</span> <span class="nav-text">safe_mode_protected_env_vars = “LD_LIBRARY_PATH”</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#safe-mode-exec-dir-“-usr-local-php-bin”"><span class="nav-number">1.2.2.2.11.</span> <span class="nav-text">safe_mode_exec_dir = “/usr/local/php/bin”</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#safe-mode-include-dir"><span class="nav-number">1.2.2.2.12.</span> <span class="nav-text">safe_mode_include_dir =</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#sql-safe-mode-Off"><span class="nav-number">1.2.2.2.13.</span> <span class="nav-text">sql.safe_mode = Off</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PHP-Core-Safe"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">[PHP-Core-Safe]</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#allow-url-fopen-On"><span class="nav-number">1.2.2.3.1.</span> <span class="nav-text">allow_url_fopen = On</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#allow-url-include-Off"><span class="nav-number">1.2.2.3.2.</span> <span class="nav-text">allow_url_include = Off</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#enable-dl-On"><span class="nav-number">1.2.2.3.3.</span> <span class="nav-text">enable_dl = On</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#expose-php-On"><span class="nav-number">1.2.2.3.4.</span> <span class="nav-text">expose_php = On</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#open-basedir"><span class="nav-number">1.2.2.3.5.</span> <span class="nav-text">open_basedir =</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PHP-Core-Error"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">[PHP-Core-Error]</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#error-reporting-E-ALL-amp-E-NOTICE"><span class="nav-number">1.2.2.4.1.</span> <span class="nav-text">error_reporting = E_ALL & ~E_NOTICE</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#track-errors-Off"><span class="nav-number">1.2.2.4.2.</span> <span class="nav-text">track_errors = Off</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#display-errors-On"><span class="nav-number">1.2.2.4.3.</span> <span class="nav-text">display_errors = On</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#display-startup-errors-Off"><span class="nav-number">1.2.2.4.4.</span> <span class="nav-text">display_startup_errors = Off</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#report-memleaks-On"><span class="nav-number">1.2.2.4.5.</span> <span class="nav-text">report_memleaks = On</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#report-zend-debug-On"><span class="nav-number">1.2.2.4.6.</span> <span class="nav-text">report_zend_debug = On</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#html-errors-On"><span class="nav-number">1.2.2.4.7.</span> <span class="nav-text">html_errors = On</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#docref-root-”http-localhost-phpmanual-“"><span class="nav-number">1.2.2.4.8.</span> <span class="nav-text">docref_root =　;”http://localhost/phpmanual/“</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#docref-ext-”-html”"><span class="nav-number">1.2.2.4.9.</span> <span class="nav-text">docref_ext =　 ;”.html”</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#error-prepend-string-”“"><span class="nav-number">1.2.2.4.10.</span> <span class="nav-text">error_prepend_string =　;”“</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#error-append-string-”“"><span class="nav-number">1.2.2.4.11.</span> <span class="nav-text">error_append_string =　 ;”“</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#xmlrpc-errors-Off"><span class="nav-number">1.2.2.4.12.</span> <span class="nav-text">xmlrpc_errors = Off</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#xmlrpc-error-number-0"><span class="nav-number">1.2.2.4.13.</span> <span class="nav-text">xmlrpc_error_number = 0</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PHP-Core-Logging"><span class="nav-number">1.2.2.5.</span> <span class="nav-text">[PHP-Core-Logging]</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#define-syslog-variables-Off"><span class="nav-number">1.2.2.5.1.</span> <span class="nav-text">define_syslog_variables = Off</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#error-log"><span class="nav-number">1.2.2.5.2.</span> <span class="nav-text">error_log =</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#log-errors-Off"><span class="nav-number">1.2.2.5.3.</span> <span class="nav-text">log_errors = Off</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#log-errors-max-len-1024"><span class="nav-number">1.2.2.5.4.</span> <span class="nav-text">log_errors_max_len = 1024</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ignore-repeated-errors-Off"><span class="nav-number">1.2.2.5.5.</span> <span class="nav-text">ignore_repeated_errors = Off</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ignore-repeated-source-Off"><span class="nav-number">1.2.2.5.6.</span> <span class="nav-text">ignore_repeated_source = Off</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PHP-Core-Mail"><span class="nav-number">1.2.2.6.</span> <span class="nav-text">[PHP-Core-Mail]</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#SMTP-“localhost”"><span class="nav-number">1.2.2.6.1.</span> <span class="nav-text">SMTP = “localhost”</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#smtp-port-25"><span class="nav-number">1.2.2.6.2.</span> <span class="nav-text">smtp_port = 25</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#sendmail-from"><span class="nav-number">1.2.2.6.3.</span> <span class="nav-text">sendmail_from =</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#sendmail-path-“-t-i”"><span class="nav-number">1.2.2.6.4.</span> <span class="nav-text">sendmail_path = “-t -i”</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#mail-force-extra-parameters"><span class="nav-number">1.2.2.6.5.</span> <span class="nav-text">mail.force_extra_parameters =</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PHP-Core-ResourceLimit"><span class="nav-number">1.2.2.7.</span> <span class="nav-text">[PHP-Core-ResourceLimit]</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#default-socket-timeout-60"><span class="nav-number">1.2.2.7.1.</span> <span class="nav-text">default_socket_timeout = 60</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#max-execution-time-30"><span class="nav-number">1.2.2.7.2.</span> <span class="nav-text">max_execution_time = 30</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#memory-limit-16M"><span class="nav-number">1.2.2.7.3.</span> <span class="nav-text">memory_limit = 16M</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#max-input-time-1"><span class="nav-number">1.2.2.7.4.</span> <span class="nav-text">max_input_time = -1</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#post-max-size-8M"><span class="nav-number">1.2.2.7.5.</span> <span class="nav-text">post_max_size = 8M</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#realpath-cache-size-16K"><span class="nav-number">1.2.2.7.6.</span> <span class="nav-text">realpath_cache_size = 16K</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#realpath-cache-ttl-120"><span class="nav-number">1.2.2.7.7.</span> <span class="nav-text">realpath_cache_ttl = 120</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PHP-Core-FileUpLoad"><span class="nav-number">1.2.2.8.</span> <span class="nav-text">[PHP-Core-FileUpLoad]</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#file-uploads-On"><span class="nav-number">1.2.2.8.1.</span> <span class="nav-text">file_uploads = On</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#upload-max-filesize-2M"><span class="nav-number">1.2.2.8.2.</span> <span class="nav-text">upload_max_filesize = 2M</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#upload-tmp-dir"><span class="nav-number">1.2.2.8.3.</span> <span class="nav-text">upload_tmp_dir =</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PHP-Core-MagicQuotes"><span class="nav-number">1.2.2.9.</span> <span class="nav-text">[PHP-Core-MagicQuotes]</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#magic-quotes-gpc-On"><span class="nav-number">1.2.2.9.1.</span> <span class="nav-text">magic_quotes_gpc = On</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#magic-quotes-runtime-Off"><span class="nav-number">1.2.2.9.2.</span> <span class="nav-text">magic_quotes_runtime = Off</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#magic-quotes-sybase-Off"><span class="nav-number">1.2.2.9.3.</span> <span class="nav-text">magic_quotes_sybase = Off</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PHP-Core-HighLight"><span class="nav-number">1.2.2.10.</span> <span class="nav-text">[PHP-Core-HighLight]</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PHP-Core-Langue"><span class="nav-number">1.2.2.11.</span> <span class="nav-text">[PHP-Core-Langue]</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#short-open-tag-On"><span class="nav-number">1.2.2.11.1.</span> <span class="nav-text">short_open_tag = On</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#asp-tags-Off"><span class="nav-number">1.2.2.11.2.</span> <span class="nav-text">asp_tags = Off</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#arg-separator-output-“-amp-”"><span class="nav-number">1.2.2.11.3.</span> <span class="nav-text">arg_separator.output = “&”</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#arg-separator-input-“-amp-”"><span class="nav-number">1.2.2.11.4.</span> <span class="nav-text">arg_separator.input = “&”</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#allow-call-time-pass-reference-On"><span class="nav-number">1.2.2.11.5.</span> <span class="nav-text">allow_call_time_pass_reference = On</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#auto-globals-jit-On"><span class="nav-number">1.2.2.11.6.</span> <span class="nav-text">auto_globals_jit = On</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#auto-prepend-file"><span class="nav-number">1.2.2.11.7.</span> <span class="nav-text">auto_prepend_file =</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#auto-append-file"><span class="nav-number">1.2.2.11.8.</span> <span class="nav-text">auto_append_file　=</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#variables-order-“EGPCS”"><span class="nav-number">1.2.2.11.9.</span> <span class="nav-text">variables_order = “EGPCS”</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#register-globals-Off"><span class="nav-number">1.2.2.11.10.</span> <span class="nav-text">register_globals = Off</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#register-argc-argv-On"><span class="nav-number">1.2.2.11.11.</span> <span class="nav-text">register_argc_argv = On</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#register-long-arrays-On"><span class="nav-number">1.2.2.11.12.</span> <span class="nav-text">register_long_arrays = On</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#always-populate-raw-post-data-Off"><span class="nav-number">1.2.2.11.13.</span> <span class="nav-text">always_populate_raw_post_data = Off</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#unserialize-callback-func"><span class="nav-number">1.2.2.11.14.</span> <span class="nav-text">unserialize_callback_func =</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#y2k-compliance-On"><span class="nav-number">1.2.2.11.15.</span> <span class="nav-text">y2k_compliance = On</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#zend-ze1-compatibility-mode-Off"><span class="nav-number">1.2.2.11.16.</span> <span class="nav-text">zend.ze1_compatibility_mode = Off</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#precision-14"><span class="nav-number">1.2.2.11.17.</span> <span class="nav-text">precision = 14</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#serialize-precision-100"><span class="nav-number">1.2.2.11.18.</span> <span class="nav-text">serialize_precision = 100</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PHP-Core-OutputControl"><span class="nav-number">1.2.2.12.</span> <span class="nav-text">[PHP-Core-OutputControl]</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#implicit-flush-Off"><span class="nav-number">1.2.2.12.1.</span> <span class="nav-text">implicit_flush = Off</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#output-buffering-0"><span class="nav-number">1.2.2.12.2.</span> <span class="nav-text">output_buffering = 0</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#output-handler"><span class="nav-number">1.2.2.12.3.</span> <span class="nav-text">output_handler =</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PHP-Core-Directory"><span class="nav-number">1.2.2.13.</span> <span class="nav-text">[PHP-Core-Directory]</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#doc-root"><span class="nav-number">1.2.2.13.1.</span> <span class="nav-text">doc_root =</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#include-path-“-path-to-php-pear”"><span class="nav-number">1.2.2.13.2.</span> <span class="nav-text">include_path = “.:/path/to/php/pear”</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#user-dir"><span class="nav-number">1.2.2.13.3.</span> <span class="nav-text">user_dir =</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#extension-dir-“-path-to-php”"><span class="nav-number">1.2.2.13.4.</span> <span class="nav-text">extension_dir = “/path/to/php”</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PHP-Core-HTTP"><span class="nav-number">1.2.2.14.</span> <span class="nav-text">[PHP-Core-HTTP]</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#default-mimetype-“text-html”"><span class="nav-number">1.2.2.14.1.</span> <span class="nav-text">default_mimetype = “text/html”</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#default-charset-”gb2312”"><span class="nav-number">1.2.2.14.2.</span> <span class="nav-text">default_charset =　;”gb2312”</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PHP-Core-Unicode"><span class="nav-number">1.2.2.15.</span> <span class="nav-text">[PHP-Core-Unicode]</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#detect-unicode-On"><span class="nav-number">1.2.2.15.1.</span> <span class="nav-text">detect_unicode = On</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PHP-Core-Misc"><span class="nav-number">1.2.2.16.</span> <span class="nav-text">[PHP-Core-Misc]</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#auto-detect-line-endings-Off"><span class="nav-number">1.2.2.16.1.</span> <span class="nav-text">auto_detect_line_endings = Off</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#cgi-rfc2616-headers-0"><span class="nav-number">1.2.2.16.2.</span> <span class="nav-text">cgi.rfc2616_headers = 0</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#cgi-nph-Off"><span class="nav-number">1.2.2.16.3.</span> <span class="nav-text">cgi.nph = Off</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#fastcgi-impersonate-Off"><span class="nav-number">1.2.2.16.4.</span> <span class="nav-text">fastcgi.impersonate = Off</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#fastcgi-logging-On"><span class="nav-number">1.2.2.16.5.</span> <span class="nav-text">fastcgi.logging = On</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PHP-Core-Weirdy"><span class="nav-number">1.2.2.17.</span> <span class="nav-text">[PHP-Core-Weirdy]</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#async-send-Off"><span class="nav-number">1.2.2.17.1.</span> <span class="nav-text">async_send = Off</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#from-”john-doe-com”"><span class="nav-number">1.2.2.17.2.</span> <span class="nav-text">from =　;”john@doe.com”</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#近核心模块"><span class="nav-number">1.2.3.</span> <span class="nav-text">近核心模块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Pcre"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">[Pcre]</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#pcre-backtrack-limit-100000"><span class="nav-number">1.2.3.1.1.</span> <span class="nav-text">pcre.backtrack_limit = 100000</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#pcre-recursion-limit-100000"><span class="nav-number">1.2.3.1.2.</span> <span class="nav-text">pcre.recursion_limit = 100000</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Session"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">[Session]</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#session-save-handler-“files”"><span class="nav-number">1.2.3.2.1.</span> <span class="nav-text">session.save_handler = “files”</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#session-save-path-“-tmp”"><span class="nav-number">1.2.3.2.2.</span> <span class="nav-text">session.save_path = “/tmp”</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

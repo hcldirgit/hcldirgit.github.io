@@ -1,0 +1,771 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Linux," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Linux日志总管-logrotate&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;日志文件包含了关于系统中发生的事件的有用信息，在排障过程中或者系统性能分析时经常被用到。对于忙碌的服务器，日志文件大小会增长极快，服务器会很快消耗磁盘空间，这成了个问题。除此之外，处理一个单个的庞大日志文件也常常是件十分棘手的事。 &amp;#160;&amp;#160;&amp;#160">
+<meta name="keywords" content="Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux日志总管-logrotate">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/08/10/Linux 基础/66. Linux日志文件总管-logrotate/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="Linux日志总管-logrotate&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;日志文件包含了关于系统中发生的事件的有用信息，在排障过程中或者系统性能分析时经常被用到。对于忙碌的服务器，日志文件大小会增长极快，服务器会很快消耗磁盘空间，这成了个问题。除此之外，处理一个单个的庞大日志文件也常常是件十分棘手的事。 &amp;#160;&amp;#160;&amp;#160">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/linux%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E6%80%BB%E7%AE%A1-logrotate/01.jpeg?raw=true">
+<meta property="og:updated_time" content="2017-08-08T17:31:37.286Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux日志总管-logrotate">
+<meta name="twitter:description" content="Linux日志总管-logrotate&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;日志文件包含了关于系统中发生的事件的有用信息，在排障过程中或者系统性能分析时经常被用到。对于忙碌的服务器，日志文件大小会增长极快，服务器会很快消耗磁盘空间，这成了个问题。除此之外，处理一个单个的庞大日志文件也常常是件十分棘手的事。 &amp;#160;&amp;#160;&amp;#160">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/linux%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E6%80%BB%E7%AE%A1-logrotate/01.jpeg?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/08/10/Linux 基础/66. Linux日志文件总管-logrotate/"/>
+
+
+
+
+
+  <title>Linux日志总管-logrotate | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Linux 基础/66. Linux日志文件总管-logrotate/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux日志总管-logrotate</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Linux日志总管-logrotate"><a href="#Linux日志总管-logrotate" class="headerlink" title="Linux日志总管-logrotate"></a>Linux日志总管-logrotate</h1><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;日志文件包含了关于系统中发生的事件的有用信息，在排障过程中或者系统性能分析时经常被用到。对于忙碌的服务器，日志文件大小会增长极快，服务器会很快消耗磁盘空间，这成了个问题。除此之外，处理一个单个的庞大日志文件也常常是件十分棘手的事。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;logrotate是个十分有用的工具，它可以自动对日志进行截断（或轮循）、压缩以及删除旧的日志文件。例如，可以设置logrotate，让/var/log/foo日志文件每30天轮循，并删除超过6个月的日志。配置完后，logrotate的运作完全自动化，不必进行任何进一步的人为干预。另外，旧日志也可以通过电子邮件发送。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;主流Linux发行版上都默认安装有logrotate包，如果出于某种原因，logrotate没有出现在里头，可以使用apt-get或yum命令来安装。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在Debian或Ubuntu上：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># apt-get install logrotate cron</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在Fedora，CentOS或RHEL上：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># yum install logrotate crontabs</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;logrotate的配置文件是/etc/logrotate.conf，通常不需要对它进行修改。日志文件的轮循设置在独立的配置文件中，它（们）放在/etc/logrotate.d/目录下。</p>
+<h2 id="样例一"><a href="#样例一" class="headerlink" title="样例一"></a>样例一</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在第一个样例中，我们将创建一个10MB的日志文件/var/log/log-file。我们将展示怎样使用logrotate来管理该日志文件。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从创建一个日志文件开始，然后在其中填入一个10MB的随机比特流数据。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># touch /var/log/log-file</span></div><div class="line"><span class="comment"># head -c 10M &lt; /dev/urandom &gt; /var/log/log-file</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;由于现在日志文件已经准备好，将配置logrotate来轮循该日志文件。让我们为该文件创建一个配置文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vim /etc/logrotate.d/log-file</span></div><div class="line"></div><div class="line">/var/<span class="built_in">log</span>/<span class="built_in">log</span>-file &#123;</div><div class="line"> monthly</div><div class="line"> rotate 5</div><div class="line"> compress</div><div class="line"> delaycompress</div><div class="line"> missingok</div><div class="line"> notifempty</div><div class="line"> create 644 root root</div><div class="line"> postrotate</div><div class="line"> /usr/bin/killall -HUP rsyslogd</div><div class="line"> endscript</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <strong>说明</strong></p>
+<ul>
+<li><strong>monthly</strong> : 日志文件将按月轮循。其它可用值为‘daily’，‘weekly’或者‘yearly’。</li>
+<li><strong>rotate 5</strong> : 一次将存储5个归档日志。对于第六个归档，时间最久的归档将被删除。</li>
+<li><strong>compress</strong> : 在轮循任务完成后，已轮循的归档将使用gzip进行压缩。</li>
+<li><strong>delaycompress</strong> : 总是与compress选项一起用，delaycompress选项指示logrotate不要将最近的归档压缩，压缩将在下一次轮循周期进行。这在你或任何软件仍然需要读取最新归档时很有用。</li>
+<li><strong>missingok</strong> : 在日志轮循期间，任何错误将被忽略，例如“文件无法找到”之类的错误。</li>
+<li><strong>notifempty</strong> : 如果日志文件为空，轮循不会进行。</li>
+<li><strong>create 644 root root</strong> : 以指定的权限创建全新的日志文件，同时logrotate也会重命名原始日志文件。</li>
+<li><strong>postrotate/endscript</strong> : 在所有其它指令完成后，postrotate和endscript里面指定的命令将被执行。在这种情况下，rsyslogd 进程将立即再次读取其配置并继续运行。</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上面的模板是通用的，而配置参数则根据需求进行调整，不是所有的参数都是必要的。</p>
+<h2 id="样例二"><a href="#样例二" class="headerlink" title="样例二"></a>样例二</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在本例中，只想要轮循一个日志文件，然而日志文件大小可以增长到50MB。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vim /etc/logrotate.d/log-file</span></div><div class="line"></div><div class="line">/var/<span class="built_in">log</span>/<span class="built_in">log</span>-file &#123;</div><div class="line"> size=50M</div><div class="line"> rotate 5</div><div class="line"> create 644 root root</div><div class="line"> postrotate</div><div class="line"> /usr/bin/killall -HUP rsyslogd</div><div class="line"> endscript</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<h2 id="样例三"><a href="#样例三" class="headerlink" title="样例三"></a>样例三</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;想要让旧日志文件以创建日期命名，这可以通过添加dateext常熟实现。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vim /etc/logrotate.d/log-file</span></div><div class="line"></div><div class="line">/var/<span class="built_in">log</span>/<span class="built_in">log</span>-file &#123;</div><div class="line"> monthly</div><div class="line"> rotate 5</div><div class="line"> dateext</div><div class="line"> create 644 root root</div><div class="line"> postrotate</div><div class="line"> /usr/bin/killall -HUP rsyslogd</div><div class="line"> endscript</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这将让归档文件在它们的文件名中包含日期信息。</p>
+<h2 id="排障"><a href="#排障" class="headerlink" title="排障"></a>排障</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里提供了一些logrotate设置的排障提示。</p>
+<h3 id="1-手动运行logrotate"><a href="#1-手动运行logrotate" class="headerlink" title="1. 手动运行logrotate"></a>1. 手动运行logrotate</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <strong>logrotate</strong> 可以在任何时候从命令行手动调用。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要调用为/etc/lograte.d/下配置的所有日志调用 <strong>logrotate</strong> ：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># logrotate /etc/logrotate.conf</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要为某个特定的配置调用logrotate：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># logrotate /etc/logrotate.d/log-file</span></div></pre></td></tr></table></figure>
+<h3 id="2-演练"><a href="#2-演练" class="headerlink" title="2. 演练"></a>2. 演练</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;排障过程中的最佳选择是使用‘-d’选项以预演方式运行logrotate。要进行验证，不用实际轮循任何日志文件，可以模拟演练日志轮循并显示其输出。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># logrotate -d /etc/logrotate.d/log-file</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/linux%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E6%80%BB%E7%AE%A1-logrotate/01.jpeg?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;正如从上面的输出结果可以看到的，logrotate判断该轮循是不必要的。如果文件的时间小于一天，这就会发生了。</p>
+<h3 id="3-强制轮循"><a href="#3-强制轮循" class="headerlink" title="3. 强制轮循"></a>3. 强制轮循</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;即使轮循条件没有满足，我们也可以通过使用‘-f’选项来强制logrotate轮循日志文件，‘-v’参数提供了详细的输出。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># logrotate -vf /etc/logrotate.d/log-file</span></div><div class="line"></div><div class="line">reading config file /etc/logrotate.d/<span class="built_in">log</span>-file</div><div class="line"> reading config info <span class="keyword">for</span> /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file</div><div class="line">  </div><div class="line"> Handling 1 logs</div><div class="line">  </div><div class="line"> rotating pattern: /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file forced from <span class="built_in">command</span> line (5 rotations)</div><div class="line"> empty <span class="built_in">log</span> files are rotated, old logs are removed</div><div class="line"> considering <span class="built_in">log</span> /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file</div><div class="line"> <span class="built_in">log</span> needs rotating</div><div class="line"> rotating <span class="built_in">log</span> /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file, <span class="built_in">log</span>-&gt;rotateCount is 5</div><div class="line"> dateext suffix <span class="string">'-20140916'</span></div><div class="line"> glob pattern <span class="string">'-[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'</span></div><div class="line"> renaming /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file.5.gz to /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file.6.gz (rotatecount 5, logstart 1, i 5),</div><div class="line"> old <span class="built_in">log</span> /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file.5.gz does not exist</div><div class="line"> renaming /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file.4.gz to /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file.5.gz (rotatecount 5, logstart 1, i 4),</div><div class="line"> old <span class="built_in">log</span> /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file.4.gz does not exist</div><div class="line"> . . .</div><div class="line"> renaming /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file.0.gz to /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file.1.gz (rotatecount 5, logstart 1, i 0),</div><div class="line"> old <span class="built_in">log</span> /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file.0.gz does not exist</div><div class="line"> <span class="built_in">log</span> /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file.6.gz doesn<span class="string">'t exist -- won'</span>t try to dispose of it</div><div class="line"> renaming /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file to /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file.1</div><div class="line"> creating new /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file mode = 0644 uid = 0 gid = 0</div><div class="line"> running postrotate script</div><div class="line"> compressing <span class="built_in">log</span> with: /bin/gzip</div></pre></td></tr></table></figure>
+<h3 id="4-Logrotate的记录日志"><a href="#4-Logrotate的记录日志" class="headerlink" title="4. Logrotate的记录日志"></a>4. Logrotate的记录日志</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;logrotate自身的日志通常存放于/var/lib/logrotate/status目录。如果处于排障目的，我们想要logrotate记录到任何指定的文件，我们可以指定像下面这样从命令行指定。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># logrotate -vf –s /var/log/logrotate-status /etc/logrotate.d/log-file</span></div></pre></td></tr></table></figure>
+<h3 id="5-Logrotate定时任务"><a href="#5-Logrotate定时任务" class="headerlink" title="5. Logrotate定时任务"></a>5. Logrotate定时任务</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;logrotate需要的cron任务应该在安装时就自动创建了，我把cron文件的内容贴出来，以供大家参考。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># cat /etc/cron.daily/logrotate</span></div><div class="line"></div><div class="line"><span class="meta">#!/bin/sh</span></div><div class="line"> </div><div class="line"> <span class="comment"># Clean non existent log file entries from status file</span></div><div class="line"> <span class="built_in">cd</span> /var/lib/logrotate</div><div class="line"> <span class="built_in">test</span> -e status || touch status</div><div class="line"> head -1 status &gt; status.clean</div><div class="line"> sed <span class="string">'s/"//g'</span> status | <span class="keyword">while</span> <span class="built_in">read</span> logfile date</div><div class="line"> <span class="keyword">do</span></div><div class="line"> [ -e <span class="string">"<span class="variable">$logfile</span>"</span> ] &amp;&amp; <span class="built_in">echo</span> <span class="string">"\"<span class="variable">$logfile</span>\" <span class="variable">$date</span>"</span></div><div class="line"> <span class="keyword">done</span> &gt;&gt; status.clean</div><div class="line"> mv status.clean status</div><div class="line">  </div><div class="line"> <span class="built_in">test</span> -x /usr/sbin/logrotate || <span class="built_in">exit</span> 0</div><div class="line"> /usr/sbin/logrotate /etc/logrotate.conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;小结一下，logrotate工具对于防止因庞大的日志文件而耗尽存储空间是十分有用的。配置完毕后，进程是全自动的，可以长时间在不需要人为干预下运行。本教程重点关注几个使用logrotate的几个基本样例，你也可以定制它以满足你的需求。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/10/Linux 基础/55. Linux查看网卡速度调整工作模式/" rel="next" title="Linux查看网卡速度调整工作模式">
+                <i class="fa fa-chevron-left"></i> Linux查看网卡速度调整工作模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/10/Linux 命令/14. Linux 命令- head/" rel="prev" title="Linux 命令- head">
+                Linux 命令- head <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux日志总管-logrotate"><span class="nav-number">1.</span> <span class="nav-text">Linux日志总管-logrotate</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#样例一"><span class="nav-number">1.1.</span> <span class="nav-text">样例一</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#样例二"><span class="nav-number">1.2.</span> <span class="nav-text">样例二</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#样例三"><span class="nav-number">1.3.</span> <span class="nav-text">样例三</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#排障"><span class="nav-number">1.4.</span> <span class="nav-text">排障</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-手动运行logrotate"><span class="nav-number">1.4.1.</span> <span class="nav-text">1. 手动运行logrotate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-演练"><span class="nav-number">1.4.2.</span> <span class="nav-text">2. 演练</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-强制轮循"><span class="nav-number">1.4.3.</span> <span class="nav-text">3. 强制轮循</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Logrotate的记录日志"><span class="nav-number">1.4.4.</span> <span class="nav-text">4. Logrotate的记录日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-Logrotate定时任务"><span class="nav-number">1.4.5.</span> <span class="nav-text">5. Logrotate定时任务</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

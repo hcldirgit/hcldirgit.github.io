@@ -1,0 +1,767 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Linux命令," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Linux 命令- more&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;more命令，功能类似 cat ，cat命令是整个文件的内容从上到下显示在屏幕上。 more会以一页一页的显示方便使用者逐页阅读，而最基本的指令就是按空白键（space）就往下一页显示，按 b 键就会往回（back）一页显示，而且还有搜寻字串的功能 。more命令从前向后读取">
+<meta name="keywords" content="Linux命令">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 命令- more">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/08/10/Linux 命令/12. Linux 命令- more/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="Linux 命令- more&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;more命令，功能类似 cat ，cat命令是整个文件的内容从上到下显示在屏幕上。 more会以一页一页的显示方便使用者逐页阅读，而最基本的指令就是按空白键（space）就往下一页显示，按 b 键就会往回（back）一页显示，而且还有搜寻字串的功能 。more命令从前向后读取">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-08-09T04:12:39.124Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux 命令- more">
+<meta name="twitter:description" content="Linux 命令- more&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;more命令，功能类似 cat ，cat命令是整个文件的内容从上到下显示在屏幕上。 more会以一页一页的显示方便使用者逐页阅读，而最基本的指令就是按空白键（space）就往下一页显示，按 b 键就会往回（back）一页显示，而且还有搜寻字串的功能 。more命令从前向后读取">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/08/10/Linux 命令/12. Linux 命令- more/"/>
+
+
+
+
+
+  <title>Linux 命令- more | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Linux 命令/12. Linux 命令- more/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux 命令- more</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Linux-命令-more"><a href="#Linux-命令-more" class="headerlink" title="Linux 命令- more"></a>Linux 命令- more</h1><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;more命令，功能类似 cat ，cat命令是整个文件的内容从上到下显示在屏幕上。 more会以一页一页的显示方便使用者逐页阅读，而最基本的指令就是按空白键（space）就往下一页显示，按 b 键就会往回（back）一页显示，而且还有搜寻字串的功能 。more命令从前向后读取文件，因此在启动时就加载整个文件。</p>
+<h2 id="1．命令格式"><a href="#1．命令格式" class="headerlink" title="1．命令格式"></a>1．命令格式</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">more [-dlfpcsu ] [-num ] [+/ pattern] [+ linenum] [file ... ]</div></pre></td></tr></table></figure>
+<h2 id="2．命令功能"><a href="#2．命令功能" class="headerlink" title="2．命令功能"></a>2．命令功能</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;more命令和cat的功能一样都是查看文件里的内容，但有所不同的是more可以按页来查看文件的内容，还支持直接跳转行等功能。</p>
+<h2 id="3．命令参数"><a href="#3．命令参数" class="headerlink" title="3．命令参数"></a>3．命令参数</h2><ul>
+<li>+n 从笫n行开始显示</li>
+<li>定义屏幕大小为n行</li>
+<li>+/pattern 在每个档案显示前搜寻该字串（pattern），然后从该字串前两行之后开始显示  </li>
+<li>-c 从顶部清屏，然后显示</li>
+<li>-d 提示“Press space to continue，’q’ to quit（按空格键继续，按q键退出）”，禁用响铃功能</li>
+<li>-l 忽略Ctrl+l（换页）字符</li>
+<li>-p 通过清除窗口而不是滚屏来对文件进行换页，与-c选项相似</li>
+<li>-s 把连续的多个空行显示为一行</li>
+<li>-u 把文件内容中的下画线去掉</li>
+</ul>
+<h2 id="4．常用操作命令："><a href="#4．常用操作命令：" class="headerlink" title="4．常用操作命令："></a>4．常用操作命令：</h2><ul>
+<li>Enter 向下n行，需要定义。默认为1行</li>
+<li>Ctrl+F 向下滚动一屏</li>
+<li>空格键 向下滚动一屏</li>
+<li>Ctrl+B 返回上一屏</li>
+<li>=  输出当前行的行号</li>
+<li>：f 输出文件名和当前行的行号</li>
+<li>V  调用vi编辑器</li>
+<li>!命令 调用Shell，并执行命令 </li>
+<li>q  退出more</li>
+</ul>
+<h2 id="5．命令实例："><a href="#5．命令实例：" class="headerlink" title="5．命令实例："></a>5．命令实例：</h2><h3 id="实例1：显示文件中从第3行起的内容"><a href="#实例1：显示文件中从第3行起的内容" class="headerlink" title="实例1：显示文件中从第3行起的内容"></a>实例1：显示文件中从第3行起的内容</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">more +3 log2012.log</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># cat log2012.log </span></div><div class="line">2012-01</div><div class="line">2012-02</div><div class="line">2012-03</div><div class="line">2012-04-day1</div><div class="line">2012-04-day2</div><div class="line">2012-04-day3</div><div class="line">======</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># more +3 log2012.log </span></div><div class="line">2012-03</div><div class="line">2012-04-day1</div><div class="line">2012-04-day2</div><div class="line">2012-04-day3</div><div class="line">======</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<h3 id="实例2：从文件中查找第一个出现”day3”字符串的行，并从该处前两行开始显示输出"><a href="#实例2：从文件中查找第一个出现”day3”字符串的行，并从该处前两行开始显示输出" class="headerlink" title="实例2：从文件中查找第一个出现”day3”字符串的行，并从该处前两行开始显示输出"></a>实例2：从文件中查找第一个出现”day3”字符串的行，并从该处前两行开始显示输出</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">more +/day3 log2012.log</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># more +/day3 log2012.log </span></div><div class="line">...skipping</div><div class="line">2012-04-day1</div><div class="line">2012-04-day2</div><div class="line">2012-04-day3</div><div class="line">2012-05</div><div class="line">2012-05-day1</div><div class="line">======[root@localhost <span class="built_in">test</span>]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<h3 id="实例3：设定每屏显示行数"><a href="#实例3：设定每屏显示行数" class="headerlink" title="实例3：设定每屏显示行数"></a>实例3：设定每屏显示行数</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">more -5 log2012.log</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># more -5 log2012.log </span></div><div class="line">2012-01</div><div class="line">2012-02</div><div class="line">2012-03</div><div class="line">2012-04-day1</div><div class="line">2012-04-day2</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明：</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;最下面显示了该屏展示的内容占文件总行数的比例，按 Ctrl+F 或者 空格键 将会显示下一屏5条内容，百分比也会跟着变化。      </p>
+<h3 id="实例4：列一个目录下的文件，由于内容太多，我们应该学会用more来分页显示。这得和管道-结合起来"><a href="#实例4：列一个目录下的文件，由于内容太多，我们应该学会用more来分页显示。这得和管道-结合起来" class="headerlink" title="实例4：列一个目录下的文件，由于内容太多，我们应该学会用more来分页显示。这得和管道 | 结合起来"></a>实例4：列一个目录下的文件，由于内容太多，我们应该学会用more来分页显示。这得和管道 | 结合起来</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls -l  | more -5</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment">#  ls -l  | more -5</span></div><div class="line">总计 36</div><div class="line">-rw-r--r-- 1 root root  308 11-01 16:49 log2012.log</div><div class="line">-rw-r--r-- 1 root root   33 10-28 16:54 log2013.log</div><div class="line">-rw-r--r-- 1 root root  127 10-28 16:51 log2014.log</div><div class="line">lrwxrwxrwx 1 root root    7 10-28 15:18 log_link.log -&gt; log.log</div><div class="line">-rw-r--r-- 1 root root   25 10-28 17:02 log.log</div><div class="line">-rw-r--r-- 1 root root   37 10-28 17:07 log.txt</div><div class="line">drwxr-xr-x 6 root root 4096 10-27 01:58 scf</div><div class="line">drwxrwxrwx 2 root root 4096 10-28 14:47 test3</div><div class="line">drwxrwxrwx 2 root root 4096 10-28 14:47 test4</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明：</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;每页显示5个文件信息，按 Ctrl+F 或者 空格键 将会显示下5条文件信息。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux命令/" rel="tag"># Linux命令</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/10/Linux 命令/16. Linux 命令- which/" rel="next" title="Linux 命令- which">
+                <i class="fa fa-chevron-left"></i> Linux 命令- which
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/10/Linux 命令/10. Linux 命令- cat/" rel="prev" title="Linux 命令- cat">
+                Linux 命令- cat <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-命令-more"><span class="nav-number">1.</span> <span class="nav-text">Linux 命令- more</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1．命令格式"><span class="nav-number">1.1.</span> <span class="nav-text">1．命令格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2．命令功能"><span class="nav-number">1.2.</span> <span class="nav-text">2．命令功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3．命令参数"><span class="nav-number">1.3.</span> <span class="nav-text">3．命令参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4．常用操作命令："><span class="nav-number">1.4.</span> <span class="nav-text">4．常用操作命令：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5．命令实例："><span class="nav-number">1.5.</span> <span class="nav-text">5．命令实例：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例1：显示文件中从第3行起的内容"><span class="nav-number">1.5.1.</span> <span class="nav-text">实例1：显示文件中从第3行起的内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例2：从文件中查找第一个出现”day3”字符串的行，并从该处前两行开始显示输出"><span class="nav-number">1.5.2.</span> <span class="nav-text">实例2：从文件中查找第一个出现”day3”字符串的行，并从该处前两行开始显示输出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例3：设定每屏显示行数"><span class="nav-number">1.5.3.</span> <span class="nav-text">实例3：设定每屏显示行数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例4：列一个目录下的文件，由于内容太多，我们应该学会用more来分页显示。这得和管道-结合起来"><span class="nav-number">1.5.4.</span> <span class="nav-text">实例4：列一个目录下的文件，由于内容太多，我们应该学会用more来分页显示。这得和管道 | 结合起来</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

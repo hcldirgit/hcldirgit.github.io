@@ -1,0 +1,934 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Nginx,LNMP," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Nginx为什么比Apache Httpd高效：原理篇&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Nginx才短短几年，就拿下了web服务器大笔江山，众所周知，Nginx在处理大并发静态请求方面，效率明显高于httpd，甚至能轻松解决C10K问题。下面我们就来聊聊Web服务器背后的一些原理。 一、进程、线程？&amp;#160;&amp;#160;&amp;#160;&amp;">
+<meta name="keywords" content="Nginx,LNMP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx为什么比Apache Httpd高效：原理篇">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/08/10/Nginx/4. Nginx为什么比Apache Httpd高效：原理篇/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="Nginx为什么比Apache Httpd高效：原理篇&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Nginx才短短几年，就拿下了web服务器大笔江山，众所周知，Nginx在处理大并发静态请求方面，效率明显高于httpd，甚至能轻松解决C10K问题。下面我们就来聊聊Web服务器背后的一些原理。 一、进程、线程？&amp;#160;&amp;#160;&amp;#160;&amp;">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Nginx%E4%B8%BA%E4%BB%80%E4%B9%88%E6%AF%94Apache%20Httpd%E9%AB%98%E6%95%88%EF%BC%9A%E5%8E%9F%E7%90%86%E7%AF%87/01.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Nginx%E4%B8%BA%E4%BB%80%E4%B9%88%E6%AF%94Apache%20Httpd%E9%AB%98%E6%95%88%EF%BC%9A%E5%8E%9F%E7%90%86%E7%AF%87/02.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Nginx%E4%B8%BA%E4%BB%80%E4%B9%88%E6%AF%94Apache%20Httpd%E9%AB%98%E6%95%88%EF%BC%9A%E5%8E%9F%E7%90%86%E7%AF%87/03.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Nginx%E4%B8%BA%E4%BB%80%E4%B9%88%E6%AF%94Apache%20Httpd%E9%AB%98%E6%95%88%EF%BC%9A%E5%8E%9F%E7%90%86%E7%AF%87/04.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Nginx%E4%B8%BA%E4%BB%80%E4%B9%88%E6%AF%94Apache%20Httpd%E9%AB%98%E6%95%88%EF%BC%9A%E5%8E%9F%E7%90%86%E7%AF%87/05.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Nginx%E4%B8%BA%E4%BB%80%E4%B9%88%E6%AF%94Apache%20Httpd%E9%AB%98%E6%95%88%EF%BC%9A%E5%8E%9F%E7%90%86%E7%AF%87/06.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Nginx%E4%B8%BA%E4%BB%80%E4%B9%88%E6%AF%94Apache%20Httpd%E9%AB%98%E6%95%88%EF%BC%9A%E5%8E%9F%E7%90%86%E7%AF%87/07.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Nginx%E4%B8%BA%E4%BB%80%E4%B9%88%E6%AF%94Apache%20Httpd%E9%AB%98%E6%95%88%EF%BC%9A%E5%8E%9F%E7%90%86%E7%AF%87/08.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Nginx%E4%B8%BA%E4%BB%80%E4%B9%88%E6%AF%94Apache%20Httpd%E9%AB%98%E6%95%88%EF%BC%9A%E5%8E%9F%E7%90%86%E7%AF%87/09.png?raw=true">
+<meta property="og:updated_time" content="2017-08-13T17:20:14.737Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nginx为什么比Apache Httpd高效：原理篇">
+<meta name="twitter:description" content="Nginx为什么比Apache Httpd高效：原理篇&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Nginx才短短几年，就拿下了web服务器大笔江山，众所周知，Nginx在处理大并发静态请求方面，效率明显高于httpd，甚至能轻松解决C10K问题。下面我们就来聊聊Web服务器背后的一些原理。 一、进程、线程？&amp;#160;&amp;#160;&amp;#160;&amp;">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/Nginx%E4%B8%BA%E4%BB%80%E4%B9%88%E6%AF%94Apache%20Httpd%E9%AB%98%E6%95%88%EF%BC%9A%E5%8E%9F%E7%90%86%E7%AF%87/01.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/08/10/Nginx/4. Nginx为什么比Apache Httpd高效：原理篇/"/>
+
+
+
+
+
+  <title>Nginx为什么比Apache Httpd高效：原理篇 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/4. Nginx为什么比Apache Httpd高效：原理篇/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Nginx为什么比Apache Httpd高效：原理篇</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Nginx为什么比Apache-Httpd高效：原理篇"><a href="#Nginx为什么比Apache-Httpd高效：原理篇" class="headerlink" title="Nginx为什么比Apache Httpd高效：原理篇"></a>Nginx为什么比Apache Httpd高效：原理篇</h1><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Nginx才短短几年，就拿下了web服务器大笔江山，众所周知，Nginx在处理大并发静态请求方面，效率明显高于httpd，甚至能轻松解决C10K问题。下面我们就来聊聊Web服务器背后的一些原理。</p>
+<h2 id="一、进程、线程？"><a href="#一、进程、线程？" class="headerlink" title="一、进程、线程？"></a>一、进程、线程？</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;进程是具有一定独立功能的，在计算机中已经运行的程序的实体。在早期系统中（如linux 2.4以前），进程是基本运作单位，在支持线程的系统中（如windows，linux2.6）中，线程才是基本的运作单位，而进程只是线程的容器。程序本身只是指令、数据及其组织形式的描述，进程才是程序（那些指令和数据）的真正运行实例。若干进程有可能与同一个程序相关系，且每个进程皆可以同步（循序）或异步（平行）的方式独立运行。现代计算机系统可在同一段时间内以进程的形式将多个程序加载到存储器中，并借由时间共享（或称时分复用），以在一个处理器上表现出同时（平行性）运行的感觉。同样的，使用多线程技术（多线程即每一个线程都代表一个进程内的一个独立执行上下文）的操作系统或计算机架构，同样程序的平行线程，可在多 CPU 主机或网络上真正同时运行（在不同的CPU上）。</p>
+<h2 id="二、常见Web服务方式"><a href="#二、常见Web服务方式" class="headerlink" title="二、常见Web服务方式"></a>二、常见Web服务方式</h2><h3 id="三种工作模型比较："><a href="#三种工作模型比较：" class="headerlink" title="三种工作模型比较："></a>三种工作模型比较：</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Web服务器要为用户提供服务，必须以某种方式，工作在某个套接字上。一般Web服务器在处理用户请求是，一般有如下三种方式可选择：多进程方式、多线程方式、异步方式。</p>
+<ul>
+<li>多进程方式：为每个请求启动一个进程来处理。由于在操作系统中，生成进程、销毁进程、进程间切换都很消耗CPU和内存，当负载高是，性能会明显降低。</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>优点： 稳定性！</strong>由于采用独立进程处理独立请求，而进程之间是独立的，单个进程问题不会影响其他进程，因此稳定性最好。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>缺点： 资源占用！</strong>当请求过大时，需要大量的进程处理请求，进程生成、切换开销很大，而且进程间资源是独立的，造成内存重复利用。</p>
+<ul>
+<li>多线程方式：一个进程中用多个线程处理用户请求。由于线程开销明显小于进程，而且部分资源还可以共享，因此效率较高。</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>优点：开销较小！</strong>线程间部分数据是共享的，且线程生成与线程间的切换所需资源开销比进程间切换小得多。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>缺点：稳定性！</strong>线程切换过快可能造成线程抖动，且线程过多会造成服务器不稳定。</p>
+<ul>
+<li>异步方式：使用非阻塞方式处理请求，是三种方式中开销最小的。但异步方式虽然效率高，但要求也高，因为多任务之间的调度如果出现问题，就可能出现整体故障，因此使用异步工作的，一般是一些功能相对简单，但却符合服务器任务调度、且代码中没有影响调度的错误代码存在的程序。</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>优点：性能最好！</strong>一个进程或线程处理多个请求，不需要额外开销，性能最好，资源占用最低。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>缺点：稳定性！</strong>某个进程或线程出错，可能导致大量请求无法处理，甚至导致整个服务宕机。</p>
+<h3 id="一个Web请求的处理过程："><a href="#一个Web请求的处理过程：" class="headerlink" title="一个Web请求的处理过程："></a>一个Web请求的处理过程：</h3><p><img src="https://github.com/hcldirgit/image/blob/master/Nginx%E4%B8%BA%E4%BB%80%E4%B9%88%E6%AF%94Apache%20Httpd%E9%AB%98%E6%95%88%EF%BC%9A%E5%8E%9F%E7%90%86%E7%AF%87/01.png?raw=true" alt=""></p>
+<ol>
+<li>客户发起情况到服务器网卡；</li>
+<li>服务器网卡接受到请求后转交给内核处理；</li>
+<li>内核根据请求对应的套接字，将请求交给工作在用户空间的Web服务器进程</li>
+<li>Web服务器进程根据用户请求，向内核进行系统调用，申请获取相应资源（如index.html）</li>
+<li>内核发现web服务器进程请求的是一个存放在硬盘上的资源，因此通过驱动程序连接磁盘</li>
+<li>内核调度磁盘，获取需要的资源</li>
+<li>内核将资源存放在自己的缓冲区中，并通知Web服务器进程</li>
+<li>Web服务器进程通过系统调用取得资源，并将其复制到进程自己的缓冲区中</li>
+<li>Web服务器进程形成响应，通过系统调用再次发给内核以响应用户请求</li>
+<li>内核将响应发送至网卡</li>
+<li>网卡发送响应给用户</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;通过这样的一个复杂过程，一次请求就完成了。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;简单来说就是：<strong>用户请求–&gt;送达到用户空间–&gt;系统调用–&gt;内核空间–&gt;内核到磁盘上读取网页资源-&gt;返回到用户空间-&gt;响应给用户</strong>。上述简单的说明了一下，客户端向Web服务请求过程，在这个过程中，有两个I/O过程，一个就是客户端请求的网络I/O，另一个就是Web服务器请求页面的磁盘I/O。 下面我们就来说说Linux的I/O模型。</p>
+<h2 id="三、各种I-O模型详解"><a href="#三、各种I-O模型详解" class="headerlink" title="三、各种I/O模型详解"></a>三、各种I/O模型详解</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;通过上面的对连接的处理分析，我们知道工作在用户空间的web服务器进程是无法直接操作IO的，需要通过系统调用进行，其关系如下：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Nginx%E4%B8%BA%E4%BB%80%E4%B9%88%E6%AF%94Apache%20Httpd%E9%AB%98%E6%95%88%EF%BC%9A%E5%8E%9F%E7%90%86%E7%AF%87/02.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;即进程向内核进行系统调用申请IO，内核将资源从IO调度到内核的buffer中（<code>wait阶段</code>），内核还需将数据从内核buffer中复制（<code>copy阶段</code>）到web服务器进程所在的用户空间，才算完成一次IO调度。这几个阶段都是需要时间的。根据wait和copy阶段的处理等待的机制不同，可将I/O动作分为如下五种模式：</p>
+<ul>
+<li>阻塞I/O</li>
+<li>非阻塞I/O</li>
+<li>I/O复用（select和poll）</li>
+<li>信号（事件）驱动I/O（SIGIO）</li>
+<li>异步I/O（aio）</li>
+</ul>
+<h3 id="I-O模型简介"><a href="#I-O模型简介" class="headerlink" title="I/O模型简介"></a>I/O模型简介</h3><pre><code>这里有必要先解释一下**阻塞、非阻塞，同步、异步、I/O**的概念。
+</code></pre><h4 id="阻塞和非阻塞"><a href="#阻塞和非阻塞" class="headerlink" title="阻塞和非阻塞:"></a>阻塞和非阻塞:</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;阻塞和非阻塞指的是执行一个操作是等操作结束再返回，还是马上返回。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;比如餐馆的服务员为用户点菜，当有用户点完菜后，服务员将菜单给后台厨师，此时有两种方式：</p>
+<ul>
+<li>第一种：就在出菜窗口等待，直到厨师炒完菜后将菜送到窗口，然后服务员再将菜送到用户手中；</li>
+<li>第二种：等一会再到窗口来问厨师，某个菜好了没？如果没有先处理其他事情，等会再去问一次；</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第一种就是阻塞方式，第二种则是非阻塞的。</p>
+<h4 id="同步和异步"><a href="#同步和异步" class="headerlink" title="同步和异步:"></a>同步和异步:</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;同步和异步又是另外一个概念，它是事件本身的一个属性。还拿前面点菜为例，服务员直接跟厨师打交道，菜出来没出来，服务员直接指导，但只有当厨师将菜送到服务员手上，这个过程才算正常完成，这就是同步的事件。同样是点菜，有些餐馆有专门的传菜人员，当厨师炒好菜后，传菜员将菜送到传菜窗口，并通知服务员，这就变成异步的了。其实异步还可以分为两种：带通知的和不带通知的。前面说的那种属于带通知的。有些传菜员干活可能主动性不是很够，不会主动通知你，你就需要时不时的去关注一下状态。这种就是不带通知的异步。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;对于同步的事件，你只能以阻塞的方式去做。而对于异步的事件，阻塞和非阻塞都是可以的。非阻塞又有两种方式：主动查询和被动接收消息。被动不意味着一定不好，在这里它恰恰是效率更高的，因为在主动查询里绝大部分的查询是在做无用功。对于带通知的异步事件，两者皆可。而对于不带通知的，则只能用主动查询。</p>
+<h4 id="全异步I-O"><a href="#全异步I-O" class="headerlink" title="全异步I/O"></a>全异步I/O</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;回到I/O，不管是I还是O，对外设(磁盘)的访问都可以分成请求和执行两个阶段。请求就是看外设的状态信息（比如是否准备好了），执行才是真正的I/O操作。在Linux 2.6之前，只有“请求”是异步事件，2.6之后才引入AIO（asynchronous I/O ）把“执行”异步化。别看Linux/Unix是用来做服务器的，这点上比Windows落后了好多，IOCP（Windows上的AIO，效率极高）在Win2000上就有了。所以学linux的别老觉得Windows这里不好那里不好（Windows的多线程机制也由于linux）。</p>
+<h4 id="I-O的五种模型"><a href="#I-O的五种模型" class="headerlink" title="I/O的五种模型"></a>I/O的五种模型</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;根据以上分析，I/O可分为五种模型：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Nginx%E4%B8%BA%E4%BB%80%E4%B9%88%E6%AF%94Apache%20Httpd%E9%AB%98%E6%95%88%EF%BC%9A%E5%8E%9F%E7%90%86%E7%AF%87/03.png?raw=true" alt=""></p>
+<ul>
+<li><strong>阻塞I/O</strong>：所有过程全阻塞</li>
+<li><strong>非阻塞I/O</strong>：如果没有数据buffer，则立即返回EWOULDBLOCK</li>
+<li><strong>I/O复用（select和poll）</strong>：在wait和copy阶段分别阻塞</li>
+<li><strong>信号驱动I/O（SIGIO）</strong>：在wait阶段不阻塞，但copy阶段阻塞（信号驱动I/O，即通知）</li>
+<li><strong>异步I/O（aio）</strong>：完全五阻塞方式，当I/O完成是提供信号</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Linux上的前四种I/O模型的“执行”阶段都是同步的，只有最后一种才做到了真正的全异步。第一种阻塞式是最原始的方法，也是最累的办法。当然累与不累要看针对谁。应用程序是和内核打交道的。对应用程序来说，这种方式是最累的，但对内核来说这种方式恰恰是最省事的。还拿点菜这事为例，你就是应用程序，厨师就是内核，如果你去了一直等着，厨师就省事了（不用同时处理其他服务员的菜）。当然现在计算机的设计，包括操作系统，越来越为终端用户考虑了，为了让用户满意，内核慢慢的承担起越来越多的工作，IO模型的演化也是如此。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;非阻塞I/O ，I/O复用，信号驱动式I/O其实都是非阻塞的，当然是针对“请求”这个阶段。非阻塞式是主动查询外设状态。I/O复用里的select，poll也是主动查询，不同的是select和poll可以同时查询多个fd（文件句柄）的状态，另外select有fd个数的限制。epoll是基于回调函数的。信号驱动式I/O则是基于信号消息的。这两个应该可以归到“被动接收消息”那一类中。最后就是伟大的AIO的出现，内核把什么事都干了，对上层应用实现了全异步，性能最好，当然复杂度也最高。</p>
+<h3 id="各I-O模型详细介绍："><a href="#各I-O模型详细介绍：" class="headerlink" title="各I/O模型详细介绍："></a>各I/O模型详细介绍：</h3><h4 id="阻塞I-O"><a href="#阻塞I-O" class="headerlink" title="阻塞I/O"></a>阻塞I/O</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：应用程序调用一个IO函数，导致应用程序阻塞，等待数据准备好。 如果数据没有准备好，一直等待数据准备好了，从内核拷贝到用户空间,IO函数返回成功指示。这个不用多解释吧，阻塞套接字。下图是它调用过程的图示：（注，一般网络I/O都是阻塞I/O，客户端发出请求，Web服务器进程响应，在进程没有返回页面之前，这个请求会处于一直等待状态）</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Nginx%E4%B8%BA%E4%BB%80%E4%B9%88%E6%AF%94Apache%20Httpd%E9%AB%98%E6%95%88%EF%BC%9A%E5%8E%9F%E7%90%86%E7%AF%87/04.png?raw=true" alt=""></p>
+<h4 id="非阻塞I-O"><a href="#非阻塞I-O" class="headerlink" title="非阻塞I/O"></a>非阻塞I/O</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们把一个套接口设置为非阻塞就是告诉内核，当所请求的I/O操作无法完成时，不要将进程睡眠，而是返回一个错误。这样我们的I/O操作函数将不断的测试数据是否已经准备好，如果没有准备好，继续测试，直到数据准备好为止。在这个不断测试的过程中，会大量的占用CPU的时间，所有一般Web服务器都不使用这种I/O模型。具体过程如下图:</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Nginx%E4%B8%BA%E4%BB%80%E4%B9%88%E6%AF%94Apache%20Httpd%E9%AB%98%E6%95%88%EF%BC%9A%E5%8E%9F%E7%90%86%E7%AF%87/05.png?raw=true" alt=""></p>
+<h4 id="I-O复用（select和poll）"><a href="#I-O复用（select和poll）" class="headerlink" title="I/O复用（select和poll）"></a>I/O复用（select和poll）</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;I/O复用模型会用到select或poll函数或epoll函数(Linux2.6以后的内核开始支持)，这两个函数也会使进程阻塞，但是和阻塞I/O所不同的的，这两个函数可以同时阻塞多个I/O操作。而且可以同时对多个读操作，多个写操作的I/O函数进行检测，直到有数据可读或可写时，才真正调用I/O操作函数。具体过程如下图:</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Nginx%E4%B8%BA%E4%BB%80%E4%B9%88%E6%AF%94Apache%20Httpd%E9%AB%98%E6%95%88%EF%BC%9A%E5%8E%9F%E7%90%86%E7%AF%87/06.png?raw=true" alt=""></p>
+<h4 id="信号驱动I-O（SIGIO）"><a href="#信号驱动I-O（SIGIO）" class="headerlink" title="信号驱动I/O（SIGIO）"></a>信号驱动I/O（SIGIO）</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先，我们允许套接口进行信号驱动I/O，并安装一个信号处理函数，进程继续运行并不阻塞。当数据准备好时，进程会收到一个SIGIO信号，可以在信号处理函数中调用I/O操作函数处理数据。具体过程如下图:</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Nginx%E4%B8%BA%E4%BB%80%E4%B9%88%E6%AF%94Apache%20Httpd%E9%AB%98%E6%95%88%EF%BC%9A%E5%8E%9F%E7%90%86%E7%AF%87/07.jpg?raw=true" alt=""></p>
+<h4 id="异步I-O（aio）"><a href="#异步I-O（aio）" class="headerlink" title="异步I/O（aio）"></a>异步I/O（aio）</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当一个异步过程调用发出后，调用者不能立刻得到结果。实际处理这个调用的部件在完成后，通过状态、通知和回调来通知调用者的输入输出操作。具体过程如下图:</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Nginx%E4%B8%BA%E4%BB%80%E4%B9%88%E6%AF%94Apache%20Httpd%E9%AB%98%E6%95%88%EF%BC%9A%E5%8E%9F%E7%90%86%E7%AF%87/08.png?raw=true" alt=""></p>
+<h4 id="模型总结（如下图）"><a href="#模型总结（如下图）" class="headerlink" title="模型总结（如下图）"></a>模型总结（如下图）</h4><p><img src="https://github.com/hcldirgit/image/blob/master/Nginx%E4%B8%BA%E4%BB%80%E4%B9%88%E6%AF%94Apache%20Httpd%E9%AB%98%E6%95%88%EF%BC%9A%E5%8E%9F%E7%90%86%E7%AF%87/09.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从上图中我们可以看出，可以看出，越往后，阻塞越少，理论上效率也是最优。其五种I/O模型中，前三种属于同步I/O，后两者属于异步I/O。</p>
+<p><strong>同步I/O</strong>:</p>
+<ul>
+<li>阻塞I/O</li>
+<li>非阻塞I/O</li>
+<li>I/O复用（select和poll）</li>
+</ul>
+<p><strong>异步I/O</strong>:</p>
+<ul>
+<li>信号驱动I/O（SIGIO） （半异步）</li>
+<li>异步I/O（aio） （真正的异步）</li>
+</ul>
+<p><strong>异步 I/O 和 信号驱动I/O的区别</strong>:</p>
+<ul>
+<li>信号驱动 I/O 模式下，内核可以复制的时候通知给我们的应用程序发送SIGIO 消息。</li>
+<li>异步 I/O 模式下，内核在所有的操作都已经被内核操作结束之后才会通知我们的应用程序。</li>
+</ul>
+<h3 id="Linux-I-O模型的具体实现"><a href="#Linux-I-O模型的具体实现" class="headerlink" title="Linux I/O模型的具体实现"></a>Linux I/O模型的具体实现</h3><h4 id="主要实现方式有以下几种："><a href="#主要实现方式有以下几种：" class="headerlink" title="主要实现方式有以下几种："></a>主要实现方式有以下几种：</h4><ul>
+<li>select</li>
+<li>poll</li>
+<li>epoll</li>
+<li>kqueue</li>
+<li>/dev/poll</li>
+<li>iocp</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注，其中iocp是Windows实现的，select、poll、epoll是Linux实现的，kqueue是FreeBSD实现的，/dev/poll是SUN的Solaris实现的。select、poll对应第3种（I/O复用）模型，iocp对应第5种（异步I/O）模型，那么epoll、kqueue、/dev/poll呢？其实也同select属于同一种模型，只是更高级一些，可以看作有了第4种（信号驱动I/O）模型的某些特性，如callback机制。</p>
+<h4 id="为什么epoll、kqueue、-dev-poll比select高级？"><a href="#为什么epoll、kqueue、-dev-poll比select高级？" class="headerlink" title="为什么epoll、kqueue、/dev/poll比select高级？"></a>为什么epoll、kqueue、/dev/poll比select高级？</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;答案是，他们无轮询。因为他们用callback取代了。想想看，当套接字比较多的时候，每次select()都要通过遍历FD_SETSIZE个Socket来完成调度，不管哪个Socket是活跃的，都遍历一遍。这会浪费很多CPU时间。如果能给套接字注册某个回调函数，当他们活跃时，自动完成相关操作，那就避免了轮询，这正是epoll、kqueue、/dev/poll做的。这样子说可能不好理解，那么我说一个现实中的例子，假设你在大学读书，住的宿舍楼有很多间房间，你的朋友要来找你。select版宿管大妈就会带着你的朋友挨个房间去找，直到找到你为止。而epoll版宿管大妈会先记下每位同学的房间号，你的朋友来时，只需告诉你的朋友你住在哪个房间即可，不用亲自带着你的朋友满大楼找人。如果来了10000个人，都要找自己住这栋楼的同学时，select版和epoll版宿管大妈，谁的效率更高，不言自明。同理，在高并发服务器中，轮询I/O是最耗时间的操作之一，select、epoll、/dev/poll的性能谁的性能更高，同样十分明了。</p>
+<h4 id="Windows-or-nix-（IOCP-or-kqueue、epoll、-dev-poll）？"><a href="#Windows-or-nix-（IOCP-or-kqueue、epoll、-dev-poll）？" class="headerlink" title="Windows or *nix （IOCP or kqueue、epoll、/dev/poll）？"></a>Windows or *nix （IOCP or kqueue、epoll、/dev/poll）？</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;诚然，Windows的IOCP非常出色，目前很少有支持asynchronous I/O的系统，但是由于其系统本身的局限性，大型服务器还是在UNIX下。而且正如上面所述，kqueue、epoll、/dev/poll 与 IOCP相比，就是多了一层从内核copy数据到应用层的阻塞，从而不能算作asynchronous I/O类。但是，这层小小的阻塞无足轻重，kqueue、epoll、/dev/poll 已经做得很优秀了。</p>
+<h4 id="总结一些重点"><a href="#总结一些重点" class="headerlink" title="总结一些重点"></a>总结一些重点</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;只有IOCP(windows实现)是asynchronous I/O，其他机制或多或少都会有一点阻塞。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;select（Linux实现）低效是因为每次它都需要轮询。但低效也是相对的，视情况而定，也可通过良好的设计改善</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;epoll(Linux实现)、kqueue（FreeBSD实现）、/dev/poll（Solaris实现）是Reacor模式，IOCP是Proactor模式。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Apache 2.2.9之前只支持select模型，2.2.9之后支持epoll模型</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Nginx 支持epoll模型</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Java nio包是select模型</p>
+<h2 id="四、Apache-Httpd的工作模式"><a href="#四、Apache-Httpd的工作模式" class="headerlink" title="四、Apache Httpd的工作模式"></a>四、Apache Httpd的工作模式</h2><h3 id="apache三种工作模式"><a href="#apache三种工作模式" class="headerlink" title="apache三种工作模式"></a>apache三种工作模式</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们都知道Apache有三种工作模块，分别为prefork、worker、event。</p>
+<ul>
+<li>prefork：多进程，每个请求用一个进程响应，这个过程会用到select机制来通知。</li>
+<li>worker：多线程，一个进程可以生成多个线程，每个线程响应一个请求，但通知机制还是select不过可以接受更多的请求。</li>
+<li>event：基于异步I/O模型，一个进程或线程，每个进程或线程响应多个用户请求，它是基于事件驱动（也就是epoll机制）实现的。</li>
+</ul>
+<h3 id="prefork的工作原理"><a href="#prefork的工作原理" class="headerlink" title="prefork的工作原理"></a>prefork的工作原理</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果不用“–with-mpm”显式指定某种MPM,prefork就是Unix平台上缺省的MPM.它所采用的预派生子进程方式也是 Apache1.3中采用的模式。prefork本身并没有使用到线程，2.0版使用它是为了与1.3版保持兼容性；另一方面，prefork用单独的子进程来处理不同的请求，进程之间是彼此独立的,这也使其成为最稳定的MPM之一。</p>
+<h3 id="worker的工作原理"><a href="#worker的工作原理" class="headerlink" title="worker的工作原理"></a>worker的工作原理</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;相对于prefork，worker是2.0版中全新的支持多线程和多进程混合模型的MPM。由于使用线程来处理，所以可以处理相对海量的请求，而系统资源的开销要小于基于进程的服务器。但是，worker也使用了多进程,每个进程又生成多个线程，以获得基于进程服务器的稳定性，这种MPM的工作方 式将是Apache2.0的发展趋势。</p>
+<h3 id="event-基于事件机制的特性"><a href="#event-基于事件机制的特性" class="headerlink" title="event 基于事件机制的特性"></a>event 基于事件机制的特性</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一个进程响应多个用户请求，利用callback机制，让套接字复用，请求过来后进程并不处理请求，而是直接交由其他机制来处理，通过epoll机制来通知请求是否完成；在这个过程中，进程本身一直处于空闲状态，可以一直接收用户请求。可以实现一个进程程响应多个用户请求。支持持海量并发连接数，消耗更少的资源。</p>
+<h2 id="五、如何提高Web服务器的并发连接处理能力"><a href="#五、如何提高Web服务器的并发连接处理能力" class="headerlink" title="五、如何提高Web服务器的并发连接处理能力"></a>五、如何提高Web服务器的并发连接处理能力</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有几个基本条件：</p>
+<ul>
+<li>基于线程，即一个进程生成多个线程，每个线程响应用户的每个请求。</li>
+<li>基于事件的模型，一个进程处理多个请求，并且通过epoll机制来通知用户请求完成。</li>
+<li>基于磁盘的AIO（异步I/O）</li>
+<li>支持mmap内存映射，mmap传统的web服务器，进行页面输入时，都是将磁盘的页面先输入到内核缓存中，再由内核缓存中复制一份到web服务器上，mmap机制就是让内核缓存与磁盘进行映射，web服务器，直接复制页面内容即可。不需要先把磁盘的上的页面先输入到内核缓存去。</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;刚好，Nginx 支持以上所有特性。所以Nginx官网上说，Nginx支持50000并发，是有依据的。</p>
+<h2 id="六、Nginx优异之处"><a href="#六、Nginx优异之处" class="headerlink" title="六、Nginx优异之处"></a>六、Nginx优异之处</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;传统上基于进程或线程模型架构的web服务通过每进程或每线程处理并发连接请求，这势必会在网络和I/O操作时产生阻塞，其另一个必然结果则是对内存或CPU的利用率低下。生成一个新的进程/线程需要事先备好其运行时环境，这包括为其分配堆内存和栈内存，以及为其创建新的执行上下文等。这些操作都需要占用CPU，而且过多的进程/线程还会带来线程抖动或频繁的上下文切换，系统性能也会由此进一步下降。另一种高性能web服务器/web服务器反向代理：Nginx（Engine X），nginx的主要着眼点就是其高性能以及对物理计算资源的高密度利用，因此其采用了不同的架构模型。受启发于多种操作系统设计中基于“事件”的高级处理机制，nginx采用了模块化、事件驱动、异步、单线程及非阻塞的架构，并大量采用了多路复用及事件通知机制。在nginx中，连接请求由为数不多的几个仅包含一个线程的进程worker以高效的回环(run-loop)机制进行处理，而每个worker可以并行处理数千个的并发连接及请求。</p>
+<h3 id="Nginx-工作原理"><a href="#Nginx-工作原理" class="headerlink" title="Nginx 工作原理"></a>Nginx 工作原理</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Nginx会按需同时运行多个进程：一个主进程(master)和几个工作进程(worker)，配置了缓存时还会有缓存加载器进程(cache loader)和缓存管理器进程(cache manager)等。所有进程均是仅含有一个线程，并主要通过“共享内存”的机制实现进程间通信。主进程以root用户身份运行，而worker、cache loader和cache manager均应以非特权用户身份运行。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;主进程主要完成如下工作：</p>
+<ul>
+<li>读取并验正配置信息；</li>
+<li>创建、绑定及关闭套接字；</li>
+<li>启动、终止及维护worker进程的个数；</li>
+<li>无须中止服务而重新配置工作特性；</li>
+<li>控制非中断式程序升级，启用新的二进制程序并在需要时回滚至老版本；</li>
+<li>重新打开日志文件；</li>
+<li>编译嵌入式perl脚本；</li>
+<li>worker进程主要完成的任务包括：</li>
+<li>接收、传入并处理来自客户端的连接；</li>
+<li>提供反向代理及过滤功能；</li>
+<li>nginx任何能完成的其它任务；</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注：如果负载以CPU密集型应用为主，如SSL或压缩应用，则worker数应与CPU数相同；如果负载以IO密集型为主，如响应大量内容给客户端，则worker数应该为CPU个数的1.5或2倍。</p>
+<h3 id="Nginx-架构"><a href="#Nginx-架构" class="headerlink" title="Nginx 架构"></a>Nginx 架构</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Nginx的代码是由一个核心和一系列的模块组成, 核心主要用于提供Web Server的基本功能，以及Web和Mail反向代理的功能；还用于启用网络协议，创建必要的运行时环境以及确保不同的模块之间平滑地进行交互。不过，大多跟协议相关的功能和某应用特有的功能都是由nginx的模块实现的。这些功能模块大致可以分为事件模块、阶段性处理器、输出过滤器、变量处理器、协议、upstream和负载均衡几个类别，这些共同组成了nginx的http功能。事件模块主要用于提供OS独立的(不同操作系统的事件机制有所不同)事件通知机制如kqueue或epoll等。协议模块则负责实现nginx通过http、tls/ssl、smtp、pop3以及imap与对应的客户端建立会话。在Nginx内部，进程间的通信是通过模块的pipeline或chain实现的；换句话说，每一个功能或操作都由一个模块来实现。例如，压缩、通过FastCGI或uwsgi协议与upstream服务器通信，以及与memcached建立会话等。</p>
+<h3 id="Nginx-基础功能"><a href="#Nginx-基础功能" class="headerlink" title="Nginx 基础功能"></a>Nginx 基础功能</h3><ul>
+<li>处理静态文件，索引文件以及自动索引；</li>
+<li>反向代理加速(无缓存)，简单的负载均衡和容错；</li>
+<li>FastCGI，简单的负载均衡和容错；</li>
+<li>模块化的结构。过滤器包括gzipping, byte ranges, chunked responses, 以及 SSI-filter 。在SSI过滤器中，到同一个 proxy 或者 FastCGI 的多个子请求并发处理；</li>
+<li>SSL 和 TLS SNI 支持；</li>
+</ul>
+<h3 id="Nginx-IMAP-POP3-代理服务功能"><a href="#Nginx-IMAP-POP3-代理服务功能" class="headerlink" title="Nginx IMAP/POP3 代理服务功能"></a>Nginx IMAP/POP3 代理服务功能</h3><ul>
+<li>使用外部 HTTP 认证服务器重定向用户到 IMAP/POP3 后端；</li>
+<li>使用外部 HTTP 认证服务器认证用户后连接重定向到内部的 SMTP 后端；</li>
+<li>认证方法：</li>
+<li>POP3: POP3 USER/PASS, APOP, AUTH LOGIN PLAIN CRAM-MD5;</li>
+<li>IMAP: IMAP LOGIN;</li>
+<li>SMTP: AUTH LOGIN PLAIN CRAM-MD5;</li>
+<li>SSL 支持；</li>
+<li>在 IMAP 和 POP3 模式下的 STARTTLS 和 STLS 支持；</li>
+</ul>
+<h3 id="Nginx-支持的操作系统"><a href="#Nginx-支持的操作系统" class="headerlink" title="Nginx 支持的操作系统"></a>Nginx 支持的操作系统</h3><ul>
+<li>FreeBSD 3.x, 4.x, 5.x, 6.x i386; FreeBSD 5.x, 6.x amd64;</li>
+<li>Linux 2.2, 2.4, 2.6 i386; Linux 2.6 amd64;</li>
+<li>Solaris 8 i386; Solaris 9 i386 and sun4u; Solaris 10 i386;</li>
+<li>MacOS X (10.4) PPC;</li>
+<li>Windows 编译版本支持 windows 系列操作系统;</li>
+</ul>
+<h3 id="Nginx-结构与扩展"><a href="#Nginx-结构与扩展" class="headerlink" title="Nginx 结构与扩展"></a>Nginx 结构与扩展</h3><ul>
+<li>一个主进程和多个工作进程，工作进程运行于非特权用户；</li>
+<li>kqueue (FreeBSD 4.1+), epoll (Linux 2.6+), rt signals (Linux 2.2.19+), /dev/poll (Solaris 7 11/99+), select, 以及 poll 支持；</li>
+<li>kqueue支持的不同功能包括 EV_CLEAR, EV_DISABLE （临时禁止事件）， NOTE_LOWAT, EV_EOF, 有效数据的数目，错误代码；</li>
+<li>sendfile (FreeBSD 3.1+), sendfile (Linux 2.2+), sendfile64 (Linux 2.4.21+), 和 sendfilev (Solaris 8 7/01+) 支持；</li>
+<li>输入过滤 (FreeBSD 4.1+) 以及 TCP_DEFER_ACCEPT (Linux 2.4+) 支持；</li>
+<li>10,000 非活动的 HTTP keep-alive 连接仅需要 2.5M 内存。</li>
+<li>最小化的数据拷贝操作；</li>
+</ul>
+<h3 id="Nginx-其他HTTP功能"><a href="#Nginx-其他HTTP功能" class="headerlink" title="Nginx 其他HTTP功能"></a>Nginx 其他HTTP功能</h3><ul>
+<li>基于IP 和名称的虚拟主机服务；</li>
+<li>Memcached 的 GET 接口；</li>
+<li>支持 keep-alive 和管道连接；</li>
+<li>灵活简单的配置；</li>
+<li>重新配置和在线升级而无须中断客户的工作进程；</li>
+<li>可定制的访问日志，日志写入缓存，以及快捷的日志回卷；</li>
+<li>4xx-5xx 错误代码重定向；</li>
+<li>基于 PCRE 的 rewrite 重写模块；</li>
+<li>基于客户端 IP 地址和 HTTP 基本认证的访问控制；</li>
+<li>PUT, DELETE, 和 MKCOL 方法；</li>
+<li>支持 FLV （Flash 视频）；</li>
+<li>带宽限制；</li>
+</ul>
+<h3 id="为什么选择Nginx"><a href="#为什么选择Nginx" class="headerlink" title="为什么选择Nginx"></a>为什么选择Nginx</h3><ul>
+<li>在高连接并发的情况下，Nginx是Apache服务器不错的替代品: Nginx在美国是做虚拟主机生意的老板们经常选择的软件平台之一. 能够支持高达 50,000 个并发连接数的响应, 感谢Nginx为我们选择了 epoll and kqueue 作为开发模型。</li>
+<li>Nginx作为负载均衡服务器: Nginx 既可以在内部直接支持 Rails 和 PHP 程序对外进行服务, 也可以支持作为 HTTP代理 服务器对外进行服务. Nginx采用C进行编写, 不论是系统资源开销还是CPU使用效率都比 Perlbal 要好很多。</li>
+<li>作为邮件代理服务器: Nginx 同时也是一个非常优秀的邮件代理服务器（最早开发这个产品的目的之一也是作为邮件代理服务器）, Last.fm 描述了成功并且美妙的使用经验.</li>
+<li>Nginx 安装非常的简单 , 配置文件非常简洁（还能够支持perl语法）,Bugs 非常少的服务器: Nginx 启动特别容易, 并且几乎可以做到7*24不间断运行，即使运行数个月也不需要重新启动. 你还能够 不间断服务的情况下进行软件版本的升级 。</li>
+<li>Nginx 的诞生主要解决C10K问题</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Nginx/" rel="tag"># Nginx</a>
+          
+            <a href="/tags/LNMP/" rel="tag"># LNMP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/10/Nginx/6. 概念了解：CGI，FastCGI，PHP-CGI与PHP-FPM/" rel="next" title="概念了解：CGI，FastCGI，PHP-CGI与PHP-FPM">
+                <i class="fa fa-chevron-left"></i> 概念了解：CGI，FastCGI，PHP-CGI与PHP-FPM
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/10/Nginx/5. mod_php和mod_fastcgi和php-fpm的介绍,对比,和性能数据/" rel="prev" title="mod_php和mod_fastcgi和php-fpm的介绍,对比,和性能数据">
+                mod_php和mod_fastcgi和php-fpm的介绍,对比,和性能数据 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx为什么比Apache-Httpd高效：原理篇"><span class="nav-number">1.</span> <span class="nav-text">Nginx为什么比Apache Httpd高效：原理篇</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、进程、线程？"><span class="nav-number">1.1.</span> <span class="nav-text">一、进程、线程？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、常见Web服务方式"><span class="nav-number">1.2.</span> <span class="nav-text">二、常见Web服务方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#三种工作模型比较："><span class="nav-number">1.2.1.</span> <span class="nav-text">三种工作模型比较：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一个Web请求的处理过程："><span class="nav-number">1.2.2.</span> <span class="nav-text">一个Web请求的处理过程：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、各种I-O模型详解"><span class="nav-number">1.3.</span> <span class="nav-text">三、各种I/O模型详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#I-O模型简介"><span class="nav-number">1.3.1.</span> <span class="nav-text">I/O模型简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#阻塞和非阻塞"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">阻塞和非阻塞:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#同步和异步"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">同步和异步:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#全异步I-O"><span class="nav-number">1.3.1.3.</span> <span class="nav-text">全异步I/O</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#I-O的五种模型"><span class="nav-number">1.3.1.4.</span> <span class="nav-text">I/O的五种模型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#各I-O模型详细介绍："><span class="nav-number">1.3.2.</span> <span class="nav-text">各I/O模型详细介绍：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#阻塞I-O"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">阻塞I/O</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#非阻塞I-O"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">非阻塞I/O</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#I-O复用（select和poll）"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">I/O复用（select和poll）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#信号驱动I-O（SIGIO）"><span class="nav-number">1.3.2.4.</span> <span class="nav-text">信号驱动I/O（SIGIO）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异步I-O（aio）"><span class="nav-number">1.3.2.5.</span> <span class="nav-text">异步I/O（aio）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模型总结（如下图）"><span class="nav-number">1.3.2.6.</span> <span class="nav-text">模型总结（如下图）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux-I-O模型的具体实现"><span class="nav-number">1.3.3.</span> <span class="nav-text">Linux I/O模型的具体实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#主要实现方式有以下几种："><span class="nav-number">1.3.3.1.</span> <span class="nav-text">主要实现方式有以下几种：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么epoll、kqueue、-dev-poll比select高级？"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">为什么epoll、kqueue、/dev/poll比select高级？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Windows-or-nix-（IOCP-or-kqueue、epoll、-dev-poll）？"><span class="nav-number">1.3.3.3.</span> <span class="nav-text">Windows or *nix （IOCP or kqueue、epoll、/dev/poll）？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结一些重点"><span class="nav-number">1.3.3.4.</span> <span class="nav-text">总结一些重点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、Apache-Httpd的工作模式"><span class="nav-number">1.4.</span> <span class="nav-text">四、Apache Httpd的工作模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#apache三种工作模式"><span class="nav-number">1.4.1.</span> <span class="nav-text">apache三种工作模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#prefork的工作原理"><span class="nav-number">1.4.2.</span> <span class="nav-text">prefork的工作原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#worker的工作原理"><span class="nav-number">1.4.3.</span> <span class="nav-text">worker的工作原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#event-基于事件机制的特性"><span class="nav-number">1.4.4.</span> <span class="nav-text">event 基于事件机制的特性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、如何提高Web服务器的并发连接处理能力"><span class="nav-number">1.5.</span> <span class="nav-text">五、如何提高Web服务器的并发连接处理能力</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、Nginx优异之处"><span class="nav-number">1.6.</span> <span class="nav-text">六、Nginx优异之处</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">1.6.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nginx-工作原理"><span class="nav-number">1.6.2.</span> <span class="nav-text">Nginx 工作原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nginx-架构"><span class="nav-number">1.6.3.</span> <span class="nav-text">Nginx 架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nginx-基础功能"><span class="nav-number">1.6.4.</span> <span class="nav-text">Nginx 基础功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nginx-IMAP-POP3-代理服务功能"><span class="nav-number">1.6.5.</span> <span class="nav-text">Nginx IMAP/POP3 代理服务功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nginx-支持的操作系统"><span class="nav-number">1.6.6.</span> <span class="nav-text">Nginx 支持的操作系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nginx-结构与扩展"><span class="nav-number">1.6.7.</span> <span class="nav-text">Nginx 结构与扩展</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nginx-其他HTTP功能"><span class="nav-number">1.6.8.</span> <span class="nav-text">Nginx 其他HTTP功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么选择Nginx"><span class="nav-number">1.6.9.</span> <span class="nav-text">为什么选择Nginx</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

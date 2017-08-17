@@ -1,0 +1,744 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Linux安全," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="XSS攻击的防范&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;过滤”&amp;lt;”和”&amp;gt;”标记XSS跨站攻击的最终目标是引入script代码在用户的浏览器中执行，所以最基本最简单的过滤方法，就是转换”&amp;lt;”和’&amp;gt;”标记。 12replace(str, &quot;&amp;lt;&quot;, &quot;&amp;lt;&quot;)replace(str, &quot;&amp;gt;&quot;, &quot;&amp;gt;&quot;)">
+<meta name="keywords" content="Linux安全">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XSS攻击的防范">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/08/17/Linux安全/4. XSS攻击的防范/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="XSS攻击的防范&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;过滤”&amp;lt;”和”&amp;gt;”标记XSS跨站攻击的最终目标是引入script代码在用户的浏览器中执行，所以最基本最简单的过滤方法，就是转换”&amp;lt;”和’&amp;gt;”标记。 12replace(str, &quot;&amp;lt;&quot;, &quot;&amp;lt;&quot;)replace(str, &quot;&amp;gt;&quot;, &quot;&amp;gt;&quot;)">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-08-16T07:18:16.372Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="XSS攻击的防范">
+<meta name="twitter:description" content="XSS攻击的防范&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;过滤”&amp;lt;”和”&amp;gt;”标记XSS跨站攻击的最终目标是引入script代码在用户的浏览器中执行，所以最基本最简单的过滤方法，就是转换”&amp;lt;”和’&amp;gt;”标记。 12replace(str, &quot;&amp;lt;&quot;, &quot;&amp;lt;&quot;)replace(str, &quot;&amp;gt;&quot;, &quot;&amp;gt;&quot;)">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/08/17/Linux安全/4. XSS攻击的防范/"/>
+
+
+
+
+
+  <title>XSS攻击的防范 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/17/Linux安全/4. XSS攻击的防范/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">XSS攻击的防范</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-17T09:50:35+08:00">
+                2017-08-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="XSS攻击的防范"><a href="#XSS攻击的防范" class="headerlink" title="XSS攻击的防范"></a>XSS攻击的防范</h1><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;过滤”&lt;”和”&gt;”标记XSS跨站攻击的最终目标是引入script代码在用户的浏览器中执行，所以最基本最简单的过滤方法，就是转换”&lt;”和’&gt;”标记。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">replace(str, <span class="string">"&lt;"</span>, <span class="string">"&lt;"</span>)</div><div class="line">replace(str, <span class="string">"&gt;"</span>, <span class="string">"&gt;"</span>)</div></pre></td></tr></table></figure>
+<h2 id="HTML属性过滤"><a href="#HTML属性过滤" class="headerlink" title="HTML属性过滤"></a>HTML属性过滤</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用上述的代码可以过滤掉”&lt;”和”&gt;”标记，让攻击者无法构造HTML标记。但是，攻击者可能会利用已存在的属性，如插入图片功能，将图片的路径属性修改为一段script代码，如</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;img src=<span class="string">"javascript:alert(/XSS攻击/)"</span> width=100&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上述代码执行后，同样可以实现跨站的目的。而且很多的HTML标记里属性都支持“javascript:跨站代码”的形式，因此就需要对攻击者输入的数据进行如下转换：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">replace(str, <span class="string">"javascript:"</span>, <span class="string">""</span>)</div><div class="line">replace(str, <span class="string">"jscript:"</span>, <span class="string">""</span>)</div><div class="line">replace(str, <span class="string">"vbscript:"</span>, <span class="string">""</span>)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一旦用户输入的语句中含有”javascript”，”jscript”，”vbscript”，都用空白代替。</p>
+<h2 id="过滤特殊字符：-amp-、回车和空格"><a href="#过滤特殊字符：-amp-、回车和空格" class="headerlink" title="过滤特殊字符：&amp;、回车和空格"></a>过滤特殊字符：&amp;、回车和空格</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;因为HTML属性的值，可支持”&amp;#ASCii”的形式进行表示，前面的跨站代码就可以换成这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;img src=<span class="string">"javascript:alert(/XSS攻击/)"</span> width=100&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;即可突破过滤程序，继续进行跨站攻击，使用代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">replace(str, <span class="string">"&amp;"</span>, <span class="string">"&amp;"</span>)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上述代码将”&amp;”替换为了”&amp;”，于是后面的语句就变形失效了。但是还有其他的方式绕过过滤，因为过滤关键字的方式具有很多的漏洞。攻击者可以构造下面的攻击代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;img src=<span class="string">"javas cript:alert(/XSS攻击/)"</span> width=100&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里关键字被空格，准确的说是Tab键进行了拆分，上面的代码就又失效了，这样就有考虑将Tab空格过滤，防止此类的跨站攻击。</p>
+<h2 id="HTML属性跨站的彻底防范"><a href="#HTML属性跨站的彻底防范" class="headerlink" title="HTML属性跨站的彻底防范"></a>HTML属性跨站的彻底防范</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;即使程序设计者彻底过滤了各种危险字符，确实给攻击者进行跨站入侵带来了麻烦，攻击者依然可以利用程序的缺陷进行攻击，因为攻击者可以利用前面说的属性和事件机制，构造执行script代码。例如，有下面这样一个图片标记代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;img src=<span class="string">"#"</span> onerror=alert(/跨站/)&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这是一个利用onerror事件的典型跨站攻击示例，于是许多程序设计者对此事件进行了过滤，一旦发现关键字”onerror”，就进行转换过滤。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然而攻击者可以利用的时间跨站方法，并不只有onerror一种，各种各样的属性都可以进行构造跨站攻击。例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;img src=<span class="string">"#"</span> style=<span class="string">"Xss:expression(alert(/跨站/));"</span>&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样的事件属性，同样是可以实现跨站攻击的。可以注意到，在“src=”#””和“style”之间有一个空格，也就是说属性之间需要空格分隔，于是程序设计者可能对空格进行过滤，以防范此类的攻击。但是过滤了空格之后，同样可以被攻击者突破。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;img src=<span class="string">"#"</span>/**/onerror=alert(/跨站/) width=100&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这段代码利用了脚本语言的规则漏洞，在脚本语言中的注释会被当成一个空白来表示。所以注释代码就简介的达到了空格的效果，使语句得以执行。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux安全/" rel="tag"># Linux安全</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/17/Linux安全/2. Linux可插拔认证模块（PAM）的配置文件、工作原理与流程/" rel="next" title="Linux可插拔认证模块（PAM）的配置文件、工作原理与流程">
+                <i class="fa fa-chevron-left"></i> Linux可插拔认证模块（PAM）的配置文件、工作原理与流程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/17/Linux安全/3. Web 应用程序常见漏洞 CSRF 的入侵检测与防范/" rel="prev" title="Web 应用程序常见漏洞 CSRF 的入侵检测与防范">
+                Web 应用程序常见漏洞 CSRF 的入侵检测与防范 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS攻击的防范"><span class="nav-number">1.</span> <span class="nav-text">XSS攻击的防范</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HTML属性过滤"><span class="nav-number">1.1.</span> <span class="nav-text">HTML属性过滤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#过滤特殊字符：-amp-、回车和空格"><span class="nav-number">1.2.</span> <span class="nav-text">过滤特殊字符：&、回车和空格</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTML属性跨站的彻底防范"><span class="nav-number">1.3.</span> <span class="nav-text">HTML属性跨站的彻底防范</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

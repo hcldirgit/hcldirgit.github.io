@@ -1,0 +1,769 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Linux," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="parted 分区 GPT 格式&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;我们讲的fdisk分区工具，它的分区格式为MBR，特点是，最多分4个主分区，磁盘大小不能超过2T。而GPT分区格式，突破了这些限制，它没有主分区、扩展分区、逻辑分区之分，在一块磁盘上最多可以分128个分区出来，支持大于2T的分区，最大卷可达18EB。 相信，随着存储级别的">
+<meta name="keywords" content="Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="parted 分区 GPT 格式">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/08/14/1. Linux 基础/22. parted 分区 GPT格式/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="parted 分区 GPT 格式&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;我们讲的fdisk分区工具，它的分区格式为MBR，特点是，最多分4个主分区，磁盘大小不能超过2T。而GPT分区格式，突破了这些限制，它没有主分区、扩展分区、逻辑分区之分，在一块磁盘上最多可以分128个分区出来，支持大于2T的分区，最大卷可达18EB。 相信，随着存储级别的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-08-08T17:21:14.928Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="parted 分区 GPT 格式">
+<meta name="twitter:description" content="parted 分区 GPT 格式&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;我们讲的fdisk分区工具，它的分区格式为MBR，特点是，最多分4个主分区，磁盘大小不能超过2T。而GPT分区格式，突破了这些限制，它没有主分区、扩展分区、逻辑分区之分，在一块磁盘上最多可以分128个分区出来，支持大于2T的分区，最大卷可达18EB。 相信，随着存储级别的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/08/14/1. Linux 基础/22. parted 分区 GPT格式/"/>
+
+
+
+
+
+  <title>parted 分区 GPT 格式 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/14/1. Linux 基础/22. parted 分区 GPT格式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">parted 分区 GPT 格式</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-14T01:31:10+08:00">
+                2017-08-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="parted-分区-GPT-格式"><a href="#parted-分区-GPT-格式" class="headerlink" title="parted 分区 GPT 格式"></a>parted 分区 GPT 格式</h1><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>我们讲的fdisk分区工具，它的分区格式为MBR，特点是，最多分4个主分区，磁盘大小不能超过2T。而GPT分区格式，突破了这些限制，它没有主分区、扩展分区、逻辑分区之分，在一块磁盘上最多可以分128个分区出来，支持大于2T的分区，最大卷可达18EB。</strong> 相信，随着存储级别的升级，将来的分区格式逐渐会淘汰MBR，而GPT成为主流。</p>
+<h2 id="parted-工具常用功能："><a href="#parted-工具常用功能：" class="headerlink" title="parted 工具常用功能："></a>parted 工具常用功能：</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当在命令行输入parted后，进入parted命令的交互模式。输入help会显示帮助信息。下面就简单介绍一下常用的功能</p>
+<ol>
+<li><p><strong>check</strong> 简单检查文件系统。建议用其他命令检查文件系统，比如fsck</p>
+</li>
+<li><p><strong>help</strong> 显示帮助信息</p>
+</li>
+<li><p><strong>mklabel</strong> 创建分区表， 即是使用msdos（MBR）还是使用gpt，或者是其他方式分区表</p>
+</li>
+<li><p><strong>mkfs</strong> 创建文件系统。该命令不支持ext3 格式，因此建议不使用，最好是用parted分好区，然后退出parted交互模式，用其他命令进行分区，比如：mkfs.ext3</p>
+</li>
+<li><p><strong>mkpart</strong> 创建新分区。<br>格式：</p>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkpart PART-TYPE  [FS-TYPE]  START  END</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PART-TYPE 类型主要有primary（主分区）, extended（扩展分区）, logical（逻辑区）. 扩展分区和逻辑分区只对msdos。<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;fs-type   文件系统类型，主要有fs32，NTFS，ext2，ext3等<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;start end 分区的起始和结束位置。</p>
+<ol>
+<li><p><strong>mkpartfs</strong> 建立分区及其文件系统。目前还不支持ext3文件系统，因此不建议使用该功能。最后是分好区后，退出parted，然后用其他命令建立文件系统。</p>
+</li>
+<li><p><strong>print</strong> 输出分区信息。该功能有3个选项，<br>free 显示该盘的所有信息，并显示磁盘剩余空间<br>number 显示指定的分区的信息<br>all 显示所有磁盘信息</p>
+</li>
+<li><p><strong>resize</strong> 调整指定的分区的大小。目前对ext3格式支持不是很好，所以不建议使用该功能。</p>
+</li>
+<li><p><strong>rescue</strong> 恢复不小心删除的分区。如果不小心用parted的rm命令删除了一个分区，那么可以通过rescue功能进行恢复。恢复时需要给出分区的起始和结束的位置。然后parted就会在给定的范围内去寻找，并提示恢复分区。</p>
+</li>
+<li><p><strong>rm</strong> 删除分区。命令格式 rm  number 。如：rm 3 就是将编号为3的分区删除</p>
+</li>
+<li><p><strong>select</strong> 选择设备。当输入parted命令后直接回车进入交互模式是，如果有多块硬盘，需要用select 选择要操作的硬盘。如：select /dev/sdb</p>
+</li>
+<li><p><strong>set</strong> 设置标记。更改指定分区编号的标志。标志通常有如下几种：boot  hidden   raid   lvm 等。<br>boot 为引导分区，hidden 为隐藏分区，raid 软raid，lvm 为逻辑分区。<br>如：set 3  boot  on   设置分区号3 为启动分区<br>注：以上内容为parted常用的功能，由于该工具目前对ext3支持得不是很好，因此有些功能无法应用，比如move（移动分区）和resize等。</p>
+</li>
+</ol>
+<h2 id="parted分区功能事例。"><a href="#parted分区功能事例。" class="headerlink" title="parted分区功能事例。"></a>parted分区功能事例。</h2><ol>
+<li>用命令模式 为/dev/sdb创建gpt类型文件分区表,并分500G分区。然后为该分区创建ext3文件系统。并将该分区挂载在/test文件夹下。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#  parted  /dev/sdb  mklabel     —创建分区表</span></div><div class="line"><span class="comment">#  parted  /dev/sdb  mkpart  ext3  0  500000    —创建500G分区/dev/sdb1</span></div><div class="line"><span class="comment"># mkfs.ext3  /dev/sdb1      —-将分区/dev/sdb1格式化成ext3格式文件系统</span></div><div class="line"><span class="comment"># mount  /dev/sdb1 /test   —将/dev/sdb1 挂载在/test下</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果让系统自动挂载/dev/sdb1 需手工编辑/etc/fstab文件。并在文件末尾添加如下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/dev/sdb1             /<span class="built_in">test</span>                ext3    defaults        0 0</div></pre></td></tr></table></figure>
+<ol>
+<li>创建大小为4G的交互分区。由于已经创建了500G的/dev/sdb1 ,因此再创建的分区为/dev/sdb2</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># parted /dev/sdb mkpart swap 500000 504000 —创建4G分区/dev/sdb2</span></div><div class="line"><span class="comment"># mkswap  /dev/sdb2   —-将/dev/sdb2创建为交换分区</span></div><div class="line"><span class="comment"># swapon /dev/sdb2   —-激活/dev/sdb2</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果让系统自动挂载/dev/sdb2这个交换分区，需手工编辑/etc/fstab文件。并在文件末尾添加如下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/dev/sdb2             swap                swap    defaults        0 0</div></pre></td></tr></table></figure>
+<ol>
+<li>恢复被误删除的分区(也可以参考testdisk命令)。由于parted直接写磁盘，因此一旦不小心删除了某一分区，建议立即用rescue恢复。下面通过事例来理解恢复过程。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># parted /dev/sdb mkpart ext3 504000 514000 —-创建10G分区/dev/sdb3</span></div><div class="line"><span class="comment"># mkfs.ext3 /dev/sdb3  —将/dev/sdb3格式化成ext3文件系统。</span></div><div class="line"><span class="comment"># parted /dev/sdb rm 3 —-删除/dev/sdb3</span></div><div class="line"><span class="comment"># parted /dev/sdb rescue 504000 514000    —依照屏幕提示，输入yes即可恢复被误删除分区</span></div></pre></td></tr></table></figure>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/14/1. Linux 基础/21. Linux 系统下查看raid信息，以及磁盘信息/" rel="next" title="Linux 系统下查看raid信息，以及磁盘信息">
+                <i class="fa fa-chevron-left"></i> Linux 系统下查看raid信息，以及磁盘信息
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/14/1. Linux 基础/23. 如何区别NAS.SAN与DAS/" rel="prev" title="如何区别NAS.SAN与DAS">
+                如何区别NAS.SAN与DAS <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#parted-分区-GPT-格式"><span class="nav-number">1.</span> <span class="nav-text">parted 分区 GPT 格式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#parted-工具常用功能："><span class="nav-number">1.1.</span> <span class="nav-text">parted 工具常用功能：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#parted分区功能事例。"><span class="nav-number">1.2.</span> <span class="nav-text">parted分区功能事例。</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

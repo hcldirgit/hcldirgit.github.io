@@ -1,0 +1,741 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Nagios," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="nagios调用短信接口&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;公司正好有自己的短信接口平台，接下来带大家一起配置nagios调用第三方短信接口。  首先我们要写一个调用短信接口的脚本，网上的脚本大都是python写的，我这个是shell写的，比较好理解。  1vi /root/duanxin.sh &amp;#160;&amp;#160;&amp;#160;&amp;#1">
+<meta name="keywords" content="Nagios">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nagios调用短信接口">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/08/14/Nagios/5. nagios调用短信接口/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="nagios调用短信接口&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;公司正好有自己的短信接口平台，接下来带大家一起配置nagios调用第三方短信接口。  首先我们要写一个调用短信接口的脚本，网上的脚本大都是python写的，我这个是shell写的，比较好理解。  1vi /root/duanxin.sh &amp;#160;&amp;#160;&amp;#160;&amp;#1">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-08-13T16:55:35.324Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="nagios调用短信接口">
+<meta name="twitter:description" content="nagios调用短信接口&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;公司正好有自己的短信接口平台，接下来带大家一起配置nagios调用第三方短信接口。  首先我们要写一个调用短信接口的脚本，网上的脚本大都是python写的，我这个是shell写的，比较好理解。  1vi /root/duanxin.sh &amp;#160;&amp;#160;&amp;#160;&amp;#1">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/08/14/Nagios/5. nagios调用短信接口/"/>
+
+
+
+
+
+  <title>nagios调用短信接口 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/14/Nagios/5. nagios调用短信接口/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">nagios调用短信接口</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-14T01:00:02+08:00">
+                2017-08-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="nagios调用短信接口"><a href="#nagios调用短信接口" class="headerlink" title="nagios调用短信接口"></a>nagios调用短信接口</h1><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;公司正好有自己的短信接口平台，接下来带大家一起配置nagios调用第三方短信接口。</p>
+<ol>
+<li>首先我们要写一个调用短信接口的脚本，网上的脚本大都是python写的，我这个是shell写的，比较好理解。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vi /root/duanxin.sh</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; 脚本的日志文件 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">LOGFILE=<span class="string">"/data1/sms_log/sms_send_.log"</span>  <span class="comment">#定义发送短信的日志信息 文件</span></div><div class="line">:&gt;&gt;<span class="string">"<span class="variable">$LOGFILE</span>"</span> </div><div class="line"><span class="built_in">exec</span> 1&gt;&gt;<span class="string">"<span class="variable">$LOGFILE</span>"</span> </div><div class="line"><span class="built_in">exec</span> 2&gt;&amp;1 </div><div class="line"></div><div class="line">Uid=<span class="string">"test"</span>    <span class="comment">#接口的用户名，这个使用接口时对方会提供，我这里的test是随意写的</span></div><div class="line">Key=<span class="string">"123456"</span>  <span class="comment">#密码与用户名对应，也是接口方提供</span></div><div class="line"></div><div class="line">MOBILE_NUMBER=<span class="variable">$1</span> <span class="comment"># 接受短信的手机号码  </span></div><div class="line">QIANMING=<span class="string">"%e3%80%90%e9%a9%ac%e5%8f%af%e6%b3%a2%e7%bd%97%e7%bd%91%e3%80%91"</span> <span class="comment">#这里重点说一下，签名有的接口需要，有的不需要，因为我们公司的接口需要，所以需要添加上，我这里的签名内容是经过编码的，不加编码会导致发送失败，具体工作中需不需要编码还得看接口哪边有没有要求。</span></div><div class="line">XXD=<span class="string">"/usr/bin/xxd"</span> </div><div class="line">CURL=<span class="string">"/usr/bin/curl"</span> </div><div class="line">TIMEOUT=5 </div><div class="line">MESSAGE_ENCODE=$(<span class="built_in">echo</span> $(/usr/<span class="built_in">local</span>/bin/php -r <span class="string">"echo urlencode(\"<span class="variable">$2</span>\");"</span>; ) )  <span class="comment">#这里的$2是nagios发送短信的第二个变量</span></div><div class="line">URL=<span class="string">"http://192.168.100.100:8888/services/msgsend.asmx/SendMsg?userCode=<span class="variable">$&#123;$Uid&#125;</span>&amp;userPass=<span class="variable">$&#123;Key&#125;</span>&amp;DesNo=<span class="variable">$&#123;MOBILE_NUMBER&#125;</span>&amp;Msg=<span class="variable">$&#123;MESSAGE_ENCODE&#125;</span><span class="variable">$&#123;QIANMING&#125;</span>&amp;Channel=0"</span></div><div class="line"><span class="comment">#这里的URL是胡乱写的，不可能暴漏自己公司的接口哈，但是格式大体是这样的，到时候接口方会提供URL的格式的</span></div><div class="line"><span class="comment"># Send it </span></div><div class="line"><span class="built_in">set</span> -x </div><div class="line"><span class="variable">$&#123;CURL&#125;</span> -s --connect-timeout <span class="variable">$&#123;TIMEOUT&#125;</span> <span class="string">"<span class="variable">$&#123;URL&#125;</span>"</span></div></pre></td></tr></table></figure>
+<ol>
+<li>测试脚本</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bash /root/duanxin.sh <span class="string">"手机号"</span> “内容”</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果脚本报错，可以根据报错信息检查脚本，如果脚本没有问题，但是短信发不出去，可以看看sms_send_log里面的报错信息</p>
+<ol>
+<li>nagios 调用脚本，不要忘记脚本要给执行权限，一般脚本放在root目录下，nagios在调用脚本时是不能访问root目录的，所以你还要看你/root目录的权限</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">define <span class="built_in">command</span> &#123;</div><div class="line">       command_name host-notify-by-sms</div><div class="line">       command_line /root/duanxin.sh <span class="variable">$CONTACTPAGER</span>$ <span class="string">"<span class="variable">$HOSTNAME</span>$ <span class="variable">$HOSTSTATE</span>$ <span class="variable">$SHORTDATETIME</span>$"</span></div><div class="line">       &#125;</div><div class="line"></div><div class="line">define <span class="built_in">command</span> &#123;</div><div class="line">       command_name service-notify-by-sms</div><div class="line">       command_line /root/duanxin.sh <span class="variable">$CONTACTPAGER</span>$ <span class="string">"<span class="variable">$SERVICESTATE</span>$ <span class="variable">$SERVICEOUTPUT</span>$ <span class="variable">$HOSTALIAS</span>$/<span class="variable">$SERVICEDESC</span>$ <span class="variable">$SHORTDATETIME</span>$"</span></div><div class="line">       &#125;</div></pre></td></tr></table></figure>
+<ol>
+<li>看到这里大家可能对上面脚本的$1和$2概念比较模糊，其实刚开始我也迷糊，nagios怎么知道我要发送的号码呢，后来研究发现，$CONTACTPAGER$这个<br>量就是nagios内部联系人的变量，也就是他会调用我们在contacts.cfg里面定义的手机号，而我们脚本里面定义的$1就对应$CONTACTPAGER$，$2就对应”$HOSTNAME$ $HOSTSTATE$ $SHORTDATETIME$” </li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Nagios/" rel="tag"># Nagios</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/14/Nagios/4. Nagios整合微信订阅号报警/" rel="next" title="Nagios整合微信订阅号报警">
+                <i class="fa fa-chevron-left"></i> Nagios整合微信订阅号报警
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/14/Nagios/1. Nagios 安装/" rel="prev" title="Nagios安装">
+                Nagios安装 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#nagios调用短信接口"><span class="nav-number">1.</span> <span class="nav-text">nagios调用短信接口</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

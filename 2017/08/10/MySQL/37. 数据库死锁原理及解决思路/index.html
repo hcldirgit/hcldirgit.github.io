@@ -1,0 +1,839 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="MySQL," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="数据库死锁原理及解决思路一、什么是锁？&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;数据库是一个多用户使用的共享资源。当多个用户并发地存取数据时，在数据库中就会产生多个事务同时存取同一数据的情况。若对并发操作不加控制就可能会读取和存储不正确的数据，破坏数据库的一致性。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#16">
+<meta name="keywords" content="MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库死锁原理及解决思路">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/08/10/MySQL/37. 数据库死锁原理及解决思路/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="数据库死锁原理及解决思路一、什么是锁？&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;数据库是一个多用户使用的共享资源。当多个用户并发地存取数据时，在数据库中就会产生多个事务同时存取同一数据的情况。若对并发操作不加控制就可能会读取和存储不正确的数据，破坏数据库的一致性。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#16">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%AD%BB%E9%94%81%E5%8E%9F%E7%90%86%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF/01.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%AD%BB%E9%94%81%E5%8E%9F%E7%90%86%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF/02.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%AD%BB%E9%94%81%E5%8E%9F%E7%90%86%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF/03.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%AD%BB%E9%94%81%E5%8E%9F%E7%90%86%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF/04.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%AD%BB%E9%94%81%E5%8E%9F%E7%90%86%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF/05.png?raw=true">
+<meta property="og:updated_time" content="2017-08-13T17:19:06.918Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据库死锁原理及解决思路">
+<meta name="twitter:description" content="数据库死锁原理及解决思路一、什么是锁？&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;数据库是一个多用户使用的共享资源。当多个用户并发地存取数据时，在数据库中就会产生多个事务同时存取同一数据的情况。若对并发操作不加控制就可能会读取和存储不正确的数据，破坏数据库的一致性。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#16">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%AD%BB%E9%94%81%E5%8E%9F%E7%90%86%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF/01.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/08/10/MySQL/37. 数据库死锁原理及解决思路/"/>
+
+
+
+
+
+  <title>数据库死锁原理及解决思路 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/37. 数据库死锁原理及解决思路/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">数据库死锁原理及解决思路</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="数据库死锁原理及解决思路"><a href="#数据库死锁原理及解决思路" class="headerlink" title="数据库死锁原理及解决思路"></a>数据库死锁原理及解决思路</h1><h2 id="一、什么是锁？"><a href="#一、什么是锁？" class="headerlink" title="一、什么是锁？"></a>一、什么是锁？</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;数据库是一个多用户使用的共享资源。当多个用户并发地存取数据时，在数据库中就会产生多个事务同时存取同一数据的情况。若对并发操作不加控制就可能会读取和存储不正确的数据，破坏数据库的一致性。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加锁的目的确保并发更新场景下的数据正确性。当事务在对某个数据对象进行操作前，先向系统发出请求，对其加锁。加锁后事务就对该数据对象有了一定的控制，在该事务释放锁之前，其他的事务不能对此数据对象进行更新操作。</p>
+<h3 id="1-锁的持有周期"><a href="#1-锁的持有周期" class="headerlink" title="1.锁的持有周期"></a>1.锁的持有周期</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加锁：实际访问到某个待更新的行时，对其加锁（而非一开始就将所有的锁都一次性持有）</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解锁：事务提交/回滚时（而非语句结束时就释放）</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;持有周期就是加锁和解锁之间的实际时间。</p>
+<h3 id="2-锁粒度：库、表、页、行"><a href="#2-锁粒度：库、表、页、行" class="headerlink" title="2.锁粒度：库、表、页、行"></a>2.锁粒度：库、表、页、行</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;锁的粒度越细，并发级别越高（实现也更复杂）</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;传统关系型数据库，都实现了行级别的锁</p>
+<h3 id="3-常见的加锁操作"><a href="#3-常见的加锁操作" class="headerlink" title="3.常见的加锁操作"></a>3.常见的加锁操作</h3><ul>
+<li>–Insert、Delete、Update（毫无疑问）</li>
+<li>–Select … lock in share mode、select … for update（显式加锁）</li>
+<li>–Lock table … read/write （显示加表级锁）</li>
+<li>–Alter table … / Create Index … （DDL操作引入的加锁）</li>
+<li>–Flush tables with read lock （备份常用）</li>
+<li>–Primary Key/Unique Key唯一约束检查</li>
+</ul>
+<h3 id="4-常规锁模式"><a href="#4-常规锁模式" class="headerlink" title="4.常规锁模式"></a>4.常规锁模式</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;共享（S)锁：多个事务可封锁一个共享页；任何事务都不能修改该页； 通常是该页被读取完毕，S锁立即被释放。 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;排它（X)锁：仅允许一个事务封锁此页；其他任何事务必须等到X锁被释放才能对该页进行访问；X锁一直到事务结束才能被释放。 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;更新（U)锁：用来预定要对此页施加X锁，它允许其他事务读，但不允许再施加U锁或X锁；当被读取的页将要被更新时，则升级为X锁；U锁一直到事务结束时才能被释放。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;最容易理解的锁模式，读加共享锁，写加排它锁</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;锁的属性</p>
+<ul>
+<li>LOCK_REC_NOT_GAP（锁记录，1024）</li>
+<li>LOCK_GAP（锁记录前的GAP，512）</li>
+<li>LOCK_ORDINARY（同时锁记录+记录前的GAP，0。传说中的Next Key锁）</li>
+<li>LOCK_INSERT_INTENTION（插入意向锁，2048）</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加上LOCK_GAP，一切难以理解的源头（后面重点分析）</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;锁组合（属性 + 模式）</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;锁的属性可以与锁模式任意组合。例如：LOCK_REC_NOT_GAP（1024） + LOCK_X（3）</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%AD%BB%E9%94%81%E5%8E%9F%E7%90%86%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF/01.png?raw=true" alt=""></p>
+<h2 id="二、什么又是死锁？"><a href="#二、什么又是死锁？" class="headerlink" title="二、什么又是死锁？"></a>二、什么又是死锁？</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;死锁发生在当多个事务访问同一数据对象时，其中每个事务拥有的锁都是其他事务所需的，由此造成每个事务都无法继续下去。简单的说，事务A等待事务B释放他的资源，B又等待A释放他的资源，这样就互相等待就形成死锁。</p>
+<h2 id="三、产生死锁的原因："><a href="#三、产生死锁的原因：" class="headerlink" title="三、产生死锁的原因："></a>三、产生死锁的原因：</h2><ol>
+<li>系统资源不足。</li>
+<li>事务运行推进的顺序不合适。<br>3.资源分配不当等。</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果系统资源充足，该事务的资源请求都能够得到满足，死锁出现的可能性就很低，否则就会因争夺有限的资源而陷入死锁。其次，事务运行推进顺序与速度不同，也可能产生死锁。</p>
+<h2 id="四、产生死锁的四个必要条件："><a href="#四、产生死锁的四个必要条件：" class="headerlink" title="四、产生死锁的四个必要条件："></a>四、产生死锁的四个必要条件：</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;只要下面四个条件有一个不具备，系统就不会出现死锁。</p>
+<ol>
+<li><p>互斥条件。存在多个并发事务（2个或者以上），而某数据对象在一段时间内只能由一个事务占有，不能同时被两个或两个以上的事务占有。如果此时还有其它事务请求该数据对象，则请求者只能等待，直至占有该数据对象的事务用毕释放。</p>
+</li>
+<li><p>不可抢占条件。该事务所获得的数据对象在未使用完毕之前，其他事务不能强行地从该事务手中获取该数据对象，而只能由该事务自行释放。</p>
+</li>
+<li><p>占有且申请条件。某事务都已经占有了一个数据对象，为了完成事务逻辑，还必须更新的数据对象，但是此新的数据对象又被其他事务在占用，但是它在等待新数据对象的时候，仍然占有已占有的数据对象。</p>
+</li>
+<li><p>循环等待条件。存在一个事务等待序列{P1，P2，…，Pn}，其中P1等待P2所占有的某一资源，P2等待P3所占有的某一源，……，而Pn等待P1所占有的的某一资源，形成一个事务循环等待环。</p>
+</li>
+</ol>
+<h2 id="五、如何避免死锁？"><a href="#五、如何避免死锁？" class="headerlink" title="五、如何避免死锁？"></a>五、如何避免死锁？</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;死锁的关键在于：两个(或以上)的Session加锁的顺序不一致。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;打破上述四个条件中的一个，常见解决思路有以下几中：</p>
+<ol>
+<li>按同一顺序访问对象。(注：避免出现循环)</li>
+<li>避免事务中的用户交互。(注：减少持有资源的时间，较少锁竞争)<br>因为运行没有用户交互的批处理的速度要远远快于用户手动响应查询的速度。</li>
+<li>保持事务简短并处于一个批处理中。(注：同(2)，减少持有资源的时间)</li>
+<li>使用较低的隔离级别。(注：使用较低的隔离级别（例如已提交读）比使用较高的隔离级别（例如可序列化）持有共享锁的时间更短，减少锁竞争)</li>
+<li>使用基于行版本控制的隔离级别</li>
+<li>使用绑定连接。</li>
+</ol>
+<h2 id="六、死锁的排查解决办法（以mysql-innodB为例）"><a href="#六、死锁的排查解决办法（以mysql-innodB为例）" class="headerlink" title="六、死锁的排查解决办法（以mysql innodB为例）"></a>六、死锁的排查解决办法（以mysql innodB为例）</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;死锁出现的报错信息：“Deadlock found when trying to get lock;”</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如何排查死锁成因。</p>
+<ol>
+<li>通过应用业务日志定位到问题代码，找到相应的事务对应的sql；</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;因为死锁被检测到后会回滚，这些信息都会以异常反应在应用的业务日志中，通过这些日志我们可以定位到相应的代码，并把事务的sql给梳理出来。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">show engine innodb status\G;</div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%AD%BB%E9%94%81%E5%8E%9F%E7%90%86%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF/02.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一般来说，死锁的原因和处理方式有很多种，主要是数据库系统在设计阶段就要考虑，所以再深入的研究和了解只能专业去研究了，在此不细究。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;锁表</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;读锁定</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql&gt;LOCK TABLES tbl_name READ;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;验证：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">show OPEN TABLES <span class="built_in">where</span> In_use &gt; 0;  <span class="comment">#查询是否锁表</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;写锁定</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql&gt;LOCK TABLES tbl_name WRITE;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解锁（有两种）：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第一种</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql&gt;UNLOCK TABLES;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第二种</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;步骤：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">mysql -uxxx -pxxx -h服务器ip --port=服务器端口;（如果服务器设置了ip和端口访问的话，一定要带ip和端口）</div><div class="line">show OPEN TABLES <span class="built_in">where</span> In_use &gt; 0;  <span class="comment">#查询是否锁表</span></div><div class="line">SELECT * FROM INFORMATION_SCHEMA.INNODB_LOCKS;   <span class="comment">#查看正在锁的事务</span></div><div class="line">SELECT * FROM INFORMATION_SCHEMA.INNODB_LOCK_WAITS;  <span class="comment">#查看等待锁的事务</span></div><div class="line"></div><div class="line">mysql&gt; show processlist; <span class="comment">#查看正在执行的sql （show full processlist;查看全部sql）</span></div><div class="line">mysql&gt; <span class="built_in">kill</span> id <span class="comment">#杀死sql进程；</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果进程太多找不到，就重启mysql</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/ect/init.d/mysql restart</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;或</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">/ect/init.d/mysql stop  <span class="comment">#如果关不掉就直接kill -9 进程id </span></div><div class="line">/ect/init.d/mysql start</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;去看看mysql日志文件是否保存死锁日志：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;常用目录：/var/log/mysqld.log；</p>
+<h2 id="七、表级锁的加锁和解锁过程（以mysql-innodB为例）"><a href="#七、表级锁的加锁和解锁过程（以mysql-innodB为例）" class="headerlink" title="七、表级锁的加锁和解锁过程（以mysql innodB为例）"></a>七、表级锁的加锁和解锁过程（以mysql innodB为例）</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mysql 的 表锁 lock tables 感觉就像一个 封闭的空间</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mysql发现 lock tables 命令的时候,会将带有锁标记的表(table) 带入封闭空间,直到 出现 unlock tables 命令 或 线程结束, 才关闭封闭空间。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;进入封闭空间时 , 仅仅只有锁标记的表(table) 可以在里面使用,其他表无法使用。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;锁标记 分为 read 和 write 下面是 两种 锁的区别</p>
+<hr>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如 将 table1 设为read锁, table2 设为write锁, table3 设为read锁</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">lock tables [table1] <span class="built_in">read</span>,[table2] write,[table3] <span class="built_in">read</span>;</div></pre></td></tr></table></figure>
+<hr>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;执行到这里时,进入封闭空间。</p>
+<ol>
+<li>table1 仅允许[所有人]读,[空间外]如需写、更新要等待[空间退出],[空间内]如需写、更新会引发mysql报错。</li>
+<li>table2 仅允许[空间内]读写更新,[空间外]如需写、更新要等待[空间退出]。</li>
+<li>table3 仅允许[所有人]读,[空间外]如需写、更新要等待[空间退出],[空间内]如需写、更新会引发mysql报错。</li>
+</ol>
+<hr>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;执行到这里时,退出封闭空间,释放所有表锁</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">unlock tables</div></pre></td></tr></table></figure>
+<hr>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当前线程关闭时,自动退出封闭空间,释放所有表锁,无论有没有执行 unlock tables</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加锁和解锁（表级锁）：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;实验中用到的命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mysql&gt; show engines;   <span class="comment">#提供什么存储引擎:</span></div><div class="line">mysql&gt; show variables like <span class="string">'%storage_engine%'</span>;  <span class="comment">#当前默认的存储引擎:</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%AD%BB%E9%94%81%E5%8E%9F%E7%90%86%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF/03.png?raw=true" alt=""></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%AD%BB%E9%94%81%E5%8E%9F%E7%90%86%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF/04.png?raw=true" alt=""></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%AD%BB%E9%94%81%E5%8E%9F%E7%90%86%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF/05.png?raw=true" alt=""></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/10/MySQL/4. MySQL5.7 二进制源码包安装/" rel="next" title="MySQL5.7 二进制源码包安装">
+                <i class="fa fa-chevron-left"></i> MySQL5.7 二进制源码包安装
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/10/MySQL/35. 使用 Xtrabackup 在线对MySQL做主从复制/" rel="prev" title="使用 Xtrabackup 在线对MySQL做主从复制">
+                使用 Xtrabackup 在线对MySQL做主从复制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#数据库死锁原理及解决思路"><span class="nav-number">1.</span> <span class="nav-text">数据库死锁原理及解决思路</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、什么是锁？"><span class="nav-number">1.1.</span> <span class="nav-text">一、什么是锁？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-锁的持有周期"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.锁的持有周期</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-锁粒度：库、表、页、行"><span class="nav-number">1.1.2.</span> <span class="nav-text">2.锁粒度：库、表、页、行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-常见的加锁操作"><span class="nav-number">1.1.3.</span> <span class="nav-text">3.常见的加锁操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-常规锁模式"><span class="nav-number">1.1.4.</span> <span class="nav-text">4.常规锁模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、什么又是死锁？"><span class="nav-number">1.2.</span> <span class="nav-text">二、什么又是死锁？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、产生死锁的原因："><span class="nav-number">1.3.</span> <span class="nav-text">三、产生死锁的原因：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、产生死锁的四个必要条件："><span class="nav-number">1.4.</span> <span class="nav-text">四、产生死锁的四个必要条件：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、如何避免死锁？"><span class="nav-number">1.5.</span> <span class="nav-text">五、如何避免死锁？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、死锁的排查解决办法（以mysql-innodB为例）"><span class="nav-number">1.6.</span> <span class="nav-text">六、死锁的排查解决办法（以mysql innodB为例）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#七、表级锁的加锁和解锁过程（以mysql-innodB为例）"><span class="nav-number">1.7.</span> <span class="nav-text">七、表级锁的加锁和解锁过程（以mysql innodB为例）</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

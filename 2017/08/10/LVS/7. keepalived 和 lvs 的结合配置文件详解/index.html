@@ -1,0 +1,732 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="LVS,keepalived," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="keepalived 和 lvs 的结合配置文件详解&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;/export/servers/keepalived/conf/keepalived.conf配置文件详解： 12345678910111213141516171819202122232425262728293031323334353637383940">
+<meta name="keywords" content="LVS,keepalived">
+<meta property="og:type" content="article">
+<meta property="og:title" content="keepalived 和 lvs 的结合配置文件详解">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/08/10/LVS/7. keepalived 和 lvs 的结合配置文件详解/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="keepalived 和 lvs 的结合配置文件详解&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;/export/servers/keepalived/conf/keepalived.conf配置文件详解： 12345678910111213141516171819202122232425262728293031323334353637383940">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-08-13T17:13:23.809Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="keepalived 和 lvs 的结合配置文件详解">
+<meta name="twitter:description" content="keepalived 和 lvs 的结合配置文件详解&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;/export/servers/keepalived/conf/keepalived.conf配置文件详解： 12345678910111213141516171819202122232425262728293031323334353637383940">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/08/10/LVS/7. keepalived 和 lvs 的结合配置文件详解/"/>
+
+
+
+
+
+  <title>keepalived 和 lvs 的结合配置文件详解 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/LVS/7. keepalived 和 lvs 的结合配置文件详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">keepalived 和 lvs 的结合配置文件详解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="keepalived-和-lvs-的结合配置文件详解"><a href="#keepalived-和-lvs-的结合配置文件详解" class="headerlink" title="keepalived 和 lvs 的结合配置文件详解"></a>keepalived 和 lvs 的结合配置文件详解</h1><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;/export/servers/keepalived/conf/keepalived.conf配置文件详解：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div></pre></td><td class="code"><pre><div class="line">! Configuration File <span class="keyword">for</span> keepalived</div><div class="line"><span class="comment">#全局配置</span></div><div class="line">global_defs &#123;</div><div class="line">notification_email &#123; <span class="comment">#设置报警邮件地址，每行一个，（如何要开启邮件报警，需要开启本机的sendmail服务）</span></div><div class="line">lihuiyw@jd.com</div><div class="line">&#125;</div><div class="line">notification_email_from lihuiyw@jd.com <span class="comment">#设置邮件的发送地址</span></div><div class="line">smtp_server mail.jd.com <span class="comment">#设置邮件的smtp server地址</span></div><div class="line">smtp_connect_timeout 30 <span class="comment">#设置连接smtp server的超时时间</span></div><div class="line">router_id LVS_DEVEL <span class="comment">#表示keepalived服务器的一个标识，是发邮件时显示在邮件主题中的信息</span></div><div class="line">&#125;</div><div class="line"><span class="comment">#keepalived的VRRPD配置，是所有keepalived配置的核心</span></div><div class="line"><span class="comment">#VRRP实例配置</span></div><div class="line">vrrp_instance VIP_142 <span class="comment">#是VRRP实例开始的标识，后跟VRRP实例名称</span></div><div class="line">&#123;</div><div class="line">state MASTER <span class="comment">#keepalived的角色，MASTER主，BACKUP备</span></div><div class="line">interface eth0 <span class="comment">#用于指定HA监测网络的接口</span></div><div class="line">virtual_router_id 142 <span class="comment">#虚拟路由标识，这个标识是一个数字，同一个VRRP实例使用唯一的一个标识，即在同一个vrrp_instance下，MASTER和BACKUP必须是一致的！</span></div><div class="line">priority 100 <span class="comment">#权重优先级</span></div><div class="line">advert_int 2 <span class="comment">#用于设定master和backup主机之间同步检查的时间间隔，单位是秒</span></div><div class="line">garp_master_delay 10 <span class="comment">#用于切换到master状态后延时进行Gratuitous arp请求的时间</span></div><div class="line">smtp_alert <span class="comment">#表示是否开启邮件通知(用全局区域的邮件设置来发通知)</span></div><div class="line">authentication <span class="comment">#主备之间进行通信的验证类型和密码：验证类型主要有PASS和AH两种，一个在vrrp_instance下，MASTER和backup必须使用相同的密码才可以通信</span></div><div class="line">&#123;</div><div class="line">auth_type PASS</div><div class="line">auth_pass 123456</div><div class="line">&#125;</div><div class="line"><span class="comment">#virtual_ipaddress用于设置虚拟ip地址，可以设置多个vip，每行一个，</span></div><div class="line">virtual_ipaddress</div><div class="line">&#123;</div><div class="line">10.95.0.200/24</div><div class="line">&#125;</div><div class="line">track_interface <span class="comment">#用于设置一些额外的网络监控接口，其中任何一个网络接口出现故障，keepalived都会进去fault状态！</span></div><div class="line">&#123;</div><div class="line">eth0</div><div class="line">&#125;</div><div class="line">nopreempt <span class="comment">#设置不抢占功能，只能在backup上使用，知道机器有故障了才切换，</span></div><div class="line">preemtp_delay 300 <span class="comment">#用于设置抢占的延时时间，（例：开启启动没必要抢占）</span></div><div class="line">&#125;</div><div class="line"><span class="comment">#以下是lvs的主要主要配置信息，主要实现lvs的ip包转发功能！</span></div><div class="line">virtual_server 10.95.0.200 80 <span class="comment">#虚拟ip和端口</span></div><div class="line">&#123;</div><div class="line">delay_loop 6 <span class="comment">#设置健康检查的时间间隔</span></div><div class="line">lb_algo wrr <span class="comment">#设置负载调度算法</span></div><div class="line">lb_kind DR <span class="comment">#设置lvs的模式</span></div><div class="line">persistence_timeout 60 <span class="comment">#会话保持时间，单位秒</span></div><div class="line">protocol TCP <span class="comment">#ip包转发协议，有TCP和UDP两种</span></div><div class="line">real_server 10.95.0.143 80 <span class="comment">#real server 的ip</span></div><div class="line">&#123;</div><div class="line">weight 3 <span class="comment">#权重</span></div><div class="line">TCP_CHECK <span class="comment">#健康检查</span></div><div class="line">&#123;</div><div class="line">connect_timeout 10 <span class="comment">#表示无响应超时时间</span></div><div class="line">nb_get_retry 3 <span class="comment">#表示重连次数</span></div><div class="line">delay_before_retry 3 <span class="comment">#表示重试间隔</span></div><div class="line">connect_port 80 <span class="comment">#表示端口</span></div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">real_server 10.95.0.144 80</div><div class="line">&#123;</div><div class="line">weight 3</div><div class="line">TCP_CHECK</div><div class="line">&#123;</div><div class="line">connect_timeout 10</div><div class="line">nb_get_retry 3</div><div class="line">delay_before_retry 3</div><div class="line">connect_port 80</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;健康监测应许多种检查方式，常见的有，HTTP_GET，SSL_GET，TCP_CHECK，SMTP_CHECK，MISC_CHECK.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">TCP_CHECK &#123;</div><div class="line">conetct_port 80</div><div class="line">connect_timeout 3</div><div class="line">nb_get_retry 3</div><div class="line">delay_before_retry 3</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;connect_port:健康检查的端口，如果不指定，默认是real_server指定的端口</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;connect_timeout:表示无响应超时时间，单位是秒，这里是3s</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;nb_get_retry：表示重试次数，这里是3ci</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;delay_before_retry：表示重试间隔，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">HTTP_GET |SSL_GET</div><div class="line">&#123;</div><div class="line">url&#123;</div><div class="line">path /index.html <span class="comment">#指定url信息</span></div><div class="line">digest e6owjfdsjfalsjdfsalkf30wfdsfjwqe</div><div class="line"><span class="comment">#ssl检查后的摘要信息，这些摘要信息可以通过genhash命令工具获取，</span></div><div class="line"><span class="comment">#例：genhash -s 192.168.12.80 -p 80 -u /index.html</span></div><div class="line">status_code 200</div><div class="line">&#125;</div><div class="line">connect_port 80</div><div class="line">bindto 192.168.31.128 <span class="comment">#表示通过此地址来对发送请求对服务器进行健康检查</span></div><div class="line">nb_get_retry 3</div><div class="line">delay_before_retry 2</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/LVS/" rel="tag"># LVS</a>
+          
+            <a href="/tags/keepalived/" rel="tag"># keepalived</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/10/LVS/4. keepalived 单独配置文件/" rel="next" title="keepalived 单独配置文件">
+                <i class="fa fa-chevron-left"></i> keepalived 单独配置文件
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/10/LVS/8. LVS原理详解及部署之一：ARP原理准备/" rel="prev" title="LVS原理详解及部署之一：ARP原理准备">
+                LVS原理详解及部署之一：ARP原理准备 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#keepalived-和-lvs-的结合配置文件详解"><span class="nav-number">1.</span> <span class="nav-text">keepalived 和 lvs 的结合配置文件详解</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

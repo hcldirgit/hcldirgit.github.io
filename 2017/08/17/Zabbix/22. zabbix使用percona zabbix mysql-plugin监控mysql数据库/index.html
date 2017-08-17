@@ -1,0 +1,753 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Zabbix," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="zabbix使用percona zabbix mysql-plugin监控mysql数据库&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;由于zabbix自带的mysql监控模板监控的东西比较少，使用percona zabbix mysql-plugin实现对mysql的监控。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;">
+<meta name="keywords" content="Zabbix">
+<meta property="og:type" content="article">
+<meta property="og:title" content="zabbix使用percona zabbix mysql-plugin监控mysql数据库">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/08/17/Zabbix/22. zabbix使用percona zabbix mysql-plugin监控mysql数据库/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="zabbix使用percona zabbix mysql-plugin监控mysql数据库&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;由于zabbix自带的mysql监控模板监控的东西比较少，使用percona zabbix mysql-plugin实现对mysql的监控。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E4%BD%BF%E7%94%A8percona%20zabbix%20mysql-plugin%E7%9B%91%E6%8E%A7mysql%E6%95%B0%E6%8D%AE%E5%BA%93/01.jpeg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E4%BD%BF%E7%94%A8percona%20zabbix%20mysql-plugin%E7%9B%91%E6%8E%A7mysql%E6%95%B0%E6%8D%AE%E5%BA%93/02.jpeg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E4%BD%BF%E7%94%A8percona%20zabbix%20mysql-plugin%E7%9B%91%E6%8E%A7mysql%E6%95%B0%E6%8D%AE%E5%BA%93/03.jpeg?raw=true">
+<meta property="og:updated_time" content="2017-08-15T16:54:06.007Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="zabbix使用percona zabbix mysql-plugin监控mysql数据库">
+<meta name="twitter:description" content="zabbix使用percona zabbix mysql-plugin监控mysql数据库&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;由于zabbix自带的mysql监控模板监控的东西比较少，使用percona zabbix mysql-plugin实现对mysql的监控。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E4%BD%BF%E7%94%A8percona%20zabbix%20mysql-plugin%E7%9B%91%E6%8E%A7mysql%E6%95%B0%E6%8D%AE%E5%BA%93/01.jpeg?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/08/17/Zabbix/22. zabbix使用percona zabbix mysql-plugin监控mysql数据库/"/>
+
+
+
+
+
+  <title>zabbix使用percona zabbix mysql-plugin监控mysql数据库 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/17/Zabbix/22. zabbix使用percona zabbix mysql-plugin监控mysql数据库/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">zabbix使用percona zabbix mysql-plugin监控mysql数据库</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-17T09:44:45+08:00">
+                2017-08-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="zabbix使用percona-zabbix-mysql-plugin监控mysql数据库"><a href="#zabbix使用percona-zabbix-mysql-plugin监控mysql数据库" class="headerlink" title="zabbix使用percona zabbix mysql-plugin监控mysql数据库"></a>zabbix使用percona zabbix mysql-plugin监控mysql数据库</h1><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;由于zabbix自带的mysql监控模板监控的东西比较少，使用percona zabbix mysql-plugin实现对mysql的监控。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;percona zabbix mysql-plugin是percona发布的一个使用zabbix监控mysql数据库的工具，这款工具比zabbix自带的监控模板要强大的多，毕竟percona是Mysql的一个重要分支，专业做数据库的，所以，采集的数据比较全面。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面开始进入正题，部署mysql的监控。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先，需要安装安装php和php-mysql，因为用到了php脚本，所以在本机上面需要安装php，至于php的安装不是本文讨论的重点</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后，需要去percona官网下载最新版本的percona zabbix mysql-plugin，从1.1版本开始起支持zabbix，包括cacti，nagios也都有接口提供，这里下载的是<a href="https://www.percona.com/downloads/percona-monitoring-plugins/1.1.5/percona-zabbix-templates-1.1.5-1.noarch.rpm" target="_blank" rel="external">percona zabbix mysql-plugin</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下载后安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rpm -ivh percona-zabbix-templates-1.1.5-1.noarch.rpm</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安装完毕后会产生两个目录，每个目录有两个文件，详细结果如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@test2 ~]<span class="comment"># ls /var/lib/zabbix/percona/</span></div><div class="line">scripts templates</div><div class="line">[root@test2 ~]<span class="comment"># ls /var/lib/zabbix/percona/scripts/</span></div><div class="line">get_mysql_stats_wrapper.sh ss_get_mysql_stats.php</div><div class="line">[root@test2 ~]<span class="comment"># ls /var/lib/zabbix/percona/templates/</span></div><div class="line">userparameter_percona_mysql.conf zabbix_agent_template_percona_mysql_server_ht_2.0.9-sver1.1.5.xml</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先，需要下载模版文件zabbix_agent_template_percona_mysql_server_ht_2.0.9-sver1.1.5.xml然后将这个模    板文件导入到zabbixweb端的模板中去，然后将配置文    userparameter_percona_mysql.conf放入到zabbix的配置文件目录中，我这的目录    是/usr/local/zabbix-2.4.4/etc/zabbix_agentd.conf.d/</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后修改zabbix_agentd.conf配置文件，将配置文件所在目录添加进去，也就是添加下面这行语句：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Include=/usr/<span class="built_in">local</span>/zabbix-2.4.4/etc/zabbix_agentd.conf.d/*.conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后修改脚本，首先修改sh脚本，也就是get_mysql_stats_wrapper.sh这个脚本，将下面这条语句进行修改：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">RES=`HOME=~zabbix mysql -e <span class="string">'SHOW SLAVE STATUS\G'</span> | egrep <span class="string">'(Slave_IO_Running|Slave_SQL_Running):'</span> | awk -F: <span class="string">'&#123;print $2&#125;'</span> | tr <span class="string">'\n'</span> <span class="string">','</span>`</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">RES=`/usr/<span class="built_in">local</span>/mysql/bin/mysql -uroot -e <span class="string">'SHOW SLAVE STATUS\G'</span> | egrep <span class="string">'(Slave_IO_Running|Slave_SQL_Running):'</span> | awk -F: <span class="string">'&#123;print $2&#125;'</span> | tr <span class="string">'\n'</span> <span class="string">','</span>`</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里Mysql没有设置root密码，可以在这里写入mysql的相应账号密码。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;还有需要注意，在这个脚本中需要调用php来实现监控，所以需要修改php的路径，我的php的路径为/usr/local/php/bin/php，所以将脚本中的那条命令修改成下面这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CMD=<span class="string">"/usr/local/php/bin/php -q <span class="variable">$DIR</span>/ss_get_mysql_stats.php --host <span class="variable">$HOST</span> --items gg"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;之后保存该脚本，并修改权限为755<br>然后修改php脚本文件，修改用户名和密码如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$mysql_user</span> = <span class="string">'root'</span>;</div><div class="line"><span class="variable">$mysql_pass</span> = <span class="string">''</span>;</div><div class="line"><span class="variable">$mysql_port</span> = 3306;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;因为mysqlroot密码是空的，所以这里密码是没有输入的，可以修改成相应的账号密码。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改完之后保存配置并将权限设置为755，然后重启zabbix_agentd，在zabbix_server端添加刚刚我们导入进去的模板，就可以实现mysql的监控了，下面是监控的效果图：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E4%BD%BF%E7%94%A8percona%20zabbix%20mysql-plugin%E7%9B%91%E6%8E%A7mysql%E6%95%B0%E6%8D%AE%E5%BA%93/01.jpeg?raw=true" alt=""></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E4%BD%BF%E7%94%A8percona%20zabbix%20mysql-plugin%E7%9B%91%E6%8E%A7mysql%E6%95%B0%E6%8D%AE%E5%BA%93/02.jpeg?raw=true" alt=""></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E4%BD%BF%E7%94%A8percona%20zabbix%20mysql-plugin%E7%9B%91%E6%8E%A7mysql%E6%95%B0%E6%8D%AE%E5%BA%93/03.jpeg?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;但是貌似这个模板对于单个数据库虽然足够详细，对于数据库集群的监控还是不够给力，需要在其监控脚本的基础上进行修改，使其能够监控到数据库集群的状态信息那就更好了，当然，我这里只做了单个数据库的监控，集群由于没有实际部署，这里也就没有进行演示了，对这方面感兴趣的童鞋们可以自行阅读脚本源代码，对脚本进行修改以便于实现mysql集群的详细监控。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Zabbix/" rel="tag"># Zabbix</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/17/Zabbix/21. zabbix使用SNMP V3监控路由器接口流量/" rel="next" title="zabbix使用SNMP V3监控路由器接口流量">
+                <i class="fa fa-chevron-left"></i> zabbix使用SNMP V3监控路由器接口流量
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/17/Zabbix/23. zabbix使用pyora监控oracle数据库/" rel="prev" title="zabbix使用pyora监控oracle数据库">
+                zabbix使用pyora监控oracle数据库 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#zabbix使用percona-zabbix-mysql-plugin监控mysql数据库"><span class="nav-number">1.</span> <span class="nav-text">zabbix使用percona zabbix mysql-plugin监控mysql数据库</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

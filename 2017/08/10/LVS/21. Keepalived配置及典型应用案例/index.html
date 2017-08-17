@@ -1,0 +1,783 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="LVS,keepalived," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Keepalived配置及典型应用案例&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;使用源码先安装keepalived 1.2.6 1234567cd /usr/local/srcwget  http://www.keepalived.org/software/keepalived-1.2.6.tar.gztar zxf keepalived-1.">
+<meta name="keywords" content="LVS,keepalived">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Keepalived配置及典型应用案例">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/08/10/LVS/21. Keepalived配置及典型应用案例/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="Keepalived配置及典型应用案例&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;使用源码先安装keepalived 1.2.6 1234567cd /usr/local/srcwget  http://www.keepalived.org/software/keepalived-1.2.6.tar.gztar zxf keepalived-1.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Keepalived%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%85%B8%E5%9E%8B%E5%BA%94%E7%94%A8%E6%A1%88%E4%BE%8B/01.png?raw=true">
+<meta property="og:updated_time" content="2017-08-13T17:15:01.994Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Keepalived配置及典型应用案例">
+<meta name="twitter:description" content="Keepalived配置及典型应用案例&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;使用源码先安装keepalived 1.2.6 1234567cd /usr/local/srcwget  http://www.keepalived.org/software/keepalived-1.2.6.tar.gztar zxf keepalived-1.">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/Keepalived%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%85%B8%E5%9E%8B%E5%BA%94%E7%94%A8%E6%A1%88%E4%BE%8B/01.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/08/10/LVS/21. Keepalived配置及典型应用案例/"/>
+
+
+
+
+
+  <title>Keepalived配置及典型应用案例 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/LVS/21. Keepalived配置及典型应用案例/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Keepalived配置及典型应用案例</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Keepalived配置及典型应用案例"><a href="#Keepalived配置及典型应用案例" class="headerlink" title="Keepalived配置及典型应用案例"></a>Keepalived配置及典型应用案例</h1><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用源码先安装keepalived 1.2.6</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/src</div><div class="line">wget  http://www.keepalived.org/software/keepalived-1.2.6.tar.gz</div><div class="line">tar zxf keepalived-1.2.6.tar.gz </div><div class="line"><span class="built_in">cd</span> keepalived-1.2.6</div><div class="line">./configure --prefix=/usr/<span class="built_in">local</span>/keepalived </div><div class="line">make</div><div class="line">make install</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;所设keepalived安装到/usr/local/keepalived, 则所有配置文件均位于此目录之下。 我一直没搞明白一个问题，Linux默认总是将程序安装到/usr/local目录下，所有程序共享了/usr/local/sbin目录。这对一些人的操作习惯是有影响的。为何不考虑使用每个软件一个独立的目录呢？</p>
+<ol>
+<li>建立服务启动脚本，以便使用service命令控制之 </li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cp /usr/<span class="built_in">local</span>/keepalived/etc/rc.d/init.d/keepalived /etc/init.d/keepalived</div><div class="line">chmod +x /etc/init.d/keepalived</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;因为我们使用非默认路径（/usr/local）安装keepalived, 故需要修改几处路径，以保证keepalived能正常启动, 需要修改的文件如下：</p>
+<ol>
+<li>修改/etc/init.d/keepalived, 寻找大约15行左右的. /etc/sysconfig/keepalived, 修改为： .  /usr/local/keepalived/etc/sysconfig/keepalived, 即指向正确的文件位置</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;同时在上述行下添加以下内容（将keepavlied主程序所在路径导入到环境变量PATH中）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">PATH=<span class="string">"<span class="variable">$PATH</span>:/usr/local/keepalived/sbin"</span></div><div class="line"><span class="built_in">export</span> PATH</div></pre></td></tr></table></figure>
+<ol>
+<li>修改/usr/local/keepalived/etc/sysconfig/keepalived文件，设置正确的服务启动参数 </li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">KEEPALIVED_OPTIONS=<span class="string">"-D -f /usr/local/keepalived/etc/keepalived/keepalived.conf"</span></div></pre></td></tr></table></figure>
+<ol>
+<li>经过以上修改，keepalived基本安装即可完成，启动测试之： </li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service keepalived restart</div></pre></td></tr></table></figure>
+<ol>
+<li>切勿忘记将此服务设置为开机启动</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chkconfig keepalived on</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认的配置文件中，指定了两个数个虚拟IP : 192.168.200.16  192.168.200.17  192.168.200.18</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可使用ip addr命令验证之。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以上实验只需要一台主机，因为当前节点被指定为主节点，且没有收到其它节点的VRRP组播信息，故自动绑定了虚拟IP。</p>
+<h2 id="参考案例一：主-备模式"><a href="#参考案例一：主-备模式" class="headerlink" title="参考案例一：主-备模式"></a>参考案例一：主-备模式</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在这种模式下，虚拟IP在某时刻只能属于某一个节点，另一个节点作为备用节点存在。当主节点不可用时，备用节点接管虚拟IP，提供正常服务。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;节点A 192.168.0.11 (主节点), 节点B 192.168.0.12(备用节点)  虚拟IP(对外提供服务的IP 192.168.0.200 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要求默认情况下由节点A提供服务，当节点A不可用时，由节点B提供服务(即虚拟IP漂移至节点B)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;节点A上的配置文件/usr/local/keepalived/etc/keepalived/keepalived.conf</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">global_defs &#123;</div><div class="line">   notification_email &#123;</div><div class="line">     root@localhost</div><div class="line">   &#125;</div><div class="line">   notification_email_from root@<span class="built_in">local</span> host</div><div class="line">   smtp_server localhost</div><div class="line">   smtp_connect_timeout 30</div><div class="line">   router_id  NodeA</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认的配置文件中，使用第三方smtp服务器，但这在现实中几乎没有意义（需要验证的原因），我们将其指定为localhost, 将通知信息的发送交给本地sendmail服务处理。查阅说明文档得知route_id配置是为了标识当前节点，我将其设置为NodeA。当然两个节点的此项设置可相同，也可不相同。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">vrrp_instance VI_1 &#123;</div><div class="line">    state MASTER   <span class="comment">#指定A节点为主节点 备用节点上设置为BACKUP即可</span></div><div class="line">    interface eth0   <span class="comment">#绑定虚拟IP的网络接口</span></div><div class="line">    virtual_router_id 51  <span class="comment">#VRRP组名，两个节点的设置必须一样，以指明各个节点属于同一VRRP组</span></div><div class="line">    priority 100   <span class="comment">#主节点的优先级（1-254之间），备用节点必须比主节点优先级低</span></div><div class="line">    advert_int 1   <span class="comment">#组播信息发送间隔，两个节点设置必须一样</span></div><div class="line">    authentication &#123;   <span class="comment">#设置验证信息，两个节点必须一致</span></div><div class="line">        auth_type PASS</div><div class="line">        auth_pass 1111</div><div class="line">    &#125;</div><div class="line">    virtual_ipaddress &#123;   <span class="comment">#指定虚拟IP, 两个节点设置必须一样</span></div><div class="line">        192.168.200.16/24</div><div class="line">        192.168.200.17 /24</div><div class="line">        192.168.200.18 /24</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认的配置文件中，竟然没有子网掩码，从而导致使用了默认子网掩码255.255.255.255，如果导致无法从其它机器访问虚拟IP（keepalived虚拟IP无法ping通）。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;按同样的方法配置节点B并修改配置文件，可将A节点的配置文件复制到B节点，并修改以下几项： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">router_id  NodeB</div><div class="line">state   BACKUP</div><div class="line">priority   99</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其它项不必修改。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;测试及验证：拔掉节点A的网线，就发现虚拟IP已经绑定到节点B上，再恢复A节点的网线，虚拟IP又绑定回节点A之上。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;但是这种方式存在恼裂的可能，即两个节点实际都处于正常工作状态，但是无法接收到彼此的组播通知，这时两个节点均强行绑定虚拟IP，导致不可预料的后果。 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这时就需要设置仲裁，即每个节点必须判断自身的状态（应用服务状态及自身网络状态），要实现这两点可使用自定义shell脚本实现，通过周期性地检查自身应用服务状态，并不断ping网关（或其它可靠的参考IP）均可。当自身服务异常、或无法ping通网关，则认为自身出现故障，就应该移除掉虚拟IP(停止keepalived服务即可）。主要借助keepalived提供的vrrp_script及track_script实现：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在keepalived的配置文件最前面加入以下代码，定义一个跟踪脚本： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">vrrp_script check_local &#123; <span class="comment">#定义一个名称为check_local的检查脚本</span></div><div class="line">    script <span class="string">"/usr/local/keepalived/bin/check_local.sh"</span> <span class="comment">#shell脚本的路径</span></div><div class="line">    interval 5  <span class="comment">#运行间隔</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;再在vrrp_instance配置中加入以下代码使用上面定义的检测脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">track_script &#123;</div><div class="line">check_local</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们在/usr/local/keepalived/bin/check_local.sh定义的检测规则是：</p>
+<ol>
+<li>自身web服务故障（超时，http返回状态不是200）</li>
+<li>无法ping通网关</li>
+<li>产生以上任何一个问题，均应该移除本机的虚拟IP(停止keepalived实例即可)</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;但这里有个小问题，如果本机或是网关偶尔出现一次故障，那么我们不能认为是服务故障。更好的做法是如果连续N次检测本机服务不正常或连接N次无法ping通网关，才认为是故障产生，才需要进行故障转移。另一方面，如果脚本检测到故障产生，并停止掉了keepalived服务，那么当故障恢复后，keepalived是无法自动恢复的。我觉得利用独立的脚本以秒级的间隔检查自身服务及网关连接性，再根据故障情况控制keepalived的运行或是停止。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里提供一个思路，具体脚本内容请大家根据自己的需要编写即可。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如下图的案例：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Keepalived%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%85%B8%E5%9E%8B%E5%BA%94%E7%94%A8%E6%A1%88%E4%BE%8B/01.png?raw=true" alt=""> </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;假设节点A和B组成主备关系，A为备用节点，B为主节点，那么当在图标红叉位置发生网络故障时，节点A接收不到节点B的组播通知，将抢占虚拟IP。这时出现的后果就是节点Ａ和节点B均拥有虚拟IP，就可能导致了脑裂。所以我们以网关IP连通性作为参考，可避免此问题产生。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/LVS/" rel="tag"># LVS</a>
+          
+            <a href="/tags/keepalived/" rel="tag"># keepalived</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/10/LVS/22. keepalived之vrrp_script总结/" rel="next" title="keepalived之vrrp_script总结">
+                <i class="fa fa-chevron-left"></i> keepalived之vrrp_script总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/10/LVS/20.  haproxy+keepalived实现高可用负载均衡/" rel="prev" title="haproxy+keepalived实现高可用负载均衡">
+                haproxy+keepalived实现高可用负载均衡 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Keepalived配置及典型应用案例"><span class="nav-number">1.</span> <span class="nav-text">Keepalived配置及典型应用案例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考案例一：主-备模式"><span class="nav-number">1.1.</span> <span class="nav-text">参考案例一：主-备模式</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

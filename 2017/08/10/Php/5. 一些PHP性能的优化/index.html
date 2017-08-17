@@ -1,0 +1,781 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="LAMP,Php," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="一些PHP性能的优化&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;PHP优化对于PHP的优化主要是对php.ini中的相关主要参数进行合理调整和设置，以下我们就来看看php.ini中的一些对性能影响较大的参数应该如何设置。 1vim /etc/php.ini PHP函数禁用找到：&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160">
+<meta name="keywords" content="LAMP,Php">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一些PHP性能的优化">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/08/10/Php/5. 一些PHP性能的优化/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="一些PHP性能的优化&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;PHP优化对于PHP的优化主要是对php.ini中的相关主要参数进行合理调整和设置，以下我们就来看看php.ini中的一些对性能影响较大的参数应该如何设置。 1vim /etc/php.ini PHP函数禁用找到：&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-08-13T17:23:30.439Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一些PHP性能的优化">
+<meta name="twitter:description" content="一些PHP性能的优化&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;PHP优化对于PHP的优化主要是对php.ini中的相关主要参数进行合理调整和设置，以下我们就来看看php.ini中的一些对性能影响较大的参数应该如何设置。 1vim /etc/php.ini PHP函数禁用找到：&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/08/10/Php/5. 一些PHP性能的优化/"/>
+
+
+
+
+
+  <title>一些PHP性能的优化 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Php/5. 一些PHP性能的优化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">一些PHP性能的优化</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="一些PHP性能的优化"><a href="#一些PHP性能的优化" class="headerlink" title="一些PHP性能的优化"></a>一些PHP性能的优化</h1><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PHP优化对于PHP的优化主要是对php.ini中的相关主要参数进行合理调整和设置，以下我们就来看看php.ini中的一些对性能影响较大的参数应该如何设置。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim /etc/php.ini</div></pre></td></tr></table></figure>
+<h2 id="PHP函数禁用找到："><a href="#PHP函数禁用找到：" class="headerlink" title="PHP函数禁用找到："></a>PHP函数禁用找到：</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;disable_functions = 该选项可以设置哪些PHP函数是禁止使用的，PHP中有一些函数的风险性还是相当大的，可以直接执行一些系统级脚本命令，如果允许这些函数执行，当PHP程序出现漏洞时，损失是非常严重的！以下我们给出推荐的禁用函数设置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">disable_functions = phpinfo,passthru,<span class="built_in">exec</span>,system,popen,chroot,escapeshellcmd,escapeshellarg,shell_exec,proc_open,proc_get_status</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需注意：如果您的服务器中含有一些系统状态检测的PHP程序，则不要禁用<code>shell_exec,proc_open,proc_get_status</code>等函数。 </p>
+<h2 id="PHP脚本执行时间找到："><a href="#PHP脚本执行时间找到：" class="headerlink" title="PHP脚本执行时间找到："></a>PHP脚本执行时间找到：</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">max_execution_time = 30</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;该选项设定PHP程序的最大执行时间，如果一个PHP脚本被请求，且该PHP脚本在max_execution_time时间内没能执行完毕，则PHP不再继续执行，直接给客户端返回超时错误。没有特殊需要该选项可保持默认设置30秒，如果您的PHP脚本确实需要长执行时间则可以适当增大该时间设置。 </p>
+<h2 id="PHP脚本处理内存占用找到："><a href="#PHP脚本处理内存占用找到：" class="headerlink" title="PHP脚本处理内存占用找到："></a>PHP脚本处理内存占用找到：</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">memory_limit = 8M</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;该选项指定PHP脚本处理所能占用的最大内存，默认为8MB，如果您的服务器内存为1GB以上，则该选项可以设置为12MB以获得更快的PHP脚本处理效率。 </p>
+<h2 id="PHP全局函数声明找到："><a href="#PHP全局函数声明找到：" class="headerlink" title="PHP全局函数声明找到："></a>PHP全局函数声明找到：</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">register_globals = Off</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;网络上很多关于PHP设置的文章都推荐将该选项设置为On，其实这是一种及其危险的设置方法，很可能引起严重的安全性问题。如果没有特殊的需要，强烈推荐保留默认设置！ </p>
+<h2 id="PHP上传文件大小限制找到："><a href="#PHP上传文件大小限制找到：" class="headerlink" title="PHP上传文件大小限制找到："></a>PHP上传文件大小限制找到：</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">upload_max_filesize = 2M</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;该选项设定PHP所能允许最大上传文件大小，默认为2MB。根据实际应用需求，可以适当增大该设置。 </p>
+<h2 id="Session存储介质找到："><a href="#Session存储介质找到：" class="headerlink" title="Session存储介质找到："></a>Session存储介质找到：</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div></pre></td><td class="code"><pre><div class="line">session.save_path</div><div class="line">``` </div><div class="line"></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;如果你的PHP程序使用Session对话，则可以将Session存储位置设置为/dev/shm，/dev/shm是Linux系统独有的TMPFS文件系统，是以内存为主要存储方式的文件系统，比RAMDISK更优秀，因为可以使用DISKSWAP作为补充，而且是系统自带的功能模块，不需要另行配置。想想看，从磁盘IO操作到内存操作，速度会快多少？只是需要注意，存储在/dev/shm的数据，在服务器重启后会全部丢失。不过这对于Session来说是无足轻重的。</span></div><div class="line"> </div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;由于水平有限，有些还是不太明白为什么。如果有更好建议的欢迎随时补充！</span></div><div class="line">1. 用单引号代替双引号来包含字符串，这样做会更快一些。因为PHP会在双引号包围的字符串中搜寻变量，单引号则不会，注意：只有<span class="built_in">echo</span>能这么做，它是一种可以把多个字符串当作参数的“函数”(译注：PHP手册中说<span class="built_in">echo</span>是语言结构，不是真正的函数，故把函数加上了双引号)。 **PS：在单引号中，PHP不会自动搜寻变量、转义字符等，因此效率上快很多。而一般来说字符串是没有变量的，所以使用双引号会导致性能不佳。**</div><div class="line"></div><div class="line">2. 如果能将类的方法定义成static，就尽量定义成static，它的速度会提升将近4倍。 **PS：事实上，<span class="keyword">function</span>、method、static method的速度不会有太大差异。具体可见“PHP函数的实现原理及性能分析【转载】”一文。**</div><div class="line"></div><div class="line">3. <span class="variable">$row</span>[’id’] 的速度是<span class="variable">$row</span>[id]的7倍。 **PS：不太懂，貌似差异只有后者会先判断id这个宏是否存在，如果不存在则自动转变为字符串。**</div><div class="line"></div><div class="line">4. <span class="built_in">echo</span> 比 <span class="built_in">print</span> 快，并且使用<span class="built_in">echo</span>的多重参数(译注：指用逗号而不是句点)代替字符串连接，比如<span class="built_in">echo</span> <span class="variable">$str1</span>,<span class="variable">$str2</span>。**PS：如果使用<span class="built_in">echo</span> <span class="variable">$str1</span>.<span class="variable">$str2</span> 就会需要 PHP 引擎首先把所有的变量连接起来，然后在输出，而<span class="built_in">echo</span> <span class="variable">$str1</span>,<span class="variable">$str2</span>，PHP 引擎就会按照循序输出他们**</div><div class="line"></div><div class="line">5. 在执行<span class="keyword">for</span>循环之前确定最大循环数，不要每循环一次都计算最大值，最好运用foreach代替。 **PS：像count、strlen这样的操作其实是O(1)的，因此不会带来太多消耗，当然避免每次循环都计算是比较好的策略。最好用foreach代替<span class="keyword">for</span>，这个效率更高，如果考虑到foreach(<span class="variable">$array</span> as <span class="variable">$var</span>)每次拷贝的消耗，可以使用foreach(<span class="variable">$array</span> as &amp;<span class="variable">$var</span>)这样的引用。**</div><div class="line"></div><div class="line">6. 注销那些不用的变量尤其是大数组，以便释放内存。 **PS：如果没有记错的话，<span class="built_in">unset</span>(<span class="variable">$array</span>)不会立刻释放内存，但随时释放是个好习惯。**</div><div class="line"></div><div class="line">7. 尽量避免使用__get，__set，__autoload。</div><div class="line"></div><div class="line">8. require_once()代价昂贵。 **PS：require_once和include_once需要判重，因此效率上要低，但是5.2版本后效率问题已经基本解决。**</div><div class="line">9. include文件时尽量使用绝对路径，因为它避免了PHP去include_path里查找文件的速度，解析操作系统路径所需的时间会更少。**PS：支持，尽量少用iniset()来设置include_path.**</div><div class="line">10. 如果你想知道脚本开始执行(译注：即服务器端收到客户端请求)的时刻，使用<span class="variable">$_SERVER</span>[<span class="string">'REQUEST_TIME'</span>]要好于time()。 **PS：<span class="variable">$_SERVER</span>[<span class="string">'REQUEST_TIME'</span>]保存了发起该请求时刻的时间戳，而time()则返回当前时刻的Unix时间戳。**</div><div class="line"></div><div class="line">11. 函数代替正则表达式完成相同功能。 **PS：这种函数是指strtok、strstr、strpos、str_replace、substr、explode、implode等等。**</div><div class="line"></div><div class="line">12. tr_replace函数比preg_replace函数快，但strtr函数的效率是str_replace函数的四倍。 **PS：字符串操作比正则替换要快。**</div><div class="line"></div><div class="line">13. 如果一个字符串替换函数，可接受数组或字符作为参数，并且参数长度不太长，那么可以考虑额外写一段替换代码，使得每次传递参数是一个字符，而不是只写一行代码接受数组作为查询和替换的参数。 **PS：需要考虑到内置函数和用户自定义函数的开销差异，恐怕这种做法得不偿失。**</div><div class="line"></div><div class="line">14. 使用选择分支语句(译注：即switch <span class="keyword">case</span>)好于使用多个<span class="keyword">if</span>，<span class="keyword">else</span> <span class="keyword">if</span>语句。 **PS：php中switch支持数值和字符串变量，比C的switch要好用，建议使用。**</div><div class="line"></div><div class="line">15. 用@屏蔽错误消息的做法非常低效，极其低效。 **PS：有什么替代方法吗？没有的话还是不得不用的……**</div><div class="line"></div><div class="line">16. 打开apache的mod_deflate模块，可以提高网页的浏览速度。</div><div class="line"></div><div class="line">17. 数据库连接当使用完毕时应关掉，不要用长连接。 **PS：在连接之前，最好设置一下相应的超时机制，例如链接超时、读写超时、等待超时等。**</div><div class="line"></div><div class="line">18. 错误消息代价昂贵。</div><div class="line"></div><div class="line">19. 在方法中递增局部变量，速度是最快的。几乎与在函数中调用局部变量的速度相当。</div><div class="line">20. 递增一个全局变量要比递增一个局部变量慢2倍。</div><div class="line"></div><div class="line">21. 递增一个对象属性(如：<span class="variable">$this</span>-&gt;prop++)要比递增一个局部变量慢3倍。</div><div class="line"></div><div class="line">22. 递增一个未预定义的局部变量要比递增一个预定义的局部变量慢9至10倍。</div><div class="line"></div><div class="line">23. 仅定义一个局部变量而没在函数中调用它，同样会减慢速度(其程度相当于递增一个局部变量)。PHP大概会检查看是否存在全局变量。</div><div class="line"></div><div class="line">24. 方法调用看来与类中定义的方法的数量无关，因为我(在测试方法之前和之后都)添加了10个方法，但性能上没有变化。</div><div class="line"></div><div class="line">25. 派生类中的方法运行起来要快于在基类中定义的同样的方法。</div><div class="line"></div><div class="line">26. 调用带有一个参数的空函数，其花费的时间相当于执行7至8次的局部变量递增操作。类似的方法调用所花费的时间接近于15次的局部变量递增操作。</div><div class="line"></div><div class="line">27. Apache解析一个PHP脚本的时间要比解析一个静态HTML页面慢2至10倍。尽量多用静态HTML页面，少用脚本。</div><div class="line"></div><div class="line">28. 除非脚本可以缓存，否则每次调用时都会重新编译一次。引入一套PHP缓存机制通常可以提升25%至100%的性能，以免除编译开销。</div><div class="line"></div><div class="line">29. 尽量做缓存，可使用memcached。memcached是一款高性能的内存对象缓存系统，可用来加速动态Web应用程序，减轻数据库负载。对运算码 (OP code)的缓存很有用，使得脚本不必为每个请求做重新编译。</div><div class="line"></div><div class="line">30. 当操作字符串并需要检验其长度是否满足某种要求时，你想当然地会使用strlen()函数。此函数执行起来相当快，因为它不做任何计算，只返回在zval 结构(C的内置数据结构，用于存储PHP变量)中存储的已知字符串长度。但是，由于strlen()是函数，多多少少会有些慢，因为函数调用会经过诸多步骤，如字母小写化(译注：指函数名小写化，PHP不区分函数名大小写)、哈希查找，会跟随被调用的函数一起执行。在某些情况下，你可以使用isset() 技巧加速执行你的代码。</div><div class="line"></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;举例如下</span></div><div class="line"></div><div class="line">```bash</div><div class="line"><span class="keyword">if</span> (strlen(<span class="variable">$foo</span>) &lt; 5) &#123; <span class="built_in">echo</span> “Foo is too short”$$ &#125;</div><div class="line"><span class="comment">#与下面的技巧做比较</span></div><div class="line"><span class="keyword">if</span> (!isset(<span class="variable">$foo</span>&#123;5&#125;)) &#123; <span class="built_in">echo</span> “Foo is too short”$$ &#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;调用isset()恰巧比strlen()快，因为与后者不同的是，isset()作为一种语言结构，意味着它的执行不需要函数查找和字母小写化。也就是说，实际上在检验字符串长度的顶层代码中你没有花太多开销。 <strong>PS：长见识了。</strong></p>
+<ol>
+<li><p>当执行变量$i的递增或递减时，$i++会比++$i慢一些。这种差异是PHP特有的，并不适用于其他语言，所以请不要修改你的C或Java代码并指望它们能立即变快，没用的。++$i更快是因为它只需要3条指令(opcodes)，$i++则需要4条指令。后置递增实际上会产生一个临时变量，这个临时变量随后被递增。而前置递增直接在原值上递增。这是最优化处理的一种，正如Zend的PHP优化器所作的那样。牢记这个优化处理不失为一个好主意，因为并不是所有的指令优化器都会做同样的优化处理，并且存在大量没有装配指令优化器的互联网服务提供商(ISPs)和服务器。</p>
+</li>
+<li><p>并不是事必面向对象(OOP)，面向对象往往开销很大，每个方法和对象调用都会消耗很多内存。</p>
+</li>
+<li><p>并非要用类实现所有的数据结构，数组也很有用。</p>
+</li>
+<li><p>不要把方法细分得过多，仔细想想你真正打算重用的是哪些代码?</p>
+</li>
+<li><p>当你需要时，你总能把代码分解成方法。 <strong>PS：分解成方法要适当，行数少使用频率高的方法尽量用直接写代码，可以减少函数堆栈开销；且方法嵌套不宜过深，否则大大影响PHP的运行效率。</strong></p>
+</li>
+<li><p>尽量采用大量的PHP内置函数。</p>
+</li>
+<li><p>如果在代码中存在大量耗时的函数，你可以考虑用C扩展的方式实现它们。</p>
+</li>
+<li><p>评估检验(profile)你的代码。检验器会告诉你，代码的哪些部分消耗了多少时间。Xdebug调试器包含了检验程序，评估检验总体上可以显示出代码的瓶颈。</p>
+</li>
+<li><p>mod_zip可作为Apache模块，用来即时压缩你的数据，并可让数据传输量降低80%。</p>
+</li>
+<li><p>在可以用file_get_contents替代file、fopen、feof、fgets等系列方法的情况下，尽量用file_get_contents，因为他的效率高得多!但是要注意file_get_contents在打开一个URL文件时候的PHP版本问题; <strong>PS：这个要记住，尽量使用file_get_contents和file_put_contents，不需要自己判断文件句柄打开是否成功。</strong></p>
+</li>
+<li><p>尽量的少进行文件操作，虽然PHP的文件操作效率也不低的;</p>
+</li>
+<li><p>优化Select SQL语句，在可能的情况下尽量少的进行Insert、Update操作(在update上，我被恶批过);</p>
+</li>
+<li><p>尽可能的使用PHP内部函数(但是我却为了找个PHP里面不存在的函数，浪费了本可以写出一个自定义函数的时间，经验问题啊!); <strong>PS：内置函数比用户自定义函数效率高了将近一个数量级。</strong></p>
+</li>
+<li><p>循环内部不要声明变量，尤其是大变量：对象(这好像不只是PHP里面要注意的问题吧?); <strong>PS：这个必须的，变量过多或者过大时，每次重分配的开销就无法忽略。</strong></p>
+</li>
+<li><p>多维数组尽量不要循环嵌套赋值;</p>
+</li>
+<li><p>在可以用PHP内部字符串操作函数的情况下，不要用正则表达式;</p>
+</li>
+<li><p>foreach效率更高，尽量用foreach代替while和for循环;</p>
+</li>
+<li><p>用单引号替代双引号引用字符串; <strong>PS：晕，这个不就是第一条吗？</strong></p>
+</li>
+<li><p>“用i+=1代替i=i+1。符合c/c++的习惯，效率还高”;</p>
+</li>
+<li><p>对global变量，应该用完就unset()掉;</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/LAMP/" rel="tag"># LAMP</a>
+          
+            <a href="/tags/Php/" rel="tag"># Php</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/10/Php/10. php.ini 中开启短标签/" rel="next" title="php.ini 中开启短标签">
+                <i class="fa fa-chevron-left"></i> php.ini 中开启短标签
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/10/Php/6. LAMP测试 php 解析/" rel="prev" title="LAMP测试 php 解析">
+                LAMP测试 php 解析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一些PHP性能的优化"><span class="nav-number">1.</span> <span class="nav-text">一些PHP性能的优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP函数禁用找到："><span class="nav-number">1.1.</span> <span class="nav-text">PHP函数禁用找到：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP脚本执行时间找到："><span class="nav-number">1.2.</span> <span class="nav-text">PHP脚本执行时间找到：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP脚本处理内存占用找到："><span class="nav-number">1.3.</span> <span class="nav-text">PHP脚本处理内存占用找到：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP全局函数声明找到："><span class="nav-number">1.4.</span> <span class="nav-text">PHP全局函数声明找到：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP上传文件大小限制找到："><span class="nav-number">1.5.</span> <span class="nav-text">PHP上传文件大小限制找到：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Session存储介质找到："><span class="nav-number">1.6.</span> <span class="nav-text">Session存储介质找到：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

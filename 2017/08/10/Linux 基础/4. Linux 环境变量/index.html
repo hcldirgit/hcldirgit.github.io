@@ -1,0 +1,766 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Linux," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Linux 环境变量显示环境变量1echo $[变量名] &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;示例： 12echo $HOME/root 设置一个新的环境变量123$ export HELLO=&quot;Hello!&quot;$ echo $HELLOHello! 查看全局环境变量命令：env&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;">
+<meta name="keywords" content="Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 环境变量">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/08/10/Linux 基础/4. Linux 环境变量/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="Linux 环境变量显示环境变量1echo $[变量名] &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;示例： 12echo $HOME/root 设置一个新的环境变量123$ export HELLO=&quot;Hello!&quot;$ echo $HELLOHello! 查看全局环境变量命令：env&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-08-08T17:16:06.591Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux 环境变量">
+<meta name="twitter:description" content="Linux 环境变量显示环境变量1echo $[变量名] &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;示例： 12echo $HOME/root 设置一个新的环境变量123$ export HELLO=&quot;Hello!&quot;$ echo $HELLOHello! 查看全局环境变量命令：env&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/08/10/Linux 基础/4. Linux 环境变量/"/>
+
+
+
+
+
+  <title>Linux 环境变量 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Linux 基础/4. Linux 环境变量/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux 环境变量</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Linux-环境变量"><a href="#Linux-环境变量" class="headerlink" title="Linux 环境变量"></a>Linux 环境变量</h1><h2 id="显示环境变量"><a href="#显示环境变量" class="headerlink" title="显示环境变量"></a>显示环境变量</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> $[变量名]</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>示例：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> <span class="variable">$HOME</span></div><div class="line">/root</div></pre></td></tr></table></figure>
+<h2 id="设置一个新的环境变量"><a href="#设置一个新的环境变量" class="headerlink" title="设置一个新的环境变量"></a>设置一个新的环境变量</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">export</span> HELLO=<span class="string">"Hello!"</span></div><div class="line">$ <span class="built_in">echo</span> <span class="variable">$HELLO</span></div><div class="line">Hello!</div></pre></td></tr></table></figure>
+<h3 id="查看全局环境变量命令：env"><a href="#查看全局环境变量命令：env" class="headerlink" title="查看全局环境变量命令：env"></a>查看全局环境变量命令：env</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>使用 <code>env</code> 命令显示所有的环境变量</strong>   </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ env</div><div class="line">HOSTNAME=redbooks.safe.org</div><div class="line">PVM_RSH=/usr/bin/rsh</div><div class="line">Shell=/bin/bash</div><div class="line">TERM=xterm</div><div class="line">HISTSIZE=1000</div></pre></td></tr></table></figure>
+<h2 id="查看所有环境变量命令：set"><a href="#查看所有环境变量命令：set" class="headerlink" title="查看所有环境变量命令：set"></a>查看所有环境变量命令：set</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>使用 <code>set</code> 命令显示所有本地定义的 shell 变量</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">set</span></div><div class="line">BASH=/bin/bash</div><div class="line">BASH_VERSINFO=([0]=<span class="string">"2"</span>[1]=<span class="string">"05b"</span>[2]=<span class="string">"0"</span>[3]=<span class="string">"1"</span>[4]=<span class="string">"release"</span>[5]=<span class="string">"i386-redhat-linux-gnu"</span>)</div><div class="line">BASH_VERSION=<span class="string">'2.05b.0(1)-release'</span></div><div class="line">COLORS=/etc/DIR_COLORS.xterm</div><div class="line">COLUMNS=80</div><div class="line">DIRSTACK=()</div><div class="line">DISPLAY=:0.0</div></pre></td></tr></table></figure>
+<h2 id="删除一个变量：unset"><a href="#删除一个变量：unset" class="headerlink" title="删除一个变量：unset"></a>删除一个变量：unset</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong>  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">unset</span> [变量名]</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;只针对当前会话</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;set可以设置某个环境变量的值。清除环境变量的值用unset命令。如果未指定值，则该变量值将被设为NULL。示例如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">export</span> TEST=<span class="string">"Test..."</span> <span class="comment">#增加一个环境变量TEST</span></div><div class="line">$ env|grep TEST <span class="comment">#此命令有输入，证明环境变量TEST已经存在了</span></div><div class="line">TEST=Test...</div><div class="line">$ <span class="built_in">unset</span> <span class="variable">$TEST</span> <span class="comment">#删除环境变量TEST</span></div><div class="line">$ env|grep TEST <span class="comment">#此命令没有输出，证明环境变量TEST已经存在了</span></div></pre></td></tr></table></figure>
+<h2 id="使用-readonly-命令设置只读变量"><a href="#使用-readonly-命令设置只读变量" class="headerlink" title="使用 readonly 命令设置只读变量"></a>使用 readonly 命令设置只读变量</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果使用了 readonly 命令，变量就不可以被修改或清除了<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;示例如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">export</span> TEST=<span class="string">"Test..."</span> <span class="comment">#增加一个环境变量TEST</span></div><div class="line">$ <span class="built_in">readonly</span> TEST <span class="comment">#将环境变量TEST设为只读</span></div><div class="line">$ <span class="built_in">unset</span> TEST <span class="comment">#会发现此变量不能被删除</span></div><div class="line">-bash: <span class="built_in">unset</span>: TEST: cannot <span class="built_in">unset</span>: <span class="built_in">readonly</span> variable</div><div class="line">$ TEST=<span class="string">"New"</span> <span class="comment">#会发现此也变量不能被修改</span></div><div class="line">-bash: TEST: <span class="built_in">readonly</span> variable</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;环境变量的设置位于 <code>/etc/profile</code> 文件，如果需要增加新的环境变量可以添加下属行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/PATH1:/PATH2:/PATHN</div></pre></td></tr></table></figure>
+<h2 id="Linux-的变量种类"><a href="#Linux-的变量种类" class="headerlink" title="Linux 的变量种类"></a>Linux 的变量种类</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;按变量的生存周期来划分，Linux 变量可范围两类：<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;1、永久的：需要修改配置文件，变量永久生效。<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;2、临时的：使用 export 命令声明即可，变量在关闭 shell 时失效。</p>
+<h2 id="环境变量的配置文件"><a href="#环境变量的配置文件" class="headerlink" title="环境变量的配置文件"></a>环境变量的配置文件</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;全局： <code>/etc/profile</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;局部： <code>~/.bash_profile</code></p>
+<h2 id="设置变量的方法"><a href="#设置变量的方法" class="headerlink" title="设置变量的方法"></a>设置变量的方法</h2><h3 id="1-在-etc-profile-文件中添加变量｛对所有用户生效（永久的）｝"><a href="#1-在-etc-profile-文件中添加变量｛对所有用户生效（永久的）｝" class="headerlink" title="1.在 /etc/profile 文件中添加变量｛对所有用户生效（永久的）｝"></a>1.在 /etc/profile 文件中添加变量｛对所有用户生效（永久的）｝</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用 <code>vim</code> 在文件 <code>/etc/profile</code> 文件中增加变量，该变量将会对 Linux下 所有用户有效，并且是“永久的”。<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例如：编辑 /etc/profile 文件，添加CLASSPATH变量   </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vim /etc/profile</span></div><div class="line"><span class="built_in">export</span> CLASSPATH=./JAVA_HOME/lib;<span class="variable">$JAVA_HOME</span>/jre/lib</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注：修改文件后要想马上生效还要运行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># source /etc/profile</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;不然只能在下次重进此用户时生效</p>
+<h3 id="2-在用户目录下个-bash-profile-文件中增加变量｛对单一用户生效（永久的）｝"><a href="#2-在用户目录下个-bash-profile-文件中增加变量｛对单一用户生效（永久的）｝" class="headerlink" title="2.在用户目录下个 .bash_profile 文件中增加变量｛对单一用户生效（永久的）｝"></a>2.在用户目录下个 <code>.bash_profile</code> 文件中增加变量｛对单一用户生效（永久的）｝</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用 <code>vim</code>在用户目录下的 <code>.bash_profile</code> 文件中增加变量，改变量仅会对当前用户有效，并且是“永久的”。<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例如：编辑guok用户目录(/home/guok)下的.bash_profile   </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ vim /home/guok/.bash.profile</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;添加如下内容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> CLASSPATH=./JAVA_HOME/lib;<span class="variable">$JAVA_HOME</span>/jre/lib</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注：修改文件后要想马上生效还要运行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">source</span> /home/guok/.bash_profile</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;不然只能在下次重进此用户时生效</p>
+<h3 id="3-直接运行-export-命令定义变量｛只对当前-shell-（BASH）有效（临时的）｝"><a href="#3-直接运行-export-命令定义变量｛只对当前-shell-（BASH）有效（临时的）｝" class="headerlink" title="3.直接运行 export 命令定义变量｛只对当前 shell （BASH）有效（临时的）｝"></a>3.直接运行 export 命令定义变量｛只对当前 shell （BASH）有效（临时的）｝</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> JAVA_HOME=/usr/<span class="built_in">local</span>/java   <span class="comment">#添加新变量名</span></div><div class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/usr/<span class="built_in">local</span>/php/bin <span class="comment">#修改已有变量名</span></div></pre></td></tr></table></figure>
+<h2 id="常用的环境变量"><a href="#常用的环境变量" class="headerlink" title="常用的环境变量"></a>常用的环境变量</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PATH：决定了shell将到哪些目录中寻找命令或程序，PATH的值是一系列以冒号分割的目录<br>注意：最好不要把 “./“ 放到 PATH 中，这样会引起安全问题</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;HOME：当前用户主目录</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;HISTSIZE：历史记录数</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;LOGNAME：当前用户的登录名</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;HOSTNAME：指主机的名称</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SHELL：当前用户Shell类型</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;LANGUGE：语言相关的环境变量，多语言可以修改此环境变量</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MAIL&#160;&#160;&#160;&#160;当前用户的邮件存放目录</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PS1：[\u@\h \W]\$ &#160;&#160;&#160;&#160;基本提示符，对于root用户是#，对于普通用户是$</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PS2:敲错以后进入的符号</p>
+<h4 id="PATH-声明，其格式为"><a href="#PATH-声明，其格式为" class="headerlink" title="PATH 声明，其格式为"></a>PATH 声明，其格式为</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">PATH=<span class="variable">$PATH</span>:&lt;PATH 1&gt;:&lt;PATH 2&gt;:&lt;PATH 3&gt;:------:&lt;PATH N&gt;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/10/Linux 基础/40.Linux源码包安装/" rel="next" title="Linux源码包安装">
+                <i class="fa fa-chevron-left"></i> Linux源码包安装
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/10/Linux 基础/39.yum局域网软件源搭建/" rel="prev" title="yum局域网软件源搭建">
+                yum局域网软件源搭建 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-环境变量"><span class="nav-number">1.</span> <span class="nav-text">Linux 环境变量</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#显示环境变量"><span class="nav-number">1.1.</span> <span class="nav-text">显示环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置一个新的环境变量"><span class="nav-number">1.2.</span> <span class="nav-text">设置一个新的环境变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查看全局环境变量命令：env"><span class="nav-number">1.2.1.</span> <span class="nav-text">查看全局环境变量命令：env</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看所有环境变量命令：set"><span class="nav-number">1.3.</span> <span class="nav-text">查看所有环境变量命令：set</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除一个变量：unset"><span class="nav-number">1.4.</span> <span class="nav-text">删除一个变量：unset</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-readonly-命令设置只读变量"><span class="nav-number">1.5.</span> <span class="nav-text">使用 readonly 命令设置只读变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux-的变量种类"><span class="nav-number">1.6.</span> <span class="nav-text">Linux 的变量种类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境变量的配置文件"><span class="nav-number">1.7.</span> <span class="nav-text">环境变量的配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置变量的方法"><span class="nav-number">1.8.</span> <span class="nav-text">设置变量的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-在-etc-profile-文件中添加变量｛对所有用户生效（永久的）｝"><span class="nav-number">1.8.1.</span> <span class="nav-text">1.在 /etc/profile 文件中添加变量｛对所有用户生效（永久的）｝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-在用户目录下个-bash-profile-文件中增加变量｛对单一用户生效（永久的）｝"><span class="nav-number">1.8.2.</span> <span class="nav-text">2.在用户目录下个 .bash_profile 文件中增加变量｛对单一用户生效（永久的）｝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-直接运行-export-命令定义变量｛只对当前-shell-（BASH）有效（临时的）｝"><span class="nav-number">1.8.3.</span> <span class="nav-text">3.直接运行 export 命令定义变量｛只对当前 shell （BASH）有效（临时的）｝</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用的环境变量"><span class="nav-number">1.9.</span> <span class="nav-text">常用的环境变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#PATH-声明，其格式为"><span class="nav-number">1.9.0.1.</span> <span class="nav-text">PATH 声明，其格式为</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

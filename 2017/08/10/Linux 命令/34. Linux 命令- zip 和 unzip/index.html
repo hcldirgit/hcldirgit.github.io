@@ -1,0 +1,854 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Linux命令," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Linux 命令- zip 和 unzipzip 命令&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;zip 压缩目录也可以压缩文件，压缩目录时，需要指定目录下的文件 1.命令格式1zip [参数] [压缩名] [文件或目录] 2.命令参数 -A 调整可执行的自动解压缩文件。  -b&amp;lt;工作目录&amp;gt; 指定暂时存放文件的目录。 -c 替每个被压">
+<meta name="keywords" content="Linux命令">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 命令- zip 和 unzip">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/08/10/Linux 命令/34. Linux 命令- zip 和 unzip/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="Linux 命令- zip 和 unzipzip 命令&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;zip 压缩目录也可以压缩文件，压缩目录时，需要指定目录下的文件 1.命令格式1zip [参数] [压缩名] [文件或目录] 2.命令参数 -A 调整可执行的自动解压缩文件。  -b&amp;lt;工作目录&amp;gt; 指定暂时存放文件的目录。 -c 替每个被压">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-08-09T05:56:28.124Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux 命令- zip 和 unzip">
+<meta name="twitter:description" content="Linux 命令- zip 和 unzipzip 命令&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;zip 压缩目录也可以压缩文件，压缩目录时，需要指定目录下的文件 1.命令格式1zip [参数] [压缩名] [文件或目录] 2.命令参数 -A 调整可执行的自动解压缩文件。  -b&amp;lt;工作目录&amp;gt; 指定暂时存放文件的目录。 -c 替每个被压">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/08/10/Linux 命令/34. Linux 命令- zip 和 unzip/"/>
+
+
+
+
+
+  <title>Linux 命令- zip 和 unzip | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Linux 命令/34. Linux 命令- zip 和 unzip/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux 命令- zip 和 unzip</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Linux-命令-zip-和-unzip"><a href="#Linux-命令-zip-和-unzip" class="headerlink" title="Linux 命令- zip 和 unzip"></a>Linux 命令- zip 和 unzip</h1><h2 id="zip-命令"><a href="#zip-命令" class="headerlink" title="zip 命令"></a>zip 命令</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;zip 压缩目录也可以压缩文件，压缩目录时，需要指定目录下的文件</p>
+<h3 id="1-命令格式"><a href="#1-命令格式" class="headerlink" title="1.命令格式"></a>1.命令格式</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">zip [参数] [压缩名] [文件或目录]</div></pre></td></tr></table></figure>
+<h3 id="2-命令参数"><a href="#2-命令参数" class="headerlink" title="2.命令参数"></a>2.命令参数</h3><ul>
+<li>-A 调整可执行的自动解压缩文件。 </li>
+<li>-b&lt;工作目录&gt; 指定暂时存放文件的目录。</li>
+<li>-c 替每个被压缩的文件加上注释。</li>
+<li>-d 从压缩文件内删除指定的文件。</li>
+<li>-D 压缩文件内不建立目录名称。</li>
+<li>-f 此参数的效果和指定”-u”参数类似，但不仅更新既有文件，如果某些文件原本不存在于压缩文件内，使用本参数会一并将其加入压缩文件中。 </li>
+<li>-F 尝试修复已损坏的压缩文件。 </li>
+<li>-g 将文件压缩后附加在既有的压缩文件之后，而非另行建立新的压缩文件。 - -h 在线帮助。 </li>
+<li>-i&lt;范本样式&gt; 只压缩符合条件的文件。</li>
+<li>-j 只保存文件名称及其内容，而不存放任何目录名称。</li>
+<li>-J 删除压缩文件前面不必要的数据。</li>
+<li>-k 使用MS-DOS兼容格式的文件名称。</li>
+<li>-l 压缩文件时，把LF字符置换成LF+CR字符。 </li>
+<li>-ll 压缩文件时，把LF+CR字符置换成LF字符。 </li>
+<li>-L 显示版权信息。</li>
+<li>-m 将文件压缩并加入压缩文件后，删除原始文件，即把文件移到压缩文件中。</li>
+<li>-n&lt;字尾字符串&gt; 不压缩具有特定字尾字符串的文件。</li>
+<li>-o 以压缩文件内拥有最新更改时间的文件为准，将压缩文件的更改时间设成和该文件相同。 </li>
+<li>-q 不显示指令执行过程。 </li>
+<li>-r 递归处理，将指定目录下的所有文件和子目录一并处理。</li>
+<li>-S 包含系统和隐藏文件。</li>
+<li>-t&lt;日期时间&gt; 把压缩文件的日期设成指定的日期。</li>
+<li>-T 检查备份文件内的每个文件是否正确无误。 </li>
+<li>-u 更换较新的文件到压缩文件内。</li>
+<li>-v 显示指令执行过程或显示版本信息。</li>
+<li>-V 保存VMS操作系统的文件属性。 </li>
+<li>-w 在文件名称里假如版本编号，本参数仅在VMS操作系统下有效。</li>
+<li>-x&lt;范本样式&gt; 压缩时排除符合条件的文件。 </li>
+<li>-X 不保存额外的文件属性。 </li>
+<li>-y 直接保存符号连接，而非该连接所指向的文件，本参数仅在UNIX之类的系统下有效。 </li>
+<li>-z 替压缩文件加上注释。</li>
+<li>-$ 保存第一个被压缩文件所在磁盘的卷册名称。</li>
+<li>-&lt;压缩效率&gt; 压缩效率是一个介于1-9的数值。</li>
+</ul>
+<h3 id="3-命令功能"><a href="#3-命令功能" class="headerlink" title="3.命令功能"></a>3.命令功能</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;zip 是个使用广泛的压缩程序，文件经它压缩后会另外产生具有 “.zip” 扩展名的压缩文件。</p>
+<h3 id="4-使用实例"><a href="#4-使用实例" class="headerlink" title="4.使用实例"></a>4.使用实例</h3><h4 id="实例1：将-test-txt-文件压缩为-test-zip-文件"><a href="#实例1：将-test-txt-文件压缩为-test-zip-文件" class="headerlink" title="实例1：将 test.txt 文件压缩为 test.zip 文件"></a>实例1：将 test.txt 文件压缩为 test.zip 文件</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">zip test.zip test.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># zip test.zip test.txt</span></div><div class="line">adding: test.txt (deflated 35%)</div></pre></td></tr></table></figure>
+<h4 id="实例2：压缩率为1，压缩-test-txt-文件"><a href="#实例2：压缩率为1，压缩-test-txt-文件" class="headerlink" title="实例2：压缩率为1，压缩 test.txt 文件"></a>实例2：压缩率为1，压缩 test.txt 文件</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">zip -1 test.zip test.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># zip -1 test.zip test.txt</span></div><div class="line">adding: test.txt(deflated 35%)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;压缩率为1，最高压缩率，当然也是最慢的压缩方法。但上例压缩率依然为35，因为压缩文件为文本文件，压缩率基本不变。</p>
+<h4 id="实例3：递归压缩子目录"><a href="#实例3：递归压缩子目录" class="headerlink" title="实例3：递归压缩子目录"></a>实例3：递归压缩子目录</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">zip -r test.zip /<span class="built_in">test</span>/</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># zip -r test.zip /test/</span></div><div class="line">adding: <span class="built_in">test</span>/ (stored 0%)</div><div class="line">adding: <span class="built_in">test</span>/<span class="built_in">test</span>/ (stored 0%)</div><div class="line">adding: <span class="built_in">test</span>/test.txt (deflated 35%)</div></pre></td></tr></table></figure>
+<h4 id="实例4：删除已有-zip-文件中文件"><a href="#实例4：删除已有-zip-文件中文件" class="headerlink" title="实例4：删除已有 zip 文件中文件"></a>实例4：删除已有 zip 文件中文件</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">zip -d test.zip <span class="built_in">test</span>/test.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># zip -r test.zip test</span></div><div class="line">adding: <span class="built_in">test</span>/ (stored 0%)</div><div class="line">adding: <span class="built_in">test</span>/<span class="built_in">test</span>/ (stored 0%)</div><div class="line">adding: <span class="built_in">test</span>/test.txt (deflated 35%)</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># zip -d test.zip test/test.txt</span></div><div class="line">deleting: <span class="built_in">test</span>/test.txt</div></pre></td></tr></table></figure>
+<h4 id="实例5：向已有-zip-文件增加压缩文件"><a href="#实例5：向已有-zip-文件增加压缩文件" class="headerlink" title="实例5：向已有 zip 文件增加压缩文件"></a>实例5：向已有 zip 文件增加压缩文件</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">zip -m test.zip ./<span class="built_in">test</span>/test.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># zip -m test.zip ./test/test.txt</span></div><div class="line">adding: <span class="built_in">test</span>/test.txt (deflated 35%)</div></pre></td></tr></table></figure>
+<h4 id="实例6：排除指定文件不压缩"><a href="#实例6：排除指定文件不压缩" class="headerlink" title="实例6：排除指定文件不压缩"></a>实例6：排除指定文件不压缩</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">zip -r test.zip <span class="built_in">test</span>-x ./<span class="built_in">test</span>/test.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># zip -r test.zip test-x ./test/test.txt</span></div><div class="line">updating: <span class="built_in">test</span>/ (stored 0%)</div><div class="line">updating: <span class="built_in">test</span>/<span class="built_in">test</span>/ (stored 0%)</div><div class="line">updating: <span class="built_in">test</span>/test2.txt (deflated 63%)</div></pre></td></tr></table></figure>
+<h2 id="unzip-命令"><a href="#unzip-命令" class="headerlink" title="unzip 命令"></a>unzip 命令</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;unzip 用来解压 zip 压缩的压缩文件</p>
+<h3 id="1-命令格式-1"><a href="#1-命令格式-1" class="headerlink" title="1.命令格式"></a>1.命令格式</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">unzip [参数] [.zip文件] [目录]</div></pre></td></tr></table></figure>
+<h3 id="2-命令参数-1"><a href="#2-命令参数-1" class="headerlink" title="2.命令参数"></a>2.命令参数</h3><ul>
+<li><p>-c   将 解压缩的结果显示到屏幕上，并对字符做适当的转换。</p>
+</li>
+<li><p>-f   更 新现有的文件。</p>
+</li>
+<li><p>-l   显 示压缩文件内所包含的文件。</p>
+</li>
+<li><p>-p   与-c参数类似，会将解压缩的结果显示到屏幕上，但不会执行任 何的转换。</p>
+</li>
+<li><p>-t   检 查压缩文件是否正确。，但不解压。</p>
+</li>
+<li><p>-u   与-f参数类似，但是除了更新现有的文件外，也会将压缩文件中 的其他文件解压缩到目录中。</p>
+</li>
+<li><p>-v   执 行是时显示详细的信息。或查看压缩文件目录，但不解压。</p>
+</li>
+<li><p>-z   仅 显示压缩文件的备注文字。</p>
+</li>
+<li><p>-a   对 文本文件进行必要的字符转换。</p>
+</li>
+<li><p>-b   不 要对文本文件进行字符转换。</p>
+</li>
+<li><p>-C   压 缩文件中的文件名称区分大小写。</p>
+</li>
+<li><p>-j   不 处理压缩文件中原有的目录路径。</p>
+</li>
+<li><p>-L   将 压缩文件中的全部文件名改为小写。</p>
+</li>
+<li><p>-M   将 输出结果送到more程 序处理。</p>
+</li>
+<li><p>-n   解 压缩时不要覆盖原有的文件。</p>
+</li>
+<li><p>-o   不 必先询问用户，unzip执 行后覆盖原有文件。</p>
+</li>
+<li><p>-P&lt;密码&gt;   使 用zip的密码选项。</p>
+</li>
+<li><p>-q   执 行时不显示任何信息。</p>
+</li>
+<li><p>-s   将 文件名中的空白字符转换为底线字符。</p>
+</li>
+<li><p>-V   保 留VMS的文件版本信 息。</p>
+</li>
+<li><p>-X   解 压缩时同时回存文件原来的UID/GID。</p>
+</li>
+<li><p>[.zip文件]   指定.zip压缩文件。</p>
+</li>
+<li><p>[文件]   指定 要处理.zip压缩文 件中的哪些文件。</p>
+</li>
+<li><p>-d&lt;目录&gt;   指 定文件解压缩后所要存储的目录。</p>
+</li>
+<li><p>-x&lt;文件&gt;   指 定不要处理.zip压 缩文件中的哪些文件。</p>
+</li>
+<li><p>-Z   unzip -Z等 于执行zipinfo指 令。</p>
+</li>
+</ul>
+<h3 id="3-命令功能-1"><a href="#3-命令功能-1" class="headerlink" title="3.命令功能"></a>3.命令功能</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;unzip 为 zip 压缩文件的解压缩程序。</p>
+<h3 id="4-使用实例-1"><a href="#4-使用实例-1" class="headerlink" title="4.使用实例"></a>4.使用实例</h3><h4 id="实例1：解压缩-test-zip"><a href="#实例1：解压缩-test-zip" class="headerlink" title="实例1：解压缩 test.zip"></a>实例1：解压缩 test.zip</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">unzip test.zip</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># unzip test.zip</span></div><div class="line">Archive: test.zip</div><div class="line">creating: <span class="built_in">test</span>/</div><div class="line">creating: <span class="built_in">test</span>/<span class="built_in">test</span>/</div><div class="line">inflating: <span class="built_in">test</span>/test2.txt</div></pre></td></tr></table></figure>
+<h4 id="实例2：查看压缩文件目录及文件信息，并不解压"><a href="#实例2：查看压缩文件目录及文件信息，并不解压" class="headerlink" title="实例2：查看压缩文件目录及文件信息，并不解压"></a>实例2：查看压缩文件目录及文件信息，并不解压</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">unzip -v test.zip</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># unzip -v test.zip</span></div><div class="line">Archive: test.zip</div><div class="line">Length Method Size Cmpr Date Time CRC-32 Name</div><div class="line">-------- ------ ------- ---- --------------- -------- ----</div><div class="line">0 Stored 0 0% 10-08-2015 22:41 00000000 <span class="built_in">test</span>/</div><div class="line">0 Stored 0 0% 10-08-2015 22:24 00000000 <span class="built_in">test</span>/<span class="built_in">test</span>/</div><div class="line">2117 Defl:N 781 63% 10-08-2015 22:41 ef2699cd <span class="built_in">test</span>/test2.txt</div><div class="line">-------- ------- --- -------</div><div class="line">2117 781 63% 3 files</div></pre></td></tr></table></figure>
+<h3 id="其他应用"><a href="#其他应用" class="headerlink" title="其他应用"></a>其他应用</h3><h4 id="1-将压缩文件-test-zip-在指定目录-tmp-下解压，如果有相同的文件存在，要求-unzip-命令不覆盖原来的文件"><a href="#1-将压缩文件-test-zip-在指定目录-tmp-下解压，如果有相同的文件存在，要求-unzip-命令不覆盖原来的文件" class="headerlink" title="1.将压缩文件 test.zip 在指定目录 /tmp/ 下解压，如果有相同的文件存在，要求 unzip 命令不覆盖原来的文件"></a>1.将压缩文件 test.zip 在指定目录 /tmp/ 下解压，如果有相同的文件存在，要求 unzip 命令不覆盖原来的文件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@mysql <span class="built_in">test</span>]<span class="comment"># unzip -n test.zip -d /tmp</span></div></pre></td></tr></table></figure>
+<h4 id="2-将压缩文件-test-zip-在指定目录-tmp-下解压缩，如果有相同文件存在，要求-unzip-命令-覆盖原来的文件"><a href="#2-将压缩文件-test-zip-在指定目录-tmp-下解压缩，如果有相同文件存在，要求-unzip-命令-覆盖原来的文件" class="headerlink" title="2.将压缩文件 test.zip 在指定目录 /tmp/ 下解压缩，如果有相同文件存在，要求 unzip 命令 覆盖原来的文件"></a>2.将压缩文件 test.zip 在指定目录 /tmp/ 下解压缩，如果有相同文件存在，要求 unzip 命令 覆盖原来的文件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@mysql <span class="built_in">test</span>]<span class="comment"># unzip -o test.zip -d /tmp</span></div></pre></td></tr></table></figure>
+<h4 id="使用-unzip-“-zip”-解压当前目录下的所有-zip-文件"><a href="#使用-unzip-“-zip”-解压当前目录下的所有-zip-文件" class="headerlink" title="使用 unzip “*.zip” 解压当前目录下的所有 zip 文件"></a>使用 unzip “*.zip” 解压当前目录下的所有 zip 文件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls *.zip |xargs -nl unzip</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux命令/" rel="tag"># Linux命令</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/10/Linux 命令/25. Linux 文件属性详解/" rel="next" title="Linux 文件属性详解">
+                <i class="fa fa-chevron-left"></i> Linux 文件属性详解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/10/Linux 命令/35. Linux 命令- df/" rel="prev" title="Linux 命令- df">
+                Linux 命令- df <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-命令-zip-和-unzip"><span class="nav-number">1.</span> <span class="nav-text">Linux 命令- zip 和 unzip</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#zip-命令"><span class="nav-number">1.1.</span> <span class="nav-text">zip 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-命令格式"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.命令格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-命令参数"><span class="nav-number">1.1.2.</span> <span class="nav-text">2.命令参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-命令功能"><span class="nav-number">1.1.3.</span> <span class="nav-text">3.命令功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-使用实例"><span class="nav-number">1.1.4.</span> <span class="nav-text">4.使用实例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#实例1：将-test-txt-文件压缩为-test-zip-文件"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">实例1：将 test.txt 文件压缩为 test.zip 文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例2：压缩率为1，压缩-test-txt-文件"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">实例2：压缩率为1，压缩 test.txt 文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例3：递归压缩子目录"><span class="nav-number">1.1.4.3.</span> <span class="nav-text">实例3：递归压缩子目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例4：删除已有-zip-文件中文件"><span class="nav-number">1.1.4.4.</span> <span class="nav-text">实例4：删除已有 zip 文件中文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例5：向已有-zip-文件增加压缩文件"><span class="nav-number">1.1.4.5.</span> <span class="nav-text">实例5：向已有 zip 文件增加压缩文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例6：排除指定文件不压缩"><span class="nav-number">1.1.4.6.</span> <span class="nav-text">实例6：排除指定文件不压缩</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#unzip-命令"><span class="nav-number">1.2.</span> <span class="nav-text">unzip 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-命令格式-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.命令格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-命令参数-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.命令参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-命令功能-1"><span class="nav-number">1.2.3.</span> <span class="nav-text">3.命令功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-使用实例-1"><span class="nav-number">1.2.4.</span> <span class="nav-text">4.使用实例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#实例1：解压缩-test-zip"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">实例1：解压缩 test.zip</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例2：查看压缩文件目录及文件信息，并不解压"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">实例2：查看压缩文件目录及文件信息，并不解压</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他应用"><span class="nav-number">1.2.5.</span> <span class="nav-text">其他应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-将压缩文件-test-zip-在指定目录-tmp-下解压，如果有相同的文件存在，要求-unzip-命令不覆盖原来的文件"><span class="nav-number">1.2.5.1.</span> <span class="nav-text">1.将压缩文件 test.zip 在指定目录 /tmp/ 下解压，如果有相同的文件存在，要求 unzip 命令不覆盖原来的文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-将压缩文件-test-zip-在指定目录-tmp-下解压缩，如果有相同文件存在，要求-unzip-命令-覆盖原来的文件"><span class="nav-number">1.2.5.2.</span> <span class="nav-text">2.将压缩文件 test.zip 在指定目录 /tmp/ 下解压缩，如果有相同文件存在，要求 unzip 命令 覆盖原来的文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-unzip-“-zip”-解压当前目录下的所有-zip-文件"><span class="nav-number">1.2.5.3.</span> <span class="nav-text">使用 unzip “*.zip” 解压当前目录下的所有 zip 文件</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

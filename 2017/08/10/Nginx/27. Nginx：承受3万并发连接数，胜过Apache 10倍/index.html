@@ -1,0 +1,871 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Nginx,LNMP," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Nginx：承受3万并发连接数，胜过Apache 10倍&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Nginx是目前比较重要的开源性负载均衡技术，新浪、网易、六间房等很多网站都将Nginx部署进自己的网站系统架构，并解决部分问题。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;本文是关于搭建“Ng">
+<meta name="keywords" content="Nginx,LNMP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx：承受3万并发连接数，胜过Apache 10倍">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/08/10/Nginx/27. Nginx：承受3万并发连接数，胜过Apache 10倍/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="Nginx：承受3万并发连接数，胜过Apache 10倍&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Nginx是目前比较重要的开源性负载均衡技术，新浪、网易、六间房等很多网站都将Nginx部署进自己的网站系统架构，并解决部分问题。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;本文是关于搭建“Ng">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-08-13T17:22:08.232Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nginx：承受3万并发连接数，胜过Apache 10倍">
+<meta name="twitter:description" content="Nginx：承受3万并发连接数，胜过Apache 10倍&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Nginx是目前比较重要的开源性负载均衡技术，新浪、网易、六间房等很多网站都将Nginx部署进自己的网站系统架构，并解决部分问题。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;本文是关于搭建“Ng">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/08/10/Nginx/27. Nginx：承受3万并发连接数，胜过Apache 10倍/"/>
+
+
+
+
+
+  <title>Nginx：承受3万并发连接数，胜过Apache 10倍 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/27. Nginx：承受3万并发连接数，胜过Apache 10倍/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Nginx：承受3万并发连接数，胜过Apache 10倍</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Nginx：承受3万并发连接数，胜过Apache-10倍"><a href="#Nginx：承受3万并发连接数，胜过Apache-10倍" class="headerlink" title="Nginx：承受3万并发连接数，胜过Apache 10倍"></a>Nginx：承受3万并发连接数，胜过Apache 10倍</h1><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Nginx是目前比较重要的开源性负载均衡技术，新浪、网易、六间房等很多网站都将Nginx部署进自己的网站系统架构，并解决部分问题。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;本文是关于搭建“Nginx + PHP（FastCGI）”Web服务器的第4篇文章。本系列文章作为国内最早详细介绍 Nginx + PHP 安装、配置、使用的资料之一，为推动 Nginx 在国内的发展产生了积极的作用。</p>
+<h2 id="众网站纷纷重视Nginx"><a href="#众网站纷纷重视Nginx" class="headerlink" title="众网站纷纷重视Nginx"></a>众网站纷纷重视Nginx</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这是一篇关于Nginx 0.7.x系列版本的文章，安装、配置方式与第3篇文章相差不大，但配置参数有不同。Nginx 0.7.x系列版本虽然为开发版，但在很多大型网站的生产环境中已经使用。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Nginx (“engine x”) 是一个高性能的 HTTP 和反向代理服务器，也是一个 IMAP/POP3/SMTP 代理服务器。 Nginx 是由 Igor Sysoev 为俄罗斯访问量第二的 Rambler.ru 站点开发的，它已经在该站点运行超过两年半了。Igor 将源代码以类BSD许可证的形式发布。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Nginx 超越 Apache 的高性能和稳定性，使得国内使用 Nginx 作为 Web 服务器的网站也越来越多，其中包括新浪博客、新浪播客、网易新闻等门户网站频道，六间房、56.com等视频分享网站，Discuz!官方论坛、水木社区等知名论坛，豆瓣、YUPOO相册、海内SNS、迅雷在线等新兴Web 2.0网站。</p>
+<h2 id="Nginx：承受3万并发连接数，胜过Apache-10倍-1"><a href="#Nginx：承受3万并发连接数，胜过Apache-10倍-1" class="headerlink" title="Nginx：承受3万并发连接数，胜过Apache 10倍"></a>Nginx：承受3万并发连接数，胜过Apache 10倍</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在高并发连接的情况下，Nginx是Apache服务器不错的替代品。Nginx同时也可以作为7层负载均衡服务器来使用。根据我的测试结果，Nginx 0.7.14 + PHP 5.2.6 (FastCGI) 可以承受3万以上的并发连接数，相当于同等环境下Apache的10倍。<br>根据我的经验，4GB内存的服务器+Apache（prefork模式）一般只能处理3000个并发连接，因为它们将占用3GB以上的内存，还得为系统预留1GB的内存。我曾经就有两台Apache服务器，因为在配置文件中设置的MaxClients为4000，当Apache并发连接数达到3800时，导致服务器内存和Swap空间用满而崩溃。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;而这台 Nginx 0.7.14 + PHP 5.2.6 (FastCGI) 服务器在3万并发连接下，开启的10个 Nginx进程消耗150M内存（15M<em>10=150M），开启的64个php-cgi进程消耗1280M内存 （20M</em>64=1280M），加上系统自身消耗的内存，总共消耗不到2GB内存。如果服务器内存较小，完全可以只开启25个php-cgi进程，这样php-cgi消耗的总内存数才500M。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在3万并发连接下，访问Nginx 0.7.14 + PHP 5.2.6 (FastCGI) 服务器的PHP程序，仍然速度飞快。下图为Nginx的状态监控页面，显示的活动连接数为28457（关于Nginx的监控页配置，会在本文接下来所给出的Nginx配置文件中写明）：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;生产环境下的两台Nginx + PHP5（FastCGI）服务器，跑多个一般复杂的纯PHP动态程序，单台Nginx + PHP5（FastCGI）服务器跑PHP动态程序的处理能力已经超过“700次请求/秒”，相当于每天可以承受6000万（700<em>60</em>60*24=60480000）的访问量（更多信息见此），而服务器的系统负载也不高：</p>
+<h2 id="如何获取相关开源程序？"><a href="#如何获取相关开源程序？" class="headerlink" title="如何获取相关开源程序？"></a>如何获取相关开源程序？</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安装步骤：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;（系统要求：Linux 2.6+ 内核，本文中的Linux操作系统为CentOS 5.1，另在RedHat AS4上也安装成功）</p>
+<h3 id="一、获取相关开源程序："><a href="#一、获取相关开源程序：" class="headerlink" title="一、获取相关开源程序："></a>一、获取相关开源程序：</h3><ol>
+<li>利用CentOS Linux系统自带的yum命令安装、升级所需的程序库（RedHat等其他Linux发行版可从安装光盘中找到这些程序库的RPM包，进行安装）：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo -s</div><div class="line">LANG=C</div><div class="line">yum -y install gcc gcc-c++ autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses ncurses-devel curl curl-devel</div></pre></td></tr></table></figure>
+<ol>
+<li>RedHat等其他Linux发行版可从安装光盘中找到这些程序库的RPM包（事先可通过类似“rpm -qa | grep libjpeg”的命令查看所需的RPM包是否存在，通常是“xxx-devel”不存在，需要安装）。RedHat可以直接利用CentOS的RPM包安装，以下是RPM包下载网址：</li>
+</ol>
+<ul>
+<li>RedHat AS4 &amp; CentOS 4<br><a href="http://mirror.be10.com/centos/4/os/i386/CentOS/RPMS/" target="_blank" rel="external">http://mirror.be10.com/centos/4/os/i386/CentOS/RPMS/</a><br><a href="http://mirror.be10.com/centos/4/os/x86_64/CentOS/RPMS/" target="_blank" rel="external">http://mirror.be10.com/centos/4/os/x86_64/CentOS/RPMS/</a> </li>
+<li>RedHat AS5 &amp; CentOS 5<br><a href="http://mirror.be10.com/centos/5/os/i386/CentOS/" target="_blank" rel="external">http://mirror.be10.com/centos/5/os/i386/CentOS/</a><br><a href="http://mirror.be10.com/centos/5/os/x86_64/CentOS/" target="_blank" rel="external">http://mirror.be10.com/centos/5/os/x86_64/CentOS/</a> </li>
+<li>RPM包搜索网站<br><a href="http://rpm.pbone.net/" target="_blank" rel="external">http://rpm.pbone.net/</a><br><a href="http://www.rpmfind.net/" target="_blank" rel="external">http://www.rpmfind.net/</a></li>
+</ul>
+<ol>
+<li>下载程序源码包：</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;本文中提到的所有开源软件为截止到2008年8月28日的最新稳定版。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">mkdir -p /data0/software</div><div class="line"><span class="built_in">cd</span> /data0/software</div><div class="line">wget http://sysoev.ru/nginx/nginx-0.7.14.tar.gz</div><div class="line">wget http://www.php.net/get/php-5.2.6.tar.gz/from/this/mirror</div><div class="line">wget http://php-fpm.anight.org/downloads/head/php-5.2.6-fpm-0.5.8.diff.gz</div><div class="line"><span class="comment">#wget http://dev.mysql.com/get/Downloads/MySQL-5.1/mysql-5.1.26-rc.tar.gz/from/http://mirror.x10.com/mirror/mysql/</span></div><div class="line">wget linux/mysql/mysql-5.1.26-rc.tar.gz<span class="string">"&gt;http://blog.s135.com/soft/linux/mysql/mysql-5.1.26-rc.tar.gz</span></div><div class="line"><span class="string">wget http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.12.tar.gz</span></div><div class="line"><span class="string">#wget "</span>http://downloads.sourceforge.net/mcrypt/libmcrypt-2.5.8.tar.gz?modtime=1171868460&amp;big_mirror=0<span class="string">"</span></div><div class="line"><span class="string">wget http://mirror.optus.net/sourceforge/m/mc/mcrypt/libmcrypt-2.5.8.tar.gz</span></div><div class="line"><span class="string">#wget "</span>http://downloads.sourceforge.net/mcrypt/mcrypt-2.6.7.tar.gz?modtime=1194463373&amp;big_mirror=0<span class="string">"</span></div><div class="line"><span class="string">wget http://mirror.optus.net/sourceforge/m/mc/mcrypt/mcrypt-2.6.7.tar.gz</span></div><div class="line"><span class="string">wget http://pecl.php.net/get/memcache-2.2.3.tgz</span></div><div class="line"><span class="string">#wget "</span>http://downloads.sourceforge.net/mhash/mhash-0.9.9.tar.gz?modtime=1175740843&amp;big_mirror=0<span class="string">"</span></div><div class="line"><span class="string">wget http://mirror.optus.net/sourceforge/m/mh/mhash/mhash-0.9.9.tar.gz</span></div><div class="line"><span class="string">wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-7.7.tar.gz</span></div><div class="line"><span class="string">wget http://bart.eaccelerator.net/source/0.9.5.3/eaccelerator-0.9.5.3.tar.bz2</span></div></pre></td></tr></table></figure>
+<h3 id="二、PHP5安装、配置内容-安装PHP-5-2-6（FastCGI模式）"><a href="#二、PHP5安装、配置内容-安装PHP-5-2-6（FastCGI模式）" class="headerlink" title="二、PHP5安装、配置内容,安装PHP 5.2.6（FastCGI模式）"></a>二、PHP5安装、配置内容,安装PHP 5.2.6（FastCGI模式）</h3><ol>
+<li>编译安装PHP 5.2.6所需的支持库：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">tar zxvf libiconv-1.12.tar.gz</div><div class="line"><span class="built_in">cd</span> libiconv-1.12/</div><div class="line">./configure --prefix=/usr/<span class="built_in">local</span></div><div class="line">make</div><div class="line">make install</div><div class="line"><span class="built_in">cd</span> ../tar zxvf libmcrypt-2.5.8.tar.gz</div><div class="line"><span class="built_in">cd</span> libmcrypt-2.5.8/</div><div class="line">./configure</div><div class="line">make</div><div class="line">make install</div><div class="line">/sbin/ldconfig</div><div class="line"><span class="built_in">cd</span> libltdl/</div><div class="line">./configure --<span class="built_in">enable</span>-ltdl-install</div><div class="line">make</div><div class="line">make install</div><div class="line"><span class="built_in">cd</span> ../../</div><div class="line">tar zxvf mhash-0.9.9.tar.gz</div><div class="line"><span class="built_in">cd</span> mhash-0.9.9/</div><div class="line">./configure</div><div class="line">make</div><div class="line">make install</div><div class="line"><span class="built_in">cd</span> ../</div><div class="line">cp /usr/<span class="built_in">local</span>/lib/libmcrypt.* /usr/lib</div><div class="line">ln -s /usr/<span class="built_in">local</span>/lib/libmhash.so.2 /usr/lib/libmhash.so.2</div><div class="line">tar zxvf mcrypt-2.6.7.tar.gz</div><div class="line"><span class="built_in">cd</span> mcrypt-2.6.7/</div><div class="line">./configure</div><div class="line">make</div><div class="line">make install</div><div class="line"><span class="built_in">cd</span> ../</div></pre></td></tr></table></figure>
+<ol>
+<li>编译安装MySQL 5.1.26-rc</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">/usr/sbin/groupadd mysql</div><div class="line">/usr/sbin/useradd -g mysql mysql</div><div class="line">tar zxvf mysql-5.1.26-rc.tar.gz</div><div class="line"><span class="built_in">cd</span> mysql-5.1.26-rc/</div><div class="line">./configure --prefix=/usr/<span class="built_in">local</span>/webserver/mysql/ --<span class="built_in">enable</span>-assembler --with-extra-charsets=complex --<span class="built_in">enable</span>-thread-safe-client --with-big-tables --with-readline --with-ssl --with-embedded-server --<span class="built_in">enable</span>-local-infile</div><div class="line">make &amp;&amp; make install</div><div class="line">chmod +w /usr/<span class="built_in">local</span>/webserver/mysql</div><div class="line">chown -R mysql:mysql /usr/<span class="built_in">local</span>/webserver/mysql</div><div class="line">cp support-files/my-medium.cnf /usr/<span class="built_in">local</span>/webserver/mysql/my.cnf</div><div class="line"><span class="built_in">cd</span> ../</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;附：以下为附加步骤，如果你想在这台服务器上运行MySQL数据库，则执行以下两步。如果你只是希望让PHP支持MySQL扩展库，能够连接其他服务器上的MySQL数据库，那么，以下两步无需执行。</p>
+<ul>
+<li>以mysql用户帐号的身份建立数据表：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/<span class="built_in">local</span>/webserver/mysql/bin/mysql_install_db --defaults-file=/usr/<span class="built_in">local</span>/webserver/mysql/my.cnf --basedir=/usr/<span class="built_in">local</span>/webserver/mysql --datadir=/usr/<span class="built_in">local</span>/webserver/mysql/data --user=mysql --pid-file=/usr/<span class="built_in">local</span>/webserver/mysql/mysql.pid --skip-locking --port=3306 --socket=/tmp/mysql.sock</div></pre></td></tr></table></figure>
+<ul>
+<li>启动MySQL（最后的&amp;表示在后台运行）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/bin/sh /usr/local/webserver/mysql/bin/mysqld_safe --defaults-file=/usr/local/webserver/mysql/my.cnf &amp;</div></pre></td></tr></table></figure>
+<ol>
+<li>编译安装PHP（FastCGI模式）</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">tar zxvf php-5.2.6.tar.gz</div><div class="line">gzip -<span class="built_in">cd</span> php-5.2.6-fpm-0.5.8.diff.gz | patch -d php-5.2.6 -p1</div><div class="line"><span class="built_in">cd</span> php-5.2.6/</div><div class="line">./configure --prefix=/usr/<span class="built_in">local</span>/webserver/php --with-config-file-path=/usr/<span class="built_in">local</span>/webserver/php/etc --with-mysql=/usr/<span class="built_in">local</span>/webserver/mysql --with-mysqli=/usr/<span class="built_in">local</span>/webserver/mysql/bin/mysql_config --with-iconv-dir=/usr/<span class="built_in">local</span> --with-freetype-dir --with-jpeg-dir --with-png-dir --with-zlib --with-libxml-dir=/usr --<span class="built_in">enable</span>-xml --<span class="built_in">disable</span>-rpath --<span class="built_in">enable</span>-discard-path --<span class="built_in">enable</span>-safe-mode --<span class="built_in">enable</span>-bcmath --<span class="built_in">enable</span>-shmop --<span class="built_in">enable</span>-sysvsem --<span class="built_in">enable</span>-inline-optimization --with-curl --with-curlwrappers --<span class="built_in">enable</span>-mbregex --<span class="built_in">enable</span>-fastcgi --<span class="built_in">enable</span>-fpm --<span class="built_in">enable</span>-force-cgi-redirect --<span class="built_in">enable</span>-mbstring --with-mcrypt --with-gd --<span class="built_in">enable</span>-gd-native-ttf --with-openssl</div><div class="line">sed -i <span class="string">'s#-lz -lm -lxml2 -lz -lm -lxml2 -lz -lm -lcrypt#&amp; -liconv#'</span> Makefile</div><div class="line">make</div><div class="line">make install</div><div class="line">cp php.ini-dist /usr/<span class="built_in">local</span>/webserver/php/etc/php.ini</div><div class="line"><span class="built_in">cd</span> ../</div></pre></td></tr></table></figure>
+<ol>
+<li>编译安装PHP5扩展模块</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">tar zxvf memcache-2.2.3.tgz</div><div class="line"><span class="built_in">cd</span> memcache-2.2.3/</div><div class="line">/usr/<span class="built_in">local</span>/webserver/php/bin/phpize</div><div class="line">./configure --with-php-config=/usr/<span class="built_in">local</span>/webserver/php/bin/php-config</div><div class="line">make</div><div class="line">make install</div><div class="line"><span class="built_in">cd</span> ../tar jxvf eaccelerator-0.9.5.3.tar.bz2</div><div class="line"><span class="built_in">cd</span> eaccelerator-0.9.5.3/</div><div class="line">/usr/<span class="built_in">local</span>/webserver/php/bin/phpize</div><div class="line">./configure --<span class="built_in">enable</span>-eaccelerator=shared --with-php-config=/usr/<span class="built_in">local</span>/webserver/php/bin/php-config</div><div class="line">make</div><div class="line">make install</div><div class="line"><span class="built_in">cd</span> ../</div></pre></td></tr></table></figure>
+<ol>
+<li>修改php.ini文件</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;手工修改：查找/usr/local/webserver/php/etc/php.ini中的</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">extension_dir = <span class="string">"./"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改为</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">extension_dir = <span class="string">"/usr/local/webserver/php/lib/php/extensions/no-debug-non-zts-20060613/"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;并在此行后增加以下几行，然后保存：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">extension = <span class="string">"memcache.so"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;再查找</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">output_buffering = Off</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改为</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">output_buffering = On</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;自动修改：若嫌手工修改麻烦，可执行以下shell命令，自动完成对php.ini文件的修改：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sed -i <span class="string">'s#extension_dir = "./"#extension_dir = "/usr/local/webserver/php/lib/php/extensions/no-debug-non-zts-20060613/"/nextension = "memcache.so"/n#'</span> /usr/<span class="built_in">local</span>/webserver/php/etc/php.ini</div><div class="line">sed -i <span class="string">'s#output_buffering = Off#output_buffering = On#'</span> /usr/<span class="built_in">local</span>/webserver/php/etc/php.ini</div><div class="line">    6、配置eAccelerator加速PHP：</div><div class="line">mkdir -p /usr/<span class="built_in">local</span>/webserver/eaccelerator_cache</div><div class="line">vi /usr/<span class="built_in">local</span>/webserver/php/etc/php.ini</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;按shift+g键跳到配置文件的最末尾，加上以下配置信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">[eaccelerator]</div><div class="line">zend_extension=<span class="string">"/usr/local/webserver/php/lib/php/extensions/no-debug-non-zts-20060613/eaccelerator.so"</span></div><div class="line">eaccelerator.shm_size=<span class="string">"128"</span></div><div class="line">eaccelerator.cache_dir=<span class="string">"/usr/local/webserver/eaccelerator_cache"</span></div><div class="line">eaccelerator.enable=<span class="string">"1"</span></div><div class="line">eaccelerator.optimizer=<span class="string">"1"</span></div><div class="line">eaccelerator.check_mtime=<span class="string">"1"</span></div><div class="line">eaccelerator.debug=<span class="string">"0"</span></div><div class="line">eaccelerator.filter=<span class="string">""</span></div><div class="line">eaccelerator.shm_max=<span class="string">"0"</span></div><div class="line">eaccelerator.shm_ttl=<span class="string">"300"</span></div><div class="line">eaccelerator.shm_prune_period=<span class="string">"120"</span></div><div class="line">eaccelerator.shm_only=<span class="string">"0"</span></div><div class="line">eaccelerator.compress=<span class="string">"1"</span></div><div class="line">eaccelerator.compress_level=<span class="string">"9"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vi /etc/sysctl.conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输入以下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">kernel.shmmax = 134217728</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后执行以下命令使配置生效：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/sbin/sysctl -p</div></pre></td></tr></table></figure>
+<ol>
+<li>创建www用户和组，以及供blog.s135.com和www.s135.com两个虚拟主机使用的目录：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">/usr/sbin/groupadd www -g 48</div><div class="line">/usr/sbin/useradd -u 48 -g www www</div><div class="line">mkdir -p /data0/htdocs/blog</div><div class="line">chmod +w /data0/htdocs/blog</div><div class="line">chown -R www:www /data0/htdocs/blog</div><div class="line">mkdir -p /data0/htdocs/www</div><div class="line">chmod +w /data0/htdocs/www</div><div class="line">chown -R www:www /data0/htdocs/www</div></pre></td></tr></table></figure>
+<ol>
+<li>创建php-fpm配置文件（php-fpm是为PHP打的一个FastCGI管理补丁，可以平滑变更php.ini配置而无需重启php-cgi）：</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在/usr/local/webserver/php/etc/目录中创建php-fpm.conf文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">rm -f /usr/<span class="built_in">local</span>/webserver/php/etc/php-fpm.conf</div><div class="line">vi /usr/<span class="built_in">local</span>/webserver/php/etc/php-fpm.conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输入以下内容（如果安装 Nginx + PHP 用于程序调试，请将</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;value name=<span class="string">"display_errors"</span>&gt;0&lt;/value&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;改为</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;value name=<span class="string">"display_errors"</span>&gt;1&lt;/value&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以便显示PHP错误信息，否则，Nginx 会报状态为500的空白错误页）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div></pre></td><td class="code"><pre><div class="line">All relative paths <span class="keyword">in</span> this config are relative to php<span class="string">'s install prefix </span></div><div class="line"><span class="string">&lt;section name="global_options"&gt;</span></div><div class="line"><span class="string">Pid file  </span></div><div class="line"><span class="string">&lt;value name="pid_file"&gt;/usr/local/webserver/php/logs/php-fpm.pid&lt;/value&gt;</span></div><div class="line"><span class="string">Error log file  </span></div><div class="line"><span class="string">&lt;value name="error_log"&gt;/usr/local/webserver/php/logs/php-fpm.log&lt;/value&gt;</span></div><div class="line"><span class="string">Log level  </span></div><div class="line"><span class="string">&lt;value name="log_level"&gt;notice&lt;/value&gt;</span></div><div class="line"><span class="string">When this amount of php processes exited with SIGSEGV or SIGBUS ...  </span></div><div class="line"><span class="string">&lt;value name="emergency_restart_threshold"&gt;10&lt;/value&gt;</span></div><div class="line"><span class="string">... in a less than this interval of time, a graceful restart will be initiated.  </span></div><div class="line"><span class="string">Useful to work around accidental curruptions in accelerator'</span>s shared memory.  </div><div class="line">&lt;value name=<span class="string">"emergency_restart_interval"</span>&gt;1m&lt;/value&gt;</div><div class="line">Time <span class="built_in">limit</span> on waiting child<span class="string">'s reaction on signals from master  </span></div><div class="line"><span class="string">&lt;value name="process_control_timeout"&gt;5s&lt;/value&gt;</span></div><div class="line"><span class="string">Set to '</span>no<span class="string">' to debug fpm  </span></div><div class="line"><span class="string">&lt;value name="daemonize"&gt;yes&lt;/value&gt;</span></div><div class="line"><span class="string">&lt;/section&gt;</span></div><div class="line"><span class="string">&lt;workers&gt;</span></div><div class="line"><span class="string">&lt;section name="pool"&gt;</span></div><div class="line"><span class="string">Name of pool. Used in logs and stats.  </span></div><div class="line"><span class="string">&lt;value name="name"&gt;default&lt;/value&gt;</span></div><div class="line"><span class="string">Address to accept fastcgi requests on.  </span></div><div class="line"><span class="string">Valid syntax is '</span>ip.ad.re.ss:port<span class="string">' or just '</span>port<span class="string">' or '</span>/path/to/unix/socket<span class="string">'  </span></div><div class="line"><span class="string">&lt;value name="listen_address"&gt;127.0.0.1:9000&lt;/value&gt;</span></div><div class="line"><span class="string">&lt;value name="listen_options"&gt;</span></div><div class="line"><span class="string">Set listen(2) backlog  </span></div><div class="line"><span class="string">&lt;value name="backlog"&gt;-1&lt;/value&gt;</span></div><div class="line"><span class="string">Set permissions for unix socket, if one used.  </span></div><div class="line"><span class="string">In Linux read/write permissions must be set in order to allow connections from web server.  </span></div><div class="line"><span class="string">Many BSD-derrived systems allow connections regardless of permissions.  </span></div><div class="line"><span class="string">&lt;value name="owner"&gt;&lt;/value&gt;</span></div><div class="line"><span class="string">&lt;value name="group"&gt;&lt;/value&gt;</span></div><div class="line"><span class="string">&lt;value name="mode"&gt;0666&lt;/value&gt;</span></div><div class="line"><span class="string">&lt;/value&gt;</span></div><div class="line"><span class="string">Additional php.ini defines, specific to this pool of workers.  </span></div><div class="line"><span class="string">&lt;value name="php_defines"&gt;</span></div><div class="line"><span class="string">&lt;value name="sendmail_path"&gt;/usr/sbin/sendmail -t -i&lt;/value&gt;</span></div><div class="line"><span class="string">&lt;value name="display_errors"&gt;0&lt;/value&gt;</span></div><div class="line"><span class="string">&lt;/value&gt;</span></div><div class="line"><span class="string">Unix user of processes  </span></div><div class="line"><span class="string">&lt;value name="user"&gt;www&lt;/value&gt;</span></div><div class="line"><span class="string">Unix group of processes  </span></div><div class="line"><span class="string">&lt;value name="group"&gt;www&lt;/value&gt;</span></div><div class="line"><span class="string">Process manager settings  </span></div><div class="line"><span class="string">&lt;value name="pm"&gt;</span></div><div class="line"><span class="string">Sets style of controling worker process count.  </span></div><div class="line"><span class="string">Valid values are '</span>static<span class="string">' and '</span>apache-like<span class="string">'  </span></div><div class="line"><span class="string">&lt;value name="style"&gt;static&lt;/value&gt;</span></div><div class="line"><span class="string">Sets the limit on the number of simultaneous requests that will be served.  </span></div><div class="line"><span class="string">Equivalent to Apache MaxClients directive.  </span></div><div class="line"><span class="string">Equivalent to PHP_FCGI_CHILDREN environment in original php.fcgi  </span></div><div class="line"><span class="string">Used with any pm_style.  </span></div><div class="line"><span class="string">&lt;value name="max_children"&gt;200&lt;/value&gt;</span></div><div class="line"><span class="string">Settings group for '</span>apache-like<span class="string">' pm style  </span></div><div class="line"><span class="string">&lt;value name="apache_like"&gt;</span></div><div class="line"><span class="string">Sets the number of server processes created on startup.  </span></div><div class="line"><span class="string">Used only when '</span>apache-like<span class="string">' pm_style is selected  </span></div><div class="line"><span class="string">&lt;value name="StartServers"&gt;20&lt;/value&gt;</span></div><div class="line"><span class="string">Sets the desired minimum number of idle server processes.  </span></div><div class="line"><span class="string">Used only when '</span>apache-like<span class="string">' pm_style is selected  </span></div><div class="line"><span class="string">&lt;value name="MinSpareServers"&gt;5&lt;/value&gt;</span></div><div class="line"><span class="string">Sets the desired maximum number of idle server processes.  </span></div><div class="line"><span class="string">Used only when '</span>apache-like<span class="string">' pm_style is selected  </span></div><div class="line"><span class="string">&lt;value name="MaxSpareServers"&gt;250&lt;/value&gt;</span></div><div class="line"><span class="string">&lt;/value&gt;</span></div><div class="line"><span class="string">&lt;/value&gt;</span></div><div class="line"><span class="string">Time limit on waiting execution of single request  </span></div><div class="line"><span class="string">Should be used when '</span>max_execution_time<span class="string">' ini option does not terminate execution for some reason  </span></div><div class="line"><span class="string">&lt;value name="request_execution_timeout"&gt;31s&lt;/value&gt;</span></div><div class="line"><span class="string">Set open file desc rlimit  </span></div><div class="line"><span class="string">&lt;value name="rlimit_files"&gt;51200&lt;/value&gt;</span></div><div class="line"><span class="string">Set max core size rlimit  </span></div><div class="line"><span class="string">&lt;value name="rlimit_core"&gt;0&lt;/value&gt;</span></div><div class="line"><span class="string">Chroot to this directory at the start  </span></div><div class="line"><span class="string">&lt;value name="chroot"&gt;&lt;/value&gt;</span></div><div class="line"><span class="string">Chdir to this directory at the start  </span></div><div class="line"><span class="string">&lt;value name="chdir"&gt;&lt;/value&gt;</span></div><div class="line"><span class="string">Redirect workers'</span> stdout and stderr into main error <span class="built_in">log</span>.  </div><div class="line">If not <span class="built_in">set</span>, they will be redirected to /dev/null, according to FastCGI specs  </div><div class="line">&lt;value name=<span class="string">"catch_workers_output"</span>&gt;yes&lt;/value&gt;</div><div class="line">How much requests each process should execute before respawn.  </div><div class="line">Useful to work around memory leaks <span class="keyword">in</span> 3rd party libraries.  </div><div class="line">For endless request processing please specify 0  </div><div class="line">Equivalent to PHP_FCGI_MAX_REQUESTS  </div><div class="line">&lt;value name=<span class="string">"max_requests"</span>&gt;51200&lt;/value&gt;</div><div class="line">Comma separated list of ipv4 addresses of FastCGI clients that allowed to connect.  </div><div class="line">Equivalent to FCGI_WEB_SERVER_ADDRS environment <span class="keyword">in</span> original php.fcgi (5.2.2+)  </div><div class="line">Makes sense only with AF_INET listening socket.  </div><div class="line">&lt;value name=<span class="string">"allowed_clients"</span>&gt;127.0.0.1&lt;/value&gt;</div><div class="line">Pass environment variables like LD_LIBRARY_PATH  </div><div class="line">All <span class="variable">$VARIABLEs</span> are taken from current environment  </div><div class="line">&lt;value name=<span class="string">"environment"</span>&gt;</div><div class="line">&lt;value name=<span class="string">"HOSTNAME"</span>&gt;<span class="variable">$HOSTNAME</span>&lt;/value&gt;</div><div class="line">&lt;value name=<span class="string">"PATH"</span>&gt;/usr/<span class="built_in">local</span>/bin:/usr/bin:/bin&lt;/value&gt;</div><div class="line">&lt;value name=<span class="string">"TMP"</span>&gt;/tmp&lt;/value&gt;</div><div class="line">&lt;value name=<span class="string">"TMPDIR"</span>&gt;/tmp&lt;/value&gt;</div><div class="line">&lt;value name=<span class="string">"TEMP"</span>&gt;/tmp&lt;/value&gt;</div><div class="line">&lt;value name=<span class="string">"OSTYPE"</span>&gt;<span class="variable">$OSTYPE</span>&lt;/value&gt;</div><div class="line">&lt;value name=<span class="string">"MACHTYPE"</span>&gt;<span class="variable">$MACHTYPE</span>&lt;/value&gt;</div><div class="line">&lt;value name=<span class="string">"MALLOC_CHECK_"</span>&gt;2&lt;/value&gt;</div><div class="line">&lt;/value&gt;</div><div class="line">&lt;/section&gt;</div><div class="line">&lt;/workers&gt;</div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure>
+<ol>
+<li>启动php-cgi进程，监听127.0.0.1的9000端口，进程数为200（如果服务器内存小于3GB，可以只开启64个进程），用户为www：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">ulimit</span> -SHn 51200</div><div class="line">/usr/<span class="built_in">local</span>/webserver/php/sbin/php-fpm start</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注：/usr/local/webserver/php/sbin/php-fpm还有其他参数，包括：start|stop|quit|restart|reload|logrotate，修改php.ini后不重启php-cgi，重新加载  配置文件使用reload。</p>
+<h2 id="三、安装Nginx-0-7-14"><a href="#三、安装Nginx-0-7-14" class="headerlink" title="三、安装Nginx 0.7.14"></a>三、安装Nginx 0.7.14</h2><ol>
+<li>安装Nginx所需的pcre库：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">tar zxvf pcre-7.7.tar.gz</div><div class="line"><span class="built_in">cd</span> pcre-7.7/</div><div class="line">./configure</div><div class="line">make &amp;&amp; make install</div><div class="line"><span class="built_in">cd</span> ../</div></pre></td></tr></table></figure>
+<ol>
+<li>安装Nginx</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">tar zxvf nginx-0.7.14.tar.gz</div><div class="line"><span class="built_in">cd</span> nginx-0.7.14/</div><div class="line">./configure --user=www --group=www --prefix=/usr/<span class="built_in">local</span>/webserver/nginx --with-http_stub_status_module --with-http_ssl_module</div><div class="line">make &amp;&amp; make install</div><div class="line"><span class="built_in">cd</span> ../</div></pre></td></tr></table></figure>
+<ol>
+<li>创建Nginx日志目录</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mkdir -p /data1/logs</div><div class="line">chmod +w /data1/logs</div><div class="line">chown -R www:www /data1/logs</div></pre></td></tr></table></figure>
+<ol>
+<li>创建Nginx配置文件</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在/usr/local/webserver/nginx/conf/目录中创建nginx.conf文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">rm -f /usr/<span class="built_in">local</span>/webserver/nginx/conf/nginx.conf</div><div class="line">vi /usr/<span class="built_in">local</span>/webserver/nginx/conf/nginx.conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输入以下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div></pre></td><td class="code"><pre><div class="line">user www www;</div><div class="line">worker_processes 8;</div><div class="line">error_log /data1/logs/nginx_error.log crit;</div><div class="line">pid /usr/<span class="built_in">local</span>/webserver/nginx/nginx.pid;</div><div class="line"><span class="comment">#Specifies the value for maximum file descriptors that can be opened by this process.</span></div><div class="line">worker_rlimit_nofile 51200;</div><div class="line">events</div><div class="line">&#123;</div><div class="line"> use epoll;</div><div class="line"> worker_connections 51200;</div><div class="line">&#125;</div><div class="line">http</div><div class="line">&#123;</div><div class="line"> include mime.types;</div><div class="line"> default_type application/octet-stream;</div><div class="line"><span class="comment">#charset gb2312;</span></div><div class="line">server_names_hash_bucket_size 128;</div><div class="line">client_header_buffer_size 32k;</div><div class="line">large_client_header_buffers 4 32k;</div><div class="line">sendfile on;</div><div class="line">tcp_nopush on;</div><div class="line">keepalive_timeout 60;</div><div class="line">tcp_nodelay on;</div><div class="line">fastcgi_connect_timeout 300;</div><div class="line">fastcgi_send_timeout 300;</div><div class="line">fastcgi_read_timeout 300;</div><div class="line">fastcgi_buffer_size 64k;</div><div class="line">fastcgi_buffers 4 64k;</div><div class="line">fastcgi_busy_buffers_size 128k;</div><div class="line">fastcgi_temp_file_write_size 128k;</div><div class="line">gzip on;</div><div class="line">gzip_min_length 1k;</div><div class="line">gzip_buffers 4 16k;</div><div class="line">gzip_http_version 1.0;</div><div class="line">gzip_comp_level 2;</div><div class="line">gzip_types text/plain application/x-JavaScript text/css application/xml;</div><div class="line">gzip_vary on;</div><div class="line"><span class="comment">#limit_zone crawler $binary_remote_addr 10m;</span></div><div class="line">server</div><div class="line">&#123;</div><div class="line">listen 80;</div><div class="line">server_name blog.s135.com;</div><div class="line">index index.html index.htm index.php;</div><div class="line">root /data0/htdocs/blog;</div><div class="line"><span class="comment">#limit_conn crawler 20;</span></div><div class="line">location ~ .*/.(php|php5)?$</div><div class="line">&#123;</div><div class="line"><span class="comment">#fastcgi_pass unix:/tmp/php-cgi.sock;</span></div><div class="line">fastcgi_pass 127.0.0.1:9000;</div><div class="line">fastcgi_index index.php;</div><div class="line">include fcgi.conf;</div><div class="line">&#125;</div><div class="line">location ~ .*/.(gif|jpg|jpeg|png|bmp|swf)$</div><div class="line">&#123;</div><div class="line">expires 30d;</div><div class="line">&#125;</div><div class="line">location ~ .*/.(js|css)?$</div><div class="line">&#123;</div><div class="line">expires 1h;</div><div class="line">&#125;</div><div class="line">log_format access <span class="string">'$remote_addr - $remote_user [$time_local] "$request" '</span></div><div class="line"><span class="string">'$status $body_bytes_sent "$http_referer" '</span></div><div class="line"><span class="string">'"$http_user_agent" $http_x_forwarded_for'</span>;</div><div class="line">access_log /data1/logs/access.log access;</div><div class="line">&#125;</div><div class="line">server</div><div class="line">&#123;</div><div class="line">listen 80;</div><div class="line">server_name www.s135.com;</div><div class="line">index index.html index.htm index.php;</div><div class="line">root /data0/htdocs/www;</div><div class="line">location ~ .*/.(php|php5)?$</div><div class="line">&#123;</div><div class="line"><span class="comment">#fastcgi_pass unix:/tmp/php-cgi.sock;</span></div><div class="line">fastcgi_pass 127.0.0.1:9000;</div><div class="line">fastcgi_index index.php;</div><div class="line">include fcgi.conf;</div><div class="line">&#125;</div><div class="line">log_format wwwlogs <span class="string">'$remote_addr - $remote_user [$time_local] "$request" '</span></div><div class="line"><span class="string">'$status $body_bytes_sent "$http_referer" '</span></div><div class="line"><span class="string">'"$http_user_agent" $http_x_forwarded_for'</span>;</div><div class="line">access_log /data1/logs/wwwlogs.log wwwlogs;</div><div class="line">&#125;</div><div class="line">server</div><div class="line">&#123;</div><div class="line">listen 80;</div><div class="line">server_name status.blog.s135.com;</div><div class="line">location / &#123;</div><div class="line">stub_status on;</div><div class="line">access_log off;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在/usr/local/webserver/nginx/conf/目录中创建fcgi.conf文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vi /usr/<span class="built_in">local</span>/webserver/nginx/conf/fcgi.conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输入以下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">fastcgi_param GATEWAY_INTERFACE CGI/1.1;</div><div class="line">fastcgi_param SERVER_SOFTWARE nginx;fastcgi_param QUERY_STRING <span class="variable">$query_string</span>;</div><div class="line">fastcgi_param REQUEST_METHOD <span class="variable">$request_method</span>;</div><div class="line">fastcgi_param CONTENT_TYPE <span class="variable">$content_type</span>;</div><div class="line">fastcgi_param CONTENT_LENGTH <span class="variable">$content_length</span>;</div><div class="line">fastcgi_param SCRIPT_FILENAME <span class="variable">$document_root</span><span class="variable">$fastcgi_script_name</span>;</div><div class="line">fastcgi_param SCRIPT_NAME <span class="variable">$fastcgi_script_name</span>;</div><div class="line">fastcgi_param REQUEST_URI <span class="variable">$request_uri</span>;</div><div class="line">fastcgi_param DOCUMENT_URI <span class="variable">$document_uri</span>;</div><div class="line">fastcgi_param DOCUMENT_ROOT <span class="variable">$document_root</span>;</div><div class="line">fastcgi_param SERVER_PROTOCOL <span class="variable">$server_protocol</span>;</div><div class="line">fastcgi_param REMOTE_ADDR <span class="variable">$remote_addr</span>;</div><div class="line">fastcgi_param REMOTE_PORT <span class="variable">$remote_port</span>;</div><div class="line">fastcgi_param SERVER_ADDR <span class="variable">$server_addr</span>;</div><div class="line">fastcgi_param SERVER_PORT <span class="variable">$server_port</span>;</div><div class="line">fastcgi_param SERVER_NAME <span class="variable">$server_name</span>;</div><div class="line"><span class="comment"># PHP only, required if PHP was built with --enable-force-cgi-redirect</span></div><div class="line">fastcgi_param REDIRECT_STATUS 200;</div></pre></td></tr></table></figure>
+<ol>
+<li>启动Nginx</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">ulimit</span> -SHn 51200</div><div class="line">/usr/<span class="built_in">local</span>/webserver/nginx/sbin/nginx</div></pre></td></tr></table></figure>
+<h2 id="四、配置开机自动启动Nginx-PHP"><a href="#四、配置开机自动启动Nginx-PHP" class="headerlink" title="四、配置开机自动启动Nginx + PHP"></a>四、配置开机自动启动Nginx + PHP</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vi /etc/rc.local</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在末尾增加以下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">ulimit</span> -SHn 51200</div><div class="line">/usr/<span class="built_in">local</span>/webserver/php/sbin/php-fpm start</div><div class="line">/usr/<span class="built_in">local</span>/webserver/nginx/sbin/nginx</div></pre></td></tr></table></figure>
+<h2 id="五、优化Linux内核参数"><a href="#五、优化Linux内核参数" class="headerlink" title="五、优化Linux内核参数"></a>五、优化Linux内核参数</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vi /etc/sysctl.conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在末尾增加以下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">net.ipv4.tcp_fin_timeout = 30</div><div class="line">net.ipv4.tcp_keepalive_time = 300</div><div class="line">net.ipv4.tcp_syncookies = 1</div><div class="line">net.ipv4.tcp_tw_reuse = 1</div><div class="line">net.ipv4.tcp_tw_recycle = 1</div><div class="line">net.ipv4.ip_local_port_range = 5000 65000</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使配置立即生效：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/sbin/sysctl -p</div></pre></td></tr></table></figure>
+<h2 id="六、在不停止Nginx服务的情况下平滑变更Nginx配置"><a href="#六、在不停止Nginx服务的情况下平滑变更Nginx配置" class="headerlink" title="六、在不停止Nginx服务的情况下平滑变更Nginx配置"></a>六、在不停止Nginx服务的情况下平滑变更Nginx配置</h2><ol>
+<li>修改/usr/local/webserver/nginx/conf/nginx.conf配置文件后，请执行以下命令检查配置文件是否正确：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/<span class="built_in">local</span>/webserver/nginx/sbin/nginx -t</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果屏幕显示以下两行信息，说明配置文件正确：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">the configuration file /usr/<span class="built_in">local</span>/webserver/nginx/conf/nginx.conf syntax is ok</div><div class="line">the configuration file /usr/<span class="built_in">local</span>/webserver/nginx/conf/nginx.conf was tested successfully</div></pre></td></tr></table></figure>
+<ol>
+<li>这时，输入以下命令查看Nginx主进程号：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ps -ef | grep <span class="string">"nginx: master process"</span> | grep -v <span class="string">"grep"</span> | awk -F <span class="string">' '</span> <span class="string">'&#123;print $2&#125;'</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;屏幕显示的即为Nginx主进程号，例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">6302</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这时，执行以下命令即可使修改过的Nginx配置文件生效：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">kill</span> -HUP 6302</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;或者无需这么麻烦，找到Nginx的Pid文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">kill</span> -HUP `cat /usr/<span class="built_in">local</span>/webserver/nginx/nginx.pid`</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Nginx/" rel="tag"># Nginx</a>
+          
+            <a href="/tags/LNMP/" rel="tag"># LNMP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/10/Nginx/26. nginx针对请求的uri来代理/" rel="next" title="nginx针对请求的uri来代理">
+                <i class="fa fa-chevron-left"></i> nginx针对请求的uri来代理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/10/Php/12. php 扩展模块如何安装/" rel="prev" title="php 扩展模块如何安装">
+                php 扩展模块如何安装 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx：承受3万并发连接数，胜过Apache-10倍"><span class="nav-number">1.</span> <span class="nav-text">Nginx：承受3万并发连接数，胜过Apache 10倍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#众网站纷纷重视Nginx"><span class="nav-number">1.1.</span> <span class="nav-text">众网站纷纷重视Nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx：承受3万并发连接数，胜过Apache-10倍-1"><span class="nav-number">1.2.</span> <span class="nav-text">Nginx：承受3万并发连接数，胜过Apache 10倍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何获取相关开源程序？"><span class="nav-number">1.3.</span> <span class="nav-text">如何获取相关开源程序？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、获取相关开源程序："><span class="nav-number">1.3.1.</span> <span class="nav-text">一、获取相关开源程序：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、PHP5安装、配置内容-安装PHP-5-2-6（FastCGI模式）"><span class="nav-number">1.3.2.</span> <span class="nav-text">二、PHP5安装、配置内容,安装PHP 5.2.6（FastCGI模式）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、安装Nginx-0-7-14"><span class="nav-number">1.4.</span> <span class="nav-text">三、安装Nginx 0.7.14</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、配置开机自动启动Nginx-PHP"><span class="nav-number">1.5.</span> <span class="nav-text">四、配置开机自动启动Nginx + PHP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、优化Linux内核参数"><span class="nav-number">1.6.</span> <span class="nav-text">五、优化Linux内核参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、在不停止Nginx服务的情况下平滑变更Nginx配置"><span class="nav-number">1.7.</span> <span class="nav-text">六、在不停止Nginx服务的情况下平滑变更Nginx配置</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

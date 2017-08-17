@@ -1,0 +1,797 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Zabbix," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="zabbix 服务端安装&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;zabbix 是另外一个用得比较多的监控工具，同样也需要 apache+php 的支持，但它比 nagios 要多一个 mysql ，因为它有数据需要储存。所以，安装 zabbix，必须要安装 mysql 。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160">
+<meta name="keywords" content="Zabbix">
+<meta property="og:type" content="article">
+<meta property="og:title" content="zabbix 服务端安装">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/08/17/Zabbix/2. zabbix 服务端安装/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="zabbix 服务端安装&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;zabbix 是另外一个用得比较多的监控工具，同样也需要 apache+php 的支持，但它比 nagios 要多一个 mysql ，因为它有数据需要储存。所以，安装 zabbix，必须要安装 mysql 。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/01.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/02.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/03.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/04.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/05.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/06.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/07.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/08.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/09.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/10.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/11.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/12.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/13.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/14.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/15.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/16.png?raw=true">
+<meta property="og:updated_time" content="2017-08-14T07:08:04.167Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="zabbix 服务端安装">
+<meta name="twitter:description" content="zabbix 服务端安装&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;zabbix 是另外一个用得比较多的监控工具，同样也需要 apache+php 的支持，但它比 nagios 要多一个 mysql ，因为它有数据需要储存。所以，安装 zabbix，必须要安装 mysql 。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/01.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/08/17/Zabbix/2. zabbix 服务端安装/"/>
+
+
+
+
+
+  <title>zabbix 服务端安装 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/17/Zabbix/2. zabbix 服务端安装/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">zabbix 服务端安装</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-17T09:44:45+08:00">
+                2017-08-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="zabbix-服务端安装"><a href="#zabbix-服务端安装" class="headerlink" title="zabbix 服务端安装"></a>zabbix 服务端安装</h1><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;zabbix 是另外一个用得比较多的监控工具，同样也需要 apache+php 的支持，但它比 nagios 要多一个 mysql ，因为它有数据需要储存。所以，安装 zabbix，必须要安装 mysql 。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在安装 zabbix 之前，也需要安装 epel 扩展源，因为 centos 自带 yum 源是没有 zabbix 的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@zabbix ~]<span class="comment"># yum install -y epel-release</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安装 rpm 包的 lamp 环境</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@zabbix ~]<span class="comment"># yum install -y httpd mysql mysql-libs php php-mysql mysql-server php-bcmath php-gd php-mbstring</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安装 zabbix 服务端</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@zabbix ~]<span class="comment"># yum install -y zabbix30 zabbix30-agent zabbix30-server zabbix30-server-mysql zabbix30-web zabbix30-web-mysql net-snmp-devel</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安装好以后，就可以启动服务了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@zabbix ~]<span class="comment"># service zabbix-server start</span></div><div class="line">[root@zabbix ~]<span class="comment"># service zabbix-agent start</span></div><div class="line">[root@zabbix ~]<span class="comment"># service httpd start</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改一下 mysql 配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@zabbix ~]<span class="comment"># vim /etc/my.cnf</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改或增加内容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[mysql]</div><div class="line">default-character-set = utf8</div><div class="line">[mysqld]</div><div class="line">character_set_server = utf8</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后启动 mysql 服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@zabbix ~]<span class="comment"># /etc/init.d/mysqld start</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后建库，导入数据</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@zabbix ~]<span class="comment"># mysql -uroot -e "create database zabbix"</span></div><div class="line">[root@zabbix ~]<span class="comment"># mysql -uroot --default-character-set=utf8 zabbix &lt; /usr/share/zabbix-mysql/schema.sql</span></div><div class="line">[root@zabbix ~]<span class="comment"># mysql -uroot --default-character-set=utf8 zabbix &lt; /usr/share/zabbix-mysql/images.sql </span></div><div class="line">[root@zabbix ~]<span class="comment"># mysql -uroot --default-character-set=utf8 zabbix &lt; /usr/share/zabbix-mysql/data.sql</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这时发现 zabbix_server 并没有启动起来</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@zabbix ~]<span class="comment"># mysql -uroot -e "grant all on *.* to 'zabbix'@'localhost' identified by 'zabbix';"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编辑 /etc/zabbix/zabbix_server.conf </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@zabbix ~]<span class="comment"># vim /etc/zabbix/zabbix_server.conf</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置 DBUser，DBPasseord </p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/01.png?raw=true" alt="01"></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/02.png?raw=true" alt="02"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后重启 zabbix-server 服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@zabbix ~]<span class="comment"># /etc/init.d/zabbix-server restart</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;再次查看 zabbix_server 服务已启动</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/03.png?raw=true" alt="03"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面通过浏览器安装 zabbix</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;浏览器访问 <a href="http://ip/zabbix" target="_blank" rel="external">http://ip/zabbix</a> ，默认会有 “It is not safe to rely on the system‘s timezone settings ” 这样的警告信息</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/04.png?raw=true" alt="04"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需要</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@zabbix ~]<span class="comment"># vim /etc/php.ini</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/05.png?raw=true" alt="05"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改为</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/06.png?raw=true" alt="06"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;点 next，会提示有一些参数不合适，需要通过编辑配置文件 /etc/php.ini ，解决相关的报错信息</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/07.png?raw=true" alt="07"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;更改完成，重启 apache 服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@zabbix ~]<span class="comment"># service httpd restart</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;点 retry，所有参数提示 OK</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/08.png?raw=true" alt="08"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;点 next</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/09.png?raw=true" alt="09"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输入 mysql 相关配置，点  test connection 测试</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/10.png?raw=true" alt="10"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;显示 OK，点 next</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/11.png?raw=true" alt="11"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Name 写 127.0.0.1 （这个可以自定义）</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/12.png?raw=true" alt="12"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;继续点 next</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/13.png?raw=true" alt="13"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;再点 next</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/14.png?raw=true" alt="14"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;点 finish ，进入登录页面，默认帐号 admin 密码 zabbix</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/15.png?raw=true" alt="15"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输入帐号密码登录</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/16.png?raw=true" alt="16"></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Zabbix/" rel="tag"># Zabbix</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/17/Zabbix/1. 分布式系统监视 zabbix/" rel="next" title="分布式系统监视 zabbix">
+                <i class="fa fa-chevron-left"></i> 分布式系统监视 zabbix
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/17/Zabbix/3. zabbix 增加客户端监控/" rel="prev" title="zabbix 增加客户端监控">
+                zabbix 增加客户端监控 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#zabbix-服务端安装"><span class="nav-number">1.</span> <span class="nav-text">zabbix 服务端安装</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

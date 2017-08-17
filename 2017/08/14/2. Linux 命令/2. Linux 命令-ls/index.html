@@ -1,0 +1,827 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Linux命令," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Linux 命令-lsls 命令&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;ls命令是linux下最常用的命令。ls命令就是list的缩写，缺省下ls用来打印出当前目录的清单。如果ls指定其他目录，那么就会显示指定目录里的文件及文件夹清单。 通过ls 命令不仅可以查看linux文件夹包含的文件，而且可以查看文件权限(包括目录、文件夹、文件权限)">
+<meta name="keywords" content="Linux命令">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 命令- ls">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/08/14/2. Linux 命令/2. Linux 命令-ls/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="Linux 命令-lsls 命令&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;ls命令是linux下最常用的命令。ls命令就是list的缩写，缺省下ls用来打印出当前目录的清单。如果ls指定其他目录，那么就会显示指定目录里的文件及文件夹清单。 通过ls 命令不仅可以查看linux文件夹包含的文件，而且可以查看文件权限(包括目录、文件夹、文件权限)">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-08-09T04:06:23.737Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux 命令- ls">
+<meta name="twitter:description" content="Linux 命令-lsls 命令&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;ls命令是linux下最常用的命令。ls命令就是list的缩写，缺省下ls用来打印出当前目录的清单。如果ls指定其他目录，那么就会显示指定目录里的文件及文件夹清单。 通过ls 命令不仅可以查看linux文件夹包含的文件，而且可以查看文件权限(包括目录、文件夹、文件权限)">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/08/14/2. Linux 命令/2. Linux 命令-ls/"/>
+
+
+
+
+
+  <title>Linux 命令- ls | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/14/2. Linux 命令/2. Linux 命令-ls/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux 命令- ls</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-14T01:31:10+08:00">
+                2017-08-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Linux-命令-ls"><a href="#Linux-命令-ls" class="headerlink" title="Linux 命令-ls"></a>Linux 命令-ls</h1><h2 id="ls-命令"><a href="#ls-命令" class="headerlink" title="ls 命令"></a>ls 命令</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;ls命令是linux下最常用的命令。ls命令就是list的缩写，缺省下ls用来打印出当前目录的清单。如果ls指定其他目录，那么就会显示指定目录里的文件及文件夹清单。 通过ls 命令不仅可以查看linux文件夹包含的文件，而且可以查看文件权限(包括目录、文件夹、文件权限)查看目录信息等等。ls 命令在日常的linux操作中用的很多!</p>
+<h2 id="1-命令格式"><a href="#1-命令格式" class="headerlink" title="1.命令格式"></a>1.命令格式</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls   [选项]  [目录名]</div></pre></td></tr></table></figure>
+<h2 id="2-命令功能"><a href="#2-命令功能" class="headerlink" title="2.命令功能"></a>2.命令功能</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;列出目标目录中所有的子目录和文件</p>
+<h2 id="3-常用参数："><a href="#3-常用参数：" class="headerlink" title="3.常用参数："></a>3.常用参数：</h2><ul>
+<li>-a，-all 列出目录下所有的文件，包括以 . 开头的隐藏文件 </li>
+<li>-A 同 -a，但不列出“.”（表示当前目录）和“..”（表示当前目录的父目录） </li>
+<li>-c  配合 -lt：根据 ctime 排序及显示 ctime （文件状态最后更改的时间）配合 -l：显示 ctime 但根据名称排序否则根据 ctime 排序  </li>
+<li>-C 每栏由上至下列出项目    </li>
+<li>-color[=WHEN]         控制是否使用色彩分辨文件。WHEN 可以是‘never’、‘always’或‘auto’其中之一   </li>
+<li>-d，-directory 将目录象文件一样显示，而不是显示其下的文件 </li>
+<li>-D, –dired 产生适合 Emacs 的 dired 模式使用的结果 </li>
+<li>-f 对输出的文件不进行排序，-aU 选项生效，-lst 选项失效 </li>
+<li>-g 类似 -l,但不列出所有者</li>
+<li>-G, –no-group 不列出任何有关组的信息</li>
+<li>-h, –human-readable 以容易理解的格式列出文件大小 (例如 1K 234M 2G)</li>
+<li>–si 类似 -h,但文件大小取 1000 的次方而不是 1024</li>
+<li>-H, –dereference-command-line 使用命令列中的符号链接指示的真正目的地</li>
+<li>–indicator-style=方式 指定在每个项目名称后加上指示符号&lt;方式&gt;：none (默认)，classify (-F)，file-type (-p)</li>
+<li>-i, –inode 印出每个文件的 inode 号</li>
+<li>-I, –ignore=样式 不印出任何符合 shell 万用字符&lt;样式&gt;的项目</li>
+<li>-k 即 –block-size=1K,以 k 字节的形式表示文件的大小。</li>
+<li>-l 除了文件名之外，还将文件的权限、所有者、文件大小等信息详细列出来。</li>
+<li>-L, –dereference 当显示符号链接的文件信息时，显示符号链接所指示的对象而并非符号链接本身的信息</li>
+<li>-m 所有项目以逗号分隔，并填满整行行宽</li>
+<li>-o 类似 -l,显示文件的除组信息外的详细信息。</li>
+<li>-r, –reverse 依相反次序排列</li>
+<li>-R, –recursive 同时列出所有子目录层</li>
+<li>-s, –size 以块大小为单位列出所有文件的大小</li>
+<li>-S 根据文件大小排序</li>
+<li>–sort=WORD 以下是可选用的 WORD 和它们代表的相应选项：<ul>
+<li>extension -X status -c </li>
+<li>none -U time -t</li>
+<li>size -S atime -u</li>
+<li>time -t access -u</li>
+<li>version -v use -u</li>
+</ul>
+</li>
+<li>-t 以文件修改时间排序</li>
+<li>-u 配合 -lt:显示访问时间而且依访问时间排序</li>
+<li>配合 -l:显示访问时间但根据名称排序</li>
+<li>否则：根据访问时间排序</li>
+<li>-U 不进行排序;依文件系统原有的次序列出项目</li>
+<li>-v 根据版本进行排序</li>
+<li>-w, –width=COLS 自行指定屏幕宽度而不使用目前的数值</li>
+<li>-x 逐行列出项目而不是逐栏列出</li>
+<li>-X 根据扩展名排序</li>
+<li>-1 每行只列出一个文件</li>
+<li>–help 显示此帮助信息并离开</li>
+<li>–version 显示版本信息并离开</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其中，平时工作中最常用的是 -l 、-h 、-r 、-t</p>
+<h2 id="4-常用范例"><a href="#4-常用范例" class="headerlink" title="4.常用范例"></a>4.常用范例</h2><h3 id="例1：列出-home-peidachang文件夹下的所有文件和目录的详细资料"><a href="#例1：列出-home-peidachang文件夹下的所有文件和目录的详细资料" class="headerlink" title="例1：列出/home/peidachang文件夹下的所有文件和目录的详细资料"></a>例1：列出/home/peidachang文件夹下的所有文件和目录的详细资料</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls -l -R /home/peidachang</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这种形式和上面的命令形式执行的结果是完全一样的。另外，如果命令的操作对象位于当前目录中，可以直接对操作对象进行操作;如果不在当前目录则需要给出操作对象的完整路径，例如上面的例子中，我的当前文件夹是peidachang文件夹，我想对home文件夹下的peidachang文件进行操作，我可以直接输入 ls -lR peidachang，也可以用 ls -lR /home/peidachang。 </p>
+<h3 id="例2：列出当前目录中所有以“t”开头的目录的详细内容，可以使用如下命令："><a href="#例2：列出当前目录中所有以“t”开头的目录的详细内容，可以使用如下命令：" class="headerlink" title="例2：列出当前目录中所有以“t”开头的目录的详细内容，可以使用如下命令："></a>例2：列出当前目录中所有以“t”开头的目录的详细内容，可以使用如下命令：</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls -l t*</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以查看当前目录下文件名以“t”开头的所有文件的信息。其实，在命令格式中，方括号内的内容都是可以省略的，对于命令ls而言，如果省略命令参数和操作对象，直接输入“ ls ”，则将会列出当前工作目录的内容清单。    </p>
+<h3 id="例3：只列出文件下的子目录"><a href="#例3：只列出文件下的子目录" class="headerlink" title="例3：只列出文件下的子目录"></a>例3：只列出文件下的子目录</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls -F /opt/soft |grep /$</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;列出 /opt/soft 文件下面的子目录<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost opt]<span class="comment"># ls -F /opt/soft |grep /$</span></div><div class="line">jdk1.6.0_16/</div><div class="line">subversion-1.6.1/</div><div class="line">tomcat6.0.32/</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls -l /opt/soft | grep <span class="string">"^d"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;列出 /opt/soft 文件下面的子目录详细情况</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost opt]<span class="comment">#  ls -l /opt/soft | grep "^d"</span></div><div class="line">drwxr-xr-x 10 root root      4096 09-17 18:17 jdk1.6.0_16</div><div class="line">drwxr-xr-x 16 1016 1016      4096 10-11 03:25 subversion-1.6.1</div><div class="line">drwxr-xr-x  9 root root      4096 2011-11-01 tomcat6.0.32</div></pre></td></tr></table></figure>
+<h3 id="例4：列出目前工作目录下所有名称是s-开头的档案，愈新的排愈后面，可以使用如下命令："><a href="#例4：列出目前工作目录下所有名称是s-开头的档案，愈新的排愈后面，可以使用如下命令：" class="headerlink" title="例4：列出目前工作目录下所有名称是s 开头的档案，愈新的排愈后面，可以使用如下命令："></a>例4：列出目前工作目录下所有名称是s 开头的档案，愈新的排愈后面，可以使用如下命令：</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls -ltr s*</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">[root@localhost opt]<span class="comment"># ls -ltr s*</span></div><div class="line">src:</div><div class="line">总计 0</div><div class="line">script:</div><div class="line">总计 0</div><div class="line">soft:</div><div class="line">总计 350644</div><div class="line">drwxr-xr-x  9 root root      4096 2011-11-01 tomcat6.0.32</div><div class="line">-rwxr-xr-x  1 root root  81871260 09-17 18:15 jdk-6u16-linux-x64.bin</div><div class="line">drwxr-xr-x 10 root root      4096 09-17 18:17 jdk1.6.0_16</div><div class="line">-rw-r--r--  1 root root 205831281 09-17 18:33 apache-tomcat-6.0.32.tar.gz</div><div class="line">-rw-r--r--  1 root root   5457684 09-21 00:23 tomcat6.0.32.tar.gz</div><div class="line">-rw-r--r--  1 root root   4726179 10-10 11:08 subversion-deps-1.6.1.tar.gz</div><div class="line">-rw-r--r--  1 root root   7501026 10-10 11:08 subversion-1.6.1.tar.gz</div><div class="line">drwxr-xr-x 16 1016 1016      4096 10-11 03:25 subversion-1.6.1</div></pre></td></tr></table></figure>
+<h3 id="例5：列出目前工作目录下所有档案及目录-目录于名称后加”-“-可执行档于名称后加”-“"><a href="#例5：列出目前工作目录下所有档案及目录-目录于名称后加”-“-可执行档于名称后加”-“" class="headerlink" title="例5：列出目前工作目录下所有档案及目录;目录于名称后加”/“, 可执行档于名称后加”*“"></a>例5：列出目前工作目录下所有档案及目录;目录于名称后加”/“, 可执行档于名称后加”*“</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls -AF</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost opt]<span class="comment"># ls -AF</span></div><div class="line"><span class="built_in">log</span>/  script/  soft/  src/  svndata/  web/</div></pre></td></tr></table></figure>
+<h3 id="例6：计算当前目录下的文件数和目录数"><a href="#例6：计算当前目录下的文件数和目录数" class="headerlink" title="例6：计算当前目录下的文件数和目录数"></a>例6：计算当前目录下的文件数和目录数</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ls -l * |grep <span class="string">"^-"</span>|wc -l ---文件个数  </div><div class="line">ls -l * |grep <span class="string">"^d"</span>|wc -l    ---目录个数</div></pre></td></tr></table></figure>
+<h3 id="例7-在ls中列出文件的绝对路径"><a href="#例7-在ls中列出文件的绝对路径" class="headerlink" title="例7: 在ls中列出文件的绝对路径"></a>例7: 在ls中列出文件的绝对路径</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls | sed <span class="string">"s:^:`pwd`/:"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@localhost opt]<span class="comment"># ls | sed "s:^:`pwd`/:" </span></div><div class="line">/opt/<span class="built_in">log</span></div><div class="line">/opt/script</div><div class="line">/opt/soft</div><div class="line">/opt/src</div><div class="line">/opt/svndata</div><div class="line">/opt/web</div></pre></td></tr></table></figure>
+<h3 id="例8：列出当前目录下的所有文件（包括隐藏文件）的绝对路径，-对目录不做递归"><a href="#例8：列出当前目录下的所有文件（包括隐藏文件）的绝对路径，-对目录不做递归" class="headerlink" title="例8：列出当前目录下的所有文件（包括隐藏文件）的绝对路径， 对目录不做递归"></a>例8：列出当前目录下的所有文件（包括隐藏文件）的绝对路径， 对目录不做递归</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">find <span class="variable">$PWD</span> -maxdepth 1 | xargs ls -ld</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[root@localhost opt]<span class="comment"># find $PWD -maxdepth 1 | xargs ls -ld</span></div><div class="line">drwxr-xr-x 8 root root 4096 10-11 03:43 /opt</div><div class="line">drwxr-xr-x 2 root root 4096 2012-03-08 /opt/<span class="built_in">log</span></div><div class="line">drwxr-xr-x 2 root root 4096 2012-03-08 /opt/script </div><div class="line">drwxr-xr-x 5 root root 4096 10-11 03:21 /opt/soft</div><div class="line">drwxr-xr-x 2 root root 4096 2012-03-08 /opt/src</div><div class="line">drwxr-xr-x 4 root root 4096 10-11 05:22 /opt/svndata</div><div class="line">drwxr-xr-x 4 root root 4096 10-09 00:45 /opt/web</div></pre></td></tr></table></figure>
+<h3 id="例9：递归列出当前目录下的所有文件（包括隐藏文件）的绝对路径"><a href="#例9：递归列出当前目录下的所有文件（包括隐藏文件）的绝对路径" class="headerlink" title="例9：递归列出当前目录下的所有文件（包括隐藏文件）的绝对路径"></a>例9：递归列出当前目录下的所有文件（包括隐藏文件）的绝对路径</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">find <span class="variable">$PWD</span> | xargs ls -ld</div></pre></td></tr></table></figure>
+<h3 id="例10：指定文件时间输出格式"><a href="#例10：指定文件时间输出格式" class="headerlink" title="例10：指定文件时间输出格式"></a>例10：指定文件时间输出格式</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls -tl --time-style=full-iso</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost soft]<span class="comment"># ls -tl --time-style=full-iso </span></div><div class="line">总计 350644</div><div class="line">drwxr-xr-x 16 1016 1016 4096 2012-10-11 03:25:58.000000000 +0800 subversion-1.6.1</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令:</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls -ctl --time-style=long-iso</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost soft]<span class="comment"># ls -ctl --time-style=long-iso</span></div><div class="line">总计 350644</div><div class="line">drwxr-xr-x 16 1016 1016      4096 2012-10-11 03:25 subversion-1.6.1</div></pre></td></tr></table></figure>
+<h2 id="扩展："><a href="#扩展：" class="headerlink" title="扩展："></a>扩展：</h2><h3 id="1-显示彩色目录列表"><a href="#1-显示彩色目录列表" class="headerlink" title="1. 显示彩色目录列表"></a>1. 显示彩色目录列表</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;打开/etc/bashrc, 加入如下一行: </p>
+<pre><code class="bash"><span class="built_in">alias</span> ls=<span class="string">"ls --color"</span>
+</code></pre>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下次启动bash时就可以像在Slackware里那样显示彩色的目录列表了, 其中颜色的含义如下:</p>
+<ol>
+<li>蓝色–&gt;目录      </li>
+<li>绿色–&gt;可执行文件      </li>
+<li>红色–&gt;压缩文件      </li>
+<li>浅蓝色–&gt;链接文件      </li>
+<li>灰色–&gt;其他文件</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux命令/" rel="tag"># Linux命令</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/14/2. Linux 命令/19. find 命令概览/" rel="next" title="find 命令概览">
+                <i class="fa fa-chevron-left"></i> find 命令概览
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/14/2. Linux 命令/16. Linux 命令- which/" rel="prev" title="Linux 命令- which">
+                Linux 命令- which <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-命令-ls"><span class="nav-number">1.</span> <span class="nav-text">Linux 命令-ls</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ls-命令"><span class="nav-number">1.1.</span> <span class="nav-text">ls 命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-命令格式"><span class="nav-number">1.2.</span> <span class="nav-text">1.命令格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-命令功能"><span class="nav-number">1.3.</span> <span class="nav-text">2.命令功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-常用参数："><span class="nav-number">1.4.</span> <span class="nav-text">3.常用参数：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-常用范例"><span class="nav-number">1.5.</span> <span class="nav-text">4.常用范例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#例1：列出-home-peidachang文件夹下的所有文件和目录的详细资料"><span class="nav-number">1.5.1.</span> <span class="nav-text">例1：列出/home/peidachang文件夹下的所有文件和目录的详细资料</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例2：列出当前目录中所有以“t”开头的目录的详细内容，可以使用如下命令："><span class="nav-number">1.5.2.</span> <span class="nav-text">例2：列出当前目录中所有以“t”开头的目录的详细内容，可以使用如下命令：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例3：只列出文件下的子目录"><span class="nav-number">1.5.3.</span> <span class="nav-text">例3：只列出文件下的子目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例4：列出目前工作目录下所有名称是s-开头的档案，愈新的排愈后面，可以使用如下命令："><span class="nav-number">1.5.4.</span> <span class="nav-text">例4：列出目前工作目录下所有名称是s 开头的档案，愈新的排愈后面，可以使用如下命令：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例5：列出目前工作目录下所有档案及目录-目录于名称后加”-“-可执行档于名称后加”-“"><span class="nav-number">1.5.5.</span> <span class="nav-text">例5：列出目前工作目录下所有档案及目录;目录于名称后加”/“, 可执行档于名称后加”*“</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例6：计算当前目录下的文件数和目录数"><span class="nav-number">1.5.6.</span> <span class="nav-text">例6：计算当前目录下的文件数和目录数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例7-在ls中列出文件的绝对路径"><span class="nav-number">1.5.7.</span> <span class="nav-text">例7: 在ls中列出文件的绝对路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例8：列出当前目录下的所有文件（包括隐藏文件）的绝对路径，-对目录不做递归"><span class="nav-number">1.5.8.</span> <span class="nav-text">例8：列出当前目录下的所有文件（包括隐藏文件）的绝对路径， 对目录不做递归</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例9：递归列出当前目录下的所有文件（包括隐藏文件）的绝对路径"><span class="nav-number">1.5.9.</span> <span class="nav-text">例9：递归列出当前目录下的所有文件（包括隐藏文件）的绝对路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例10：指定文件时间输出格式"><span class="nav-number">1.5.10.</span> <span class="nav-text">例10：指定文件时间输出格式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展："><span class="nav-number">1.6.</span> <span class="nav-text">扩展：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-显示彩色目录列表"><span class="nav-number">1.6.1.</span> <span class="nav-text">1. 显示彩色目录列表</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

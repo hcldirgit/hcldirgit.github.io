@@ -1,0 +1,790 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="LAMP,Php," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="php 扩展模块如何安装&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;php 和 apapche 类似，核心文件为 /usr/local/php/bin/php ,针对 apache 的是 /usr/local/apache2/modules/libphp5.so 模块。这两个文件是核心，在编译 php 的时候会提前让它支持一些功能，比如支持 my">
+<meta name="keywords" content="LAMP,Php">
+<meta property="og:type" content="article">
+<meta property="og:title" content="php 扩展模块如何安装">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/08/10/Php/12. php 扩展模块如何安装/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="php 扩展模块如何安装&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;php 和 apapche 类似，核心文件为 /usr/local/php/bin/php ,针对 apache 的是 /usr/local/apache2/modules/libphp5.so 模块。这两个文件是核心，在编译 php 的时候会提前让它支持一些功能，比如支持 my">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/php%20%E6%89%A9%E5%B1%95%E6%A8%A1%E5%9D%97%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85/01.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/php%20%E6%89%A9%E5%B1%95%E6%A8%A1%E5%9D%97%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85/02.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/php%20%E6%89%A9%E5%B1%95%E6%A8%A1%E5%9D%97%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85/03.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/php%20%E6%89%A9%E5%B1%95%E6%A8%A1%E5%9D%97%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85/04.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/php%20%E6%89%A9%E5%B1%95%E6%A8%A1%E5%9D%97%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85/05.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/php%20%E6%89%A9%E5%B1%95%E6%A8%A1%E5%9D%97%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85/06.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/php%20%E6%89%A9%E5%B1%95%E6%A8%A1%E5%9D%97%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85/07.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/php%20%E6%89%A9%E5%B1%95%E6%A8%A1%E5%9D%97%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85/08.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/php%20%E6%89%A9%E5%B1%95%E6%A8%A1%E5%9D%97%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85/09.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/php%20%E6%89%A9%E5%B1%95%E6%A8%A1%E5%9D%97%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85/10.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/php%20%E6%89%A9%E5%B1%95%E6%A8%A1%E5%9D%97%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85/11.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/php%20%E6%89%A9%E5%B1%95%E6%A8%A1%E5%9D%97%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85/12.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/php%20%E6%89%A9%E5%B1%95%E6%A8%A1%E5%9D%97%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85/13.png?raw=true">
+<meta property="og:updated_time" content="2017-08-13T17:24:10.871Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="php 扩展模块如何安装">
+<meta name="twitter:description" content="php 扩展模块如何安装&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;php 和 apapche 类似，核心文件为 /usr/local/php/bin/php ,针对 apache 的是 /usr/local/apache2/modules/libphp5.so 模块。这两个文件是核心，在编译 php 的时候会提前让它支持一些功能，比如支持 my">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/php%20%E6%89%A9%E5%B1%95%E6%A8%A1%E5%9D%97%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85/01.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/08/10/Php/12. php 扩展模块如何安装/"/>
+
+
+
+
+
+  <title>php 扩展模块如何安装 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Php/12. php 扩展模块如何安装/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">php 扩展模块如何安装</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="php-扩展模块如何安装"><a href="#php-扩展模块如何安装" class="headerlink" title="php 扩展模块如何安装"></a>php 扩展模块如何安装</h1><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;php 和 apapche 类似，核心文件为 /usr/local/php/bin/php ,针对 apache 的是 /usr/local/apache2/modules/libphp5.so 模块。这两个文件是核心，在编译 php 的时候会提前让它支持一些功能，比如支持 mysql，这个功能其实是 php 的一个模块，只不过这个模块是直接和 php 或者 libphp5.so 文件编译在一起的。当我们编译完成 php 后，发现还需要让 php 支持另外的模块，这时候可以重新编译 php ，加上配置参数，或者直接编译出一个独立的模块文件。然后让 php去调用它。下面以编译 memcache 为例；</p>
+<p>1.下载 memcache 源码包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp src]<span class="comment"># wget http://www.apelearn.com/bbs/data/attachment/forum/memcache-2.2.3.tgz</span></div></pre></td></tr></table></figure>
+<ol>
+<li>安装</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@lamp src]<span class="comment"># tar zxvf memcache-2.2.3.tgz </span></div><div class="line">[root@lamp src]<span class="comment"># cd memcache-2.2.3</span></div><div class="line">[root@lamp memcache-2.2.3]<span class="comment"># /usr/local/php/bin/phpize</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明：这一步是借助 php 的 phpize 工具生成 configure 文件。在这一步可能会遇到一些错误，不如 “Cannot find config.m4”，这是因为系统还没有安装 m4 工具，使用 yum 安装</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># yum install -y m4</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;还有错误“Cannot find autoconf” ，解决办法是</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># yum install -y autoconf</span></div><div class="line"></div><div class="line">[root@lamp memcache-2.2.3]<span class="comment"># ./configure --with-php-config=/usrl/local/php/bin/php-config</span></div><div class="line">[root@lamp memcache-2.2.3]<span class="comment"># make &amp;&amp; make install</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：当 make install 后会生成一个 memcache.so 的模块文件，该文件在 php 的 extension_dir 下。查看 php extension_dir 的方法是</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># /usr/local/php/bin/php -i | grep extension_dir</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/php%20%E6%89%A9%E5%B1%95%E6%A8%A1%E5%9D%97%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85/01.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改 extension_dir 的方法是，编辑 php.ini 文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp lamp]<span class="comment"># vim /usr/local/php/etc/php.ini</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/php%20%E6%89%A9%E5%B1%95%E6%A8%A1%E5%9D%97%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85/02.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改为（一般情况不做修改）</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/php%20%E6%89%A9%E5%B1%95%E6%A8%A1%E5%9D%97%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85/03.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后继续在 php.ini 中添加</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">extension=memcache.so</div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/php%20%E6%89%A9%E5%B1%95%E6%A8%A1%E5%9D%97%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85/04.png?raw=true" alt=""></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/php%20%E6%89%A9%E5%B1%95%E6%A8%A1%E5%9D%97%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85/05.png?raw=true" alt=""></p>
+<h2 id="还有就是重新动态编译-php-自带模块"><a href="#还有就是重新动态编译-php-自带模块" class="headerlink" title="还有就是重新动态编译 php 自带模块"></a>还有就是重新动态编译 php 自带模块</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先找到 php 的源码包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># cd /usr/local/src/php-5.6.6</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;很多模块的源码都是 /ext 目录下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp php-5.6.6]<span class="comment"># cd ext/</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/php%20%E6%89%A9%E5%B1%95%E6%A8%A1%E5%9D%97%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85/06.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;现在编译一下 curl 模块</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp ext]<span class="comment"># /usr/local/php/bin/php -m | grep -i curl</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;进入 curl 目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp ext]<span class="comment"># cd curl/</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/php%20%E6%89%A9%E5%B1%95%E6%A8%A1%E5%9D%97%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85/07.png?raw=true" alt=""></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp curl]<span class="comment"># /usr/local/php/bin/phpize</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/php%20%E6%89%A9%E5%B1%95%E6%A8%A1%E5%9D%97%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85/08.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上面这步是为了生成  configure 文件，没有这个文件是没办法编译的</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/php%20%E6%89%A9%E5%B1%95%E6%A8%A1%E5%9D%97%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85/09.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编译</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp curl]<span class="comment"># ./configure --with-php-config=/usr/local/php/bin/php-config</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp curl]<span class="comment"># make &amp;&amp; make install</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编译安装完成，最后一排会有模块目录</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/php%20%E6%89%A9%E5%B1%95%E6%A8%A1%E5%9D%97%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85/10.png?raw=true" alt=""></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/php%20%E6%89%A9%E5%B1%95%E6%A8%A1%E5%9D%97%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85/11.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加载模块</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编辑 php.ini</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp curl]<span class="comment"># vim /usr/local/php/etc/php.ini</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;增加内容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">extension=curl.so</div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/php%20%E6%89%A9%E5%B1%95%E6%A8%A1%E5%9D%97%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85/12.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看是否加载成功</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/php%20%E6%89%A9%E5%B1%95%E6%A8%A1%E5%9D%97%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85/13.png?raw=true" alt=""></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/LAMP/" rel="tag"># LAMP</a>
+          
+            <a href="/tags/Php/" rel="tag"># Php</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/10/Nginx/27. Nginx：承受3万并发连接数，胜过Apache 10倍/" rel="next" title="Nginx：承受3万并发连接数，胜过Apache 10倍">
+                <i class="fa fa-chevron-left"></i> Nginx：承受3万并发连接数，胜过Apache 10倍
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/10/Php/2. CentOS 6 编译安装php 5.4 5.5（lamp模式）/" rel="prev" title="CentOS 6 编译安装php 5.4 5.5（lamp模式）">
+                CentOS 6 编译安装php 5.4 5.5（lamp模式） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#php-扩展模块如何安装"><span class="nav-number">1.</span> <span class="nav-text">php 扩展模块如何安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#还有就是重新动态编译-php-自带模块"><span class="nav-number">1.1.</span> <span class="nav-text">还有就是重新动态编译 php 自带模块</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

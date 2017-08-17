@@ -1,0 +1,791 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Linux命令," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Linux 命令- tshark&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;在Linux下，当我们需要抓取网络数据包分析时，通常是使用tcpdump抓取网络raw数据包存到一个文件，然后下载到本地使用wireshark界面网络分析工具进行网络包分析。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;">
+<meta name="keywords" content="Linux命令">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 命令- tshark">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/08/10/Linux 命令/80. Linux 命令- tshark/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="Linux 命令- tshark&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;在Linux下，当我们需要抓取网络数据包分析时，通常是使用tcpdump抓取网络raw数据包存到一个文件，然后下载到本地使用wireshark界面网络分析工具进行网络包分析。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-08-09T12:42:23.657Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux 命令- tshark">
+<meta name="twitter:description" content="Linux 命令- tshark&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;在Linux下，当我们需要抓取网络数据包分析时，通常是使用tcpdump抓取网络raw数据包存到一个文件，然后下载到本地使用wireshark界面网络分析工具进行网络包分析。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/08/10/Linux 命令/80. Linux 命令- tshark/"/>
+
+
+
+
+
+  <title>Linux 命令- tshark | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Linux 命令/80. Linux 命令- tshark/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux 命令- tshark</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Linux-命令-tshark"><a href="#Linux-命令-tshark" class="headerlink" title="Linux 命令- tshark"></a>Linux 命令- tshark</h1><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在Linux下，当我们需要抓取网络数据包分析时，通常是使用tcpdump抓取网络raw数据包存到一个文件，然后下载到本地使用wireshark界面网络分析工具进行网络包分析。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;最近才发现，原来wireshark也提供有Linux命令行工具-tshark。tshark不仅有抓包的功能，还带了解析各种协议的能力。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;tshark是wireshark安装目录下命令行工具</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用tshark可以通过自动化方式调用wireshark</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认机器上是没有安装这个工具的。使用yum安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install -y wireshark</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;也可以到<a href="http://www.wireshark.org" target="_blank" rel="external">官网</a>下载源码，<a href="http://www.qtasp.cn/wiresharkcharpt/buildingwireshark.html" target="_blank" rel="external">具体安装方法</a></p>
+<h2 id="命令参数"><a href="#命令参数" class="headerlink" title="命令参数"></a>命令参数</h2><h3 id="1-抓包接口类"><a href="#1-抓包接口类" class="headerlink" title="1. 抓包接口类"></a>1. 抓包接口类</h3><ul>
+<li>-i 设置抓包的网络接口，不设置则默认为第一个非自环接口。</li>
+<li>-D 列出当前存在的网络接口。在不了解OS所控制的网络设备时，一般先用“tshark -D”查看网络接口的编号以供-i参数使用。</li>
+<li>-f 设定抓包过滤表达式（capture filter expression）。抓包过滤表达式的写法雷同于tcpdump，可参考tcpdump man page的有关部分。</li>
+<li>-s 设置每个抓包的大小，默认为65535，多于这个大小的数据将不会被程序记入内存、写入文件。（这个参数相当于tcpdump的-s，tcpdump默认抓包的大小仅为68）</li>
+<li>-p 设置网络接口以非混合模式工作，即只关心和本机有关的流量。</li>
+<li>-B 设置内核缓冲区大小，仅对windows有效。</li>
+<li>-y 设置抓包的数据链路层协议，不设置则默认为-L找到的第一个协议，局域网一般是EN10MB等。</li>
+<li>-L 列出本机支持的数据链路层协议，供-y参数使用。  </li>
+</ul>
+<h3 id="2-抓包停止条件"><a href="#2-抓包停止条件" class="headerlink" title="2. 抓包停止条件"></a>2. 抓包停止条件</h3><ul>
+<li>-c 抓取的packet数，在处理一定数量的packet后，停止抓取，程序退出。</li>
+<li>-a 设置tshark抓包停止向文件书写的条件，事实上是tshark在正常启动之后停止工作并返回的条件。条件写为test:value的形式，如“-a duration:5”表示tshark启动后在5秒内抓包然后停止；“-a filesize:10”表示tshark在输出文件达到10kB后停止；“-a files:n”表示tshark在写满n个文件后停止。（windows版的tshark0.99.3用参数“-a files:n”不起作用——会有无数多个文件生成。由于-b参数有自己的files参数，所谓“和-b的其它参数结合使用”无从说起。这也许是一个bug，或tshark的man page的书写有误。）</li>
+</ul>
+<h3 id="3-文件输出控制"><a href="#3-文件输出控制" class="headerlink" title="3. 文件输出控制"></a>3. 文件输出控制</h3><ul>
+<li>-b 设置ring buffer文件参数。ring buffer的文件名由-w参数决定。-b参数采用test:value的形式书写。“-b duration:5”表示每5秒写下一个ring buffer文件；“-b filesize:5”表示每达到5kB写下一个ring buffer文件；“-b files:7”表示ring buffer文件最多7个，周而复始地使用，如果这个参数不设定，tshark会将磁盘写满为止。</li>
+</ul>
+<h3 id="4-文件输入"><a href="#4-文件输入" class="headerlink" title="4. 文件输入"></a>4. 文件输入</h3><ul>
+<li>-r 设置tshark分析的输入文件。tshark既可以抓取分析即时的网络流量，又可以分析dump在文件中的数据。-r不能是命名管道和标准输入。</li>
+</ul>
+<h3 id="5-处理类"><a href="#5-处理类" class="headerlink" title="5. 处理类"></a>5. 处理类</h3><ul>
+<li>-R 设置读取（显示）过滤表达式（read filter expression）。不符合此表达式的流量同样不会被写入文件。注意，读取（显示）过滤表达式的语法和底层相关的抓包过滤表达式语法不相同，它的语法表达要丰富得多，请参考<a href="http://www.ethereal.com/docs/dfref/和http://www.ethereal.com/docs/man-pages/ethereal-filter.4.html。类似于抓包过滤表达式，在命令行使用时最好将它们quote起来。" target="_blank" rel="external">http://www.ethereal.com/docs/dfref/和http://www.ethereal.com/docs/man-pages/ethereal-filter.4.html。类似于抓包过滤表达式，在命令行使用时最好将它们quote起来。</a></li>
+<li>-n 禁止所有地址名字解析（默认为允许所有）。</li>
+<li>-N 启用某一层的地址名字解析。“m”代表MAC层，“n”代表网络层，“t”代表传输层，“C”代表当前异步DNS查找。如果-n和-N参数同时存在，-n将被忽略。如果-n和-N参数都不写，则默认打开所有地址名字解析。</li>
+<li>-d 将指定的数据按有关协议解包输出。如要将tcp 8888端口的流量按http解包，应该写为“-d tcp.port==8888,http”。注意选择子和解包协议之间不能留空格。</li>
+</ul>
+<h3 id="6-输出类"><a href="#6-输出类" class="headerlink" title="6. 输出类"></a>6. 输出类</h3><ul>
+<li>-w 设置raw数据的输出文件。这个参数不设置，tshark将会把解码结果输出到stdout。“-w-”表示把raw输出到stdout。如果要把解码结果输出到文件，使用重定向“&gt;”而不要-w参数。</li>
+<li>-F 设置输出raw数据的格式，默认为libpcap。“tshark -F”会列出所有支持的raw格式。</li>
+<li>-V 设置将解码结果的细节输出，否则解码结果仅显示一个packet一行的summary。</li>
+<li>-x 设置在解码输出结果中，每个packet后面以HEX dump的方式显示具体数据。</li>
+<li>-T 设置解码结果输出的格式，包括text,ps,psml和pdml，默认为text。</li>
+<li>-t 设置解码结果的时间格式。“ad”表示带日期的绝对时间，“a”表示不带日期的绝对时间，“r”表示从第一个包到现在的相对时间，“d”表示两个相邻包之间的增量时间（delta）。</li>
+<li>-S 在向raw文件输出的同时，将解码结果打印到控制台。</li>
+<li>-l 在处理每个包时即时刷新输出。</li>
+<li>-X 扩展项。</li>
+<li>-q 设置安静的stdout输出（例如做统计时）</li>
+<li>-z 设置统计参数。</li>
+</ul>
+<h3 id="7-其它"><a href="#7-其它" class="headerlink" title="7. 其它"></a>7. 其它</h3><ul>
+<li>-h 显示命令行帮助。</li>
+<li>-v 显示tshark的版本信息。</li>
+<li>-o 重载选项。</li>
+</ul>
+<h2 id="使用实例"><a href="#使用实例" class="headerlink" title="使用实例"></a>使用实例</h2><h3 id="实例1：显示访问http请求的域名以及URI"><a href="#实例1：显示访问http请求的域名以及URI" class="headerlink" title="实例1：显示访问http请求的域名以及URI"></a>实例1：显示访问http请求的域名以及URI</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tshark -n -t a -R http.request -T fields -e <span class="string">"frame.time"</span> -e <span class="string">"ip.src"</span> -e <span class="string">"http.host"</span> -e <span class="string">"http.request.method"</span> -e <span class="string">"http.request.uri"</span></div></pre></td></tr></table></figure>
+<h3 id="实例2：抓取mysql的查询"><a href="#实例2：抓取mysql的查询" class="headerlink" title="实例2：抓取mysql的查询"></a>实例2：抓取mysql的查询</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tshark -n -i eth1 -R <span class="string">'mysql.query'</span> -T fields -e <span class="string">"ip.src"</span> -e <span class="string">"mysql.query"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>另外一种方法</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tshark -i eth1 port 3307 -d tcp.port==3307,mysql -z <span class="string">"proto,colinfo,mysql.query,mysql.query"</span></div></pre></td></tr></table></figure>
+<h3 id="实例3：抓取指定类型的mysql查询"><a href="#实例3：抓取指定类型的mysql查询" class="headerlink" title="实例3：抓取指定类型的mysql查询"></a>实例3：抓取指定类型的mysql查询</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tshark -n -i eth1 -R <span class="string">'mysql matches "SELECT|INSERT|DELETE|UPDATE"'</span> -T fields -e <span class="string">"ip.src"</span> -e <span class="string">"mysql.query"</span></div></pre></td></tr></table></figure>
+<h3 id="实例4：统计http的状态"><a href="#实例4：统计http的状态" class="headerlink" title="实例4：统计http的状态"></a>实例4：统计http的状态</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tshark -n -q -z http,<span class="built_in">stat</span>, -z http,tree</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>注意</strong>：这个命令，直到ctrl+e才会显示出结果</p>
+<h3 id="实例5：tshark增加时间标签"><a href="#实例5：tshark增加时间标签" class="headerlink" title="实例5：tshark增加时间标签"></a>实例5：tshark增加时间标签</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">tshark -t ad</div><div class="line">tshark -t a</div></pre></td></tr></table></figure>
+<h3 id="实例6：查看当前服务器的web请求"><a href="#实例6：查看当前服务器的web请求" class="headerlink" title="实例6：查看当前服务器的web请求"></a>实例6：查看当前服务器的web请求</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tshark -n -t a -R http.request -T fields -e <span class="string">"frame.time"</span> -e <span class="string">"ip.src"</span> -e <span class="string">"http.host"</span> -e <span class="string">"http.request.method"</span> -e <span class="string">"http.request.uri"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;tshark主要掌握这一个用法即可。这条命令用于web服务器，可以显示下面信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[root@lnmp ~]<span class="comment"># tshark -n -t a -R http.request -T fields -e "frame.time" -e "ip.src" -e "http.host" -e "http.request.method" -e "http.request.uri"</span></div><div class="line">Running as user <span class="string">"root"</span> and group <span class="string">"root"</span>. This could be dangerous.</div><div class="line">Capturing on eth0</div><div class="line">Jul 13, 2017 22:00:25.129421639 192.168.0.100   prtas.videocc.net       GET     /v1/view?pid=1499954712122X1245558&amp;uid=04ad877579&amp;vid=04ad877579e0b8ab39e6eafe7709cdf6_0&amp;flow=12074276&amp;pd=1&amp;sd=89&amp;ts=1499954802350&amp;sign=3916b818465aa3ffcb7c81773bc8805f&amp;session_id=&amp;param1=&amp;param2=&amp;param3=&amp;param4=&amp;param5=&amp;cts=0&amp;duration=1004&amp;href=http%3A%2F%2Fv.apelearn.com%2Fstudent.php%3Fview_unit%3D897</div><div class="line">Jul 13, 2017 22:00:27.449646478         [FF02::C]:1900  M-SEARCH        *</div><div class="line">Jul 13, 2017 22:00:31.449976172         [FF02::C]:1900  M-SEARCH        *</div><div class="line">Jul 13, 2017 22:00:34.449975277         [FF02::C]:1900  M-SEARCH        *</div><div class="line">Jul 13, 2017 22:00:35.194957223 192.168.0.100   prtas.videocc.net       GET</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这类似于web访问日志，有时候若服务器没有配置访问日志，可以临时使用该命令查看一下当前服务器的web请求。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux命令/" rel="tag"># Linux命令</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/10/Linux 命令/81. iptables详解/" rel="next" title="iptables详解">
+                <i class="fa fa-chevron-left"></i> iptables详解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/10/Linux 命令/8. Linux 命令- mv/" rel="prev" title="Linux 命令- mv">
+                Linux 命令- mv <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">643</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-命令-tshark"><span class="nav-number">1.</span> <span class="nav-text">Linux 命令- tshark</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#命令参数"><span class="nav-number">1.1.</span> <span class="nav-text">命令参数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-抓包接口类"><span class="nav-number">1.1.1.</span> <span class="nav-text">1. 抓包接口类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-抓包停止条件"><span class="nav-number">1.1.2.</span> <span class="nav-text">2. 抓包停止条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-文件输出控制"><span class="nav-number">1.1.3.</span> <span class="nav-text">3. 文件输出控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-文件输入"><span class="nav-number">1.1.4.</span> <span class="nav-text">4. 文件输入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-处理类"><span class="nav-number">1.1.5.</span> <span class="nav-text">5. 处理类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-输出类"><span class="nav-number">1.1.6.</span> <span class="nav-text">6. 输出类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-其它"><span class="nav-number">1.1.7.</span> <span class="nav-text">7. 其它</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用实例"><span class="nav-number">1.2.</span> <span class="nav-text">使用实例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例1：显示访问http请求的域名以及URI"><span class="nav-number">1.2.1.</span> <span class="nav-text">实例1：显示访问http请求的域名以及URI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例2：抓取mysql的查询"><span class="nav-number">1.2.2.</span> <span class="nav-text">实例2：抓取mysql的查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例3：抓取指定类型的mysql查询"><span class="nav-number">1.2.3.</span> <span class="nav-text">实例3：抓取指定类型的mysql查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例4：统计http的状态"><span class="nav-number">1.2.4.</span> <span class="nav-text">实例4：统计http的状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例5：tshark增加时间标签"><span class="nav-number">1.2.5.</span> <span class="nav-text">实例5：tshark增加时间标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例6：查看当前服务器的web请求"><span class="nav-number">1.2.6.</span> <span class="nav-text">实例6：查看当前服务器的web请求</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
