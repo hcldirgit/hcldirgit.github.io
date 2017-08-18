@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/1. Nginx编译安装/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/6. MySQL调优/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -306,7 +306,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Nginx/1. Nginx编译安装/" itemprop="url">Nginx编译安装</a></h1>
+                <a class="post-title-link" href="/2017/08/10/MySQL/6. MySQL调优/" itemprop="url">MySQL调优</a></h1>
         
 
         <div class="post-meta">
@@ -355,12 +355,16 @@
       
         
           
-          Nginx编译安装&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Nginx官方网站, 从官方网站可以看到Nginx更新速度很快，这也反映了一个事实，目前使用Nginx跑网站的公司或者个人越来越多。
-1.下载 Nginx12cd /usr/local/src/wget http://nginx.org/download/nginx-1.4.4.tar
+          MySQL调优&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MySQL调优可以从几个方面来做：
+架构层：&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;做从库，实现读写分离；
+系统层次：
+增加内存；
+给磁盘做raid0或者raid5以增加磁盘的读写速度；
+可以重新挂载磁盘，并加上noatime参数，这
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Nginx/1. Nginx编译安装/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/MySQL/6. MySQL调优/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -406,7 +410,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/37. 数据库死锁原理及解决思路/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/5. MySQL配置讲解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -425,7 +429,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/37. 数据库死锁原理及解决思路/" itemprop="url">数据库死锁原理及解决思路</a></h1>
+                <a class="post-title-link" href="/2017/08/10/MySQL/5. MySQL配置讲解/" itemprop="url">MySQL配置讲解</a></h1>
         
 
         <div class="post-meta">
@@ -474,12 +478,13 @@
       
         
           
-          数据库死锁原理及解决思路一、什么是锁？&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;数据库是一个多用户使用的共享资源。当多个用户并发地存取数据时，在数据库中就会产生多个事务同时存取同一数据的情况。若对并发操作不加控制就可能会读取和存储不正确的数据，破坏数据库的一致性。
-&#160;&#160;&#160;&#160;&#160;&#160;&#16
+          MySQL配置讲解&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mysql 安装好后，是从安装包的 support-files 里面复制过来一个模板配置文件，默认 mysql 配置文件是在 /etc/my.cnf 下，其实这个路径或者文件名字是可以修改的，在启动脚本中修改。
+12[mysqld]socket = /tmp/mysql.sock
+&#
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/37. 数据库死锁原理及解决思路/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/MySQL/5. MySQL配置讲解/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -525,7 +530,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/9. mysql的root密码重置/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/7. MySQL性能调优my.cnf详解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -544,7 +549,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/9. mysql的root密码重置/" itemprop="url">mysql的root密码重置</a></h1>
+                <a class="post-title-link" href="/2017/08/10/MySQL/7. MySQL性能调优my.cnf详解/" itemprop="url">MySQL性能调优my.cnf详解</a></h1>
         
 
         <div class="post-meta">
@@ -593,13 +598,12 @@
       
         
           
-          mysql的root密码重置mysql设置密码1[root@lamp ~]# mysqladmin -uroot password 'yanyi'
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意：如果mysql已经有密码，该命令要加上 -p
-1[root@lamp ~]# mysqladmin -uroot -pyanyi password '
+          MySQL性能调优my.cnf详解&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;提供一个MySQL 5.6版本适合在1GB内存VPS上的my.cnf配置文件
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/9. mysql的root密码重置/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/MySQL/7. MySQL性能调优my.cnf详解/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -645,7 +649,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/17. Mysql各种存储引擎的特性以及如何选择存储引擎/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/8. 关于mysql一些优化心得/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -664,7 +668,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/17. Mysql各种存储引擎的特性以及如何选择存储引擎/" itemprop="url">Mysql各种存储引擎的特性以及如何选择存储引擎</a></h1>
+                <a class="post-title-link" href="/2017/08/10/MySQL/8. 关于mysql一些优化心得/" itemprop="url">关于mysql一些优化心得</a></h1>
         
 
         <div class="post-meta">
@@ -713,34 +717,251 @@
       
         
           
-          Mysql各种存储引擎的特性以及如何选择存储引擎几个常用存储引擎的特点&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面我们重点介绍几种常用的存储引擎并对比各个存储引擎之间的区别和推荐使用方式。
-
-
-
-特点
-Myisam
-BDB
-Memory
-InnoDB
-Archive
-
-
-
-
-存储限制
-没有
-没有
-有
-64TB
-没有
-
-
-事务安全
-&#160;
+          关于mysql一些优化心得&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;先介绍下服务器架构及配置8核8G，10M带宽Centos6.5 64
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Nginx&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;1.8
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/17. Mysql各种存储引擎的特性以及如何选择存储引擎/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/MySQL/8. 关于mysql一些优化心得/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/12. mysql备份与恢复/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/10/MySQL/12. mysql备份与恢复/" itemprop="url">mysql备份与恢复</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          mysql备份与恢复备份1[root@lamp ~]# mysqldump -uroot -pyanyi discuz &gt; /data/discuz.sql
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：-p跟密码，中间不要有空格，后边的discuz是database名字，mysqldump出来的都是一些sql语句，所以用重定向符号 &
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/10/MySQL/12. mysql备份与恢复/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/19. mysqld_multi stop 不能停掉mysql/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/10/MySQL/19. mysqld_multi stop 不能停掉mysql/" itemprop="url">mysqld_multi stop 不能停掉mysql</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          mysqld_multi stop 不能停掉mysql&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用mysqld_multi start  启动了多个mysql实例，但是mysqld_multi stop 却不能停止，为啥呢？因为还没有授权呢。
+1/usr/local/mysql/bin/mysqld_multi stop
+&#160;&#16
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/10/MySQL/19. mysqld_multi stop 不能停掉mysql/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -913,7 +1134,7 @@ Archive
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/19. mysqld_multi stop 不能停掉mysql/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/20.mysql字符集调整总结/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -932,7 +1153,7 @@ Archive
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/19. mysqld_multi stop 不能停掉mysql/" itemprop="url">mysqld_multi stop 不能停掉mysql</a></h1>
+                <a class="post-title-link" href="/2017/08/10/MySQL/20.mysql字符集调整总结/" itemprop="url">mysql字符集调整总结</a></h1>
         
 
         <div class="post-meta">
@@ -981,132 +1202,12 @@ Archive
       
         
           
-          mysqld_multi stop 不能停掉mysql&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用mysqld_multi start  启动了多个mysql实例，但是mysqld_multi stop 却不能停止，为啥呢？因为还没有授权呢。
-1/usr/local/mysql/bin/mysqld_multi stop
-&#160;&#16
+          mysql字符集调整总结&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;字符集是一套符号和编码的规则，不论是在oracle数据库还是在mysql数据库，都存在字符集的选择问题。对于数据库来说，字符集又是比较重要的，因为数据库存储的数据大部分都是各种文字，字符集对于数据库的存储、处理性能以及数据迁移都有重要的影响。
+&#160;&#160;&#160;
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/19. mysqld_multi stop 不能停掉mysql/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/25. Mysql分库分表方案/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="失落的乐章">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/0.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="失落的乐章">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/10/MySQL/25. Mysql分库分表方案/" itemprop="url">Mysql分库分表方案</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
-                2017-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          Mysql分库分表方案为什么要分表：&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当一张表的数据达到几千万时，你查询一次所花的时间会变多，如果有联合查询的话，我想有可能会死在那儿了。分表的目的就在于此，减小数据库的负担，缩短查询时间。        
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;m
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/25. Mysql分库分表方案/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/MySQL/20.mysql字符集调整总结/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1272,7 +1373,7 @@ Archive
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/27. Mysql主主复制架构配置/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/22. mysql主从搭建/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1291,7 +1392,7 @@ Archive
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/27. Mysql主主复制架构配置/" itemprop="url">Mysql主主复制架构配置</a></h1>
+                <a class="post-title-link" href="/2017/08/10/MySQL/22. mysql主从搭建/" itemprop="url">mysql 主从搭建</a></h1>
         
 
         <div class="post-meta">
@@ -1340,132 +1441,12 @@ Archive
       
         
           
-          Mysql主主复制架构配置&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MySQL主主复制结构区别于主从复制结构。在主主复制结构中，两台服务器的任
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;何一台上面的数据库存发生了改变都会同步到另一台服务器上，这样两台服务器
-&#160;&#160;&#160
+          mysql 主从搭建&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mysql 主从 （mysql replication），主要用于 mysql 的实时备份或者读写分离。在配置之前做准备工作，配置两台 mysql 服务器；或者在同一个机器上跑两个 mysql 服务。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/27. Mysql主主复制架构配置/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/12. mysql备份与恢复/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="失落的乐章">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/0.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="失落的乐章">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/10/MySQL/12. mysql备份与恢复/" itemprop="url">mysql备份与恢复</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
-                2017-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          mysql备份与恢复备份1[root@lamp ~]# mysqldump -uroot -pyanyi discuz &gt; /data/discuz.sql
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：-p跟密码，中间不要有空格，后边的discuz是database名字，mysqldump出来的都是一些sql语句，所以用重定向符号 &
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/12. mysql备份与恢复/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/MySQL/22. mysql主从搭建/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1506,7 +1487,7 @@ Archive
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/43/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/43/">43</a><span class="page-number current">44</span><a class="page-number" href="/page/45/">45</a><span class="space">&hellip;</span><a class="page-number" href="/page/66/">66</a><a class="extend next" rel="next" href="/page/45/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/43/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/43/">43</a><span class="page-number current">44</span><a class="page-number" href="/page/45/">45</a><span class="space">&hellip;</span><a class="page-number" href="/page/67/">67</a><a class="extend next" rel="next" href="/page/45/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1551,7 +1532,7 @@ Archive
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">660</span>
+                <span class="site-state-item-count">661</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

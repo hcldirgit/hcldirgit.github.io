@@ -1,0 +1,800 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="OpenStack," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="keystone整体架构与功能1. keystone的基本功能&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;keystone作为OpenStack的Identity Service，提供了用户信息管理和完成各个模块认证服务。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;用户信息管理：user/te">
+<meta name="keywords" content="OpenStack">
+<meta property="og:type" content="article">
+<meta property="og:title" content="keystone整体架构与功能">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/08/19/OpenStack/3. keystone整体架构与功能/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="keystone整体架构与功能1. keystone的基本功能&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;keystone作为OpenStack的Identity Service，提供了用户信息管理和完成各个模块认证服务。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;用户信息管理：user/te">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/keystone%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%8A%9F%E8%83%BD/01.jpeg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/keystone%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%8A%9F%E8%83%BD/02.jpeg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/keystone%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%8A%9F%E8%83%BD/03.jpeg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/keystone%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%8A%9F%E8%83%BD/04.png?raw=true">
+<meta property="og:updated_time" content="2017-08-18T17:57:39.167Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="keystone整体架构与功能">
+<meta name="twitter:description" content="keystone整体架构与功能1. keystone的基本功能&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;keystone作为OpenStack的Identity Service，提供了用户信息管理和完成各个模块认证服务。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;用户信息管理：user/te">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/keystone%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%8A%9F%E8%83%BD/01.jpeg?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/08/19/OpenStack/3. keystone整体架构与功能/"/>
+
+
+
+
+
+  <title>keystone整体架构与功能 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/19/OpenStack/3. keystone整体架构与功能/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">keystone整体架构与功能</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-19T01:58:37+08:00">
+                2017-08-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="keystone整体架构与功能"><a href="#keystone整体架构与功能" class="headerlink" title="keystone整体架构与功能"></a>keystone整体架构与功能</h1><h2 id="1-keystone的基本功能"><a href="#1-keystone的基本功能" class="headerlink" title="1. keystone的基本功能"></a>1. keystone的基本功能</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;keystone作为OpenStack的Identity Service，提供了用户信息管理和完成各个模块认证服务。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用户信息管理：user/tenant基本信息，tenant管理</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;认证服务：登录认证，各个组件API的权限控制</p>
+<h2 id="2-keystone的架构"><a href="#2-keystone的架构" class="headerlink" title="2.keystone的架构"></a>2.keystone的架构</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;既然keystone为各个模块提供认证服务，所以各个模块与keystone都有所交互。其中登录认证体现在用户访问各个组件的API时，调用了WSGI框架的authtoken filter，该filter最调用keystoneclient ，最终通过keystone验证token，完成对用户的登录认证。如果认证失败，用户将不能访问该API。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以nova为例，authtoken filter在/etc/paste.ini目录中（如果不熟悉WSGI框架，暂且忽略之）</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/keystone%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%8A%9F%E8%83%BD/01.jpeg?raw=true" alt=""></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/keystone%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%8A%9F%E8%83%BD/02.jpeg?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;keystone在openstack的位置如下：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/keystone%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%8A%9F%E8%83%BD/03.jpeg?raw=true" alt="">   </p>
+<h2 id="3-keystone-基本概念介绍"><a href="#3-keystone-基本概念介绍" class="headerlink" title="3.keystone 基本概念介绍"></a>3.keystone 基本概念介绍</h2><ul>
+<li><p>User<br>可简单的理解为用户，用户携带信物（token）能够访问openstack各个服务和资源。</p>
+</li>
+<li><p>Tenant<br>Tenant即租户，早期版本又称为project，它是各个服务中的一些可以访问的资源集合。比如通过nova创建虚拟机时要指定到某个租户中，在cinder创建卷也要指定到某个租户中。用户访问租户的资源前，必须与该租户关联，并且指定该用户在该租户下的角色。</p>
+</li>
+<li><p>Role<br>Role即角色，可以理解为VIP等级，用户的Role越高，在openstack中能访问的服务和资源就更多。</p>
+</li>
+<li><p>Service<br>Service即服务，如Nova、Glance、Swift、heat、ceilometer等。Nova提供云计算的服务，Glance提供镜像管理服务，Swift提供对象存储服务，heat提供资源编排服务，ceilometer则是提供告警计费服务，cinder提供块存储服务。</p>
+</li>
+<li><p>Endpoint<br>Service的显得太抽象笼统。Endpoint则具体化Service。Endpoint翻译为“端点”，我们可以理解它是一个服务暴露出来的访问点，如果需要访问一个服务，则必须知道他的endpoint，而endpoint一般为url，我们知道了服务的url，我们就可以访问它。Endpoint 的url具有public、private和admin这三种权限。public url可以被全局访问，private url只能被局域网访问，admin url被从常规的访问中分离。</p>
+</li>
+<li><p>Token<br>Token即是信物、令牌，用户通过用户名和密码获取在某个租户下的token，通过token，可以实现单点登录。</p>
+</li>
+<li><p>Credentials<br>该术语可以简单的理解为用户和密码。</p>
+</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;keystone 里面的概念很多，其中最重要的是 User 和 Tenant 。其它的概念是由于安全和权限等因素引入。引用<a href="https://hcldirgit.github.io/2017/08/19/OpenStack/2.%20keystone%E6%A6%82%E5%BF%B5%E8%A7%A3%E6%9E%90/">keystone概念解析</a>该文的理解，通俗的说：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果把宾馆比作为Tenant，住宿的人就是User ，而宾馆就是 Tenant，宾馆可以提供多种诸如住宿、娱乐、饮食等多种服务（Service），具体来说，住宿是一种具体的服务（Endpoint）。就住宿而言，有普通间和总统套房，如果你的VIP等级（Role）高，你可以享受到豪华的总统套房。入住前，我们需要拿身份证开房（Credential），认证身份证不是冒牌货后（Authenticaiton），会给你一个房卡（Token），然后你拿着房卡，就可以进入房间和享受各种服务。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">User</th>
+<th style="text-align:center">住宾馆的人</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Credentials</td>
+<td style="text-align:center">身份证</td>
+</tr>
+<tr>
+<td style="text-align:center">Authentication</td>
+<td style="text-align:center">认证你的身份证</td>
+</tr>
+<tr>
+<td style="text-align:center">Token</td>
+<td style="text-align:center">房卡</td>
+</tr>
+<tr>
+<td style="text-align:center">Tenant</td>
+<td style="text-align:center">宾馆</td>
+</tr>
+<tr>
+<td style="text-align:center">Service</td>
+<td style="text-align:center">宾馆可以提供的服务类别，比如，饮食类，娱乐类Endpoint具体的一种服务，比如吃烧烤，打羽毛球</td>
+</tr>
+<tr>
+<td style="text-align:center">Role</td>
+<td style="text-align:center">VIP 等级，VIP越高，享有越高的权限</td>
+</tr>
+</tbody>
+</table>
+<h2 id="4-keystone-的访问流程"><a href="#4-keystone-的访问流程" class="headerlink" title="4.keystone 的访问流程"></a>4.keystone 的访问流程</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以创建一个虚拟机（server）为例，结合下图简述下keystone在openstack的访问流程。</p>
+<ul>
+<li><p>用户Alice通过自己的户名和密码向keystone申请token，keystone认证用户名和密码后，返回token1</p>
+</li>
+<li><p>Alice通过token1发送keystone查询他所拥有的租户，keystone验证token1成功后，返回Alice的所有Tenant</p>
+</li>
+<li><p>Alice选择一个租户，通过用户名和密码申请token，keystone认证用户名、密码、tenant后，返回token2。（其实1、2步仅仅是为了查询tenant，如果已经知道tenant，可以忽略1、2步）</p>
+</li>
+<li><p>Alice通过token2发送创建server的请求，keystone验证token2(包括该token是否有效，是否有权限创建虚拟机等)成功后，然后再把请求下发到nova，最终创建虚拟机</p>
+</li>
+</ul>
+<p><img src="https://github.com/hcldirgit/image/blob/master/keystone%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%8A%9F%E8%83%BD/04.png?raw=true" alt=""></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OpenStack/" rel="tag"># OpenStack</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/19/1. Linux 基础/69. CentOS 7 下使用iptables/" rel="next" title="CentOS 7 下使用iptables">
+                <i class="fa fa-chevron-left"></i> CentOS 7 下使用iptables
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/19/OpenStack/2. keystone概念解析/" rel="prev" title="keystone概念解析">
+                keystone概念解析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">661</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#keystone整体架构与功能"><span class="nav-number">1.</span> <span class="nav-text">keystone整体架构与功能</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-keystone的基本功能"><span class="nav-number">1.1.</span> <span class="nav-text">1. keystone的基本功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-keystone的架构"><span class="nav-number">1.2.</span> <span class="nav-text">2.keystone的架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-keystone-基本概念介绍"><span class="nav-number">1.3.</span> <span class="nav-text">3.keystone 基本概念介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-keystone-的访问流程"><span class="nav-number">1.4.</span> <span class="nav-text">4.keystone 的访问流程</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
