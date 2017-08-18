@@ -1,0 +1,1071 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hadoop," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Avro简介一、引言1、 简介&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Avro是Hadoop中的一个子项目，也是Apache中一个独立的项目，Avro是一个基于二进制数据传输高性能的中间件。在Hadoop的其他项目中例如HBase(Ref)和Hive(Ref)的Client端与服务端的数据传输也采用了这个工具。Avro是一个数据序列化的系统。">
+<meta name="keywords" content="Hadoop">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Avro简介">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/08/18/Hadoop/4. Avro简介/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="Avro简介一、引言1、 简介&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Avro是Hadoop中的一个子项目，也是Apache中一个独立的项目，Avro是一个基于二进制数据传输高性能的中间件。在Hadoop的其他项目中例如HBase(Ref)和Hive(Ref)的Client端与服务端的数据传输也采用了这个工具。Avro是一个数据序列化的系统。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Avro%E7%AE%80%E4%BB%8B/01.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Avro%E7%AE%80%E4%BB%8B/02.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Avro%E7%AE%80%E4%BB%8B/06.jpeg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Avro%E7%AE%80%E4%BB%8B/03.jpeg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Avro%E7%AE%80%E4%BB%8B/04.jpeg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Avro%E7%AE%80%E4%BB%8B/05.jpeg?raw=true">
+<meta property="og:updated_time" content="2017-08-18T04:06:17.773Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Avro简介">
+<meta name="twitter:description" content="Avro简介一、引言1、 简介&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Avro是Hadoop中的一个子项目，也是Apache中一个独立的项目，Avro是一个基于二进制数据传输高性能的中间件。在Hadoop的其他项目中例如HBase(Ref)和Hive(Ref)的Client端与服务端的数据传输也采用了这个工具。Avro是一个数据序列化的系统。">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/Avro%E7%AE%80%E4%BB%8B/01.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/08/18/Hadoop/4. Avro简介/"/>
+
+
+
+
+
+  <title>Avro简介 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/18/Hadoop/4. Avro简介/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Avro简介</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-18T17:57:50+08:00">
+                2017-08-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Avro简介"><a href="#Avro简介" class="headerlink" title="Avro简介"></a>Avro简介</h1><h2 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h2><h3 id="1、-简介"><a href="#1、-简介" class="headerlink" title="1、 简介"></a>1、 简介</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Avro是Hadoop中的一个子项目，也是Apache中一个独立的项目，Avro是一个基于二进制数据传输高性能的中间件。在Hadoop的其他项目中例如HBase(Ref)和Hive(Ref)的Client端与服务端的数据传输也采用了这个工具。Avro是一个数据序列化的系统。Avro 可以将数据结构或对象转化成便于存储或传输的格式。Avro设计之初就用来支持数据密集型应用，适合于远程或本地大规模数据的存储和交换。</p>
+<h3 id="2、-特点"><a href="#2、-特点" class="headerlink" title="2、 特点"></a>2、 特点</h3><ul>
+<li>丰富的数据结构类型；</li>
+<li>快速可压缩的二进制数据形式，对数据二进制序列化后可以节约数据存储空间和网络传输带宽；</li>
+<li>存储持久数据的文件容器；</li>
+<li>可以实现远程过程调用RPC；</li>
+<li>简单的动态语言结合功能。</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;avro支持跨编程语言实现（C, C++, C#，Java, Python, Ruby, PHP），类似于Thrift，但是avro的显著特征是：avro依赖于模式，动态加载相关数据的模式，Avro数据的读写操作很频繁，而这些操作使用的都是模式，这样就减少写入每个数据文件的开销，使得序列化快速而又轻巧。这种数据及其模式的自我描述方便了动态脚本语言的使用。当Avro数据存储到文件中时，它的模式也随之存储，这样任何程序都可以对文件进行处理。如果读取数据时使用的模式与写入数据时使用的模式不同，也很容易解决，因为读取和写入的模式都是已知的。</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Avro%E7%AE%80%E4%BB%8B/01.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Avro和动态语言结合后，读/写数据文件和使用RPC协议都不需要生成代码，而代码生成作为一种可选的优化只需要在静态类型语言中实现。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Avro依赖于模式(Schema)。通过模式定义各种数据结构，只有确定了模式才能对数据进行解释，所以在数据的序列化和反序列化之前，必须先确定模式的结构。正是模式的引入，使得数据具有了自描述的功能，同时能够实现动态加载，另外与其他的数据序列化系统如Thrift相比，数据之间不存在其他的任何标识，有利于提高数据处理的效率。    </p>
+<h2 id="二、技术要领"><a href="#二、技术要领" class="headerlink" title="二、技术要领"></a>二、技术要领</h2><h3 id="1、类型"><a href="#1、类型" class="headerlink" title="1、类型"></a>1、类型</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;数据类型标准化的意义：一方面使不同系统对相同的数据能够正确解析，另一方面，数据类型的标准定义有利于数据序列化/反序列化。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;简单的数据类型：Avro定义了几种简单数据类型，下表是其简单说明：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>null</td>
+<td>no value</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>a binary value</td>
+</tr>
+<tr>
+<td>int</td>
+<td>32-bit signed integer</td>
+</tr>
+<tr>
+<td>long</td>
+<td>64-bit signed integer</td>
+</tr>
+<tr>
+<td>float</td>
+<td>single precision (32-bit) IEEE 754 floating-point number</td>
+</tr>
+<tr>
+<td>double</td>
+<td>double precision (64-bit) IEEE 754 floating-point number</td>
+</tr>
+<tr>
+<td>bytes</td>
+<td>sequence of 8-bit unsigned bytes</td>
+</tr>
+<tr>
+<td>string</td>
+<td>unicode character sequence</td>
+</tr>
+</tbody>
+</table>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;简单数据类型由类型名称定义，不包含属性信息，例如字符串定义如下：</p>
+<p>{“type”: “string”}</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;复杂数据类型：Avro定义了六种复杂数据类型，每一种复杂数据类型都具有独特的属性，下表就每一种复杂数据类型进行说明。</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Avro%E7%AE%80%E4%BB%8B/02.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;每一种复杂数据类型都含有各自的一些属性，其中部分属性是必需的，部分是可选的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里需要说明Record类型中field属性的默认值，当Record Schema实例数据中某个field属性没有提供实例数据时，则由默认值提供，具体值见下表。Union的field默认值由Union定义中的第一个Schema决定。</p>
+<table>
+<thead>
+<tr>
+<th>avro type</th>
+<th>json type</th>
+<th>example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>null</td>
+<td>null</td>
+<td>null</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>boolean</td>
+<td>true</td>
+</tr>
+<tr>
+<td>int,long</td>
+<td>integer</td>
+<td>1</td>
+</tr>
+<tr>
+<td>float,double</td>
+<td>number</td>
+<td>1.1</td>
+</tr>
+<tr>
+<td>bytes</td>
+<td>string</td>
+<td>“\u00FF”</td>
+</tr>
+<tr>
+<td>string</td>
+<td>string</td>
+<td>“foo”</td>
+</tr>
+<tr>
+<td>record</td>
+<td>object</td>
+<td>{“a”: 1}</td>
+</tr>
+<tr>
+<td>enum</td>
+<td>string</td>
+<td>“FOO”</td>
+</tr>
+<tr>
+<td>array</td>
+<td>array</td>
+<td>[1]</td>
+</tr>
+<tr>
+<td>map</td>
+<td>object</td>
+<td>{“a”: 1}</td>
+</tr>
+<tr>
+<td>fixed</td>
+<td>string</td>
+<td>“\u00ff”</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2、序列化-反序列化"><a href="#2、序列化-反序列化" class="headerlink" title="2、序列化/反序列化"></a>2、序列化/反序列化</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Avro指定两种数据序列化编码方式：binary encoding 和Json encoding。使用二进制编码会高效序列化，并且序列化后得到的结果会比较小；而JSON一般用于调试系统或是基于WEB的应用。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;binary encoding规则如下：</p>
+<ol>
+<li>简单数据类型</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Encoding</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>null</td>
+<td>Zero bytes</td>
+<td>Null</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>A single byte</td>
+<td>{true:1, false:0}</td>
+</tr>
+<tr>
+<td>int/long</td>
+<td>variable-length zig-zag coding</td>
+<td>&#160;</td>
+</tr>
+<tr>
+<td>float</td>
+<td>4 bytes</td>
+<td>Java’s floatToIntBits</td>
+</tr>
+<tr>
+<td>double</td>
+<td>8 bytes</td>
+<td>Java’s doubleToLongBits</td>
+</tr>
+<tr>
+<td>bytes</td>
+<td>a long followed by that many bytes of data</td>
+<td>&#160;</td>
+</tr>
+<tr>
+<td>string</td>
+<td>a long followed by that many bytes of UTF-8 encoded character data</td>
+<td>“foo”:{3,f,o,o} 06 66 6f 6f</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>复杂数据类型</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>encoding</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Records</td>
+<td>encoded just the concatenation of the encodings of its fields</td>
+</tr>
+<tr>
+<td>Enums</td>
+<td>a int representing the zero-based position of the symbol in the schema</td>
+</tr>
+<tr>
+<td>Arrays</td>
+<td>encoded as series of blocks. A block with count 0 indicates the end of the array. block:{long,items}</td>
+</tr>
+<tr>
+<td>Maps</td>
+<td>encoded as series of blocks. A block with count 0 indicates the end of the map. block:{long,key/value pairs}.</td>
+</tr>
+<tr>
+<td>Unions</td>
+<td>encoded by first writing a long value indicating the zero-based position within the union of the schema of its value. The value is then encoded per the indicated schema within the union.</td>
+</tr>
+<tr>
+<td>fixed</td>
+<td>encoded using number of bytes declared in the schema</td>
+</tr>
+</tbody>
+</table>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;实例：</p>
+<ul>
+<li>records</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line"><span class="string">"type"</span>:<span class="string">"record"</span>,</div><div class="line"><span class="string">"name"</span>:<span class="string">"test"</span>,</div><div class="line"><span class="string">"fields"</span> : [</div><div class="line">&#123;<span class="string">"name"</span>: <span class="string">"a"</span>,<span class="string">"type"</span>: <span class="string">"long"</span>&#125;,</div><div class="line">&#123;<span class="string">"name"</span>: <span class="string">"b"</span>,<span class="string">"type"</span>: <span class="string">"string"</span>&#125;</div><div class="line">]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;假设：a=27b=”foo” (encoding：36(27), 06(3), 66(“f”), 6f(“o”))</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;binary encoding：3606 66 6f 6f</p>
+<ul>
+<li>enums</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;<span class="string">"type"</span>: <span class="string">"enum"</span>,<span class="string">"name"</span>: <span class="string">"Foo"</span>, <span class="string">"symbols"</span>: [<span class="string">"A"</span>,<span class="string">"B"</span>, <span class="string">"C"</span>, <span class="string">"D"</span>] &#125;</div><div class="line">“D”(encoding: 06(3))</div><div class="line">binary encoding: 06</div></pre></td></tr></table></figure>
+<ul>
+<li>arrays</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;<span class="string">"type"</span>: <span class="string">"array"</span>,<span class="string">"items"</span>: <span class="string">"long"</span>&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;设：{3, 27 } (encoding：04(2), 06(3), 36(27) )</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;binary encoding：0406 36 00</p>
+<ul>
+<li>maps</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;设：{(“a”:1), (“b”:2) } （encoding：61(“a”), 62(“b”), 02(1), 04(2)）</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;binary encoding：0261 02 02 62 04</p>
+<ul>
+<li>unions</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[<span class="string">"string"</span>,<span class="string">"null"</span>]</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;设：(1)null; (2) “a”<br>binary encoding：</p>
+<p>(1) 02；说明：02代表null在union定义中的位置1；</p>
+<p>(2) 00 02 61；说明：00为string在union定义的位置，02 61为”a”的编码。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;图1表示的是Avro本地序列化和反序列化的实例，它将用户定义的模式和具体的数据编码成二进制序列存储在对象容器文件中，例如用户定义了包含学号、姓名、院系和电话的学生模式，而Avro对其进行编码后存储在student.db文件中，其中存储数据的模式放在文件头的元数据中，这样读取的模式即使与写入的模式不同，也可以迅速地读出数据。假如另一个程序需要获取学生的姓名和电话，只需要定义包含姓名和电话的学生模式，然后用此模式去读取容器文件中的数据即可。</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Avro%E7%AE%80%E4%BB%8B/06.jpeg?raw=true" alt=""></p>
+<h3 id="3、模式Schema"><a href="#3、模式Schema" class="headerlink" title="3、模式Schema"></a>3、模式Schema</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Schema通过JSON对象表示。Schema定义了简单数据类型和复杂数据类型，其中复杂数据类型包含不同属性。通过各种数据类型用户可以自定义丰富的数据结构。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Schema由下列JSON对象之一定义：</p>
+<ul>
+<li>JSON字符串：命名</li>
+<li>JSON对象：{“type”: “typeName” …attributes…}</li>
+<li>JSON数组：Avro中Union的定义</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;举例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&#123;<span class="string">"namespace"</span>: <span class="string">"example.avro"</span>,</div><div class="line"> <span class="string">"type"</span>:<span class="string">"record"</span>,</div><div class="line"> <span class="string">"name"</span>:<span class="string">"User"</span>,</div><div class="line"> <span class="string">"fields"</span>: [</div><div class="line">     &#123;<span class="string">"name"</span>:<span class="string">"name"</span>, <span class="string">"type"</span>: <span class="string">"string"</span>&#125;,</div><div class="line">     &#123;<span class="string">"name"</span>:<span class="string">"favorite_number"</span>, <span class="string">"type"</span>: [<span class="string">"int"</span>, <span class="string">"null"</span>]&#125;,</div><div class="line">     &#123;<span class="string">"name"</span>:<span class="string">"favorite_color"</span>, <span class="string">"type"</span>: [<span class="string">"string"</span>,<span class="string">"null"</span>]&#125;</div><div class="line"> ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="4、排序"><a href="#4、排序" class="headerlink" title="4、排序"></a>4、排序</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Avro为数据定义了一个标准的排列顺序。比较在很多时候是经常被使用到的对象之间的操作，标准定义可以进行方便有效的比较和排序。同时标准的定义可以方便对Avro的二进制编码数据直接进行排序而不需要反序列化。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;只有当数据项包含相同的Schema的时候，数据之间的比较才有意义。数据的比较按照Schema深度优先，从左至右的顺序递归的进行。找到第一个不匹配即可终止比较。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;两个拥有相同的模式的项的比较按照以下规则进行：</p>
+<ul>
+<li>null：总是相等。</li>
+<li>int,long,float：按照数值大小比较。</li>
+<li>boolean：false在true之前。</li>
+<li>string：按照字典序进行比较。</li>
+<li>bytes，fixed：按照byte的字典序进行比较。</li>
+<li>array：按照元素的字典序进行比较。</li>
+<li>enum：按照符号在枚举中的位置比较。</li>
+<li>record：按照域的字典序排序，如果指定了以下属性：</li>
+<li>“ascending”，域值的顺序不变。</li>
+<li>“descending”，域值的顺序颠倒。</li>
+<li>“ignore”，排序的时候忽略域值。</li>
+<li>map：不可进行比较。</li>
+</ul>
+<h3 id="5、对象容器文件"><a href="#5、对象容器文件" class="headerlink" title="5、对象容器文件"></a>5、对象容器文件</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Avro定义了一个简单的对象容器文件格式。一个文件对应一个模式，所有存储在文件中的对象都是根据模式写入的。对象按照块进行存储，块可以采用压缩的方式存储。为了在进行mapreduce处理的时候有效的切分文件，在块之间采用了同步记号。一个文件可以包含任意用户定义的元数据。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一个文件由两部分组成：文件头和一个或者多个文件数据块。</p>
+<ul>
+<li>文件头：<ul>
+<li>四个字节，ASCII‘O’，‘b’，‘j’,1。</li>
+<li>文件元数据，用于描述Schema。</li>
+<li>16字节的文件同步记号。</li>
+<li>其中，文件元数据的格式为：<ul>
+<li>i.             值为-1的长整型，表明这是一个元数据块。</li>
+<li>ii.             标识块长度的长整型。</li>
+<li>iii.             标识块中key/value对数目的长整型。</li>
+<li>iv.             每一个key/value对的string key和bytesvalue。</li>
+<li>v.             标识块中字节总数的4字节长的整数。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>文件数据块：<br>数据是以块结构进行组织的，一个文件可以包含一个或者多个文件数据块。<ul>
+<li>表示文件中块中对象数目的长整型。</li>
+<li>表示块中数据序列化后的字节数长度的长整型。</li>
+<li>序列化的对象。</li>
+<li>16字节的文件同步记号。</li>
+</ul>
+</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当数据块的长度为0时即为文件数据块的最后一个数据，此后的所有数据被自动忽略。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下图示对象容器文件的结构分解及说明：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Avro%E7%AE%80%E4%BB%8B/03.jpeg?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一个存储文件由两部分组成:头信息(Header)和数据块(Data Block)。而头信息又由三部分构成：四个字节的前缀，文件Meta-data信息和随机生成的16字节同步标记符。Avro目前支持的Meta-data有两种：schema和codec。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;codec表示对后面的文件数据块(File Data Block)采用何种压缩方式。Avro的实现都需要支持下面两种压缩方式：null(不压缩)和deflate(使用Deflate算法压缩数据块)。除了文档中认定的两种Meta-data，用户还可以自定义适用于自己的Meta-data。这里用long型来表示有多少个Meta-data数据对，也是让用户在实际应用中可以定义足够的Meta-data信息。对于每对Meta-data信息，都有一个string型的key(需要以“avro.” 为前缀)和二进制编码后的value。对于文件中头信息之后的每个数据块，有这样的结构：一个long值记录当前块有多少个对象，一个long值用于记录当前块经过压缩后的字节数，真正的序列化对象和16字节长度的同步标记符。由于对象可以组织成不同的块，使用时就可以不经过反序列化而对某个数据块进行操作。还可以由数据块数，对象数和同步标记符来定位损坏的块以确保数据完整性。</p>
+<h2 id="三、RPC实现"><a href="#三、RPC实现" class="headerlink" title="三、RPC实现"></a>三、RPC实现</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当在RPC中使用Avro时，服务器和客户端可以在握手连接时交换模式。服务器和客户端有彼此全部的模式，因此相同命名字段、缺失字段和多余字段等信息之间通信中需要处理的一致性问题就可以容易解决。如图2所示，协议中定义了用于传输的消息，消息使用框架后放入缓冲区中进行传输，由于传输的初始就交换了各自的协议定义，因此即使传输双方使用的协议不同所传输的数据也能够正确解析。</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Avro%E7%AE%80%E4%BB%8B/04.jpeg?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Avro作为RPC框架来使用。客户端希望同服务器端交互时，就需要交换双方通信的协议，它类似于模式，需要双方来定义，在Avro中被称为消息(Message)。通信双方都必须保持这种协议，以便于解析从对方发送过来的数据，这也就是传说中的握手阶段。 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;消息从客户端发送到服务器端需要经过传输层(Transport Layer)，它发送消息并接收服务器端的响应。到达传输层的数据就是二进制数据。通常以HTTP作为传输模型，数据以POST方式发送到对方去。在 Avro中，它的消息被封装成为一组缓冲区(Buffer)，类似于下图的模型：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Avro%E7%AE%80%E4%BB%8B/05.jpeg?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如上图，每个缓冲区以四个字节开头，中间是多个字节的缓冲数据，最后以一个空缓冲区结尾。这种机制的好处在于，发送端在发送数据时可以很方便地组装不同数据源的数据，接收方也可以将数据存入不同的存储区。还有，当往缓冲区中写数据时，大对象可以独占一个缓冲区，而不是与其它小对象混合存放，便于接收方方便地读取大对象。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;对象容器文件是Avro的数据存储的具体实现，数据交换则由RPC服务提供，与对象容器文件类似，数据交换也完全依赖Schema，所以与Hadoop目前的RPC不同，Avro在数据交换之前需要通过握手过程先交换Schema。</p>
+<h3 id="1、握手过程"><a href="#1、握手过程" class="headerlink" title="1、握手过程"></a>1、握手过程</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;握手的过程是确保Server和Client获得对方的Schema定义，从而使Server能够正确反序列化请求信息，Client能够正确反序列化响应信息。一般的，Server/Client会缓存最近使用到的一些协议格式，所以，大多数情况下，握手过程不需要交换整个Schema文本。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;所有的RPC请求和响应处理都建立在已经完成握手的基础上。对于无状态的连接，所有的请求响应之前都附有一次握手过程；对于有状态的连接，一次握手完成，整个连接的生命期内都有效。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;具体过程：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Client发起HandshakeRequest，其中含有Client本身SchemaHash值和对应Server端的Schema Hash值(clientHash!=null,clientProtocol=null, serverHash!=null)。如果本地缓存有serverHash值则直接填充，如果没有则通过猜测填充。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Server用如下之一HandshakeResponse响应Client请求：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(match=BOTH, serverProtocol=null,serverHash=null)：当Client发送正确的serverHash值且Server缓存相应的clientHash。握手过程完成，之后的数据交换都遵守本次握手结果。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(match=CLIENT, serverProtocol!=null,serverHash!=null)：当Server缓存有Client的Schema，但是Client请求中ServerHash值不正确。此时Server发送Server端的Schema数据和相应的Hash值，此次握手完成，之后的数据交换都遵守本次握手结果。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(match=NONE)：当Client发送的ServerHash不正确且Server端没有Client Schema的缓存。这种情况下Client需要重新提交请求信息 (clientHash!=null,clientProtocol!=null, serverHash!=null)，Server响应 (match=BOTH, serverProtocol=null,serverHash=null)，此次握手过程完成，之后的数据交换都遵守本次握手结果。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;握手过程使用的Schema结构如下示。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line"><span class="string">"type"</span>:<span class="string">"record"</span>,</div><div class="line"><span class="string">"name"</span>:<span class="string">"HandshakeRequest"</span>,<span class="string">"namespace"</span>:<span class="string">"org.apache.avro.ipc"</span>,</div><div class="line"><span class="string">"fields"</span>:[</div><div class="line">&#123;<span class="string">"name"</span>:<span class="string">"clientHash"</span>, <span class="string">"type"</span>: &#123;<span class="string">"type"</span>: <span class="string">"fixed"</span>,<span class="string">"name"</span>: <span class="string">"MD5"</span>, <span class="string">"size"</span>: 16&#125;&#125;,</div><div class="line">&#123;<span class="string">"name"</span>:<span class="string">"clientProtocol"</span>, <span class="string">"type"</span>: [<span class="string">"null"</span>,<span class="string">"string"</span>]&#125;,</div><div class="line">&#123;<span class="string">"name"</span>:<span class="string">"serverHash"</span>, <span class="string">"type"</span>: <span class="string">"MD5"</span>&#125;,</div><div class="line">&#123;<span class="string">"name"</span>:<span class="string">"meta"</span>, <span class="string">"type"</span>: [<span class="string">"null"</span>, &#123;<span class="string">"type"</span>:<span class="string">"map"</span>, <span class="string">"values"</span>: <span class="string">"bytes"</span>&#125;]&#125;</div><div class="line">]</div><div class="line">&#125;</div><div class="line">&#123;</div><div class="line"><span class="string">"type"</span>:<span class="string">"record"</span>,</div><div class="line"><span class="string">"name"</span>:<span class="string">"HandshakeResponse"</span>, <span class="string">"namespace"</span>:<span class="string">"org.apache.avro.ipc"</span>,</div><div class="line"><span class="string">"fields"</span>:[</div><div class="line">&#123;<span class="string">"name"</span>:<span class="string">"match"</span>,<span class="string">"type"</span>: &#123;<span class="string">"type"</span>: <span class="string">"enum"</span>,<span class="string">"name"</span>: <span class="string">"HandshakeMatch"</span>,</div><div class="line"><span class="string">"symbols"</span>:[<span class="string">"BOTH"</span>, <span class="string">"CLIENT"</span>, <span class="string">"NONE"</span>]&#125;&#125;,</div><div class="line">&#123;<span class="string">"name"</span>:<span class="string">"serverProtocol"</span>, <span class="string">"type"</span>: [<span class="string">"null"</span>,<span class="string">"string"</span>]&#125;,</div><div class="line">&#123;<span class="string">"name"</span>:<span class="string">"serverHash"</span>,<span class="string">"type"</span>: [<span class="string">"null"</span>, &#123;<span class="string">"type"</span>:<span class="string">"fixed"</span>, <span class="string">"name"</span>: <span class="string">"MD5"</span>, <span class="string">"size"</span>: 16&#125;]&#125;,</div><div class="line">&#123;<span class="string">"name"</span>:<span class="string">"meta"</span>,<span class="string">"type"</span>: [<span class="string">"null"</span>, &#123;<span class="string">"type"</span>:<span class="string">"map"</span>, <span class="string">"values"</span>: <span class="string">"bytes"</span>&#125;]&#125;</div><div class="line">]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="2、消息帧格式"><a href="#2、消息帧格式" class="headerlink" title="2、消息帧格式"></a>2、消息帧格式</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;消息从客户端发送到服务器端需要经过传输层，它发送请求并接收服务器端的响应。到达传输层的数据就是二进制数据。通常以HTTP作为传输模型，数据以POST方式发送到对方去。在 Avro中消息首先分帧后被封装成为一组缓冲区(Buffer)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;数据帧的格式如下：</p>
+<ul>
+<li>一系列Buffer：<ul>
+<li>4字节的Buffer长度</li>
+<li>Buffer字节数据</li>
+</ul>
+</li>
+<li>长度为0的Buffer结束数据帧 </li>
+</ul>
+<h3 id="3、Call格式"><a href="#3、Call格式" class="headerlink" title="3、Call格式"></a>3、Call格式</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一个调用由请求消息、结果响应消息或者错误消息组成。请求和响应包含可扩展的元数据，两种消息都按照之前提出的方法分帧。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;调用的请求格式为：</p>
+<ul>
+<li>请求元数据，一个类型值的映射。</li>
+<li>消息名，一个Avro字符串。</li>
+<li>消息参数。参数根据消息的请求定义序列化。</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;调用的响应格式为：</p>
+<ul>
+<li>响应的元数据，一个类型值的映射。</li>
+<li>一字节的错误标志位。</li>
+<li>如果错误标志为false，响应消息，根据响应的模式序列化。</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果错误标志位true，错误消息，根据消息的错误联合模式序列化。 </p>
+<h2 id="四、实例"><a href="#四、实例" class="headerlink" title="四、实例"></a>四、实例</h2><h3 id="1、本地序列化-反序列化"><a href="#1、本地序列化-反序列化" class="headerlink" title="1、本地序列化/反序列化"></a>1、本地序列化/反序列化</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line">user.avsc</div><div class="line">&#123;<span class="string">"namespace"</span>:<span class="string">"example.avro"</span>,</div><div class="line"> <span class="string">"type"</span>: <span class="string">"record"</span>,</div><div class="line"> <span class="string">"name"</span>: <span class="string">"User"</span>,</div><div class="line"> <span class="string">"fields"</span>: [</div><div class="line">    &#123;<span class="string">"name"</span>: <span class="string">"name"</span>, <span class="string">"type"</span>:<span class="string">"string"</span>&#125;,</div><div class="line">    &#123;<span class="string">"name"</span>: <span class="string">"favorite_number"</span>,  <span class="string">"type"</span>: [<span class="string">"int"</span>, <span class="string">"null"</span>]&#125;,</div><div class="line">    &#123;<span class="string">"name"</span>: <span class="string">"favorite_color"</span>, <span class="string">"type"</span>:[<span class="string">"string"</span>, <span class="string">"null"</span>]&#125;</div><div class="line"> ]</div><div class="line">&#125;</div><div class="line">Main.java</div><div class="line">public class Main &#123;</div><div class="line">    public static void main(String[] args)throws Exception &#123;</div><div class="line">       User user1 = new User();</div><div class="line">       user1.setName(<span class="string">"Alyssa"</span>);</div><div class="line">       user1.setFavoriteNumber(256);</div><div class="line">       // Leave favorite color null </div><div class="line">       // Alternate constructor</div><div class="line">       User user2 = new User(<span class="string">"Ben"</span>, 7,<span class="string">"red"</span>); </div><div class="line">       // Construct via builder</div><div class="line">       User user3 = User.newBuilder()</div><div class="line">                    .setName(<span class="string">"Charlie"</span>)</div><div class="line">                   .setFavoriteColor(<span class="string">"blue"</span>)</div><div class="line">                   .setFavoriteNumber(null)</div><div class="line">                    .build();      </div><div class="line">       // Serialize user1 and user2to disk</div><div class="line">       File file = new File(<span class="string">"users.avro"</span>);</div><div class="line">       DatumWriter&lt;User&gt; userDatumWriter = new SpecificDatumWriter&lt;User&gt;(User.class);</div><div class="line">       DataFileWriter&lt;User&gt; dataFileWriter = newDataFileWriter&lt;User&gt;(userDatumWriter);</div><div class="line">       dataFileWriter.create(user1.getSchema(),new File(<span class="string">"users.avro"</span>));</div><div class="line">       dataFileWriter.append(user1);</div><div class="line">       dataFileWriter.append(user2);</div><div class="line">       dataFileWriter.append(user3);</div><div class="line">       dataFileWriter.close();      </div><div class="line">       // Deserialize Usersfrom disk</div><div class="line">       DatumReader&lt;User&gt; userDatumReader = newSpecificDatumReader&lt;User&gt;(User.class);</div><div class="line">       DataFileReader&lt;User&gt; dataFileReader = newDataFileReader&lt;User&gt;(file, userDatumReader);</div><div class="line">       User user = null;</div><div class="line">       <span class="keyword">while</span> (dataFileReader.hasNext()) &#123;</div><div class="line">       // Reuse user object bypassing it to next(). This saves us from</div><div class="line">       // allocating and garbagecollecting many objects <span class="keyword">for</span> files with</div><div class="line">       // many items.</div><div class="line">       user = dataFileReader.next(user);</div><div class="line">       System.out.println(user);</div><div class="line">       &#125;                  </div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="2、RPC"><a href="#2、RPC" class="headerlink" title="2、RPC"></a>2、RPC</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line">mail.avsc</div><div class="line">&#123;<span class="string">"namespace"</span>:<span class="string">"example.proto"</span>,</div><div class="line"> <span class="string">"protocol"</span>: <span class="string">"Mail"</span>,</div><div class="line"> <span class="string">"types"</span>: [</div><div class="line">    &#123;<span class="string">"name"</span>: <span class="string">"Message"</span>, <span class="string">"type"</span>:<span class="string">"record"</span>,</div><div class="line">     <span class="string">"fields"</span>: [</div><div class="line">         &#123;<span class="string">"name"</span>: <span class="string">"to"</span>,  <span class="string">"type"</span>: <span class="string">"string"</span>&#125;,</div><div class="line">         &#123;<span class="string">"name"</span>: <span class="string">"from"</span>, <span class="string">"type"</span>: <span class="string">"string"</span>&#125;,</div><div class="line">         &#123;<span class="string">"name"</span>: <span class="string">"body"</span>, <span class="string">"type"</span>:<span class="string">"string"</span>&#125;</div><div class="line">     ]</div><div class="line">    &#125;</div><div class="line"> ],</div><div class="line"> <span class="string">"messages"</span>: &#123;</div><div class="line">    <span class="string">"send"</span>: &#123;</div><div class="line">        <span class="string">"request"</span>: [&#123;<span class="string">"name"</span>: <span class="string">"message"</span>,<span class="string">"type"</span>: <span class="string">"Message"</span>&#125;],</div><div class="line">        <span class="string">"response"</span>: <span class="string">"string"</span></div><div class="line">    &#125;</div><div class="line"> &#125;</div><div class="line">&#125;</div><div class="line">Main.java</div><div class="line">public class Main &#123;</div><div class="line">    public static class MailImpl implements Mail &#123;</div><div class="line">        // <span class="keyword">in</span> this simple example just <span class="built_in">return</span> details of the message</div><div class="line">        public Utf8 send(Message message) &#123;</div><div class="line">            System.out.println(<span class="string">"Sending message"</span>);</div><div class="line">            <span class="built_in">return</span> new Utf8(<span class="string">"Sending message to "</span> + message.getTo().toString()</div><div class="line">                    + <span class="string">" from "</span> +message.getFrom().toString()</div><div class="line">                    + <span class="string">" with body "</span> +message.getBody().toString());</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    private static Server server;</div><div class="line">    private static void startServer() throws IOException &#123;</div><div class="line">        server = new NettyServer(new SpecificResponder(Mail.class,new MailImpl()),newInetSocketAddress(65111));</div><div class="line">        // the server implements the Mail protocol (MailImpl)</div><div class="line">    &#125;</div><div class="line">    public static void main(String[] args)throws IOException &#123;</div><div class="line">        System.out.println(<span class="string">"Starting server"</span>);</div><div class="line">        // usually this would be anotherapp, but <span class="keyword">for</span> simplicity</div><div class="line">        startServer();</div><div class="line">        System.out.println(<span class="string">"Server started"</span>);</div><div class="line">        NettyTransceiver client = new NettyTransceiver(new InetSocketAddress(65111));</div><div class="line">        // client code - attach to the server and send a message</div><div class="line">        Mail proxy = (Mail) SpecificRequestor.getClient(Mail.class, client);</div><div class="line">        System.out.println(<span class="string">"Client built, got proxy"</span>);</div><div class="line">        // fill <span class="keyword">in</span> the Message record and send it</div><div class="line">        Message message = new Message();</div><div class="line">        message.setTo(new Utf8(<span class="string">"127.0.0.1"</span>));</div><div class="line">        message.setFrom(new Utf8(<span class="string">"127.0.0.1"</span>));</div><div class="line">        message.setBody(new Utf8(<span class="string">"this is my message"</span>));</div><div class="line">        System.out.println(<span class="string">"Calling proxy.send with message: "</span> + message.toString());</div><div class="line">        System.out.println(<span class="string">"Result: "</span> +proxy.send(message));</div><div class="line">        // cleanup</div><div class="line">        client.close();</div><div class="line">        server.close();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Hadoop/" rel="tag"># Hadoop</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/18/Hadoop/6. HDFS原理分析—— 基本概念/" rel="next" title="HDFS原理分析—— 基本概念">
+                <i class="fa fa-chevron-left"></i> HDFS原理分析—— 基本概念
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">658</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Avro简介"><span class="nav-number">1.</span> <span class="nav-text">Avro简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、引言"><span class="nav-number">1.1.</span> <span class="nav-text">一、引言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、-简介"><span class="nav-number">1.1.1.</span> <span class="nav-text">1、 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、-特点"><span class="nav-number">1.1.2.</span> <span class="nav-text">2、 特点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、技术要领"><span class="nav-number">1.2.</span> <span class="nav-text">二、技术要领</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、类型"><span class="nav-number">1.2.1.</span> <span class="nav-text">1、类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、序列化-反序列化"><span class="nav-number">1.2.2.</span> <span class="nav-text">2、序列化/反序列化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、模式Schema"><span class="nav-number">1.2.3.</span> <span class="nav-text">3、模式Schema</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、排序"><span class="nav-number">1.2.4.</span> <span class="nav-text">4、排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5、对象容器文件"><span class="nav-number">1.2.5.</span> <span class="nav-text">5、对象容器文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、RPC实现"><span class="nav-number">1.3.</span> <span class="nav-text">三、RPC实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、握手过程"><span class="nav-number">1.3.1.</span> <span class="nav-text">1、握手过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、消息帧格式"><span class="nav-number">1.3.2.</span> <span class="nav-text">2、消息帧格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、Call格式"><span class="nav-number">1.3.3.</span> <span class="nav-text">3、Call格式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、实例"><span class="nav-number">1.4.</span> <span class="nav-text">四、实例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、本地序列化-反序列化"><span class="nav-number">1.4.1.</span> <span class="nav-text">1、本地序列化/反序列化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、RPC"><span class="nav-number">1.4.2.</span> <span class="nav-text">2、RPC</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
