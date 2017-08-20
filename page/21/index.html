@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/14/1. Linux 基础/47.使用tshark抓包分析http请求/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/14/1. Linux 基础/38.yum更新源优先级设置/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -306,7 +306,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/14/1. Linux 基础/47.使用tshark抓包分析http请求/" itemprop="url">使用tshark抓包分析http请求</a></h1>
+                <a class="post-title-link" href="/2017/08/14/1. Linux 基础/38.yum更新源优先级设置/" itemprop="url">yum更新源优先级设置</a></h1>
         
 
         <div class="post-meta">
@@ -355,14 +355,13 @@
       
         
           
-          使用tshark抓包分析http请求&#160; &#160; &#160; &#160;默认我们的机器上是没有安装这个工具的。如果你的linux是CentOS那么就使用yum安装
-1yum  install  -y  wireshark
-&#160; &#160; &#160; &#160;也可以到官网下载源码具体安装方法，请参考以下，简单介绍这个抓包工具的应用
-&#160; &#160; &#
+          yum更新源优先级设置1.安装 yum-priorities1yum install yum-priorities
+2.priorities的配置文件是/etc/yum/pluginconf.d/priorities.conf，确认其是否存在。&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其内容为:
+12[main]enabled=1   # 0禁
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/14/1. Linux 基础/47.使用tshark抓包分析http请求/#more" rel="contents">
+            <a class="btn" href="/2017/08/14/1. Linux 基础/38.yum更新源优先级设置/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -408,7 +407,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/14/1. Linux 基础/46.Linux支持中文/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/14/1. Linux 基础/37. 利用tar通过网络拷贝数据/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -427,7 +426,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/14/1. Linux 基础/46.Linux支持中文/" itemprop="url">Linux支持中文</a></h1>
+                <a class="post-title-link" href="/2017/08/14/1. Linux 基础/37. 利用tar通过网络拷贝数据/" itemprop="url">利用tar通过网络拷贝数据</a></h1>
         
 
         <div class="post-meta">
@@ -476,17 +475,130 @@
       
         
           
-          Linux支持中文
-修改/root/.bash_profile文件，增加export LANG=zh_CN.GB18030对于其他用户，也必须相应修改该文件使用该方法时putty能显示中文，但桌面系统是英文，而且所有的网页中文显示还是乱码
-
-引用:修改/etc/sysconfig/i18n文件
-
-
-123#LANG="en_US.UTF-8"#SUPPORTED="en_US.UTF-8:en_U
+          利用tar通过网路拷贝数据12# cd /data  // data目录下有我们要拷贝的目标文件目录 test# tar cvf  -  test| ssh 10.0.1.11 "cd /copy1/; tar xvf  -"  //首先将要拷贝的目录test打包，"-" 代表标准输出，然后再ssh 到目标主机 10.0.1.11 ，运行相应的命令。其中tar xvf  - 意思是，将前面的标准输
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/14/1. Linux 基础/46.Linux支持中文/#more" rel="contents">
+            <a class="btn" href="/2017/08/14/1. Linux 基础/37. 利用tar通过网络拷贝数据/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/14/1. Linux 基础/36. Linux解压大于4G的压缩包/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/14/1. Linux 基础/36. Linux解压大于4G的压缩包/" itemprop="url">Linux解压大于4G的压缩包</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-14T01:31:10+08:00">
+                2017-08-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          Linux解压大于4G的zip压缩包&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Linux下不支持解压大于4G的zip压缩包。解决办法如下：
+12wget -c http://packages.sw.be/p7zip/p7zip-9.13-1.el5.rf.i386.rpmwget -c http://packages.sw.be/p7zip/p
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/14/1. Linux 基础/36. Linux解压大于4G的压缩包/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -892,7 +1004,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/14/1. Linux 基础/38.yum更新源优先级设置/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/14/1. Linux 基础/32. vim设置设置自动缩进/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -911,7 +1023,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/14/1. Linux 基础/38.yum更新源优先级设置/" itemprop="url">yum更新源优先级设置</a></h1>
+                <a class="post-title-link" href="/2017/08/14/1. Linux 基础/32. vim设置设置自动缩进/" itemprop="url">vim设置自动缩进</a></h1>
         
 
         <div class="post-meta">
@@ -960,13 +1072,12 @@
       
         
           
-          yum更新源优先级设置1.安装 yum-priorities1yum install yum-priorities
-2.priorities的配置文件是/etc/yum/pluginconf.d/priorities.conf，确认其是否存在。&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其内容为:
-12[main]enabled=1   # 0禁
+          vim设置自动缩进&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;centos系统，修改vim的配置文件 /etc/vimrc
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;添加如下内容：1)  打开 vimrc ，添加以下语句来使得语法高亮显示：syntax on2)  如果此时语法还是没有高亮显示
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/14/1. Linux 基础/38.yum更新源优先级设置/#more" rel="contents">
+            <a class="btn" href="/2017/08/14/1. Linux 基础/32. vim设置设置自动缩进/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1012,7 +1123,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/14/1. Linux 基础/37. 利用tar通过网络拷贝数据/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/14/1. Linux 基础/47.使用tshark抓包分析http请求/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1031,7 +1142,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/14/1. Linux 基础/37. 利用tar通过网络拷贝数据/" itemprop="url">利用tar通过网络拷贝数据</a></h1>
+                <a class="post-title-link" href="/2017/08/14/1. Linux 基础/47.使用tshark抓包分析http请求/" itemprop="url">使用tshark抓包分析http请求</a></h1>
         
 
         <div class="post-meta">
@@ -1080,11 +1191,14 @@
       
         
           
-          利用tar通过网路拷贝数据12# cd /data  // data目录下有我们要拷贝的目标文件目录 test# tar cvf  -  test| ssh 10.0.1.11 "cd /copy1/; tar xvf  -"  //首先将要拷贝的目录test打包，"-" 代表标准输出，然后再ssh 到目标主机 10.0.1.11 ，运行相应的命令。其中tar xvf  - 意思是，将前面的标准输
+          使用tshark抓包分析http请求&#160; &#160; &#160; &#160;默认我们的机器上是没有安装这个工具的。如果你的linux是CentOS那么就使用yum安装
+1yum  install  -y  wireshark
+&#160; &#160; &#160; &#160;也可以到官网下载源码具体安装方法，请参考以下，简单介绍这个抓包工具的应用
+&#160; &#160; &#
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/14/1. Linux 基础/37. 利用tar通过网络拷贝数据/#more" rel="contents">
+            <a class="btn" href="/2017/08/14/1. Linux 基础/47.使用tshark抓包分析http请求/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1249,7 +1363,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/14/1. Linux 基础/27.磁盘配额/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/14/1. Linux 基础/3. Linux 快捷键/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1268,7 +1382,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/14/1. Linux 基础/27.磁盘配额/" itemprop="url">磁盘配额</a></h1>
+                <a class="post-title-link" href="/2017/08/14/1. Linux 基础/3. Linux 快捷键/" itemprop="url">Linux 快捷键</a></h1>
         
 
         <div class="post-meta">
@@ -1317,133 +1431,13 @@
       
         
           
-          磁盘配额&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;磁盘配合其实就是给每个用户分配一定的磁盘额度，只允许他使用这个额度范围内的磁盘空间。在linux系统中，是多用户多任务的环境，所以会有很多人共用一个磁盘的情况。针对每个用户去限定一定量的磁盘空间是有必要的，这样才显得公平。随着硬件成本的降低，服务器上的磁盘资源似乎不再刻意的去限制了，所以磁盘配额
+          Linux 好用的快捷键&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;ctrl+a:光标移到行首。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;ctrl+b:光标左移一个字母
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;ctrl+c:杀死当前进程
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/14/1. Linux 基础/27.磁盘配额/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/14/1. Linux 基础/26.增加磁盘的inode数/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="失落的乐章">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/0.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="失落的乐章">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/14/1. Linux 基础/26.增加磁盘的inode数/" itemprop="url">增加磁盘的inode数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-14T01:31:10+08:00">
-                2017-08-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          增加磁盘的inode数&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;inode这个词大多资料都是译为索引节点，在ext3文件系统，调整磁盘的inode number。这里只是调整inode number这个参数，如果想调整inode size或是blocksize等可以具体mkfs.ext3命令。
-
-卸载文件系统
-
-1# umount /dev/s
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/14/1. Linux 基础/26.增加磁盘的inode数/#more" rel="contents">
+            <a class="btn" href="/2017/08/14/1. Linux 基础/3. Linux 快捷键/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1529,7 +1523,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">669</span>
+                <span class="site-state-item-count">670</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
