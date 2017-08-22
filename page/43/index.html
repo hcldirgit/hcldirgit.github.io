@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/29. nginx中location的规则/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/15. nginx域名跳转/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -306,7 +306,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Nginx/29. nginx中location的规则/" itemprop="url">nginx中location的规则</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Nginx/15. nginx域名跳转/" itemprop="url">nginx域名跳转</a></h1>
         
 
         <div class="post-meta">
@@ -355,14 +355,14 @@
       
         
           
-          nginx中location的规则语法规则1location [=|~|~*|^~] /uri/ &#123; … &#125;
-
-= 开头表示精确匹配
-^~ 开头表示uri以某个常规字符串开头，不是正则匹配。#^~表示普通字符匹配，如果该选项匹配，只匹配该选项，不匹配别的选项，一般用来匹配目录。nginx不对url做编码，因此请求为/static/20%/aa，可以被规则^~ /static/ 
+          nginx域名跳转&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置 nginx 虚拟主机配置文件
+1[root@lnmp ~]# vim /usr/local/nginx/conf/vhosts/123.conf
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置如下：
+1234if ($host
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Nginx/29. nginx中location的规则/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Nginx/15. nginx域名跳转/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -408,7 +408,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/28. 深入理解PHP之：Nginx 与 FPM 的工作机制/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/16. nginx的301与302如何配置/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -427,7 +427,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Nginx/28. 深入理解PHP之：Nginx 与 FPM 的工作机制/" itemprop="url">深入理解PHP之：Nginx 与 FPM 的工作机制</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Nginx/16. nginx的301与302如何配置/" itemprop="url">nginx的301与302如何配置</a></h1>
         
 
         <div class="post-meta">
@@ -476,11 +476,13 @@
       
         
           
-          深入理解PHP之：Nginx 与 FPM 的工作机制&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;网络上有很多关于如何配置 Nginx + FPM 的文章，但它们更多从操作的角度出发，告诉我们怎么做，但却没有告诉我们为什么要这么做，本文从 Nginx 与 FPM 的工作机制出发，探讨配置背后的原理，让我们真正理解 Nginx 与 PHP 是如何协同
+          nginx的301与302如何配置&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先看一个完整代码示例，关于nginx 301 302跳转的。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;301跳转设置：
+123456server &#123;listen 80;server_name 123.c
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Nginx/28. 深入理解PHP之：Nginx 与 FPM 的工作机制/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Nginx/16. nginx的301与302如何配置/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -526,7 +528,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/25. nginx代理--根据访问的目录来区分后端的web/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/17. nginx 不记录指定文件类型的日志/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -545,7 +547,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Nginx/25. nginx代理--根据访问的目录来区分后端的web/" itemprop="url">nginx代理--根据访问的目录来区分后端的web</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Nginx/17. nginx 不记录指定文件类型的日志/" itemprop="url">nginx 不记录指定文件类型的日志</a></h1>
         
 
         <div class="post-meta">
@@ -594,12 +596,13 @@
       
         
           
-          nginx代理–根据访问的目录来区分后端的web&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需求： 当请求的目录是 /aaa/ 则把请求发送到机器a，当请求的目录为/bbb/则把请求发送到机器b，除了目录/aaa/与目录/bbb/外，其他的请求发送到机器b
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#1
+          nginx 不记录指定文件类型的日志&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;先看看 nginx 日志相关配置
+1.日志格式&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在 nginx.conf 中定义日志格式
+1[root@lnmp ~]# vim /usr/local/nginx/conf/
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Nginx/25. nginx代理--根据访问的目录来区分后端的web/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Nginx/17. nginx 不记录指定文件类型的日志/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -645,7 +648,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/24. Nginx的rewrite应用/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/18. nginx日志切割/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -664,7 +667,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Nginx/24. Nginx的rewrite应用/" itemprop="url">Nginx的rewrite应用</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Nginx/18. nginx日志切割/" itemprop="url">nginx日志切割</a></h1>
         
 
         <div class="post-meta">
@@ -713,12 +716,12 @@
       
         
           
-          Nginx的rewrite应用&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Rewrite主要的功能是实现URL重写，Nginx 的 Rewrite 规则采用 PCRE Perl 兼容正则表达式的语法进行规则匹配，如相使用 Nginx 的 Rewrite 功能，在编译 Nginx 前要编译安装 PCRE 库。
-一、Nginx使用if进行条件匹配&#
+          nginx日志切割&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;nginx 没有 apache自动切割的工具，只有写脚本，也可以借助 centos 自带的日志归档工具 logrotate 。
+1.nginx 日志切割脚本&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先确定访问日志路径，假定为 /t
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Nginx/24. Nginx的rewrite应用/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Nginx/18. nginx日志切割/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -764,7 +767,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/2. Nginx测试php解析/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/30. nginx的负载均衡和反向代理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -783,7 +786,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Nginx/2. Nginx测试php解析/" itemprop="url">Nginx测试php解析</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Nginx/30. nginx的负载均衡和反向代理/" itemprop="url">nginx的负载均衡和反向代理</a></h1>
         
 
         <div class="post-meta">
@@ -832,15 +835,17 @@
       
         
           
-          Nginx测试php解析&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;创建测试文件：
-1vim /usr/local/nginx/html/2.php
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;添加内容：
-123&lt;?phpecho "测试php是否解析";?&gt;
-&#160;&#160
+          nginx的负载均衡和反向代理负载均衡模块upstream：
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;nginx的负载均衡的算法：
+
+轮询（默认）
+weight 权重轮询
+ip_hash  每个请求按访问ip的hash结果分配，这样来自同一个ip的请求固定到后台的一段服务器上，有效的解决动态网页存在的session共享问题
+fair 根据服务
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Nginx/2. Nginx测试php解析/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Nginx/30. nginx的负载均衡和反向代理/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -886,7 +891,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/23. nginx代理/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/19. nginx 配置静态文件过期时间/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -905,7 +910,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Nginx/23. nginx代理/" itemprop="url">nginx代理</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Nginx/19. nginx 配置静态文件过期时间/" itemprop="url">nginx 配置静态文件过期时间</a></h1>
         
 
         <div class="post-meta">
@@ -954,13 +959,12 @@
       
         
           
-          nginx代理1[root@lnmp ~]# vim /usr/local/nginx/conf/vhosts/proxy.conf
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加入内容：
-123456789101112server &#123;    listen 80;    server_name www.baidu.com;    loc
+          nginx 配置静态文件过期时间&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以把指定文件类型不记录日志和该功能一起配置。
+1234567891011location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$&#123;    expires 30d;    access_log off;&#125;location ~
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Nginx/23. nginx代理/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Nginx/19. nginx 配置静态文件过期时间/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1006,7 +1010,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/22. nginx禁止指定user_agent/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/11. php-fpm配置文件/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1025,7 +1029,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Nginx/22. nginx禁止指定user_agent/" itemprop="url">nginx禁止指定user_agent</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Nginx/11. php-fpm配置文件/" itemprop="url">php-fpm配置文件 高并发参数配置及linux内核参数优化</a></h1>
         
 
         <div class="post-meta">
@@ -1074,13 +1078,12 @@
       
         
           
-          nginx禁止指定user_agent&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;具体配置如下：
-123456location / &#123; if ($http_user_agent ~ 'curl|baidu|111111')     &#123;         return 403;     &#125; &#125;
-&#160;&#
+          php-fpm配置文件 高并发参数配置及linux内核参数优化&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;  之前给出了 php-fpm.conf 的内容，下面给出一个模版，配置如下
+12345678910111213141516[global]pid = /usr/local/php/var/run/php-fpm.piderror_log =
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Nginx/22. nginx禁止指定user_agent/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Nginx/11. php-fpm配置文件/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1126,7 +1129,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/10. nginx配置详解/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/14. nginx用户认证/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1145,7 +1148,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Nginx/10. nginx配置详解/" itemprop="url">nginx配置详解</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Nginx/14. nginx用户认证/" itemprop="url">nginx用户认证</a></h1>
         
 
         <div class="post-meta">
@@ -1194,11 +1197,13 @@
       
         
           
-          nginx配置详解12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697989910
+          nginx用户认证&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;nginx 如何做用户认证，首先需要安装 apache ，也可以使用 yum install -y httpd 安装。
+1[root@lnmp ~]# yum install -y httpd
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#16
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Nginx/10. nginx配置详解/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Nginx/14. nginx用户认证/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1244,7 +1249,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/35. 使用 Xtrabackup 在线对MySQL做主从复制/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/4. MySQL5.7 二进制源码包安装/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1263,7 +1268,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/35. 使用 Xtrabackup 在线对MySQL做主从复制/" itemprop="url">使用 Xtrabackup 在线对MySQL做主从复制</a></h1>
+                <a class="post-title-link" href="/2017/08/10/MySQL/4. MySQL5.7 二进制源码包安装/" itemprop="url">MySQL5.7 二进制源码包安装</a></h1>
         
 
         <div class="post-meta">
@@ -1312,11 +1317,12 @@
       
         
           
-          使用 Xtrabackup 在线对MySQL做主从复制说明xtrabackup&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mysqldump对于导出10G以下的数据库或几个表，还是适用的，而且更快捷。一旦数据量达到100-500G，无论是对原库的压力还是导出的性能，mysqldump就力不从心了。Percona-Xtrabackup备份工具，是实
+          MySQL5.7 二进制源码包安装&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一般平时安装MySQL都是源码包安装的，但是由于它的编译需要很长的时间，所以建议安装二进制免编译包。可以到MySQL官方网站去下载，也可以到comsenz官方网站下载，还有各大镜像站下载。
+下载安装包，并安装依赖包12wget http://mirrors.sohu.c
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/35. 使用 Xtrabackup 在线对MySQL做主从复制/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/MySQL/4. MySQL5.7 二进制源码包安装/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1362,7 +1368,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/36. 使用mysql-proxy 快速实现mysql 集群读写分离/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/NFS/1. nfs部署和优化/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1381,7 +1387,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/36. 使用mysql-proxy 快速实现mysql 集群读写分离/" itemprop="url">使用mysql-proxy 快速实现mysql 集群读写分离</a></h1>
+                <a class="post-title-link" href="/2017/08/10/NFS/1. nfs部署和优化/" itemprop="url">nfs部署和优化</a></h1>
         
 
         <div class="post-meta">
@@ -1430,13 +1436,13 @@
       
         
           
-          使用mysql-proxy 快速实现mysql 集群读写分离&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;目前较为常见的mysql读写分离分为两种： 
-
-基于程序代码内部实现：在代码中对select操作分发到从库；其它操作由主库执行；这类方法也是目前生产环境应用最广泛，知名的如DISCUZ X2。优点是性能较好，因为在程序代码中实现，不需要增加额外
+          nfs部署和优化&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;NFS = network file system
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;NFS服务比较常用，用于在网络上共享储存。
+服务端配置 NFS&#160;&#160;&#160;&#160;&#160;&#160;&#1
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/36. 使用mysql-proxy 快速实现mysql 集群读写分离/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/NFS/1. nfs部署和优化/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1477,7 +1483,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/42/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/42/">42</a><span class="page-number current">43</span><a class="page-number" href="/page/44/">44</a><span class="space">&hellip;</span><a class="page-number" href="/page/68/">68</a><a class="extend next" rel="next" href="/page/44/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/42/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/42/">42</a><span class="page-number current">43</span><a class="page-number" href="/page/44/">44</a><span class="space">&hellip;</span><a class="page-number" href="/page/67/">67</a><a class="extend next" rel="next" href="/page/44/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1522,7 +1528,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">671</span>
+                <span class="site-state-item-count">670</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

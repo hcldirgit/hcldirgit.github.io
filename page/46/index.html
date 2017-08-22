@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/18. innobackupex 备份 Xtrabackup 增量备份/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/24. mysql主从同步问题集/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -306,7 +306,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/18. innobackupex 备份 Xtrabackup 增量备份/" itemprop="url">innobackupex 备份 Xtrabackup 增量备份</a></h1>
+                <a class="post-title-link" href="/2017/08/10/MySQL/24. mysql主从同步问题集/" itemprop="url">mysql 主从同步问题集</a></h1>
         
 
         <div class="post-meta">
@@ -355,14 +355,12 @@
       
         
           
-          innobackupex 备份 Xtrabackup 增量备份&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Xtrabackup中包含两个工具：
-
-xtrabackup - 用于热备份innodb, xtradb表的工具，不能备份其他表(MYISAM表)。
-innobackupex - 对xtrabackup封装的perl脚本，提供了myisam表
+          mysql主从同步问题集&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在InnoDB引擎下发现，Mysql的主从热备存在数据不一致的问题，一些数据没有成功同步到备机。在use databases后，更新的表必须是当前选择的database才同步。譬如连上Mysql服务后操作： 
+12USE test2; UPDATE client SET name
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/18. innobackupex 备份 Xtrabackup 增量备份/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/MySQL/24. mysql主从同步问题集/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -408,7 +406,7 @@ innobackupex - 对xtrabackup封装的perl脚本，提供了myisam表
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/2. MySQL 5.5 源码安装/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/23. mysql主从复制/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -427,7 +425,7 @@ innobackupex - 对xtrabackup封装的perl脚本，提供了myisam表
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/2. MySQL 5.5 源码安装/" itemprop="url">MySQL 5.5 源码安装</a></h1>
+                <a class="post-title-link" href="/2017/08/10/MySQL/23. mysql主从复制/" itemprop="url">mysql 主从复制</a></h1>
         
 
         <div class="post-meta">
@@ -476,20 +474,11 @@ innobackupex - 对xtrabackup封装的perl脚本，提供了myisam表
       
         
           
-          MySQL 5.5 源码安装&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先安装必要的库
-1yum install -y gcc*
-首先安装cmake
-支持yum安装
-
-1yum install -y cmake
-
-也可以源码安装
-
-123456789cd /usr/local/src#下载cmakewget http://www.cmake.o
+          mysql主从复制mysql复制&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MySQL复制支持单向，异步复制。通过一台主服务器将更新写入二进制日志文件，并维护文件的一个索引以跟踪日志循环。这些日志可以记录发送到从服务器的更新。当一个从服务器连接主服务器时，它通知主服务器从服务器在日志中读取的最后一次成功更新的位置。从服务器接收从那时起发生的任何更
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/2. MySQL 5.5 源码安装/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/MySQL/23. mysql主从复制/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -535,7 +524,7 @@ innobackupex - 对xtrabackup封装的perl脚本，提供了myisam表
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/13. mysql常用操作/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/25. Mysql分库分表方案/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -554,7 +543,7 @@ innobackupex - 对xtrabackup封装的perl脚本，提供了myisam表
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/13. mysql常用操作/" itemprop="url">mysql常用操作</a></h1>
+                <a class="post-title-link" href="/2017/08/10/MySQL/25. Mysql分库分表方案/" itemprop="url">Mysql分库分表方案</a></h1>
         
 
         <div class="post-meta">
@@ -603,16 +592,12 @@ innobackupex - 对xtrabackup封装的perl脚本，提供了myisam表
       
         
           
-          mysql常用操作&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有一个图形管理mysql的工具叫phpmyadmin，而如何在命令行下面来管理和操作mysql。
-查看都有那些库1mysql&gt; show databases;
-
-查看某个库的表12mysql&gt; use mysql;mysql&gt; show tables;
-
-查看表的字段
+          Mysql分库分表方案为什么要分表：&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当一张表的数据达到几千万时，你查询一次所花的时间会变多，如果有联合查询的话，我想有可能会死在那儿了。分表的目的就在于此，减小数据库的负担，缩短查询时间。        
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;m
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/13. mysql常用操作/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/MySQL/25. Mysql分库分表方案/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -658,7 +643,7 @@ innobackupex - 对xtrabackup封装的perl脚本，提供了myisam表
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/20.mysql字符集调整总结/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/22. mysql主从搭建/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -677,7 +662,7 @@ innobackupex - 对xtrabackup封装的perl脚本，提供了myisam表
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/20.mysql字符集调整总结/" itemprop="url">mysql字符集调整总结</a></h1>
+                <a class="post-title-link" href="/2017/08/10/MySQL/22. mysql主从搭建/" itemprop="url">mysql 主从搭建</a></h1>
         
 
         <div class="post-meta">
@@ -726,130 +711,12 @@ innobackupex - 对xtrabackup封装的perl脚本，提供了myisam表
       
         
           
-          mysql字符集调整总结&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;字符集是一套符号和编码的规则，不论是在oracle数据库还是在mysql数据库，都存在字符集的选择问题。对于数据库来说，字符集又是比较重要的，因为数据库存储的数据大部分都是各种文字，字符集对于数据库的存储、处理性能以及数据迁移都有重要的影响。
-&#160;&#160;&#160;
+          mysql 主从搭建&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mysql 主从 （mysql replication），主要用于 mysql 的实时备份或者读写分离。在配置之前做准备工作，配置两台 mysql 服务器；或者在同一个机器上跑两个 mysql 服务。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/20.mysql字符集调整总结/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/14. SQL—什么是事物？事物的特性有哪些？/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="失落的乐章">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/0.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="失落的乐章">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/10/MySQL/14. SQL—什么是事物？事物的特性有哪些？/" itemprop="url">SQL—什么是事物？事物的特性有哪些？</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
-                2017-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          SQL—什么是事物？事物的特性有哪些？概念&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;事务(Transaction)是访问并可能更新数据库中各种数据项的一个程序执行单元(unit)。事务通常由高级数据库操纵语言或编程语言（如SQL，C++或Java）书写的用户程序的执行所引起，并用形如begin transaction和end transacti
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/14. SQL—什么是事物？事物的特性有哪些？/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/MySQL/22. mysql主从搭建/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1015,7 +882,7 @@ innobackupex - 对xtrabackup封装的perl脚本，提供了myisam表
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/23. mysql主从复制/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/32. mysql一主多从同步配置/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1034,7 +901,7 @@ innobackupex - 对xtrabackup封装的perl脚本，提供了myisam表
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/23. mysql主从复制/" itemprop="url">mysql 主从复制</a></h1>
+                <a class="post-title-link" href="/2017/08/10/MySQL/32. mysql一主多从同步配置/" itemprop="url">mysql一主多从同步配置</a></h1>
         
 
         <div class="post-meta">
@@ -1083,11 +950,12 @@ innobackupex - 对xtrabackup封装的perl脚本，提供了myisam表
       
         
           
-          mysql主从复制mysql复制&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MySQL复制支持单向，异步复制。通过一台主服务器将更新写入二进制日志文件，并维护文件的一个索引以跟踪日志循环。这些日志可以记录发送到从服务器的更新。当一个从服务器连接主服务器时，它通知主服务器从服务器在日志中读取的最后一次成功更新的位置。从服务器接收从那时起发生的任何更
+          mysql一主多从同步配置一、环境&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;master：192.168.101&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MYSQL版本：5.1.48-community-log
+&#160;&#160;&#160;&#160;&#160;&#160;&#16
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/23. mysql主从复制/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/MySQL/32. mysql一主多从同步配置/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1133,7 +1001,7 @@ innobackupex - 对xtrabackup封装的perl脚本，提供了myisam表
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/22. mysql主从搭建/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/20.mysql字符集调整总结/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1152,7 +1020,7 @@ innobackupex - 对xtrabackup封装的perl脚本，提供了myisam表
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/22. mysql主从搭建/" itemprop="url">mysql 主从搭建</a></h1>
+                <a class="post-title-link" href="/2017/08/10/MySQL/20.mysql字符集调整总结/" itemprop="url">mysql字符集调整总结</a></h1>
         
 
         <div class="post-meta">
@@ -1201,12 +1069,12 @@ innobackupex - 对xtrabackup封装的perl脚本，提供了myisam表
       
         
           
-          mysql 主从搭建&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mysql 主从 （mysql replication），主要用于 mysql 的实时备份或者读写分离。在配置之前做准备工作，配置两台 mysql 服务器；或者在同一个机器上跑两个 mysql 服务。
-&#160;&#160;&#160;&#160;&#160;&#160;&#160
+          mysql字符集调整总结&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;字符集是一套符号和编码的规则，不论是在oracle数据库还是在mysql数据库，都存在字符集的选择问题。对于数据库来说，字符集又是比较重要的，因为数据库存储的数据大部分都是各种文字，字符集对于数据库的存储、处理性能以及数据迁移都有重要的影响。
+&#160;&#160;&#160;
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/22. mysql主从搭建/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/MySQL/20.mysql字符集调整总结/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1252,7 +1120,7 @@ innobackupex - 对xtrabackup封装的perl脚本，提供了myisam表
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/17. Mysql各种存储引擎的特性以及如何选择存储引擎/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/19. mysqld_multi stop 不能停掉mysql/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1271,7 +1139,7 @@ innobackupex - 对xtrabackup封装的perl脚本，提供了myisam表
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/17. Mysql各种存储引擎的特性以及如何选择存储引擎/" itemprop="url">Mysql各种存储引擎的特性以及如何选择存储引擎</a></h1>
+                <a class="post-title-link" href="/2017/08/10/MySQL/19. mysqld_multi stop 不能停掉mysql/" itemprop="url">mysqld_multi stop 不能停掉mysql</a></h1>
         
 
         <div class="post-meta">
@@ -1320,34 +1188,13 @@ innobackupex - 对xtrabackup封装的perl脚本，提供了myisam表
       
         
           
-          Mysql各种存储引擎的特性以及如何选择存储引擎几个常用存储引擎的特点&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面我们重点介绍几种常用的存储引擎并对比各个存储引擎之间的区别和推荐使用方式。
-
-
-
-特点
-Myisam
-BDB
-Memory
-InnoDB
-Archive
-
-
-
-
-存储限制
-没有
-没有
-有
-64TB
-没有
-
-
-事务安全
-&#160;
+          mysqld_multi stop 不能停掉mysql&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用mysqld_multi start  启动了多个mysql实例，但是mysqld_multi stop 却不能停止，为啥呢？因为还没有授权呢。
+1/usr/local/mysql/bin/mysqld_multi stop
+&#160;&#16
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/17. Mysql各种存储引擎的特性以及如何选择存储引擎/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/MySQL/19. mysqld_multi stop 不能停掉mysql/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1393,7 +1240,7 @@ Archive
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/25. Mysql分库分表方案/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/18. innobackupex 备份 Xtrabackup 增量备份/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1412,7 +1259,7 @@ Archive
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/25. Mysql分库分表方案/" itemprop="url">Mysql分库分表方案</a></h1>
+                <a class="post-title-link" href="/2017/08/10/MySQL/18. innobackupex 备份 Xtrabackup 增量备份/" itemprop="url">innobackupex 备份 Xtrabackup 增量备份</a></h1>
         
 
         <div class="post-meta">
@@ -1461,12 +1308,133 @@ Archive
       
         
           
-          Mysql分库分表方案为什么要分表：&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当一张表的数据达到几千万时，你查询一次所花的时间会变多，如果有联合查询的话，我想有可能会死在那儿了。分表的目的就在于此，减小数据库的负担，缩短查询时间。        
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;m
+          innobackupex 备份 Xtrabackup 增量备份&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Xtrabackup中包含两个工具：
+
+xtrabackup - 用于热备份innodb, xtradb表的工具，不能备份其他表(MYISAM表)。
+innobackupex - 对xtrabackup封装的perl脚本，提供了myisam表
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/25. Mysql分库分表方案/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/MySQL/18. innobackupex 备份 Xtrabackup 增量备份/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/15. MySQL存储引擎MyISAM与InnoDB的优劣/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/10/MySQL/15. MySQL存储引擎MyISAM与InnoDB的优劣/" itemprop="url">MySQL存储引擎MyISAM与InnoDB的优劣</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          MySQL存储引擎MyISAM与InnoDB的优劣&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用MySQL当然会接触到MySQL的存储引擎，在新建数据库和新建数据表的时候都会看到。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MySQL默认的存储引擎是MyISAM，其他常用的就是InnoDB了
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/10/MySQL/15. MySQL存储引擎MyISAM与InnoDB的优劣/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1507,7 +1475,7 @@ Archive
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/45/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/45/">45</a><span class="page-number current">46</span><a class="page-number" href="/page/47/">47</a><span class="space">&hellip;</span><a class="page-number" href="/page/68/">68</a><a class="extend next" rel="next" href="/page/47/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/45/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/45/">45</a><span class="page-number current">46</span><a class="page-number" href="/page/47/">47</a><span class="space">&hellip;</span><a class="page-number" href="/page/67/">67</a><a class="extend next" rel="next" href="/page/47/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1552,7 +1520,7 @@ Archive
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">671</span>
+                <span class="site-state-item-count">670</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
