@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/19. Apache 用户认证/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/28. apache 的域名重定向/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -306,7 +306,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/19. Apache 用户认证/" itemprop="url">Apache 用户认证</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/28. apache 的域名重定向/" itemprop="url">apache 的域名重定向</a></h1>
         
 
         <div class="post-meta">
@@ -355,12 +355,13 @@
       
         
           
-          Apache 用户认证&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有时候，需要给一些特殊的访问设置一个用户认证机制，增加安全。为了使 WEB 服务器更安全，需要将一些特定用户才能访问的目录设置用户认证，例如：网站后台登陆地址 ，可以再设置一层用户认证。
-1[root@lamp ~]# vim /usr/local/apache2/conf/ext
+          apache 的域名重定向&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需求：要把访问域名 www.domain1.com 的域名转发到 www.domain2.com 上
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;实现：
+&#160;&#160;&#160;&#160;&#160;&#160;
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/19. Apache 用户认证/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/28. apache 的域名重定向/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -406,7 +407,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/17. 如何使用apache的 work模式还是 prefork 模式/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/29. apache 日志切割/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -425,7 +426,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/17. 如何使用apache的 work模式还是 prefork 模式/" itemprop="url">如何使用apache的 work模式还是 prefork 模式</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/29. apache 日志切割/" itemprop="url">apache 日志切割</a></h1>
         
 
         <div class="post-meta">
@@ -474,12 +475,11 @@
       
         
           
-          如何使用apache的 work模式还是 prefork 模式&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意：2.4之前版本默认为prefork， 2.4已经变为event模式。
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在编译apache的时候，有一个参数叫做  --with-mpm=..
+          apache 日志切割&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里的日志指的是访问日志，没访问一次网站，就会记录若干条日志。前提是已经配置了日志，日志如果不去管理，时间长了日志文件会越来越大，这个时候这个日志是不可能 cat、less、 以及 vim 的，head 或 tail 还可以。如何避免产生这么大的日志文件？其实 apache 有相关
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/17. 如何使用apache的 work模式还是 prefork 模式/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/29. apache 日志切割/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -525,7 +525,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/15. apache的两种工作模式详解/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/22. htpasswd 默认创建的密码只有前8位有效/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -544,7 +544,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/15. apache的两种工作模式详解/" itemprop="url">apache的两种工作模式详解</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/22. htpasswd 默认创建的密码只有前8位有效/" itemprop="url">htpasswd 默认创建的密码只有前8位有效</a></h1>
         
 
         <div class="post-meta">
@@ -593,368 +593,14 @@
       
         
           
-          apache的两种工作模式详解1、prefork.c模块(一个非线程型的、预派生的MPM)&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;prefork MPM 使用多个子进程，每个子进程只有一个线程。每个进程在某个确定的时间只能维持一个连接。在大多数平台上，Prefork MPM在效率上要比Worker MPM要高，但是内存使用大得多。prefor
+          htpasswd 默认创建的密码只有前8位有效&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;按照如下命令创建密码
+1htpasswd -c .htpasswd  user1
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;假如，密码为123456789
+&#160;&#160;&#160;&#160;
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/15. apache的两种工作模式详解/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/16. mod_usertrack.so 的扩展安装以及使用/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="失落的乐章">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/0.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="失落的乐章">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/10/Apache/16. mod_usertrack.so 的扩展安装以及使用/" itemprop="url">mod_usertrack.so 的扩展安装以及使用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
-                2017-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          mod_usertrack.so 的扩展安装以及使用&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mod_usertrack.so 是在用户首次来到当前网站的时候给用户种下一个唯一的cookie，这个cookie是用户首次来当前网站的IP地址加上一个随机字符串组成的。用这个IP加随机字符串来标识用户的唯一性。这样就可以区分同一个IP下的不同用户了。
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/16. mod_usertrack.so 的扩展安装以及使用/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/12. apache 的动态和静态/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="失落的乐章">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/0.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="失落的乐章">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/10/Apache/12. apache 的动态和静态/" itemprop="url">apache 的动态和静态</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
-                2017-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          apache 的动态和静态&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关于apache的动态与静态编译的理解，引用某人的比喻如下：
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;好比有两个人a和m，a代表apache,m代表module，要想让a使用m的东西，一个方法是把m的东西都放到a那里去，a
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/12. apache 的动态和静态/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/14. apache的扩展模块安装/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="失落的乐章">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/0.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="失落的乐章">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/10/Apache/14. apache的扩展模块安装/" itemprop="url">apache的扩展模块安装</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
-                2017-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          apache的扩展模块安装&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个用到了apache的扩展工具  apxs
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在使用这个功能之前，请先确认是否已经加载了 mod_so 模块，方法是：
-1/usr/local/apache2/bin/httpd -
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/14. apache的扩展模块安装/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/22. htpasswd 默认创建的密码只有前8位有效/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1239,7 +885,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/29. apache 日志切割/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/14. apache的扩展模块安装/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1258,7 +904,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/29. apache 日志切割/" itemprop="url">apache 日志切割</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/14. apache的扩展模块安装/" itemprop="url">apache的扩展模块安装</a></h1>
         
 
         <div class="post-meta">
@@ -1307,11 +953,13 @@
       
         
           
-          apache 日志切割&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里的日志指的是访问日志，没访问一次网站，就会记录若干条日志。前提是已经配置了日志，日志如果不去管理，时间长了日志文件会越来越大，这个时候这个日志是不可能 cat、less、 以及 vim 的，head 或 tail 还可以。如何避免产生这么大的日志文件？其实 apache 有相关
+          apache的扩展模块安装&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个用到了apache的扩展工具  apxs
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在使用这个功能之前，请先确认是否已经加载了 mod_so 模块，方法是：
+1/usr/local/apache2/bin/httpd -
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/29. apache 日志切割/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/14. apache的扩展模块安装/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1357,7 +1005,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/28. apache 的域名重定向/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/15. apache的两种工作模式详解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1376,7 +1024,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/28. apache 的域名重定向/" itemprop="url">apache 的域名重定向</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/15. apache的两种工作模式详解/" itemprop="url">apache的两种工作模式详解</a></h1>
         
 
         <div class="post-meta">
@@ -1425,13 +1073,367 @@
       
         
           
-          apache 的域名重定向&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需求：要把访问域名 www.domain1.com 的域名转发到 www.domain2.com 上
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;实现：
-&#160;&#160;&#160;&#160;&#160;&#160;
+          apache的两种工作模式详解1、prefork.c模块(一个非线程型的、预派生的MPM)&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;prefork MPM 使用多个子进程，每个子进程只有一个线程。每个进程在某个确定的时间只能维持一个连接。在大多数平台上，Prefork MPM在效率上要比Worker MPM要高，但是内存使用大得多。prefor
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/28. apache 的域名重定向/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/15. apache的两种工作模式详解/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/11. apache mod_proxy 扩展模块安装/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/10/Apache/11. apache mod_proxy 扩展模块安装/" itemprop="url">apache mod_proxy 扩展模块安装</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          apache mod_proxy 扩展模块安装&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;现在用到apache的扩展功能了，可是在第一次编译的时候，没有编译进这个模块去？怎么办呢，可以通过扩展的方式编译一下。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下载相同版本的apache源代码，注意，一
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/10/Apache/11. apache mod_proxy 扩展模块安装/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/16. mod_usertrack.so 的扩展安装以及使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/10/Apache/16. mod_usertrack.so 的扩展安装以及使用/" itemprop="url">mod_usertrack.so 的扩展安装以及使用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          mod_usertrack.so 的扩展安装以及使用&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mod_usertrack.so 是在用户首次来到当前网站的时候给用户种下一个唯一的cookie，这个cookie是用户首次来当前网站的IP地址加上一个随机字符串组成的。用这个IP加随机字符串来标识用户的唯一性。这样就可以区分同一个IP下的不同用户了。
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/10/Apache/16. mod_usertrack.so 的扩展安装以及使用/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/17. 如何使用apache的 work模式还是 prefork 模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/10/Apache/17. 如何使用apache的 work模式还是 prefork 模式/" itemprop="url">如何使用apache的 work模式还是 prefork 模式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          如何使用apache的 work模式还是 prefork 模式&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意：2.4之前版本默认为prefork， 2.4已经变为event模式。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在编译apache的时候，有一个参数叫做  --with-mpm=..
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/10/Apache/17. 如何使用apache的 work模式还是 prefork 模式/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1517,7 +1519,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">695</span>
+                <span class="site-state-item-count">700</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
