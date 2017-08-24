@@ -1,0 +1,819 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Redis," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="征服 Redis一、Redis简要介绍&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Redis —— REmote DIctionary Server，可以直接理解为远程字典服务，也就是基于Key-Value模式Memcached+Database Persistence。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;">
+<meta name="keywords" content="Redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="征服 Redis">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/08/24/Redis/15. 征服 Redis/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="征服 Redis一、Redis简要介绍&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Redis —— REmote DIctionary Server，可以直接理解为远程字典服务，也就是基于Key-Value模式Memcached+Database Persistence。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E5%BE%81%E6%9C%8DRedis/01%20-%20%E5%89%AF%E6%9C%AC.jpeg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E5%BE%81%E6%9C%8DRedis/02%20-%20%E5%89%AF%E6%9C%AC.png?raw=true">
+<meta property="og:updated_time" content="2017-08-23T13:49:07.185Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="征服 Redis">
+<meta name="twitter:description" content="征服 Redis一、Redis简要介绍&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Redis —— REmote DIctionary Server，可以直接理解为远程字典服务，也就是基于Key-Value模式Memcached+Database Persistence。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/%E5%BE%81%E6%9C%8DRedis/01%20-%20%E5%89%AF%E6%9C%AC.jpeg?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/08/24/Redis/15. 征服 Redis/"/>
+
+
+
+
+
+  <title>征服 Redis | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/24/Redis/15. 征服 Redis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">征服 Redis</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-24T23:52:05+08:00">
+                2017-08-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="征服-Redis"><a href="#征服-Redis" class="headerlink" title="征服 Redis"></a>征服 Redis</h1><h2 id="一、Redis简要介绍"><a href="#一、Redis简要介绍" class="headerlink" title="一、Redis简要介绍"></a>一、Redis简要介绍</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>Redis</strong> —— <strong>RE</strong>mote <strong>DI</strong>ctionary <strong>S</strong>erver，可以直接理解为远程字典服务，也就是基于Key-Value模式Memcached+Database Persistence。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果真要把Redis与Memcached进行对比，参考下图：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E5%BE%81%E6%9C%8DRedis/01%20-%20%E5%89%AF%E6%9C%AC.jpeg?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用Memcached，让我感触颇深的是Object Size的问题，由于SQL未作优化直接映射对象，导致缓存对象大于1MB，Memcached就抛了异常。而Redis默认缓存对象512MB，最大支持1GB。至少在缓存对象时，可以有更大的伸缩空间了！</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;此外，是数据类型。Memcached比较简单，而Redis可以支持更多复杂的数据类型，如HASH、SET、SortedSet等等。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>PS:Memcached</strong>是在<strong>Server端</strong>实现的<strong>Sharding</strong>，<strong>Redis</strong>没有对应的实现，据说3.0系列开始支持。</p>
+<h2 id="二、安装"><a href="#二、安装" class="headerlink" title="二、安装"></a>二、安装</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis装起来，实在是过于简单，让我几乎“无从下手”。因为连“configure”文件都不需要，你只需要做个“make”就好。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在这里<a href="https://code.google.com/archive/p/redis/downloads" target="_blank" rel="external">下载Redis最新版</a>，这里用Redis 2.4.16</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下载&amp;解压：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">wget http://redis.googlecode.com/files/redis-2.4.16.tar.gz  </div><div class="line">tar zxvf redis-2.4.16.tar.gz</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis可以解压至任何目录，一个make安装即可获得执行、配置文件。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安装（这里将redis解压到/opt/目录下）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /opt/redis-2.4.16  </div><div class="line">make</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;make之后，我们会得到以下可执行文件：</p>
+<ul>
+<li><strong>redis-server</strong>：Redis服务器的daemon启动程序</li>
+<li><strong>redis-cli</strong>：Redis命令行操作工具。或者通过telnet进行纯文本协议操作</li>
+<li><strong>redis-benchmark</strong>：Redis性能测试工具，测试Redis在你的系统及你的配置下的读写性能</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上述文件位于src目录下。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我习惯性的执行了make install，貌似我需要的可执行文件，安装到了/usr/local/bin：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;引用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">make install</div><div class="line"><span class="built_in">cd</span> src &amp;&amp; make install</div><div class="line">make[1]: Entering directory `/opt/software/redis-2.4.16/src<span class="string">'</span></div><div class="line"><span class="string">MAKE hiredis</span></div><div class="line"><span class="string">make[2]: Entering directory `/opt/software/redis-2.4.16/deps/hiredis'</span></div><div class="line">make[2]: Nothing to be <span class="keyword">done</span> <span class="keyword">for</span> `static<span class="string">'.</span></div><div class="line"><span class="string">make[2]: Leaving directory `/opt/software/redis-2.4.16/deps/hiredis'</span></div><div class="line">MAKE linenoise</div><div class="line">make[2]: Entering directory `/opt/software/redis-2.4.16/deps/linenoise<span class="string">'</span></div><div class="line"><span class="string">make[2]: “linenoise_example”是最新的。</span></div><div class="line"><span class="string">make[2]: Leaving directory `/opt/software/redis-2.4.16/deps/linenoise'</span></div><div class="line">MAKE hiredis</div><div class="line">make[2]: Entering directory `/opt/software/redis-2.4.16/deps/hiredis<span class="string">'</span></div><div class="line"><span class="string">make[2]: Nothing to be done for `static'</span>.</div><div class="line">make[2]: Leaving directory `/opt/software/redis-2.4.16/deps/hiredis<span class="string">'</span></div><div class="line"><span class="string">    LINK redis-benchmark</span></div><div class="line"><span class="string">    LINK redis-cli</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">Hint: To run '</span>make <span class="built_in">test</span><span class="string">' is a good idea ;)</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">mkdir -p /usr/local/bin</span></div><div class="line"><span class="string">cp -pf redis-server /usr/local/bin</span></div><div class="line"><span class="string">cp -pf redis-benchmark /usr/local/bin</span></div><div class="line"><span class="string">cp -pf redis-cli /usr/local/bin</span></div><div class="line"><span class="string">cp -pf redis-check-dump /usr/local/bin</span></div><div class="line"><span class="string">cp -pf redis-check-aof /usr/local/bin</span></div><div class="line"><span class="string">make[1]: Leaving directory `/opt/software/redis-2.4.16/src'</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样，就不用我拷贝文件了。意外收获！</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;此外，还会得到一个默认的配置文件——redis.conf。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;最好，把它拷贝到固定的目录下，例如：/etc/redis/目录下！</p>
+<ol>
+<li>mkdir /etc/redis  </li>
+<li>cp redis.conf /etc/redis     </li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后，我们就可以在任何路径下，直接启动Redis了！</p>
+<h2 id="三、运行"><a href="#三、运行" class="headerlink" title="三、运行"></a>三、运行</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;运行Redis：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis-server /etc/redis/redis.conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;引用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[1958] 13 Aug 16:18:24 * Server started, Redis version 2.4.16</div><div class="line">[1958] 13 Aug 16:18:24 <span class="comment"># WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.</span></div><div class="line">[1958] 13 Aug 16:18:24 * The server is now ready to accept connections on port 6379</div><div class="line">[1958] 13 Aug 16:18:24 - 0 clients connected (0 slaves), 717544 bytes <span class="keyword">in</span> use</div></pre></td></tr></table></figure>
+<h2 id="四、测试"><a href="#四、测试" class="headerlink" title="四、测试"></a>四、测试</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;通过客户端命令<strong>redis-cli</strong>访问Redis</p>
+<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># redis-cli  </span></div><div class="line">    redis&gt; <span class="built_in">set</span> name zlex  </div><div class="line">    OK  </div><div class="line">    redis&gt; get name   </div><div class="line">    <span class="string">"zlex"</span> </div><div class="line">``` </div><div class="line"></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;进行数据测试：</span></div><div class="line"></div><div class="line">```bash</div><div class="line">redis-benchmark -l</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个测试会一直进行下去，直到你Ctrl+C：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">====== PING (inline) ======</div><div class="line">10000 requests completed <span class="keyword">in</span> 0.12 seconds</div><div class="line">50 parallel clients</div><div class="line">3 bytes payload</div><div class="line">keep alive: 1</div><div class="line"></div><div class="line">99.31% &lt;= 1 milliseconds</div><div class="line">99.53% &lt;= 2 milliseconds</div><div class="line">99.64% &lt;= 3 milliseconds</div><div class="line">99.70% &lt;= 4 milliseconds</div><div class="line">99.74% &lt;= 5 milliseconds</div><div class="line">99.78% &lt;= 6 milliseconds</div><div class="line">99.82% &lt;= 7 milliseconds</div><div class="line">99.84% &lt;= 8 milliseconds</div><div class="line">99.86% &lt;= 9 milliseconds</div><div class="line">99.89% &lt;= 10 milliseconds</div><div class="line">99.91% &lt;= 11 milliseconds</div><div class="line">99.93% &lt;= 12 milliseconds</div><div class="line">99.96% &lt;= 13 milliseconds</div><div class="line">99.98% &lt;= 14 milliseconds</div><div class="line">100.00% &lt;= 15 milliseconds</div><div class="line">81300.81 requests per second</div><div class="line"></div><div class="line">====== PING ======</div><div class="line">10000 requests completed <span class="keyword">in</span> 0.12 seconds</div><div class="line">50 parallel clients</div><div class="line">3 bytes payload</div><div class="line">keep alive: 1</div><div class="line"></div><div class="line">99.96% &lt;= 1 milliseconds</div><div class="line">100.00% &lt;= 1 milliseconds</div><div class="line">84033.61 requests per second</div><div class="line"></div><div class="line">^CET (10 keys): 26200.00</div></pre></td></tr></table></figure>
+<h2 id="五、关闭"><a href="#五、关闭" class="headerlink" title="五、关闭"></a>五、关闭</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;也可通过客户端命令<strong>redis-cli</strong>完成<strong>Redis</strong>关闭操作:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis-cli shutdown</div></pre></td></tr></table></figure>
+<h3 id="引用-1"><a href="#引用-1" class="headerlink" title="引用"></a>引用</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">[2639] 13 Aug 16:35:35 <span class="comment"># User requested shutdown...</span></div><div class="line">[2639] 13 Aug 16:35:35 * Saving the final RDB snapshot before exiting.</div><div class="line">[2639] 13 Aug 16:36:49 * DB saved on disk</div><div class="line">[2639] 13 Aug 16:36:49 <span class="comment"># Redis is now ready to exit, bye bye...</span></div><div class="line">``` </div><div class="line"></div><div class="line"><span class="comment">## 六、调优</span></div><div class="line"><span class="comment">### 1./etc/sysctl.conf</span></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;前面启动Redis时，看到如下警告：</span></div><div class="line"></div><div class="line"><span class="comment">### 引用</span></div><div class="line"></div><div class="line">```bash</div><div class="line">[1958] 13 Aug 16:18:24 <span class="comment"># WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需要修改<strong>/etc/sysctl.conf</strong>文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim /etc/sysctl.conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;末尾追加<strong>vm.overcommit_memory = 1</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后执行<strong>sysctl vm.overcommit_memory=1</strong>，使之生效：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sysctl vm.overcommit_memory=1  </div><div class="line">vm.overcommit_memory = 1</div></pre></td></tr></table></figure>
+<h3 id="2-proc-sys-vm-overcommit-memory"><a href="#2-proc-sys-vm-overcommit-memory" class="headerlink" title="2./proc/sys/vm/overcommit_memory"></a>2./proc/sys/vm/overcommit_memory</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为了调整内存分配策略，需要配置<strong>/proc/sys/vm/overcommit_memory</strong></p>
+<ul>
+<li>0， 表示内核将检查是否有足够的可用内存供应用进程使用；如果有足够的可用内存，内存申请允许；否则，内存申请失败，并把错误返回给应用进程。</li>
+<li>1， 表示内核允许分配所有的物理内存，而不管当前的内存状态如何。</li>
+<li>2， 表示内核允许分配超过所有物理内存和交换空间总和的内存</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认为0，如果内存情况比较紧张的话，设为1：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> 1 &gt; /proc/sys/vm/overcommit_memory</div></pre></td></tr></table></figure>
+<h3 id="3-redis-conf"><a href="#3-redis-conf" class="headerlink" title="3.redis.conf"></a>3.redis.conf</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;前面启动Redis后，总是在命令行里不断跳着各种日志，很麻烦。即便通过“&amp;”，领其后台运行，也无济于事。这就需要修改<strong>redis.conf</strong>，以Daemo模式运行！</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>redis.conf</strong>参数：</p>
+<ul>
+<li>daemonize：是否以后台daemon方式运行</li>
+<li>pidfile：pid文件位置</li>
+<li>port：监听的端口号</li>
+<li>timeout：请求超时时间</li>
+<li>loglevel：log信息级别</li>
+<li>logfile：log文件位置</li>
+<li>databases：开启数据库的数量</li>
+<li>save <em> </em>：保存快照的频率，第一个<em>表示多长时间（秒级），第三个</em>表示执行多少次写操作。在一定时间内执行一定数量的写操作时，自动保存快照。可设置多个条件。</li>
+<li>rdbcompression：是否使用压缩</li>
+<li>dbfilename：数据快照文件名（只是文件名，不包括目录）</li>
+<li>dir：数据快照的保存目录（这个是目录）</li>
+<li>appendonly：是否开启appendonlylog，开启的话每次写操作会记一条log，这会提高数据抗风险能力，但影响效率。</li>
+<li>appendfsync：appendonlylog如何同步到磁盘（三个选项，分别是每次写都强制调用fsync、每秒启用一次fsync、不调用fsync等待系统自己同步）</li>
+<li>slaveof <masterip> <masterport> ：主从配置，在redis-slave上配置master的ip port，即可。</masterport></masterip></li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例如，我们可以修改为如下方式：</p>
+<h4 id="引用-2"><a href="#引用-2" class="headerlink" title="引用"></a>引用</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">daemonize yes <span class="comment">#守护进程模式</span></div><div class="line">save 60 1000 <span class="comment">#当时间间隔超过60秒，或存储超过1000条记录时，进行持久化。</span></div><div class="line">maxmemory 256mb <span class="comment">#分配256MB内存</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>PS：切记，一定要设定maxmemmory，且配置大小要小于物理内存，留有足够的内存供系统使用。</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;公司一同学的Redis，某期间数据暴涨，导致内存吃紧，SWAP加剧，直接宕机。就是因为没有设置<strong>maxmemmory</strong>。</p>
+<h2 id="七、集群配置"><a href="#七、集群配置" class="headerlink" title="七、集群配置"></a>七、集群配置</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;把鸡蛋都放在一个篮子里是件危险的事情。首先，要做好主备。其次，如果可以做一致性哈希，可以起到负载均衡的作用。</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E5%BE%81%E6%9C%8DRedis/02%20-%20%E5%89%AF%E6%9C%AC.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置Master-Slave，只需要在Slave上配置Master节点IP Port： </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里的Master IP 为192.168.133.139 端口位6379，配置redis.conf：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">slaveof 192.168.133.139 6379</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>PS：为了两个Redis Server可以互访，需要注释掉bind 127.0.0.1</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;依次启动Master，Slave：</p>
+<h4 id="Master"><a href="#Master" class="headerlink" title="Master"></a>Master</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line">[7651] 17 Aug 19:08:07 * Server started, Redis version 2.4.16</div><div class="line">[7651] 17 Aug 19:08:07 * DB loaded from disk: 0 seconds</div><div class="line">[7651] 17 Aug 19:08:07 * The server is now ready to accept connections on port 6379</div><div class="line">[7651] 17 Aug 19:08:08 * Slave ask <span class="keyword">for</span> synchronization</div><div class="line">[7651] 17 Aug 19:08:08 * Starting BGSAVE <span class="keyword">for</span> SYNC</div><div class="line">[7651] 17 Aug 19:08:08 * Background saving started by pid 7652</div><div class="line">[7652] 17 Aug 19:08:08 * DB saved on disk</div><div class="line">[7651] 17 Aug 19:08:08 * Background saving terminated with success</div><div class="line">[7651] 17 Aug 19:08:08 * Synchronization with slave succeeded</div><div class="line">``` </div><div class="line"> </div><div class="line"><span class="comment">#### Slave</span></div><div class="line"></div><div class="line">```bash</div><div class="line">[7572] 17 Aug 19:07:39 * Server started, Redis version 2.4.16</div><div class="line">[7572] 17 Aug 19:07:39 * DB loaded from disk: 0 seconds</div><div class="line">[7572] 17 Aug 19:07:39 * The server is now ready to accept connections on port 6379</div><div class="line">[7572] 17 Aug 19:07:39 * Connecting to MASTER...</div><div class="line">[7572] 17 Aug 19:08:08 * MASTER &lt;-&gt; SLAVE sync started: SYNC sent</div><div class="line">[7572] 17 Aug 19:08:08 * MASTER &lt;-&gt; SLAVE sync: receiving 10 bytes from master</div><div class="line">[7572] 17 Aug 19:08:08 * MASTER &lt;-&gt; SLAVE sync: Loading DB <span class="keyword">in</span> memory</div><div class="line">[7572] 17 Aug 19:08:08 * MASTER &lt;-&gt; SLAVE sync: Finished with success</div><div class="line">``` </div><div class="line"></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;看到上述日志，就说明Master-Slave已经连通。</span></div><div class="line"> </div><div class="line"></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;简单测试，Master写，Slave读：</span></div><div class="line"> </div><div class="line"><span class="comment">#### Master写</span></div><div class="line"></div><div class="line">```bash</div><div class="line">telnet 192.168.133.139 6379</div><div class="line">Trying 192.168.133.139...</div><div class="line">Connected to 192.168.133.139.</div><div class="line">Escape character is <span class="string">'^]'</span>.</div><div class="line"><span class="built_in">set</span> name snowolf</div><div class="line">+OK</div><div class="line">``` </div><div class="line"> </div><div class="line"><span class="comment">#### Slave读 </span></div><div class="line"></div><div class="line">```bash</div><div class="line">telnet 192.168.133.140 6379</div><div class="line">Trying 192.168.133.140...</div><div class="line">Connected to 192.168.133.140.</div><div class="line">Escape character is <span class="string">'^]'</span>.</div><div class="line">get name</div><div class="line"><span class="variable">$7</span></div><div class="line">snowolf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;搞定！</p>
+<h2 id="八、主从备份"><a href="#八、主从备份" class="headerlink" title="八、主从备份"></a>八、主从备份</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在从服务器上执行下列命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#备份  </span></div><div class="line">redis-cli save  </div><div class="line"></div><div class="line"><span class="comment">#关闭redis服务器  </span></div><div class="line">redis-cli shutdown</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后，拷贝数据目录下的rdb文件。</p>
+<h2 id="九、系统服务"><a href="#九、系统服务" class="headerlink" title="九、系统服务"></a>九、系统服务</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;习惯了通过service启动一切服务，当然，这跟我生产环境部署有关，通常只分配给用于部署的账户操作service命令的权限。主要是为了确保系统安全。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;参考之前写的Memcached的系统服务文件，改造一个Redis版本！</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;新建文件，并赋予权限： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div></pre></td><td class="code"><pre><div class="line">touch /etc/init.d/redis-server  </div><div class="line">chmod +x /etc/init.d/redis-server  </div><div class="line">``` </div><div class="line"></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;编辑**/etc/init.d/redis-server**，键入如下内容： </span></div><div class="line"></div><div class="line">```bash</div><div class="line"><span class="meta">#!/bin/bash  </span></div><div class="line"><span class="comment">#  </span></div><div class="line"><span class="comment"># redis    Startup script for redis processes  </span></div><div class="line"><span class="comment">#  </span></div><div class="line"><span class="comment"># author: snowolf  </span></div><div class="line"><span class="comment">#  </span></div><div class="line"><span class="comment"># processname: redis  </span></div><div class="line"></div><div class="line">redis_path=<span class="string">"/usr/local/bin/redis-server"</span>  </div><div class="line">redis_conf=<span class="string">"/etc/redis/redis.conf"</span>  </div><div class="line">redis_pid=<span class="string">"/var/run/redis.pid"</span>  </div><div class="line"></div><div class="line"><span class="comment"># Source function library.  </span></div><div class="line">. /etc/rc.d/init.d/<span class="built_in">functions</span>  </div><div class="line"></div><div class="line">[ -x <span class="variable">$redis_path</span> ] || <span class="built_in">exit</span> 0  </div><div class="line"></div><div class="line">RETVAL=0  </div><div class="line">prog=<span class="string">"redis"</span>  </div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># Start daemons.  </span></div><div class="line"><span class="function"><span class="title">start</span></span>() &#123;  </div><div class="line">    <span class="keyword">if</span> [ -e <span class="variable">$redis_pid</span> -a ! -z <span class="variable">$redis_pid</span> ];<span class="keyword">then</span>  </div><div class="line">        <span class="built_in">echo</span> <span class="variable">$prog</span><span class="string">" already running...."</span>  </div><div class="line">        <span class="built_in">exit</span> 1  </div><div class="line">    <span class="keyword">fi</span>  </div><div class="line">    </div><div class="line">    <span class="built_in">echo</span> -n $<span class="string">"Starting <span class="variable">$prog</span> "</span>  </div><div class="line">    <span class="comment"># Single instance for all caches  </span></div><div class="line">    <span class="variable">$redis_path</span> <span class="variable">$redis_conf</span>  </div><div class="line">    RETVAL=$?  </div><div class="line">    [ <span class="variable">$RETVAL</span> -eq 0 ] &amp;&amp; &#123;  </div><div class="line">        touch /var/lock/subsys/<span class="variable">$prog</span>  </div><div class="line">        success $<span class="string">"<span class="variable">$prog</span>"</span>  </div><div class="line">    &#125;  </div><div class="line">    <span class="built_in">echo</span>  </div><div class="line">    <span class="built_in">return</span> <span class="variable">$RETVAL</span>  </div><div class="line">&#125;  </div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># Stop daemons.  </span></div><div class="line"><span class="function"><span class="title">stop</span></span>() &#123;  </div><div class="line">    <span class="built_in">echo</span> -n $<span class="string">"Stopping <span class="variable">$prog</span> "</span>  </div><div class="line">    killproc -d 10 <span class="variable">$redis_path</span>  </div><div class="line">    <span class="built_in">echo</span>  </div><div class="line">    [ <span class="variable">$RETVAL</span> = 0 ] &amp;&amp; rm -f <span class="variable">$redis_pid</span> /var/lock/subsys/<span class="variable">$prog</span>  </div><div class="line"></div><div class="line">    RETVAL=$?  </div><div class="line">    <span class="built_in">return</span> <span class="variable">$RETVAL</span>  </div><div class="line">&#125;  </div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># See how we were called.  </span></div><div class="line"><span class="keyword">case</span> <span class="string">"<span class="variable">$1</span>"</span> <span class="keyword">in</span>  </div><div class="line">    start)  </div><div class="line">        start  </div><div class="line">        ;;  </div><div class="line">    stop)  </div><div class="line">        stop  </div><div class="line">        ;;  </div><div class="line">    status)  </div><div class="line">        status <span class="variable">$prog</span>  </div><div class="line">        RETVAL=$?  </div><div class="line">        ;;  </div><div class="line">    restart)  </div><div class="line">        stop  </div><div class="line">        start  </div><div class="line">        ;;  </div><div class="line">    condrestart)  </div><div class="line">        <span class="keyword">if</span> <span class="built_in">test</span> <span class="string">"x`pidof redis`"</span> != x; <span class="keyword">then</span>  </div><div class="line">            stop  </div><div class="line">            start  </div><div class="line">        <span class="keyword">fi</span>  </div><div class="line">        ;;  </div><div class="line">    *)  </div><div class="line">        <span class="built_in">echo</span> $<span class="string">"Usage: <span class="variable">$0</span> &#123;start|stop|status|restart|condrestart&#125;"</span>  </div><div class="line">        <span class="built_in">exit</span> 1  </div><div class="line"><span class="keyword">esac</span>  </div><div class="line"><span class="built_in">exit</span> <span class="variable">$RETVAL</span>  </div><div class="line">``` </div><div class="line"> </div><div class="line"><span class="comment">#### 引用</span></div><div class="line"></div><div class="line">```bash</div><div class="line"><span class="comment"># service redis-server restart</span></div><div class="line">Stopping redis                                             [失败]</div><div class="line">Starting redis                                             [确定]</div><div class="line"><span class="comment"># service redis-server status </span></div><div class="line">redis (pid  14965) 正在运行...</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;非常方便！</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag"># Redis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/24/Redis/6. PHP-redis中文文档/" rel="next" title="PHP-redis中文文档">
+                <i class="fa fa-chevron-left"></i> PHP-redis中文文档
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/24/Redis/17. Redis 命令/" rel="prev" title="Redis 命令">
+                Redis 命令 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">695</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#征服-Redis"><span class="nav-number">1.</span> <span class="nav-text">征服 Redis</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Redis简要介绍"><span class="nav-number">1.1.</span> <span class="nav-text">一、Redis简要介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、安装"><span class="nav-number">1.2.</span> <span class="nav-text">二、安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、运行"><span class="nav-number">1.3.</span> <span class="nav-text">三、运行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、测试"><span class="nav-number">1.4.</span> <span class="nav-text">四、测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#引用"><span class="nav-number">1.4.1.</span> <span class="nav-text">引用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、关闭"><span class="nav-number">1.5.</span> <span class="nav-text">五、关闭</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#引用-1"><span class="nav-number">1.5.1.</span> <span class="nav-text">引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-proc-sys-vm-overcommit-memory"><span class="nav-number">1.5.2.</span> <span class="nav-text">2./proc/sys/vm/overcommit_memory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-redis-conf"><span class="nav-number">1.5.3.</span> <span class="nav-text">3.redis.conf</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#引用-2"><span class="nav-number">1.5.3.1.</span> <span class="nav-text">引用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#七、集群配置"><span class="nav-number">1.6.</span> <span class="nav-text">七、集群配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Master"><span class="nav-number">1.6.0.1.</span> <span class="nav-text">Master</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#八、主从备份"><span class="nav-number">1.7.</span> <span class="nav-text">八、主从备份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#九、系统服务"><span class="nav-number">1.8.</span> <span class="nav-text">九、系统服务</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1212 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Redis," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Redis快速入门&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Redis是一个开源，高级的键值存储和一个适用的解决方案，用于构建高性能，可扩展的Web应用程序。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Redis有三个主要特点，使它优越于其它键值数据存储系统 -  Redis将其数据库完全保">
+<meta name="keywords" content="Redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis快速入门">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/08/24/Redis/10. Redis快速入门/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="Redis快速入门&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Redis是一个开源，高级的键值存储和一个适用的解决方案，用于构建高性能，可扩展的Web应用程序。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Redis有三个主要特点，使它优越于其它键值数据存储系统 -  Redis将其数据库完全保">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/01.png?raw=true">
+<meta property="og:updated_time" content="2017-08-22T18:29:48.087Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis快速入门">
+<meta name="twitter:description" content="Redis快速入门&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Redis是一个开源，高级的键值存储和一个适用的解决方案，用于构建高性能，可扩展的Web应用程序。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Redis有三个主要特点，使它优越于其它键值数据存储系统 -  Redis将其数据库完全保">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/01.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/08/24/Redis/10. Redis快速入门/"/>
+
+
+
+
+
+  <title>Redis快速入门 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/24/Redis/10. Redis快速入门/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Redis快速入门</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-24T23:52:05+08:00">
+                2017-08-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Redis快速入门"><a href="#Redis快速入门" class="headerlink" title="Redis快速入门"></a>Redis快速入门</h1><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis是一个开源，高级的键值存储和一个适用的解决方案，用于构建高性能，可扩展的Web应用程序。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis有三个主要特点，使它优越于其它键值数据存储系统 -</p>
+<ul>
+<li>Redis将其数据库完全保存在内存中，仅使用磁盘进行持久化。</li>
+<li>与其它键值数据存储相比，Redis有一组相对丰富的数据类型。</li>
+<li>Redis可以将数据复制到任意数量的从机中。</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis官方网站是：<a href="http://www.redis.io/" target="_blank" rel="external">http://www.redis.io/</a> ，如下：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/01.png?raw=true" alt=""></p>
+<h2 id="Redis的优点"><a href="#Redis的优点" class="headerlink" title="Redis的优点"></a>Redis的优点</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下是Redis的一些优点。</p>
+<ul>
+<li>异常快 - Redis非常快，每秒可执行大约<code>110000</code>次的设置(<code>SET</code>)操作，每秒大约可执行<code>81000</code>次的读取/获取(<code>GET</code>)操作。</li>
+<li>支持丰富的数据类型 - Redis支持开发人员常用的大多数数据类型，例如列表，集合，排序集和散列等等。这使得Redis很容易被用来解决各种问题，因为我们知道哪些问题可以更好使用地哪些数据类型来处理解决。</li>
+<li>操作具有原子性 - 所有Redis操作都是原子操作，这确保如果两个客户端并发访问，Redis服务器能接收更新的值。</li>
+<li>多实用工具 - Redis是一个多实用工具，可用于多种用例，如：缓存，消息队列(Redis本地支持发布/订阅)，应用程序中的任何短期数据，例如，web应用程序中的会话，网页命中计数等。</li>
+</ul>
+<h2 id="Redis与其他键值存储系统"><a href="#Redis与其他键值存储系统" class="headerlink" title="Redis与其他键值存储系统"></a>Redis与其他键值存储系统</h2><ul>
+<li>Redis是键值数据库系统的不同进化路线，它的值可以包含更复杂的数据类型，可在这些数据类型上定义原子操作。</li>
+<li>Redis是一个内存数据库，但在磁盘数据库上是持久的，因此它代表了一个不同的权衡，在这种情况下，在不能大于存储器(内存)的数据集的限制下实现非常高的写和读速度。</li>
+<li>内存数据库的另一个优点是，它与磁盘上的相同数据结构相比，复杂数据结构在内存中存储表示更容易操作。 因此，Redis可以做很少的内部复杂性。</li>
+</ul>
+<h2 id="1-Redis环境安装配置"><a href="#1-Redis环境安装配置" class="headerlink" title="1.Redis环境安装配置"></a>1.Redis环境安装配置</h2><h3 id="在Ubuntu上安装Redis"><a href="#在Ubuntu上安装Redis" class="headerlink" title="在Ubuntu上安装Redis"></a>在Ubuntu上安装Redis</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要在Ubuntu上安装Redis，打开终端并键入以下命令 -</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[yiibai@ubuntu:~]$ sudo apt-get update </div><div class="line">[yiibai@ubuntu:~]$ sudo apt-get install redis-server</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这将在Ubuntu机器上安装Redis。</p>
+<h3 id="启动Redis"><a href="#启动Redis" class="headerlink" title="启动Redis"></a>启动Redis</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">[yiibai@ubuntu:~]$ redis-server</div><div class="line">[2988] 07 Feb 17:09:42.485 <span class="comment"># Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf</span></div><div class="line">[2988] 07 Feb 17:09:42.488 <span class="comment"># Unable to set the max number of files limit to 10032 (Operation not permitted), setting the max clients configuration to 3984.</span></div><div class="line">[2988] 07 Feb 17:09:42.490 <span class="comment"># Warning: 32 bit instance detected but no memory lim</span></div><div class="line">                _._</div><div class="line">           _.-``__ <span class="string">''</span>-._</div><div class="line">      _.-``    `.  `_.  <span class="string">''</span>-._           Redis 2.8.4 (00000000/0) 32 bit</div><div class="line">  .-`` .-```.  ```\/    _.,_ <span class="string">''</span>-._</div><div class="line"> (    <span class="string">'      ,       .-`  | `,    )     Running in stand alone mode</span></div><div class="line"><span class="string"> |`-._`-...-` __...-.``-._|'</span>` _.-<span class="string">'|     Port: 6379</span></div><div class="line"><span class="string"> |    `-._   `._    /     _.-'</span>    |     PID: 2988</div><div class="line">  `-._    `-._  `-./  _.-<span class="string">'    _.-'</span></div><div class="line"> |`-._`-._    `-.__.-<span class="string">'    _.-'</span>_.-<span class="string">'|</span></div><div class="line"><span class="string"> |    `-._`-._        _.-'</span>_.-<span class="string">'    |           http://redis.io</span></div><div class="line"><span class="string">  `-._    `-._`-.__.-'</span>_.-<span class="string">'    _.-'</span></div><div class="line"> |`-._`-._    `-.__.-<span class="string">'    _.-'</span>_.-<span class="string">'|</span></div><div class="line"><span class="string"> |    `-._`-._        _.-'</span>_.-<span class="string">'    |</span></div><div class="line"><span class="string">  `-._    `-._`-.__.-'</span>_.-<span class="string">'    _.-'</span></div><div class="line">      `-._    `-.__.-<span class="string">'    _.-'</span></div><div class="line">          `-._        _.-<span class="string">'</span></div><div class="line"><span class="string">              `-.__.-'</span></div><div class="line"></div><div class="line">[2988] 07 Feb 17:09:42.581 <span class="comment"># Server started, Redis version 2.8.4</span></div><div class="line">[2988] 07 Feb 17:09:42.582 <span class="comment"># WARNING overcommit_memory is set to 0! Background s                                                                                        ' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_m</span></div><div class="line">[2988] 07 Feb 17:09:42.582 * The server is now ready to accept connections on po</div></pre></td></tr></table></figure>
+<h3 id="检查Redis是否正在工作"><a href="#检查Redis是否正在工作" class="headerlink" title="检查Redis是否正在工作"></a>检查Redis是否正在工作</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[yiibai@ubuntu:~]$ redis-cli</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这将打开一个redis提示，如下所示 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在上面的提示中，<code>127.0.0.1</code>是计算机的IP地址，<code>6379</code>是运行<strong>Redis</strong>服务器的端口。 现在键入以下<code>PING</code>命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ping </div><div class="line">PONG</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这表明<strong>Redis</strong>已成功在计算机上安装了。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在Ubuntu上安装<strong>Redis桌面管理</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要在Ubuntu上安装Redis桌面管理器，可从 <a href="http://redisdesktop.com/download" target="_blank" rel="external">http://redisdesktop.com/download</a> 下载该软件包，安装即可。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;打开下载的软件包并安装。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>Redis桌面管理器</strong>将提供用于管理Redis的键和数据的UI。</p>
+<h2 id="2-Redis配置"><a href="#2-Redis配置" class="headerlink" title="2. Redis配置"></a>2. Redis配置</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在Redis中，在Redis的根目录下有一个配置文件(redis.conf)。当然您可以通过Redis CONFIG命令获取和设置所有的Redis配置。</p>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下是Redis中的<code>CONFIG</code>命令的基本语法。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; CONFIG GET CONFIG_SETTING_NAME</div></pre></td></tr></table></figure>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; CONFIG GET loglevel  </div><div class="line">1) <span class="string">"loglevel"</span> </div><div class="line">2) <span class="string">"notice"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要获取所有配置设置，请使用<code>*</code>代替<code>CONFIG_SETTING_NAME</code></p>
+<h3 id="示例-1"><a href="#示例-1" class="headerlink" title="示例"></a>示例</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; CONFIG GET *</div><div class="line">  1) <span class="string">"dbfilename"</span></div><div class="line">  2) <span class="string">"dump.rdb"</span></div><div class="line">  3) <span class="string">"requirepass"</span></div><div class="line">  4) <span class="string">""</span></div><div class="line">  5) <span class="string">"masterauth"</span></div><div class="line">  6) <span class="string">""</span></div><div class="line">  7) <span class="string">"unixsocket"</span></div><div class="line">  8) <span class="string">""</span></div><div class="line">  9) <span class="string">"logfile"</span></div><div class="line"> 10) <span class="string">"/var/log/redis/redis-server.log"</span></div><div class="line"> 11) <span class="string">"pidfile"</span></div><div class="line"> 12) <span class="string">"/var/run/redis/redis-server.pid"</span></div><div class="line"> 13) <span class="string">"maxmemory"</span></div><div class="line"> 14) <span class="string">"3221225472"</span></div><div class="line"> 15) <span class="string">"maxmemory-samples"</span></div><div class="line"> 16) <span class="string">"3"</span></div><div class="line"> 17) <span class="string">"timeout"</span></div><div class="line"> 18) <span class="string">"0"</span></div><div class="line"> 19) <span class="string">"tcp-keepalive"</span></div><div class="line"> 20) <span class="string">"0"</span></div><div class="line"> 21) <span class="string">"auto-aof-rewrite-percentage"</span></div><div class="line"> 22) <span class="string">"100"</span></div><div class="line"> 23) <span class="string">"auto-aof-rewrite-min-size"</span></div><div class="line"> 24) <span class="string">"67108864"</span></div><div class="line"> 25) <span class="string">"hash-max-ziplist-entries"</span></div><div class="line"> 26) <span class="string">"512"</span></div><div class="line"> 27) <span class="string">"hash-max-ziplist-value"</span></div><div class="line"> 28) <span class="string">"64"</span></div><div class="line"> 29) <span class="string">"list-max-ziplist-entries"</span></div><div class="line"> 30) <span class="string">"512"</span></div><div class="line"> 31) <span class="string">"list-max-ziplist-value"</span></div><div class="line"> 32) <span class="string">"64"</span></div><div class="line"> 33) <span class="string">"set-max-intset-entries"</span></div><div class="line"> 34) <span class="string">"512"</span></div><div class="line"> 35) <span class="string">"zset-max-ziplist-entries"</span></div><div class="line"> 36) <span class="string">"128"</span></div><div class="line"> 37) <span class="string">"zset-max-ziplist-value"</span></div><div class="line"> 38) <span class="string">"64"</span></div><div class="line"> 39) <span class="string">"lua-time-limit"</span></div><div class="line"> 40) <span class="string">"5000"</span></div><div class="line"> 41) <span class="string">"slowlog-log-slower-than"</span></div><div class="line"> 42) <span class="string">"10000"</span></div><div class="line"> 43) <span class="string">"slowlog-max-len"</span></div><div class="line"> 44) <span class="string">"128"</span></div><div class="line"> 45) <span class="string">"port"</span></div><div class="line"> 46) <span class="string">"6379"</span></div><div class="line"> 47) <span class="string">"databases"</span></div><div class="line"> 48) <span class="string">"16"</span></div><div class="line"> 49) <span class="string">"repl-ping-slave-period"</span></div><div class="line"> 50) <span class="string">"10"</span></div><div class="line"> 51) <span class="string">"repl-timeout"</span></div><div class="line"> 52) <span class="string">"60"</span></div><div class="line"> 53) <span class="string">"repl-backlog-size"</span></div><div class="line"> 54) <span class="string">"1048576"</span></div><div class="line"> 55) <span class="string">"repl-backlog-ttl"</span></div><div class="line"> 56) <span class="string">"3600"</span></div><div class="line"> 57) <span class="string">"maxclients"</span></div><div class="line"> 58) <span class="string">"3984"</span></div><div class="line"> 59) <span class="string">"watchdog-period"</span></div><div class="line"> 60) <span class="string">"0"</span></div><div class="line"> 61) <span class="string">"slave-priority"</span></div><div class="line"> 62) <span class="string">"100"</span></div><div class="line"> 63) <span class="string">"min-slaves-to-write"</span></div><div class="line"> 64) <span class="string">"0"</span></div><div class="line"> 65) <span class="string">"min-slaves-max-lag"</span></div><div class="line"> 66) <span class="string">"10"</span></div><div class="line"> 67) <span class="string">"hz"</span></div><div class="line"> 68) <span class="string">"10"</span></div><div class="line"> 69) <span class="string">"no-appendfsync-on-rewrite"</span></div><div class="line"> 70) <span class="string">"no"</span></div><div class="line"> 71) <span class="string">"slave-serve-stale-data"</span></div><div class="line"> 72) <span class="string">"yes"</span></div><div class="line"> 73) <span class="string">"slave-read-only"</span></div><div class="line"> 74) <span class="string">"yes"</span></div><div class="line"> 75) <span class="string">"stop-writes-on-bgsave-error"</span></div><div class="line"> 76) <span class="string">"yes"</span></div><div class="line"> 77) <span class="string">"daemonize"</span></div><div class="line"> 78) <span class="string">"yes"</span></div><div class="line"> 79) <span class="string">"rdbcompression"</span></div><div class="line"> 80) <span class="string">"yes"</span></div><div class="line"> 81) <span class="string">"rdbchecksum"</span></div><div class="line"> 82) <span class="string">"yes"</span></div><div class="line"> 83) <span class="string">"activerehashing"</span></div><div class="line"> 84) <span class="string">"yes"</span></div><div class="line"> 85) <span class="string">"repl-disable-tcp-nodelay"</span></div><div class="line"> 86) <span class="string">"no"</span></div><div class="line"> 87) <span class="string">"aof-rewrite-incremental-fsync"</span></div><div class="line"> 88) <span class="string">"yes"</span></div><div class="line"> 89) <span class="string">"appendonly"</span></div><div class="line"> 90) <span class="string">"no"</span></div><div class="line"> 91) <span class="string">"dir"</span></div><div class="line"> 92) <span class="string">"/var/lib/redis"</span></div><div class="line"> 93) <span class="string">"maxmemory-policy"</span></div><div class="line"> 94) <span class="string">"noeviction"</span></div><div class="line"> 95) <span class="string">"appendfsync"</span></div><div class="line"> 96) <span class="string">"everysec"</span></div><div class="line"> 97) <span class="string">"save"</span></div><div class="line"> 98) <span class="string">"900 1 300 10 60 10000"</span></div><div class="line"> 99) <span class="string">"loglevel"</span></div><div class="line">100) <span class="string">"notice"</span></div><div class="line">101) <span class="string">"client-output-buffer-limit"</span></div><div class="line">102) <span class="string">"normal 0 0 0 slave 268435456 67108864 60 pubsub 33554432 8388608 60"</span></div><div class="line">103) <span class="string">"unixsocketperm"</span></div><div class="line">104) <span class="string">"0"</span></div><div class="line">105) <span class="string">"slaveof"</span></div><div class="line">106) <span class="string">""</span></div><div class="line">107) <span class="string">"notify-keyspace-events"</span></div><div class="line">108) <span class="string">""</span></div><div class="line">109) <span class="string">"bind"</span></div><div class="line">110) <span class="string">"127.0.0.1"</span></div></pre></td></tr></table></figure>
+<h3 id="编辑配置"><a href="#编辑配置" class="headerlink" title="编辑配置"></a>编辑配置</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要更新配置，可以直接编辑<code>redis.conf</code>文件，也可以通过<code>CONFIG set</code>命令更新配置。</p>
+<h3 id="语法-1"><a href="#语法-1" class="headerlink" title="语法"></a>语法</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下是<code>CONFIG SET</code>命令的基本语法。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; CONFIG SET CONFIG_SETTING_NAME NEW_CONFIG_VALUE</div></pre></td></tr></table></figure>
+<h3 id="示例-2"><a href="#示例-2" class="headerlink" title="示例"></a>示例</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; CONFIG SET loglevel <span class="string">"notice"</span> </div><div class="line">OK </div><div class="line">redis 127.0.0.1:6379&gt; CONFIG GET loglevel  </div><div class="line">1) <span class="string">"loglevel"</span> </div><div class="line">2) <span class="string">"notice"</span></div></pre></td></tr></table></figure>
+<h2 id="3-Redis数据类型"><a href="#3-Redis数据类型" class="headerlink" title="3.Redis数据类型"></a>3.Redis数据类型</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis支持5种数据类型。</p>
+<h3 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis中的字符串是一个字节序列。Redis中的字符串是二进制安全的，这意味着它们的长度不由任何特殊的终止字符决定。因此，可以在一个字符串中存储高达512兆字节的任何内容。</p>
+<h4 id="示例-3"><a href="#示例-3" class="headerlink" title="示例"></a>示例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; <span class="built_in">set</span> name <span class="string">"yiibai.com"</span> </div><div class="line">OK </div><div class="line">redis 127.0.0.1:6379&gt; get name </div><div class="line"><span class="string">"yiibai.com"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在上面的示例中，<code>set</code>和<code>get</code>是Redis命令，<code>name</code>是Redis中使用的键，<code>yiibai.com</code>是存储在Redis中的字符串的值。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注 - Redis命令不区分大小写，如SET,Set和set都是同一个命令。字符串值的最大长度为 512MB。</p>
+<h3 id="散列-哈希"><a href="#散列-哈希" class="headerlink" title="散列/哈希"></a>散列/哈希</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis散列/哈希(Hashes)是键值对的集合。Redis散列/哈希是字符串字段和字符串值之间的映射。因此，它们用于表示对象。</p>
+<h4 id="示例-4"><a href="#示例-4" class="headerlink" title="示例"></a>示例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; HMSET ukey username <span class="string">"yiibai"</span> password <span class="string">"passswd123"</span> points 200</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在上述示例中，散列/哈希数据类型用于存储包含用户的基本信息的用户对象。这里<code>HMSET</code>，<code>HGETALL</code>是Redis的命令，而<code>ukey</code>是键的名称。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;每个散列/哈希可以存储多达<code>2^32 - 1</code>个健-值对(超过<code>40</code>亿个)。</p>
+<h3 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis列表只是字符串列表，按插入顺序排序。您可以向Redis列表的头部或尾部添加元素。</p>
+<h4 id="示例-5"><a href="#示例-5" class="headerlink" title="示例"></a>示例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; lpush alist redis </div><div class="line">(<span class="built_in">integer</span>) 1 </div><div class="line">redis 127.0.0.1:6379&gt; lpush alist mongodb </div><div class="line">(<span class="built_in">integer</span>) 2 </div><div class="line">redis 127.0.0.1:6379&gt; lpush alist sqlite </div><div class="line">(<span class="built_in">integer</span>) 3 </div><div class="line">redis 127.0.0.1:6379&gt; lrange alist 0 10  </div><div class="line"></div><div class="line">1) <span class="string">"sqlite"</span> </div><div class="line">2) <span class="string">"mongodb"</span> </div><div class="line">3) <span class="string">"redis"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;列表的最大长度为<code>2^32 - 1</code>个元素(<code>4294967295</code>，每个列表可容纳超过<code>40</code>亿个元素)。</p>
+<h3 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis集合是字符串的无序集合。在Redis中，您可以添加，删除和测试成员存在的时间O(1)复杂性。</p>
+<h4 id="示例-6"><a href="#示例-6" class="headerlink" title="示例"></a>示例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; sadd yiibailist redis </div><div class="line">(<span class="built_in">integer</span>) 1 </div><div class="line">redis 127.0.0.1:6379&gt; sadd yiibailist mongodb </div><div class="line">(<span class="built_in">integer</span>) 1 </div><div class="line">redis 127.0.0.1:6379&gt; sadd yiibailist sqlite </div><div class="line">(<span class="built_in">integer</span>) 1 </div><div class="line">redis 127.0.0.1:6379&gt; sadd yiibailist sqlite </div><div class="line">(<span class="built_in">integer</span>) 0 </div><div class="line">redis 127.0.0.1:6379&gt; smembers yiibailist  </div><div class="line"></div><div class="line">1) <span class="string">"sqlite"</span> </div><div class="line">2) <span class="string">"mongodb"</span> </div><div class="line">3) <span class="string">"redis"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意 - 在上面的示例中，<code>sqlite</code>被添加了两次，但是由于集合的唯一属性，所以它只算添加一次。<br>一个集合中的最大成员数量为<code>2^32 - 1</code>(即<code>4294967295</code>，每个集合中元素数量可达<code>40</code>亿个)个。</p>
+<h3 id="可排序集合"><a href="#可排序集合" class="headerlink" title="可排序集合"></a>可排序集合</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis可排序集合类似于Redis集合，是不重复的字符集合。 不同之处在于，排序集合的每个成员都与分数相关联，这个分数用于按最小分数到最大分数来排序的排序集合。虽然成员是唯一的，但分数值可以重复。</p>
+<h4 id="示例-7"><a href="#示例-7" class="headerlink" title="示例"></a>示例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; zadd yiibaiset 0 redis</div><div class="line">(<span class="built_in">integer</span>) 1 </div><div class="line">redis 127.0.0.1:6379&gt; zadd yiibaiset 0 mongodb</div><div class="line">(<span class="built_in">integer</span>) 1 </div><div class="line">redis 127.0.0.1:6379&gt; zadd yiibaiset 1 sqlite</div><div class="line">(<span class="built_in">integer</span>) 1 </div><div class="line">redis 127.0.0.1:6379&gt; zadd yiibaiset 1 sqlite</div><div class="line">(<span class="built_in">integer</span>) 0 </div><div class="line">redis 127.0.0.1:6379&gt; ZRANGEBYSCORE yiibaiset 0 1000  </div><div class="line"></div><div class="line">1) <span class="string">"mongodb"</span> </div><div class="line">2) <span class="string">"redis"</span> </div><div class="line">3) <span class="string">"sqlite"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;因为 ‘<code>sqlite</code>‘ 的排序值是 1 ，其它两个元素的排序值是 0 ，所以 ‘<code>sqlite</code>‘ 排在最后一个位置上。</p>
+<h2 id="4-Redis命令"><a href="#4-Redis命令" class="headerlink" title="4. Redis命令"></a>4. Redis命令</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis命令是用于在Redis服务器上执行一些操作。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要在Redis服务器上运行命令，需要一个Redis客户端。Redis客户端在Redis包中有提供，这个包在我们前面的安装教程中就有安装过了。</p>
+<h3 id="语法-2"><a href="#语法-2" class="headerlink" title="语法"></a>语法</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下是Redis客户端的基本语法。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[yiibai@ubuntu:~]$ redis-cli</div></pre></td></tr></table></figure>
+<h4 id="示例-8"><a href="#示例-8" class="headerlink" title="示例"></a>示例</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下示例说明了如何启动Redis客户端。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要启动Redis客户端，请打开终端并键入命令redis-cli。 这将连接到您的本地Redis服务器，现在可以运行任何的Redis命令了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[yiibai@ubuntu:~]<span class="variable">$redis</span>-cli </div><div class="line">redis 127.0.0.1:6379&gt; </div><div class="line">redis 127.0.0.1:6379&gt; PING  </div><div class="line">PONG</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在上面的示例中，连接到到在本地机器上运行的Redis服务器并执行<code>PING</code>命令，该命令检查服务器是否正在运行。</p>
+<h3 id="在远程服务器上运行命令"><a href="#在远程服务器上运行命令" class="headerlink" title="在远程服务器上运行命令"></a>在远程服务器上运行命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要在Redis远程服务器上运行命令，需要通过客户端redis-cli连接到服务器</p>
+<h4 id="语法-3"><a href="#语法-3" class="headerlink" title="语法"></a>语法</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[yiibai@ubuntu:~]$ redis-cli -h host -p port -a password</div></pre></td></tr></table></figure>
+<h4 id="示例-9"><a href="#示例-9" class="headerlink" title="示例"></a>示例</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下示例显示如何连接到Redis远程服务器，在主机(host)127.0.0.1，端口(port)6379上运行，并使用密码为 mypass。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[yiibai@ubuntu:~]$ redis-cli -h 127.0.0.1 -p 6379 -a <span class="string">"mypass"</span> </div><div class="line">redis 127.0.0.1:6379&gt; </div><div class="line">redis 127.0.0.1:6379&gt; PING  </div><div class="line">PONG</div></pre></td></tr></table></figure>
+<h2 id="5-Redis键命令"><a href="#5-Redis键命令" class="headerlink" title="5. Redis键命令"></a>5. Redis键命令</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis键命令用于管理Redis中的键。以下是使用redis键命令的语法。</p>
+<h3 id="语法-4"><a href="#语法-4" class="headerlink" title="语法"></a>语法</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; COMMAND KEY_NAME</div></pre></td></tr></table></figure>
+<h3 id="示例-10"><a href="#示例-10" class="headerlink" title="示例"></a>示例</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; SET akey redis</div><div class="line">OK </div><div class="line">redis 127.0.0.1:6379&gt; DEL akey</div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">127.0.0.1:6379&gt; GET akey</div><div class="line">(nil)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在上面的例子中，DEL是Redis的命令，而akey是键的名称。如果键被删除，则命令的输出将为(integer) 1，否则为(integer) 0。</p>
+<h3 id="Redis键命令"><a href="#Redis键命令" class="headerlink" title="Redis键命令"></a>Redis键命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下表列出了与键相关的一些基本命令。</p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>命</th>
+<th>令描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>DEL key</td>
+<td>此命令删除一个指定键(如果存在)。</td>
+</tr>
+<tr>
+<td>2</td>
+<td>DUMP key</td>
+<td>此命令返回存储在指定键的值的序列化版本。</td>
+</tr>
+<tr>
+<td>3</td>
+<td>EXISTS key</td>
+<td>此命令检查键是否存在。</td>
+</tr>
+<tr>
+<td>4</td>
+<td>EXPIRE key seconds</td>
+<td>设置键在指定时间秒数之后到期/过期。</td>
+</tr>
+<tr>
+<td>5</td>
+<td>EXPIREAT key timestamp</td>
+<td>设置在指定时间戳之后键到期/过期。这里的时间是Unix时间戳格式。</td>
+</tr>
+<tr>
+<td>6</td>
+<td>PEXPIRE key milliseconds</td>
+<td>设置键的到期时间(以毫秒为单位)。</td>
+</tr>
+<tr>
+<td>7</td>
+<td>PEXPIREAT key milliseconds-timestamp</td>
+<td>以Unix时间戳形式来设置键的到期时间(以毫秒为单位)。</td>
+</tr>
+<tr>
+<td>8</td>
+<td>KEYS pattern</td>
+<td>查找与指定模式匹配的所有键。</td>
+</tr>
+<tr>
+<td>9</td>
+<td>MOVE key db</td>
+<td>将键移动到另一个数据库。</td>
+</tr>
+<tr>
+<td>10</td>
+<td>PERSIST key</td>
+<td>删除指定键的过期时间，得永生。</td>
+</tr>
+<tr>
+<td>11</td>
+<td>PTTL key</td>
+<td>获取键的剩余到期时间。</td>
+</tr>
+<tr>
+<td>12</td>
+<td>RANDOMKEY</td>
+<td>从Redis返回一个随机的键。</td>
+</tr>
+<tr>
+<td>13</td>
+<td>RENAME key newkey</td>
+<td>更改键的名称。</td>
+</tr>
+<tr>
+<td>14</td>
+<td>PTTL key</td>
+<td>获取键到期的剩余时间(以毫秒为单位)。</td>
+</tr>
+<tr>
+<td>15</td>
+<td>RENAMENX key newkey</td>
+<td>如果新键不存在，重命名键。</td>
+</tr>
+<tr>
+<td>16</td>
+<td>TYPE key</td>
+<td>返回存储在键中的值的数据类型。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="6-Redis字符串"><a href="#6-Redis字符串" class="headerlink" title="6. Redis字符串"></a>6. Redis字符串</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis字符串命令用于管理Redis中的字符串值。以下是使用Redis字符串命令的语法。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; COMMAND KEY_NAME</div></pre></td></tr></table></figure>
+<h3 id="示例-11"><a href="#示例-11" class="headerlink" title="示例"></a>示例</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; SET mykey <span class="string">"redis"</span> </div><div class="line">OK </div><div class="line">redis 127.0.0.1:6379&gt; GET mykey </div><div class="line"><span class="string">"redis"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在上面的例子中，SET和GET是redis中的命令，而mykey是键的名称。</p>
+<h3 id="Redis字符串命令"><a href="#Redis字符串命令" class="headerlink" title="Redis字符串命令"></a>Redis字符串命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下表列出了一些用于在Redis中管理字符串的基本命令。</p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>命令</th>
+<th>描述说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>SET key value</td>
+<td>此命令设置指定键的值。</td>
+</tr>
+<tr>
+<td>2</td>
+<td>GET key</td>
+<td>获取指定键的值。</td>
+</tr>
+<tr>
+<td>3</td>
+<td>GETRANGE key start end</td>
+<td>获取存储在键上的字符串的子字符串。</td>
+</tr>
+<tr>
+<td>4</td>
+<td>GETSET key value</td>
+<td>设置键的字符串值并返回其旧值。</td>
+</tr>
+<tr>
+<td>5</td>
+<td>GETBIT key offset</td>
+<td>返回在键处存储的字符串值中偏移处的位值。</td>
+</tr>
+<tr>
+<td>6</td>
+<td>MGET key1 [key2..]</td>
+<td>获取所有给定键的值</td>
+</tr>
+<tr>
+<td>7</td>
+<td>SETBIT key offset value</td>
+<td>存储在键上的字符串值中设置或清除偏移处的位</td>
+</tr>
+<tr>
+<td>8</td>
+<td>SETEX key seconds value</td>
+<td>使用键和到期时间来设置值</td>
+</tr>
+<tr>
+<td>9</td>
+<td>SETNX key value</td>
+<td>设置键的值，仅当键不存在时</td>
+</tr>
+<tr>
+<td>10</td>
+<td>SETRANGE key offset value</td>
+<td>在指定偏移处开始的键处覆盖字符串的一部分</td>
+</tr>
+<tr>
+<td>11</td>
+<td>STRLEN key</td>
+<td>获取存储在键中的值的长度</td>
+</tr>
+<tr>
+<td>12</td>
+<td>MSET key value [key value …]</td>
+<td>为多个键分别设置它们的值</td>
+</tr>
+<tr>
+<td>13</td>
+<td>MSETNX key value [key value …]</td>
+<td>为多个键分别设置它们的值，仅当键不存在时</td>
+</tr>
+<tr>
+<td>14</td>
+<td>PSETEX key milliseconds value</td>
+<td>设置键的值和到期时间(以毫秒为单位)</td>
+</tr>
+<tr>
+<td>15</td>
+<td>INCR key</td>
+<td>将键的整数值增加1</td>
+</tr>
+<tr>
+<td>16</td>
+<td>INCRBY key increment</td>
+<td>将键的整数值按给定的数值增加</td>
+</tr>
+<tr>
+<td>17</td>
+<td>INCRBYFLOAT key increment</td>
+<td>将键的浮点值按给定的数值增加</td>
+</tr>
+<tr>
+<td>18</td>
+<td>DECR key</td>
+<td>将键的整数值减1</td>
+</tr>
+<tr>
+<td>19</td>
+<td>DECRBY key decrement</td>
+<td>按给定数值减少键的整数值</td>
+</tr>
+<tr>
+<td>20</td>
+<td>APPEND key value</td>
+<td>将指定值附加到键</td>
+</tr>
+</tbody>
+</table>
+<h2 id="7-Redis哈希"><a href="#7-Redis哈希" class="headerlink" title="7. Redis哈希"></a>7. Redis哈希</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Hashes是字符串字段和字符串值之间的映射(类似于PHP中的数组类型)。 因此，它们是表示对象的完美数据类型。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在Redis中，每个哈希(散列)可以存储多达4亿个键-值对。</p>
+<h3 id="示例-12"><a href="#示例-12" class="headerlink" title="示例"></a>示例</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; HMSET myhash name <span class="string">"redis tutorial"</span> </div><div class="line">description <span class="string">"redis basic commands for caching"</span> likes 20 visitors 23000 </div><div class="line">OK </div><div class="line">127.0.0.1:6379&gt; HGETALL myhash</div><div class="line">1) <span class="string">"field1"</span></div><div class="line">2) <span class="string">"Hello"</span></div><div class="line">3) <span class="string">"field2"</span></div><div class="line">4) <span class="string">"World"</span></div><div class="line">5) <span class="string">"name"</span></div><div class="line">6) <span class="string">"redis tutorial"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在上面的例子中，在名称为’myhash‘的哈希中设置了Redis教程的详细信息(名称，描述，喜欢，访问者)。</p>
+<h2 id="8-Redis列表"><a href="#8-Redis列表" class="headerlink" title="8. Redis列表"></a>8. Redis列表</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis列表只是字符串列表，按插入顺序排序。可以在列表的头部或尾部添加Redis列表中的元素。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;列表的最大长度为<code>2^32 - 1</code>个元素(即<code>4294967295</code>，每个列表可存储超过<code>40</code>亿个元素)。</p>
+<h3 id="示例-13"><a href="#示例-13" class="headerlink" title="示例"></a>示例</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; LPUSH mylist <span class="string">"redis"</span> </div><div class="line">(<span class="built_in">integer</span>) 1 </div><div class="line">redis 127.0.0.1:6379&gt; LPUSH mylist <span class="string">"mongodb"</span></div><div class="line">(<span class="built_in">integer</span>) 2 </div><div class="line">redis 127.0.0.1:6379&gt; LPUSH mylist <span class="string">"mysql"</span></div><div class="line">(<span class="built_in">integer</span>) 3 </div><div class="line">redis 127.0.0.1:6379&gt; LRANGE mylist 0 10  </div><div class="line">1) <span class="string">"mysql"</span> </div><div class="line">2) <span class="string">"mongodb"</span> </div><div class="line">3) <span class="string">"redis"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在上面的示例中，通过命令<code>LPUSH</code>将三个值插入到名称为“<code>mylist</code>”的Redis列表中。</p>
+<h2 id="8-Redis集合"><a href="#8-Redis集合" class="headerlink" title="8. Redis集合"></a>8. Redis集合</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis集合是唯一字符串的无序集合。 唯一值表示集合中不允许键中有重复的数据。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在Redis中设置添加，删除和测试成员的存在(恒定时间O(1)，而不考虑集合中包含的元素数量)。列表的最大长度为2^32 - 1个元素(即4294967295，每组集合超过40亿个元素)。</p>
+<h3 id="示例-14"><a href="#示例-14" class="headerlink" title="示例"></a>示例</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; SADD myset <span class="string">"redis"</span> </div><div class="line">(<span class="built_in">integer</span>) 1 </div><div class="line">redis 127.0.0.1:6379&gt; SADD myset <span class="string">"mongodb"</span> </div><div class="line">(<span class="built_in">integer</span>) 1 </div><div class="line">redis 127.0.0.1:6379&gt; SADD myset <span class="string">"mysql"</span> </div><div class="line">(<span class="built_in">integer</span>) 1 </div><div class="line">redis 127.0.0.1:6379&gt; SADD myset <span class="string">"mysql"</span> </div><div class="line">(<span class="built_in">integer</span>) 0 </div><div class="line">redis 127.0.0.1:6379&gt; SMEMBERS <span class="string">"myset"</span>  </div><div class="line">1) <span class="string">"mysql"</span> </div><div class="line">2) <span class="string">"mongodb"</span> </div><div class="line">3) <span class="string">"redis"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在上面的示例中，通过命令<code>SADD</code>将三个值插入到名称为“<code>myset</code>”的Redis集合中。</p>
+<h2 id="9-Redis发送订阅"><a href="#9-Redis发送订阅" class="headerlink" title="9. Redis发送订阅"></a>9. Redis发送订阅</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis发布订阅(pub/sub)是一种消息通信模式：发送者(pub)发送消息，订阅者(sub)接收消息。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis 发布订阅(pub/sub)实现了消息系统，发送者(在redis术语中称为发布者)在接收者(订阅者)接收消息时发送消息。传送消息的链路称为信道。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在Redis中，客户端可以订阅任意数量的信道。</p>
+<h3 id="示例-15"><a href="#示例-15" class="headerlink" title="示例"></a>示例</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下示例说明了发布用户概念的工作原理。 在以下示例中，一个客户端订阅名为“<code>redisChat</code>”的信道。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; SUBSCRIBE redisChat  </div><div class="line">Reading messages... (press Ctrl-C to quit) </div><div class="line">1) <span class="string">"subscribe"</span> </div><div class="line">2) <span class="string">"redisChat"</span> </div><div class="line">3) (<span class="built_in">integer</span>) 1</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;现在，两个客户端在名称为“<code>redisChat</code>”的相同信道上发布消息，并且上述订阅的客户端接收消息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; PUBLISH redisChat <span class="string">"Redis is a great caching technique"</span>  </div><div class="line">(<span class="built_in">integer</span>) 1  </div><div class="line">redis 127.0.0.1:6379&gt; PUBLISH redisChat <span class="string">"Learn redis by yiibai"</span>  </div><div class="line">(<span class="built_in">integer</span>) 1   </div><div class="line">1) <span class="string">"message"</span> </div><div class="line">2) <span class="string">"redisChat"</span> </div><div class="line">3) <span class="string">"Redis is a great caching technique"</span> </div><div class="line">1) <span class="string">"message"</span> </div><div class="line">2) <span class="string">"redisChat"</span> </div><div class="line">3) <span class="string">"Learn redis by yiibai"</span></div></pre></td></tr></table></figure>
+<h2 id="10-Redis事务"><a href="#10-Redis事务" class="headerlink" title="10. Redis事务"></a>10. Redis事务</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis事务允许在单个步骤中执行一组命令。以下是事务的两个属性：</p>
+<ul>
+<li>事务中的所有命令作为单个隔离操作并按顺序执行。不可以在执行Redis事务的中间向另一个客户端发出的请求。</li>
+<li>Redis事务也是原子的。原子意味着要么处理所有命令，要么都不处理。</li>
+</ul>
+<h3 id="语法示例"><a href="#语法示例" class="headerlink" title="语法示例"></a>语法示例</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis事务由命令<code>MULTI</code>命令启动，然后需要传递一个应该在事务中执行的命令列表，然后整个事务由<code>EXEC</code>命令执行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; MULTI </div><div class="line">OK </div><div class="line">List of commands here </div><div class="line">redis 127.0.0.1:6379&gt; EXEC</div></pre></td></tr></table></figure>
+<h3 id="示例-16"><a href="#示例-16" class="headerlink" title="示例"></a>示例</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下示例说明了如何启动和执行Redis事务。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; MULTI </div><div class="line">OK </div><div class="line">redis 127.0.0.1:6379&gt; SET mykey <span class="string">"redis"</span> </div><div class="line">QUEUED </div><div class="line">redis 127.0.0.1:6379&gt; GET mykey </div><div class="line">QUEUED </div><div class="line">redis 127.0.0.1:6379&gt; INCR visitors </div><div class="line">QUEUED </div><div class="line">redis 127.0.0.1:6379&gt; EXEC  </div><div class="line">1) OK </div><div class="line">2) <span class="string">"redis"</span> </div><div class="line">3) (<span class="built_in">integer</span>) 1</div></pre></td></tr></table></figure>
+<h2 id="11-Redis脚本"><a href="#11-Redis脚本" class="headerlink" title="11. Redis脚本"></a>11. Redis脚本</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis脚本用于使用Lua解释器来执行脚本。从Redis 2.6.0版开始内置到Redis中。使用脚本的命令是<strong>EVAL</strong>命令。</p>
+<h3 id="语法-5"><a href="#语法-5" class="headerlink" title="语法"></a>语法</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下是<code>EVAL</code>命令的基本语法。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; EVAL script numkeys key [key ...] arg [arg ...]</div></pre></td></tr></table></figure>
+<h3 id="示例-17"><a href="#示例-17" class="headerlink" title="示例"></a>示例</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下示例说明了Redis脚本的工作原理。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; EVAL <span class="string">"return &#123;KEYS[1],KEYS[2],ARGV[1],ARGV[2]&#125;"</span> 2 key1 </div><div class="line">key2 first second  </div><div class="line">1) <span class="string">"key1"</span> </div><div class="line">2) <span class="string">"key2"</span> </div><div class="line">3) <span class="string">"first"</span> </div><div class="line">4) <span class="string">"second"</span></div></pre></td></tr></table></figure>
+<h2 id="12-Redis连接"><a href="#12-Redis连接" class="headerlink" title="12. Redis连接"></a>12. Redis连接</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis中的连接命令基本上是用于管理与Redis服务器的客户端连接。</p>
+<h3 id="160-160-160-160-160-160-160-160-示例"><a href="#160-160-160-160-160-160-160-160-示例" class="headerlink" title="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;示例"></a>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;示例</h3><p>以下示例说明客户端如何向Redis服务器验证自身，并检查服务器是否正在运行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; AUTH <span class="string">"password"</span> </div><div class="line">OK </div><div class="line">redis 127.0.0.1:6379&gt; PING </div><div class="line">PONG</div></pre></td></tr></table></figure>
+<h3 id="Redis连接命令"><a href="#Redis连接命令" class="headerlink" title="Redis连接命令"></a>Redis连接命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下表列出了与Redis连接相关的一些基本命令。</p>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>AUTH password</td>
+<td>使用给定的密码验证服务器</td>
+</tr>
+<tr>
+<td>2</td>
+<td>ECHO message</td>
+<td>打印给定的字符串信息</td>
+</tr>
+<tr>
+<td>3</td>
+<td>PING</td>
+<td>检查服务器是否正在运行</td>
+</tr>
+<tr>
+<td>4</td>
+<td>QUIT</td>
+<td>关闭当前连接</td>
+</tr>
+<tr>
+<td>5</td>
+<td>SELECT index</td>
+<td>更改当前连接的所选数据库</td>
+</tr>
+</tbody>
+</table>
+<h2 id="13-Redis服务器"><a href="#13-Redis服务器" class="headerlink" title="13. Redis服务器"></a>13. Redis服务器</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis服务器命令基本上是用于管理Redis服务器。</p>
+<h3 id="示例-18"><a href="#示例-18" class="headerlink" title="示例"></a>示例</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下示例说明了如何获取有关服务器的所有统计信息和信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div></pre></td><td class="code"><pre><div class="line">127.0.0.1:6379&gt; info</div><div class="line"><span class="comment"># Server</span></div><div class="line">redis_version:2.8.4</div><div class="line">redis_git_sha1:00000000</div><div class="line">redis_git_dirty:0</div><div class="line">redis_build_id:8f6097d7914679ca</div><div class="line">redis_mode:standalone</div><div class="line">os:Linux 3.19.0-25-generic i686</div><div class="line">arch_bits:32</div><div class="line">multiplexing_api:epoll</div><div class="line">gcc_version:4.8.2</div><div class="line">process_id:1004</div><div class="line">run_id:1e53acea2aa628199c4e438a3ed815d96eebc036</div><div class="line">tcp_port:6379</div><div class="line">uptime_in_seconds:888450</div><div class="line">uptime_in_days:10</div><div class="line">hz:10</div><div class="line">lru_clock:1861984</div><div class="line">config_file:/etc/redis/redis.conf</div><div class="line"></div><div class="line"><span class="comment"># Clients</span></div><div class="line">connected_clients:1</div><div class="line">client_longest_output_list:0</div><div class="line">client_biggest_input_buf:0</div><div class="line">blocked_clients:0</div><div class="line"></div><div class="line"><span class="comment"># Memory</span></div><div class="line">used_memory:424872</div><div class="line">used_memory_human:414.91K</div><div class="line">used_memory_rss:6709248</div><div class="line">used_memory_peak:424464</div><div class="line">used_memory_peak_human:414.52K</div><div class="line">used_memory_lua:22528</div><div class="line">mem_fragmentation_ratio:15.79</div><div class="line">mem_allocator:jemalloc-3.4.1</div><div class="line"></div><div class="line"><span class="comment"># Persistence</span></div><div class="line">loading:0</div><div class="line">rdb_changes_since_last_save:0</div><div class="line">rdb_bgsave_in_progress:0</div><div class="line">rdb_last_save_time:1486607123</div><div class="line">rdb_last_bgsave_status:ok</div><div class="line">rdb_last_bgsave_time_sec:0</div><div class="line">rdb_current_bgsave_time_sec:-1</div><div class="line">aof_enabled:0</div><div class="line">aof_rewrite_in_progress:0</div><div class="line">aof_rewrite_scheduled:0</div><div class="line">aof_last_rewrite_time_sec:-1</div><div class="line">aof_current_rewrite_time_sec:-1</div><div class="line">aof_last_bgrewrite_status:ok</div><div class="line"></div><div class="line"><span class="comment"># Stats</span></div><div class="line">total_connections_received:1</div><div class="line">total_commands_processed:263</div><div class="line">instantaneous_ops_per_sec:0</div><div class="line">rejected_connections:0</div><div class="line">sync_full:0</div><div class="line">sync_partial_ok:0</div><div class="line">sync_partial_err:0</div><div class="line">expired_keys:0</div><div class="line">evicted_keys:0</div><div class="line">keyspace_hits:257</div><div class="line">keyspace_misses:0</div><div class="line">pubsub_channels:0</div><div class="line">pubsub_patterns:0</div><div class="line">latest_fork_usec:4793</div><div class="line"></div><div class="line"><span class="comment"># Replication</span></div><div class="line">role:master</div><div class="line">connected_slaves:0</div><div class="line">master_repl_offset:0</div><div class="line">repl_backlog_active:0</div><div class="line">repl_backlog_size:1048576</div><div class="line">repl_backlog_first_byte_offset:0</div><div class="line">repl_backlog_histlen:0</div><div class="line"></div><div class="line"><span class="comment"># CPU</span></div><div class="line">used_cpu_sys:24.65</div><div class="line">used_cpu_user:15.84</div><div class="line">used_cpu_sys_children:0.08</div><div class="line">used_cpu_user_children:0.00</div><div class="line"></div><div class="line"><span class="comment"># Keyspace</span></div><div class="line">db0:keys=14,expires=0,avg_ttl=0</div><div class="line">db1:keys=1,expires=0,avg_ttl=0</div><div class="line">127.0.0.1:6379&gt;</div></pre></td></tr></table></figure>
+<h2 id="14-Redis备份"><a href="#14-Redis备份" class="headerlink" title="14. Redis备份"></a>14. Redis备份</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis数据库可以使用安全的方案，使得进行连接的任何客户端在执行命令之前都需要进行身份验证。要保护Redis安全，需要在配置文件中设置密码。</p>
+<h3 id="示例-19"><a href="#示例-19" class="headerlink" title="示例"></a>示例</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面的示例显示了保护Redis实例的步骤。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">127.0.0.1:6379&gt; CONFIG get requirepass </div><div class="line">1) <span class="string">"requirepass"</span> </div><div class="line">2) <span class="string">""</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认情况下，此属性为空，这表示还没有为此实例设置密码。您可以通过执行以下命令更改此属性。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">127.0.0.1:6379&gt; CONFIG <span class="built_in">set</span> requirepass <span class="string">"yiibai"</span> </div><div class="line">OK </div><div class="line">127.0.0.1:6379&gt; CONFIG get requirepass </div><div class="line">1) <span class="string">"requirepass"</span> </div><div class="line">2) <span class="string">"yiibai"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;设置密码后，如果任何客户端运行命令而不进行身份验证，则会返回一个<strong>(error) NOAUTH Authentication required</strong>.的错误信息。 因此，客户端需要使用AUTH命令来验证。</p>
+<h3 id="语法-6"><a href="#语法-6" class="headerlink" title="语法"></a>语法</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下是AUTH命令的基本语法。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">127.0.0.1:6379&gt; AUTH password</div></pre></td></tr></table></figure>
+<h3 id="示例-20"><a href="#示例-20" class="headerlink" title="示例"></a>示例</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">127.0.0.1:6379&gt; AUTH <span class="string">"yiibai"</span> </div><div class="line">OK </div><div class="line">127.0.0.1:6379&gt; SET mykey <span class="string">"Test value"</span> </div><div class="line">OK </div><div class="line">127.0.0.1:6379&gt; GET mykey </div><div class="line"><span class="string">"Test value"</span></div></pre></td></tr></table></figure>
+<h2 id="15-Redis客户端连接"><a href="#15-Redis客户端连接" class="headerlink" title="15. Redis客户端连接"></a>15. Redis客户端连接</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis在配置的监听TCP端口和Unix套接字上等待和接受客户端的连接(如果已启用)。 当接受新的客户端连接时，执行以下操作 </p>
+<ul>
+<li>由于Redis使用复用和非阻塞I/O，因此客户端套接字处于非阻塞状态。</li>
+<li>设置<code>TCP_NODELAY</code>选项是为了确保连接不延迟。</li>
+<li>创建可读文件事件，以便Redis能够在套接字上读取新数据时收集客户端查询。</li>
+</ul>
+<h3 id="最大客户数"><a href="#最大客户数" class="headerlink" title="最大客户数"></a>最大客户数</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在Redis配置文件(<code>redis.conf</code>)中，有一个名称为<code>maxclients</code>的属性，它描述了可以连接到Redis的客户端的最大数量。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下是命令的基本语法。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">127.0.0.1:6379&gt; config get maxclients</div><div class="line">1) <span class="string">"maxclients"</span></div><div class="line">2) <span class="string">"3984"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认情况下，此属性设置为10000(取决于操作系统的文件描述符限制的最大数量)，但您可以更改此属性。</p>
+<h3 id="示例-21"><a href="#示例-21" class="headerlink" title="示例"></a>示例</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在以下示例中，我们已将客户端的最大数目设置为100000，并启动服务器。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yiibai@ubuntu:~$ redis-server --maxclients 100000</div></pre></td></tr></table></figure>
+<h3 id="客户端命令"><a href="#客户端命令" class="headerlink" title="客户端命令"></a>客户端命令</h3><table>
+<thead>
+<tr>
+<th>编号</th>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>CLIENT LIST</td>
+<td>返回连接到Redis服务器的客户端列表</td>
+</tr>
+<tr>
+<td>2</td>
+<td>CLIENT SETNAME</td>
+<td>为当前连接分配/设置新的名称</td>
+</tr>
+<tr>
+<td>3</td>
+<td>CLIENT GETNAME</td>
+<td>返回由CLIENT SETNAME设置的当前连接的名称</td>
+</tr>
+<tr>
+<td>4</td>
+<td>CLIENT PAUSE</td>
+<td>这是一个连接控制命令，能够将所有Redis客户端按指定的时间量(以毫秒为单位)挂起</td>
+</tr>
+<tr>
+<td>5</td>
+<td>CLIENT KILL</td>
+<td>此命令关闭指定的客户端连接。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="16-Redis管道"><a href="#16-Redis管道" class="headerlink" title="16. Redis管道"></a>16. Redis管道</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis是一个TCP服务器，支持请求/响应协议。 在Redis中，请求通过以下步骤完成：</p>
+<ul>
+<li>客户端向服务器发送查询，并从套接字读取，通常以阻塞的方式，用于服务器响应。</li>
+<li>服务器处理命令并将响应发送回客户端。</li>
+</ul>
+<h3 id="管道的意义"><a href="#管道的意义" class="headerlink" title="管道的意义"></a>管道的意义</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;管道的基本含义是，客户端可以向服务器发送多个请求，而不必等待回复，并最终在一个步骤中读取回复。</p>
+<h3 id="示例-22"><a href="#示例-22" class="headerlink" title="示例"></a>示例</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要检查Redis管道，只需启动Redis实例，并在终端中键入以下命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$(<span class="built_in">echo</span> -en <span class="string">"PING\r\n SET tutorial redis\r\nGET tutorial\r\nINCR </span></div><div class="line"><span class="string">visitor\r\nINCR visitor\r\nINCR visitor\r\n"</span>; sleep 10) | nc localhost 6379  </div><div class="line">+PONG </div><div class="line">+OK </div><div class="line">redis </div><div class="line">:1 </div><div class="line">:2 </div><div class="line">:3</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在上面的例子中，我们将使用PING命令检查Redis连接。这里设置了一个名称为tutorial的字符串，值为redis。 然后得到键值，并增加 visitor 数量三次。 在结果中，我们可以看到所有命令都提交到Redis一次，Redis在一个步骤中提供所有命令的输出。</p>
+<h3 id="管道的好处"><a href="#管道的好处" class="headerlink" title="管道的好处"></a>管道的好处</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这种技术的好处是大大提高了协议性能。通过管道从连接到本地主机速度增加五倍，因特网连接的至少快一百倍。</p>
+<h2 id="17-Redis分区"><a href="#17-Redis分区" class="headerlink" title="17. Redis分区"></a>17. Redis分区</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;分区是将数据拆分为多个Redis实例的过程，因此每个实例只包含一部分键。</p>
+<h3 id="分区的优点"><a href="#分区的优点" class="headerlink" title="分区的优点"></a>分区的优点</h3><ul>
+<li>它允许更大的数据库，使用更多计算机的内存总和。如果没有分区，则限制为单个计算机可以支持的内存量。</li>
+<li>它允许将计算能力扩展到多个核心和多个计算机，并将网络带宽扩展到多个计算机和网络适配器。</li>
+</ul>
+<h3 id="分区的缺点"><a href="#分区的缺点" class="headerlink" title="分区的缺点"></a>分区的缺点</h3><ul>
+<li>通常不支持涉及多个键的操作。 例如，如果两个集合存储在映射到不同Redis实例的键中，则不能执行两个集合之间的交集操作。</li>
+<li>不能使用涉及多个键的Redis事务。</li>
+<li>分区粒度是关键，因此不可能使用单个巨大的键(如非常大的排序集合)来分割数据集。</li>
+<li>使用分区时，数据处理更复杂。 例如，必须处理多个RDB/AOF文件，并获得数据的备份，您需要聚合来自多个实例和主机的持久性文件。</li>
+<li>添加和删除容量可能很复杂。 例如，Redis Cluster支持大多数透明的数据重新平衡，具有在运行时添加和删除节点的能力。但是，其他系统(如客户端分区和代理)不支持此功能。但可以使用一种叫作Presharding的技术来处理这方面的问题。</li>
+</ul>
+<h3 id="分区类型"><a href="#分区类型" class="headerlink" title="分区类型"></a>分区类型</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis中有两种类型的分区。假设有四个Redis实例：<code>R0</code>，<code>R1</code>，<code>R2</code>，<code>R3</code>以许多代表用户的键，如<code>user：1</code>，<code>user：2</code>，…等等。</p>
+<h3 id="范围分区"><a href="#范围分区" class="headerlink" title="范围分区"></a>范围分区</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;范围分区通过将对象的范围映射到特定的Redis实例来实现。假设在上面示例中，从ID 0到ID 10000的用户将进入实例R0，而从ID 10001到ID 20000的用户将进入实例R1，以此类推。</p>
+<h3 id="哈希分区"><a href="#哈希分区" class="headerlink" title="哈希分区"></a>哈希分区</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在这种类型的分区中，使用散列函数(例如，模函数)将键转换成数字，然后将数据存储在不同的Redis实例中。</p>
+<h2 id="18-Java连接Redis"><a href="#18-Java连接Redis" class="headerlink" title="18. Java连接Redis"></a>18. Java连接Redis</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在Java程序中使用Redis之前，需要确保在机器上安装了Redis的Java驱动程序和Java环境。可以先在将Java电脑上并配置好环境。</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;现在，让我们看看如何设置Redis Java驱动程序。<br>-下载<code>jedis.jar</code> - <a href="http://repo1.maven.org/maven2/redis/clients/jedis/2.1.0/jedis-2.1.0-sources.jar" target="_blank" rel="external">http://repo1.maven.org/maven2/redis/clients/jedis/2.1.0/jedis-2.1.0-sources.jar</a> ，确保下载的<code>jedis.jar</code>是最新版本。</p>
+<ul>
+<li>将<code>jedis.jar</code>包含到类路径中。</li>
+</ul>
+<h3 id="Java连接到Redis服务器"><a href="#Java连接到Redis服务器" class="headerlink" title="Java连接到Redis服务器"></a>Java连接到Redis服务器</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;请参考以下一个简单的示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> redis.clients.jedis.Jedis; </div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedisJava</span> </span>&#123; </div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123; </div><div class="line">      <span class="comment">//Connecting to Redis server on localhost </span></div><div class="line">      Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">"localhost"</span>); </div><div class="line">      System.out.println(<span class="string">"Connection to server sucessfully"</span>); </div><div class="line">      <span class="comment">//check whether server is running or not </span></div><div class="line">      System.out.println(<span class="string">"Server is running: "</span>+jedis.ping()); </div><div class="line">   &#125; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;现在，编译并运行上面的程序来测试与Redis服务器的连接。可以根据需要更改路径。假设<code>jedis.jar</code>的当前版本在当前路径中可以使用。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;执行上面代码，将生成以下结果 -</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$javac RedisJava.java </div><div class="line">$java RedisJava </div><div class="line">Connection to server sucessfully </div><div class="line">Server is running: PONG</div></pre></td></tr></table></figure>
+<h3 id="Redis-Java字符串示例"><a href="#Redis-Java字符串示例" class="headerlink" title="Redis Java字符串示例"></a>Redis Java字符串示例</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> redis.clients.jedis.Jedis; </div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedisStringJava</span> </span>&#123; </div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123; </div><div class="line">      <span class="comment">//Connecting to Redis server on localhost </span></div><div class="line">      Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">"localhost"</span>); </div><div class="line">      System.out.println(<span class="string">"Connection to server sucessfully"</span>); </div><div class="line">      <span class="comment">//set the data in redis string </span></div><div class="line">      jedis.set(<span class="string">"tutorial-name"</span>, <span class="string">"Redis tutorial"</span>); </div><div class="line">      <span class="comment">// Get the stored data and print it </span></div><div class="line">      System.out.println(<span class="string">"Stored string in redis:: "</span>+ jedis.get(<span class="string">"tutorialname"</span>)); </div><div class="line">   &#125; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;执行上面代码，将生成以下结果</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$javac RedisStringJava.java </div><div class="line">$java RedisStringJava </div><div class="line">Connection to server sucessfully </div><div class="line">Stored string in redis:: Redis tutorial</div></pre></td></tr></table></figure>
+<h3 id="Redis-Java列表示例"><a href="#Redis-Java列表示例" class="headerlink" title="Redis Java列表示例"></a>Redis Java列表示例</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> redis.clients.jedis.Jedis; </div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedisListJava</span> </span>&#123; </div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123; </div><div class="line">      <span class="comment">//Connecting to Redis server on localhost </span></div><div class="line">      Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">"localhost"</span>); </div><div class="line">      System.out.println(<span class="string">"Connection to server sucessfully"</span>); </div><div class="line"></div><div class="line">      <span class="comment">//store data in redis list </span></div><div class="line">      jedis.lpush(<span class="string">"tutorial-list"</span>, <span class="string">"Redis"</span>); </div><div class="line">      jedis.lpush(<span class="string">"tutorial-list"</span>, <span class="string">"Mongodb"</span>); </div><div class="line">      jedis.lpush(<span class="string">"tutorial-list"</span>, <span class="string">"Mysql"</span>); </div><div class="line">      <span class="comment">// Get the stored data and print it </span></div><div class="line">      List&lt;String&gt; list = jedis.lrange(<span class="string">"tutorial-list"</span>, <span class="number">0</span> ,<span class="number">5</span>); </div><div class="line"></div><div class="line">      <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i&lt;list.size(); i++) &#123; </div><div class="line">         System.out.println(<span class="string">"Stored string in redis:: "</span>+list.get(i)); </div><div class="line">      &#125; </div><div class="line">   &#125; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;执行上面代码，将生成以下结果 -</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$javac RedisListJava.java </div><div class="line">$java RedisListJava </div><div class="line">Connection to server sucessfully </div><div class="line">Stored string in redis:: Redis </div><div class="line">Stored string in redis:: Mongodb </div><div class="line">Stored string in redis:: Mysql</div></pre></td></tr></table></figure>
+<h3 id="Redis-Java键示例"><a href="#Redis-Java键示例" class="headerlink" title="Redis Java键示例"></a>Redis Java键示例</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> redis.clients.jedis.Jedis; </div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedisKeyJava</span> </span>&#123; </div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123; </div><div class="line">      <span class="comment">//Connecting to Redis server on localhost </span></div><div class="line">      Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">"localhost"</span>); </div><div class="line">      System.out.println(<span class="string">"Connection to server sucessfully"</span>); </div><div class="line">      <span class="comment">//store data in redis list </span></div><div class="line">      <span class="comment">// Get the stored data and print it </span></div><div class="line">      List&lt;String&gt; list = jedis.keys(<span class="string">"*"</span>); </div><div class="line"></div><div class="line">      <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i&lt;list.size(); i++) &#123; </div><div class="line">         System.out.println(<span class="string">"List of stored keys:: "</span>+list.get(i)); </div><div class="line">      &#125; </div><div class="line">   &#125; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;执行上面代码，将生成以下结果</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$javac RedisKeyJava.java </div><div class="line">$java RedisKeyJava </div><div class="line">Connection to server sucessfully </div><div class="line">List of stored keys:: tutorial-name </div><div class="line">List of stored keys:: tutorial-list</div></pre></td></tr></table></figure>
+<h2 id="19-PHP连接Redis"><a href="#19-PHP连接Redis" class="headerlink" title="19. PHP连接Redis"></a>19. PHP连接Redis</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在php程序中使用Redis之前，需要确保在机器上安装了Redis的PHP驱动程序和PHP环境。可以先在将PHP电脑上并配置好环境。</p>
+<h2 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a>安装</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;现在，让我们看看如何设置Redis PHP驱动程序。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从github库下载phpredis=&gt; <a href="http://github.com/nicolasff/phpredis。" target="_blank" rel="external">http://github.com/nicolasff/phpredis。</a> 当下载它之后，提取文件到phpredis目录。在Ubuntu上，安装以下扩展。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> phpredis </div><div class="line">sudo phpize </div><div class="line">sudo ./configure </div><div class="line">sudo make </div><div class="line">sudo make install</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;现在，将“modules”文件夹的内容复制并粘贴到PHP扩展目录中，并在php.ini中添加以下行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">extension = redis.so</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;现在，Redis PHP安装完成！</p>
+<h3 id="使用连接到Redis服务器"><a href="#使用连接到Redis服务器" class="headerlink" title="使用连接到Redis服务器"></a>使用连接到Redis服务器</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span> </div><div class="line">   <span class="comment">//Connecting to Redis server on localhost </span></div><div class="line">   $redis = <span class="keyword">new</span> Redis(); </div><div class="line">   $redis-&gt;connect(<span class="string">'127.0.0.1'</span>, <span class="number">6379</span>); </div><div class="line">   <span class="keyword">echo</span> <span class="string">"Connection to server sucessfully"</span>; </div><div class="line">   <span class="comment">//check whether server is running or not </span></div><div class="line">   <span class="keyword">echo</span> <span class="string">"Server is running: "</span>.$redis-&gt;ping(); </div><div class="line"><span class="meta">?&gt;</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当程序执行时，将产生以下结果。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Connection to server sucessfully </div><div class="line">Server is running: PONG</div></pre></td></tr></table></figure>
+<h3 id="Redis-PHP字符串示例"><a href="#Redis-PHP字符串示例" class="headerlink" title="Redis PHP字符串示例"></a>Redis PHP字符串示例</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span> </div><div class="line">   <span class="comment">//Connecting to Redis server on localhost </span></div><div class="line">   $redis = <span class="keyword">new</span> Redis(); </div><div class="line">   $redis-&gt;connect(<span class="string">'127.0.0.1'</span>, <span class="number">6379</span>); </div><div class="line">   <span class="keyword">echo</span> <span class="string">"Connection to server sucessfully"</span>; </div><div class="line">   <span class="comment">//set the data in redis string </span></div><div class="line">   $redis-&gt;set(<span class="string">"tutorial-name"</span>, <span class="string">"Redis tutorial"</span>); </div><div class="line">   <span class="comment">// Get the stored data and print it </span></div><div class="line">   <span class="keyword">echo</span> <span class="string">"Stored string in redis:: "</span> .$redis→get(<span class="string">"tutorial-name"</span>); </div><div class="line"><span class="meta">?&gt;</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;执行上面代码，将生成以下结果</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Connection to server sucessfully </div><div class="line">Stored string in redis:: Redis tutorial</div></pre></td></tr></table></figure>
+<h3 id="Redis-php列表示例"><a href="#Redis-php列表示例" class="headerlink" title="Redis php列表示例"></a>Redis php列表示例</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span> </div><div class="line">   <span class="comment">//Connecting to Redis server on localhost </span></div><div class="line">   $redis = <span class="keyword">new</span> Redis(); </div><div class="line">   $redis-&gt;connect(<span class="string">'127.0.0.1'</span>, <span class="number">6379</span>); </div><div class="line">   <span class="keyword">echo</span> <span class="string">"Connection to server sucessfully"</span>; </div><div class="line">   <span class="comment">//store data in redis list </span></div><div class="line">   $redis-&gt;lpush(<span class="string">"tutorial-list"</span>, <span class="string">"Redis"</span>); </div><div class="line">   $redis-&gt;lpush(<span class="string">"tutorial-list"</span>, <span class="string">"Mongodb"</span>); </div><div class="line">   $redis-&gt;lpush(<span class="string">"tutorial-list"</span>, <span class="string">"Mysql"</span>);  </div><div class="line"></div><div class="line">   <span class="comment">// Get the stored data and print it </span></div><div class="line">   $arList = $redis-&gt;lrange(<span class="string">"tutorial-list"</span>, <span class="number">0</span> ,<span class="number">5</span>); </div><div class="line">   <span class="keyword">echo</span> <span class="string">"Stored string in redis:: "</span>; </div><div class="line">   print_r($arList); </div><div class="line"><span class="meta">?&gt;</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;执行上面代码，将生成以下结果</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Connection to server sucessfully </div><div class="line">Stored string in redis:: </div><div class="line">Redis </div><div class="line">Mongodb </div><div class="line">Mysql</div></pre></td></tr></table></figure>
+<h3 id="Redis-php键示例"><a href="#Redis-php键示例" class="headerlink" title="Redis php键示例"></a>Redis php键示例</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span> </div><div class="line">   <span class="comment">//Connecting to Redis server on localhost </span></div><div class="line">   $redis = <span class="keyword">new</span> Redis(); </div><div class="line">   $redis-&gt;connect(<span class="string">'127.0.0.1'</span>, <span class="number">6379</span>); </div><div class="line">   <span class="keyword">echo</span> <span class="string">"Connection to server sucessfully"</span>; </div><div class="line">   <span class="comment">// Get the stored keys and print it </span></div><div class="line">   $arList = $redis-&gt;keys(<span class="string">"*"</span>); </div><div class="line">   <span class="keyword">echo</span> <span class="string">"Stored keys in redis:: "</span> </div><div class="line">   print_r($arList); </div><div class="line"><span class="meta">?&gt;</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;执行上面代码，将生成以下结果</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Connection to server sucessfully </div><div class="line">Stored string in redis:: </div><div class="line">tutorial-name </div><div class="line">tutorial-<span class="keyword">list</span></div></pre></td></tr></table></figure>
+<h2 id="20-C-连接Redis"><a href="#20-C-连接Redis" class="headerlink" title="20. C#连接Redis"></a>20. C#连接Redis</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;前面我们已经准备成功开启Redis服务，其端口号为6379，接下来我们就看看如何使用C#语言来操作Redis。就如MongoDB一样，要操作Redis服务，自然就需要下载C#的客户端，这里通过Nuget下载了“ServiceStack.Redis”客户端，引入成功之后，就可以使用C#来对Redis服务进行操作了。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;由于Redis一般是用来作为缓存的，也就是一般我们把一些不经常改变的数据通过Redis缓存起来，之后用户的请求就不需要再访问数据库，而可以直接从Redis缓存中直接获取，这样就可以减轻数据库服务器的压力以及加快响应速度。既然是用来做缓存的，也就是通过指定key值来把对应Value保存起来，之后再根据key值来获得之前缓存的值。具体的操作代码如下所示，这里就不过多介绍了。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;请参考以下代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div></pre></td><td class="code"><pre><div class="line">class Program</div><div class="line">    &#123;</div><div class="line">        static void Main(string[] args)</div><div class="line">        &#123;</div><div class="line">            //在Redis中存储常用的5种数据类型：String,Hash,List,SetSorted set</div><div class="line">            var client = new RedisClient(&quot;127.0.0.1&quot;, 6379);</div><div class="line">            //AddString(client);</div><div class="line">            //AddHash(client);</div><div class="line">            //AddList(client);</div><div class="line">            //AddSet(client);</div><div class="line">            AddSetSorted(client);</div><div class="line"></div><div class="line">            Console.ReadLine();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        private static void AddString(RedisClient client)</div><div class="line">        &#123;</div><div class="line">            var timeOut = new TimeSpan(0,0,0,30);</div><div class="line">            client.Add(&quot;Test&quot;, &quot;Learninghard&quot;, timeOut);</div><div class="line">            while (true)</div><div class="line">            &#123;</div><div class="line">                if (client.ContainsKey(&quot;Test&quot;))</div><div class="line">                &#123;</div><div class="line">                    Console.WriteLine(&quot;String Key: Test -Value: &#123;0&#125;, 当前时间: &#123;1&#125;&quot;, client.Get&lt;string&gt;(&quot;Test&quot;), DateTime.Now);</div><div class="line">                    Thread.Sleep(10000);</div><div class="line">                &#125;</div><div class="line">                else</div><div class="line">                &#123;</div><div class="line">                    Console.WriteLine(&quot;Value 已经过期了，当前时间：&#123;0&#125;&quot;, DateTime.Now);</div><div class="line">                    break;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            var person = new Person() &#123;Name = &quot;Learninghard&quot;, Age = 26&#125;;</div><div class="line">            client.Add(&quot;lh&quot;, person);</div><div class="line">            var cachePerson = client.Get&lt;Person&gt;(&quot;lh&quot;);</div><div class="line">            Console.WriteLine(&quot;Person&apos;s Name is : &#123;0&#125;, Age: &#123;1&#125;&quot;, cachePerson.Name, cachePerson.Age);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        private static void AddHash(RedisClient client)</div><div class="line">        &#123;</div><div class="line">            if (client == null) throw new ArgumentNullException(&quot;client&quot;);</div><div class="line"></div><div class="line">            client.SetEntryInHash(&quot;HashId&quot;, &quot;Name&quot;, &quot;Learninghard&quot;);</div><div class="line">            client.SetEntryInHash(&quot;HashId&quot;, &quot;Age&quot;, &quot;26&quot;);</div><div class="line">            client.SetEntryInHash(&quot;HashId&quot;, &quot;Sex&quot;, &quot;男&quot;);</div><div class="line"></div><div class="line">            var hashKeys = client.GetHashKeys(&quot;HashId&quot;);</div><div class="line">            foreach (var key in hashKeys)</div><div class="line">            &#123;</div><div class="line">                Console.WriteLine(&quot;HashId--Key:&#123;0&#125;&quot;, key);</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            var haskValues = client.GetHashValues(&quot;HashId&quot;);</div><div class="line">            foreach (var value in haskValues)</div><div class="line">            &#123;</div><div class="line">                Console.WriteLine(&quot;HashId--Value:&#123;0&#125;&quot;, value);</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            var allKeys = client.GetAllKeys(); //获取所有的key。</div><div class="line">            foreach (var key in allKeys)</div><div class="line">            &#123;</div><div class="line">                Console.WriteLine(&quot;AllKey--Key:&#123;0&#125;&quot;, key);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        private static void AddList(RedisClient client)</div><div class="line">        &#123;</div><div class="line">            if (client == null) throw new ArgumentNullException(&quot;client&quot;);</div><div class="line"></div><div class="line">            client.EnqueueItemOnList(&quot;QueueListId&quot;, &quot;1.Learnghard&quot;);  //入队</div><div class="line">            client.EnqueueItemOnList(&quot;QueueListId&quot;, &quot;2.张三&quot;);</div><div class="line">            client.EnqueueItemOnList(&quot;QueueListId&quot;, &quot;3.李四&quot;);</div><div class="line">            client.EnqueueItemOnList(&quot;QueueListId&quot;, &quot;4.王五&quot;);</div><div class="line">            var queueCount = client.GetListCount(&quot;QueueListId&quot;);</div><div class="line"></div><div class="line">            for (var i = 0; i &lt; queueCount; i++)</div><div class="line">            &#123;</div><div class="line">                Console.WriteLine(&quot;QueueListId出队值：&#123;0&#125;&quot;, client.DequeueItemFromList(&quot;QueueListId&quot;));   //出队(队列先进先出)</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            client.PushItemToList(&quot;StackListId&quot;, &quot;1.Learninghard&quot;);  //入栈</div><div class="line">            client.PushItemToList(&quot;StackListId&quot;, &quot;2.张三&quot;);</div><div class="line">            client.PushItemToList(&quot;StackListId&quot;, &quot;3.李四&quot;);</div><div class="line">            client.PushItemToList(&quot;StackListId&quot;, &quot;4.王五&quot;);</div><div class="line"></div><div class="line">            var stackCount = client.GetListCount(&quot;StackListId&quot;);</div><div class="line">            for (var i = 0; i &lt; stackCount; i++)</div><div class="line">            &#123;</div><div class="line">                Console.WriteLine(&quot;StackListId出栈值：&#123;0&#125;&quot;, client.PopItemFromList(&quot;StackListId&quot;));   //出栈(栈先进后出)</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        //它是string类型的无序集合。set是通过hash table实现的，添加，删除和查找,对集合我们可以取并集，交集，差集</div><div class="line">        private static void AddSet(RedisClient client)</div><div class="line">        &#123;</div><div class="line">            if (client == null) throw new ArgumentNullException(&quot;client&quot;);</div><div class="line"></div><div class="line">            client.AddItemToSet(&quot;Set1001&quot;, &quot;A&quot;);</div><div class="line">            client.AddItemToSet(&quot;Set1001&quot;, &quot;B&quot;);</div><div class="line">            client.AddItemToSet(&quot;Set1001&quot;, &quot;C&quot;);</div><div class="line">            client.AddItemToSet(&quot;Set1001&quot;, &quot;D&quot;);</div><div class="line">            var hastset1 = client.GetAllItemsFromSet(&quot;Set1001&quot;);</div><div class="line">            foreach (var item in hastset1)</div><div class="line">            &#123;</div><div class="line">                Console.WriteLine(&quot;Set无序集合Value:&#123;0&#125;&quot;, item); //出来的结果是无须的</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            client.AddItemToSet(&quot;Set1002&quot;, &quot;K&quot;);</div><div class="line">            client.AddItemToSet(&quot;Set1002&quot;, &quot;C&quot;);</div><div class="line">            client.AddItemToSet(&quot;Set1002&quot;, &quot;A&quot;);</div><div class="line">            client.AddItemToSet(&quot;Set1002&quot;, &quot;J&quot;);</div><div class="line">            var hastset2 = client.GetAllItemsFromSet(&quot;Set1002&quot;);</div><div class="line">            foreach (var item in hastset2)</div><div class="line">            &#123;</div><div class="line">                Console.WriteLine(&quot;Set无序集合ValueB:&#123;0&#125;&quot;, item); //出来的结果是无须的</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            var hashUnion = client.GetUnionFromSets(new string[] &#123; &quot;Set1001&quot;, &quot;Set1002&quot; &#125;);</div><div class="line">            foreach (var item in hashUnion)</div><div class="line">            &#123;</div><div class="line">                Console.WriteLine(&quot;求Set1001和Set1002的并集:&#123;0&#125;&quot;, item); //并集</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            var hashG = client.GetIntersectFromSets(new string[] &#123; &quot;Set1001&quot;, &quot;Set1002&quot; &#125;);</div><div class="line">            foreach (var item in hashG)</div><div class="line">            &#123;</div><div class="line">                Console.WriteLine(&quot;求Set1001和Set1002的交集:&#123;0&#125;&quot;, item);  //交集</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            var hashD = client.GetDifferencesFromSet(&quot;Set1001&quot;, new string[] &#123; &quot;Set1002&quot; &#125;);  //[返回存在于第一个集合，但是不存在于其他集合的数据。差集]</div><div class="line">            foreach (var item in hashD)</div><div class="line">            &#123;</div><div class="line">                Console.WriteLine(&quot;求Set1001和Set1002的差集:&#123;0&#125;&quot;, item);  //差集</div><div class="line">            &#125;</div><div class="line"></div><div class="line">        &#125;</div><div class="line"></div><div class="line">        /*</div><div class="line">        sorted set 是set的一个升级版本，它在set的基础上增加了一个顺序的属性，这一属性在添加修改.元素的时候可以指定，</div><div class="line">        * 每次指定后，zset(表示有序集合)会自动重新按新的值调整顺序。可以理解为有列的表，一列存 value,一列存顺序。操作中key理解为zset的名字.</div><div class="line">        */</div><div class="line">        private static void AddSetSorted(RedisClient client)</div><div class="line">        &#123;</div><div class="line">            if (client == null) throw new ArgumentNullException(&quot;client&quot;);</div><div class="line"></div><div class="line">            client.AddItemToSortedSet(&quot;SetSorted1001&quot;, &quot;A&quot;);</div><div class="line">            client.AddItemToSortedSet(&quot;SetSorted1001&quot;, &quot;B&quot;);</div><div class="line">            client.AddItemToSortedSet(&quot;SetSorted1001&quot;, &quot;C&quot;);</div><div class="line">            var listSetSorted = client.GetAllItemsFromSortedSet(&quot;SetSorted1001&quot;);</div><div class="line">            foreach (var item in listSetSorted)</div><div class="line">            &#123;</div><div class="line">                Console.WriteLine(&quot;SetSorted有序集合&#123;0&#125;&quot;, item);</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            client.AddItemToSortedSet(&quot;SetSorted1002&quot;, &quot;A&quot;, 400);</div><div class="line">            client.AddItemToSortedSet(&quot;SetSorted1002&quot;, &quot;D&quot;, 200);</div><div class="line">            client.AddItemToSortedSet(&quot;SetSorted1002&quot;, &quot;B&quot;, 300);</div><div class="line"></div><div class="line">            // 升序获取第一个值:&quot;D&quot;</div><div class="line">            var list = client.GetRangeFromSortedSet(&quot;SetSorted1002&quot;, 0, 0);</div><div class="line"></div><div class="line">            foreach (var item in list)</div><div class="line">            &#123;</div><div class="line">                Console.WriteLine(item);</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            //降序获取第一个值:&quot;A&quot;</div><div class="line">            list = client.GetRangeFromSortedSetDesc(&quot;SetSorted1002&quot;, 0, 0);</div><div class="line"></div><div class="line">            foreach (var item in list)</div><div class="line">            &#123;</div><div class="line">                Console.WriteLine(item);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    class Person</div><div class="line">    &#123;</div><div class="line">        public string Name &#123; get; set; &#125;</div><div class="line">        public int Age &#123; get; set; &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如何要想查看自己操作是否成功，也可以像MongoDB那样下载一个客户端工具，这里推荐一款Redis Desktop Manager。这个工具就相当于SQL Server的客户端工具一样。通过这款工具可以查看Redis服务器中保存的数据和对应格式。其使用也非常简单，只需要添加一个Redis服务连接即可。该工具的下载地址为：<a href="http://pan.baidu.com/s/1sjp55Ul" target="_blank" rel="external">http://pan.baidu.com/s/1sjp55Ul</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag"># Redis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/24/Redis/9. Redis基本操作——String/" rel="next" title="Redis基本操作——String">
+                <i class="fa fa-chevron-left"></i> Redis基本操作——String
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/24/Redis/7. Redis list 之增删改查/" rel="prev" title="Redis list 之增删改查">
+                Redis list 之增删改查 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">695</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis快速入门"><span class="nav-number">1.</span> <span class="nav-text">Redis快速入门</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis的优点"><span class="nav-number">1.1.</span> <span class="nav-text">Redis的优点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis与其他键值存储系统"><span class="nav-number">1.2.</span> <span class="nav-text">Redis与其他键值存储系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Redis环境安装配置"><span class="nav-number">1.3.</span> <span class="nav-text">1.Redis环境安装配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#在Ubuntu上安装Redis"><span class="nav-number">1.3.1.</span> <span class="nav-text">在Ubuntu上安装Redis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动Redis"><span class="nav-number">1.3.2.</span> <span class="nav-text">启动Redis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检查Redis是否正在工作"><span class="nav-number">1.3.3.</span> <span class="nav-text">检查Redis是否正在工作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Redis配置"><span class="nav-number">1.4.</span> <span class="nav-text">2. Redis配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#语法"><span class="nav-number">1.4.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#示例"><span class="nav-number">1.4.2.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#示例-1"><span class="nav-number">1.4.3.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编辑配置"><span class="nav-number">1.4.4.</span> <span class="nav-text">编辑配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#语法-1"><span class="nav-number">1.4.5.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#示例-2"><span class="nav-number">1.4.6.</span> <span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Redis数据类型"><span class="nav-number">1.5.</span> <span class="nav-text">3.Redis数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串"><span class="nav-number">1.5.1.</span> <span class="nav-text">字符串</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#示例-3"><span class="nav-number">1.5.1.1.</span> <span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#散列-哈希"><span class="nav-number">1.5.2.</span> <span class="nav-text">散列/哈希</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#示例-4"><span class="nav-number">1.5.2.1.</span> <span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#列表"><span class="nav-number">1.5.3.</span> <span class="nav-text">列表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#示例-5"><span class="nav-number">1.5.3.1.</span> <span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集合"><span class="nav-number">1.5.4.</span> <span class="nav-text">集合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#示例-6"><span class="nav-number">1.5.4.1.</span> <span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可排序集合"><span class="nav-number">1.5.5.</span> <span class="nav-text">可排序集合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#示例-7"><span class="nav-number">1.5.5.1.</span> <span class="nav-text">示例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Redis命令"><span class="nav-number">1.6.</span> <span class="nav-text">4. Redis命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#语法-2"><span class="nav-number">1.6.1.</span> <span class="nav-text">语法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#示例-8"><span class="nav-number">1.6.1.1.</span> <span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在远程服务器上运行命令"><span class="nav-number">1.6.2.</span> <span class="nav-text">在远程服务器上运行命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-3"><span class="nav-number">1.6.2.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#示例-9"><span class="nav-number">1.6.2.2.</span> <span class="nav-text">示例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Redis键命令"><span class="nav-number">1.7.</span> <span class="nav-text">5. Redis键命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#语法-4"><span class="nav-number">1.7.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#示例-10"><span class="nav-number">1.7.2.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis键命令"><span class="nav-number">1.7.3.</span> <span class="nav-text">Redis键命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-Redis字符串"><span class="nav-number">1.8.</span> <span class="nav-text">6. Redis字符串</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#示例-11"><span class="nav-number">1.8.1.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis字符串命令"><span class="nav-number">1.8.2.</span> <span class="nav-text">Redis字符串命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-Redis哈希"><span class="nav-number">1.9.</span> <span class="nav-text">7. Redis哈希</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#示例-12"><span class="nav-number">1.9.1.</span> <span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-Redis列表"><span class="nav-number">1.10.</span> <span class="nav-text">8. Redis列表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#示例-13"><span class="nav-number">1.10.1.</span> <span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-Redis集合"><span class="nav-number">1.11.</span> <span class="nav-text">8. Redis集合</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#示例-14"><span class="nav-number">1.11.1.</span> <span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-Redis发送订阅"><span class="nav-number">1.12.</span> <span class="nav-text">9. Redis发送订阅</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#示例-15"><span class="nav-number">1.12.1.</span> <span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-Redis事务"><span class="nav-number">1.13.</span> <span class="nav-text">10. Redis事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#语法示例"><span class="nav-number">1.13.1.</span> <span class="nav-text">语法示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#示例-16"><span class="nav-number">1.13.2.</span> <span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-Redis脚本"><span class="nav-number">1.14.</span> <span class="nav-text">11. Redis脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#语法-5"><span class="nav-number">1.14.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#示例-17"><span class="nav-number">1.14.2.</span> <span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-Redis连接"><span class="nav-number">1.15.</span> <span class="nav-text">12. Redis连接</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#160-160-160-160-160-160-160-160-示例"><span class="nav-number">1.15.1.</span> <span class="nav-text">        示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis连接命令"><span class="nav-number">1.15.2.</span> <span class="nav-text">Redis连接命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13-Redis服务器"><span class="nav-number">1.16.</span> <span class="nav-text">13. Redis服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#示例-18"><span class="nav-number">1.16.1.</span> <span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-Redis备份"><span class="nav-number">1.17.</span> <span class="nav-text">14. Redis备份</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#示例-19"><span class="nav-number">1.17.1.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#语法-6"><span class="nav-number">1.17.2.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#示例-20"><span class="nav-number">1.17.3.</span> <span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-Redis客户端连接"><span class="nav-number">1.18.</span> <span class="nav-text">15. Redis客户端连接</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#最大客户数"><span class="nav-number">1.18.1.</span> <span class="nav-text">最大客户数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#示例-21"><span class="nav-number">1.18.2.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#客户端命令"><span class="nav-number">1.18.3.</span> <span class="nav-text">客户端命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#16-Redis管道"><span class="nav-number">1.19.</span> <span class="nav-text">16. Redis管道</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#管道的意义"><span class="nav-number">1.19.1.</span> <span class="nav-text">管道的意义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#示例-22"><span class="nav-number">1.19.2.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#管道的好处"><span class="nav-number">1.19.3.</span> <span class="nav-text">管道的好处</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#17-Redis分区"><span class="nav-number">1.20.</span> <span class="nav-text">17. Redis分区</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分区的优点"><span class="nav-number">1.20.1.</span> <span class="nav-text">分区的优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分区的缺点"><span class="nav-number">1.20.2.</span> <span class="nav-text">分区的缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分区类型"><span class="nav-number">1.20.3.</span> <span class="nav-text">分区类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#范围分区"><span class="nav-number">1.20.4.</span> <span class="nav-text">范围分区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#哈希分区"><span class="nav-number">1.20.5.</span> <span class="nav-text">哈希分区</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#18-Java连接Redis"><span class="nav-number">1.21.</span> <span class="nav-text">18. Java连接Redis</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">1.21.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java连接到Redis服务器"><span class="nav-number">1.21.2.</span> <span class="nav-text">Java连接到Redis服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-Java字符串示例"><span class="nav-number">1.21.3.</span> <span class="nav-text">Redis Java字符串示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-Java列表示例"><span class="nav-number">1.21.4.</span> <span class="nav-text">Redis Java列表示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-Java键示例"><span class="nav-number">1.21.5.</span> <span class="nav-text">Redis Java键示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#19-PHP连接Redis"><span class="nav-number">1.22.</span> <span class="nav-text">19. PHP连接Redis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-1"><span class="nav-number">1.23.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用连接到Redis服务器"><span class="nav-number">1.23.1.</span> <span class="nav-text">使用连接到Redis服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-PHP字符串示例"><span class="nav-number">1.23.2.</span> <span class="nav-text">Redis PHP字符串示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-php列表示例"><span class="nav-number">1.23.3.</span> <span class="nav-text">Redis php列表示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-php键示例"><span class="nav-number">1.23.4.</span> <span class="nav-text">Redis php键示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#20-C-连接Redis"><span class="nav-number">1.24.</span> <span class="nav-text">20. C#连接Redis</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/14/Nagios/3. nagios配置邮件告警/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/14/1. Linux 基础/22. parted 分区 GPT格式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -306,7 +306,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/14/Nagios/3. nagios配置邮件告警/" itemprop="url">nagios配置邮件告警</a></h1>
+                <a class="post-title-link" href="/2017/08/14/1. Linux 基础/22. parted 分区 GPT格式/" itemprop="url">parted 分区 GPT 格式</a></h1>
         
 
         <div class="post-meta">
@@ -318,7 +318,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-14T01:00:02+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-14T01:31:10+08:00">
                 2017-08-14
               </time>
             
@@ -355,12 +355,11 @@
       
         
           
-          nagios配置邮件告警&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;目前 nagios 只能在浏览器上查看各个服务的状态，当某个机器宕掉或者某个服务宕掉时，我们是不知道的，因为我们不可能一直盯着服务器看。这时候，就需要用到警告系统了，让它自动化，当发现问题时及时通知到我们。下面配置使用发邮件的方式来实现告警。
-&#160;&#160;&#160;
+          parted 分区 GPT 格式&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们讲的fdisk分区工具，它的分区格式为MBR，特点是，最多分4个主分区，磁盘大小不能超过2T。而GPT分区格式，突破了这些限制，它没有主分区、扩展分区、逻辑分区之分，在一块磁盘上最多可以分128个分区出来，支持大于2T的分区，最大卷可达18EB。 相信，随着存储级别的
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/14/Nagios/3. nagios配置邮件告警/#more" rel="contents">
+            <a class="btn" href="/2017/08/14/1. Linux 基础/22. parted 分区 GPT格式/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -406,7 +405,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/13/Cacti/2. cacti增加客户端监控/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/14/1. Linux 基础/26.增加磁盘的inode数/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -425,7 +424,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/13/Cacti/2. cacti增加客户端监控/" itemprop="url">cacti增加客户端监控</a></h1>
+                <a class="post-title-link" href="/2017/08/14/1. Linux 基础/26.增加磁盘的inode数/" itemprop="url">增加磁盘的inode数</a></h1>
         
 
         <div class="post-meta">
@@ -437,8 +436,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-13T00:11:20+08:00">
-                2017-08-13
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-14T01:31:10+08:00">
+                2017-08-14
               </time>
             
 
@@ -474,13 +473,15 @@
       
         
           
-          cacti增加客户端监控1.安装 snmp1[root@lnmp ~]# yum install -y net-snmp
-2.修改 snmp.conf1[root@lnmp ~]# vim /etc/snmp/snmpd.conf
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改 syslocation 以及 syscontact ，其中 sys
+          增加磁盘的inode数&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;inode这个词大多资料都是译为索引节点，在ext3文件系统，调整磁盘的inode number。这里只是调整inode number这个参数，如果想调整inode size或是blocksize等可以具体mkfs.ext3命令。
+
+卸载文件系统
+
+1# umount /dev/s
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/13/Cacti/2. cacti增加客户端监控/#more" rel="contents">
+            <a class="btn" href="/2017/08/14/1. Linux 基础/26.增加磁盘的inode数/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -526,7 +527,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/12/Cacti/5. cacti监控找到网卡的方法/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/14/1. Linux 基础/3. Linux 快捷键/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -545,7 +546,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/12/Cacti/5. cacti监控找到网卡的方法/" itemprop="url">cacti 监控找到网卡的方法</a></h1>
+                <a class="post-title-link" href="/2017/08/14/1. Linux 基础/3. Linux 快捷键/" itemprop="url">Linux 快捷键</a></h1>
         
 
         <div class="post-meta">
@@ -557,8 +558,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T23:22:29+08:00">
-                2017-08-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-14T01:31:10+08:00">
+                2017-08-14
               </time>
             
 
@@ -594,13 +595,13 @@
       
         
           
-          cacti 监控找到网卡的方法&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;只需要在客户机（要监控的机器）修改配置文件：
-1234[root@localhost ~]# vim /etc/snmp/snmpd.conf view    systemview    included   .1.3.6.1.2.1.1
-&#160;&#160;&#160
+          Linux 好用的快捷键&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;ctrl+a:光标移到行首。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;ctrl+b:光标左移一个字母
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;ctrl+c:杀死当前进程
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/12/Cacti/5. cacti监控找到网卡的方法/#more" rel="contents">
+            <a class="btn" href="/2017/08/14/1. Linux 基础/3. Linux 快捷键/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -646,7 +647,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/12/Cacti/1. cacti 安装/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/14/1. Linux 基础/25. Linux 文件系统百科/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -665,7 +666,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/12/Cacti/1. cacti 安装/" itemprop="url">cacti 安装</a></h1>
+                <a class="post-title-link" href="/2017/08/14/1. Linux 基础/25. Linux 文件系统百科/" itemprop="url">Linux 文件系统百科</a></h1>
         
 
         <div class="post-meta">
@@ -677,8 +678,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T23:22:29+08:00">
-                2017-08-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-14T01:31:10+08:00">
+                2017-08-14
               </time>
             
 
@@ -714,13 +715,12 @@
       
         
           
-          cacti 安装&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：cacti 需要 apache 和 php 的支持，在这里使用 yum 安装 lamp 环境。
-1.安装 epel1[root@cacti ~]# yum install -y epel-release
-2.安装 lamp1[root@cacti ~]# yum install -
+          Linux 文件系统百科&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Linux文件系统中的文件是数据的集合，文件系统不仅包含着文件中的数据而且还有文件系统的结构，所有Linux 用户和程序看到的文件、目录、软连接及文件保护信息等都存储在其中。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Linu
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/12/Cacti/1. cacti 安装/#more" rel="contents">
+            <a class="btn" href="/2017/08/14/1. Linux 基础/25. Linux 文件系统百科/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -766,7 +766,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/12/Cacti/4. cacti 有图无数据参数设定/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/14/1. Linux 基础/17. 系统和用户的环境变量配置文件/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -785,7 +785,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/12/Cacti/4. cacti 有图无数据参数设定/" itemprop="url">cacti 有图无数据参数设定</a></h1>
+                <a class="post-title-link" href="/2017/08/14/1. Linux 基础/17. 系统和用户的环境变量配置文件/" itemprop="url">系统和用户的环境变量配置文件</a></h1>
         
 
         <div class="post-meta">
@@ -797,8 +797,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T23:22:29+08:00">
-                2017-08-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-14T01:31:10+08:00">
+                2017-08-14
               </time>
             
 
@@ -834,12 +834,15 @@
       
         
           
-          cacti 有图无数据参数设定&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一切参数设定在客户端。（/etc/snmp/snmpd.conf）
-1234567891011#       sec.name  source          communitycom2sec notConfigUser  192.168.1.107(cacti主机的IP
+          系统和用户的环境变量配置文件&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;linux系统中，有很多系统的变量，这些变量被存在
+
+/etc/profile: 这个文件预设了几个重要的变量，例如 PATH , USER , LOGNAME , MAIL , INPUTRC , HOSTNAME , HISTSIZE , umake等等。
+
+/etc/b
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/12/Cacti/4. cacti 有图无数据参数设定/#more" rel="contents">
+            <a class="btn" href="/2017/08/14/1. Linux 基础/17. 系统和用户的环境变量配置文件/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -885,7 +888,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/12/Cacti/3. cacti 的错误/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/14/1. Linux 基础/19. tmpfs 是什么/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -904,7 +907,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/12/Cacti/3. cacti 的错误/" itemprop="url">cacti的错误</a></h1>
+                <a class="post-title-link" href="/2017/08/14/1. Linux 基础/19. tmpfs 是什么/" itemprop="url">tmpfs 是什么</a></h1>
         
 
         <div class="post-meta">
@@ -916,8 +919,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T23:22:29+08:00">
-                2017-08-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-14T01:31:10+08:00">
+                2017-08-14
               </time>
             
 
@@ -953,11 +956,12 @@
       
         
           
-          cacti 的 “FATAL: Cannot connect to MySQL server on ‘localhost’” 错误&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;FATAL: Cannot connect to MySQL server on ‘localhost’. Please make sure you have specifi
+          tmpfs 是什么&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们df 的时候会看到一行 
+12345[root@localhost ~]# dfFilesystem                   1K-blocks    Used Available Use% Mounted on/dev/mapper/VolGroup-lv_root 
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/12/Cacti/3. cacti 的错误/#more" rel="contents">
+            <a class="btn" href="/2017/08/14/1. Linux 基础/19. tmpfs 是什么/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1003,7 +1007,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/12/Nginx/36. nginx 代理多台机器导致用户登陆异常，长连接(会话保持)解决问题/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/14/1. Linux 基础/2. Linux 安装/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1022,7 +1026,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/12/Nginx/36. nginx 代理多台机器导致用户登陆异常，长连接(会话保持)解决问题/" itemprop="url">nginx 代理多台机器导致用户登陆异常，长连接(会话保持)解决问题</a></h1>
+                <a class="post-title-link" href="/2017/08/14/1. Linux 基础/2. Linux 安装/" itemprop="url">安装 CentOS</a></h1>
         
 
         <div class="post-meta">
@@ -1034,8 +1038,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T02:13:05+08:00">
-                2017-08-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-14T01:31:10+08:00">
+                2017-08-14
               </time>
             
 
@@ -1071,12 +1075,11 @@
       
         
           
-          nginx 代理多台机器导致用户登陆异常，长连接(会话保持)解决问题&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;网站使用程序 discuzx3  访问都正常，只有用户登陆存在异常，具体的情况是这样的：
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用户登陆后，会马上显示未登陆，然后刷新一下或者多下
+          安装 CentOS&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;CentOS（Community Enterprise Operating System，中文意思是：社区企业操作系统）是Linux发行版之一，它是来自于Red Hat Enterprise Linux依照开放源代码规定释出的源代码所编译而成。由于出自同样的源代码，因此有些要求高度稳定
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/12/Nginx/36. nginx 代理多台机器导致用户登陆异常，长连接(会话保持)解决问题/#more" rel="contents">
+            <a class="btn" href="/2017/08/14/1. Linux 基础/2. Linux 安装/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1122,7 +1125,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/12/Nginx/35. Nginx负载均衡算法分析/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/14/1. Linux 基础/18. Linux 的文件系统/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1141,7 +1144,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/12/Nginx/35. Nginx负载均衡算法分析/" itemprop="url">Nginx负载均衡算法分析</a></h1>
+                <a class="post-title-link" href="/2017/08/14/1. Linux 基础/18. Linux 的文件系统/" itemprop="url">Linux 的文件系统</a></h1>
         
 
         <div class="post-meta">
@@ -1153,8 +1156,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T02:13:05+08:00">
-                2017-08-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-14T01:31:10+08:00">
+                2017-08-14
               </time>
             
 
@@ -1190,11 +1193,11 @@
       
         
           
-          Nginx负载均衡算法分析&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;随着互联网信息的爆炸性增长，负载均衡（load balance）已经不再是一个很陌生的话题，顾名思义，负载均衡即是将负载分摊到不同的服务单元，既保证服务的可用性，又保证响应足够快，给用户很好的体验。快速增长的访问量和数据流量催生了各式各样的负载均衡产品，很多专业的负载均衡硬件提
+          Linux 的文件系统&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;搞计算机的应该都知道windows的系统格式化硬盘时会指定格式，fat 或者 ntfs。而 linux的文件系统格式为Ext3，或者Ext4 。早期的linux使用Ext2格式，目前的linux都使 用了Ext3, 而CentOS6已经使用了Ext4. Ext2文件系统虽然是高效稳
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/12/Nginx/35. Nginx负载均衡算法分析/#more" rel="contents">
+            <a class="btn" href="/2017/08/14/1. Linux 基础/18. Linux 的文件系统/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1240,7 +1243,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/12/Nginx/34. Nginx的代理/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/14/1. Linux 基础/15. Linux 三个时间属性/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1259,7 +1262,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/12/Nginx/34. Nginx的代理/" itemprop="url">Nginx的代理</a></h1>
+                <a class="post-title-link" href="/2017/08/14/1. Linux 基础/15. Linux 三个时间属性/" itemprop="url">Linux 文件的三个时间属性</a></h1>
         
 
         <div class="post-meta">
@@ -1271,8 +1274,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T02:13:05+08:00">
-                2017-08-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-14T01:31:10+08:00">
+                2017-08-14
               </time>
             
 
@@ -1308,11 +1311,13 @@
       
         
           
-          Nginx的代理12345678910111213141516171819202122232425262728293031323334353637upstream bbs.aaa.cn&#123;        server 1.2.3.1:80;        server 1.2.3.4:80;    &#125;    server &#123;        listen 80;     
+          Linux 文件的三个时间属性&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;平时通常同find命令找一些文件时会用到这些参数。那么这三个参数到底有啥区别呢。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;文件的 Access time，atime 是在读取文件或者执行文件时更改的。
+&#160;&#
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/12/Nginx/34. Nginx的代理/#more" rel="contents">
+            <a class="btn" href="/2017/08/14/1. Linux 基础/15. Linux 三个时间属性/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1358,7 +1363,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/12/Nginx/33. Nginx、LVS及HAProxy负载均衡软件的优缺点详解/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/14/1. Linux 基础/16. Linux 环境变量之“PS1”/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1377,7 +1382,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/12/Nginx/33. Nginx、LVS及HAProxy负载均衡软件的优缺点详解/" itemprop="url">Nginx、LVS及HAProxy负载均衡软件的优缺点详解</a></h1>
+                <a class="post-title-link" href="/2017/08/14/1. Linux 基础/16. Linux 环境变量之“PS1”/" itemprop="url">Linux 环境变量之“PS1”</a></h1>
         
 
         <div class="post-meta">
@@ -1389,8 +1394,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T02:13:05+08:00">
-                2017-08-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-14T01:31:10+08:00">
+                2017-08-14
               </time>
             
 
@@ -1426,12 +1431,15 @@
       
         
           
-          Nginx、LVS及HAProxy负载均衡软件的优缺点详解&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Nginx/LVS/HAProxy是目前使用最广泛的三种负载均衡软件，本人都在多个项目中实施过，参考了一些资料，结合自己的一些使用经验，总结一下。
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一
+          Linux 环境变量之“PS1”&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PS1（是数字1而不是字母l），每个版本bash的PS1变量内的特殊符号可能有些小的差异，你可以先man bash 一下。下面是FC4环境下默认的特殊符号所代表的意义：
+
+\d   ：代表日期，格式为weekday month date，例如：”Mon Aug 1”
+
+\
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/12/Nginx/33. Nginx、LVS及HAProxy负载均衡软件的优缺点详解/#more" rel="contents">
+            <a class="btn" href="/2017/08/14/1. Linux 基础/16. Linux 环境变量之“PS1”/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1472,7 +1480,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/24/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><span class="page-number current">25</span><a class="page-number" href="/page/26/">26</a><span class="space">&hellip;</span><a class="page-number" href="/page/68/">68</a><a class="extend next" rel="next" href="/page/26/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/24/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><span class="page-number current">25</span><a class="page-number" href="/page/26/">26</a><span class="space">&hellip;</span><a class="page-number" href="/page/70/">70</a><a class="extend next" rel="next" href="/page/26/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1517,7 +1525,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">675</span>
+                <span class="site-state-item-count">695</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1530,7 +1538,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-count">36</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

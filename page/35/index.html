@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Tomcat/2. tomcat 安装/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/19. Apache 用户认证/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -306,7 +306,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Tomcat/2. tomcat 安装/" itemprop="url">tomcat 安装</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/19. Apache 用户认证/" itemprop="url">Apache 用户认证</a></h1>
         
 
         <div class="post-meta">
@@ -355,13 +355,12 @@
       
         
           
-          tomcat 安装&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;tomcat 官网
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下载
-12[root@192 ~]# cd /usr/local/src[root@192 src]# wget https://mirrors.tuna.tsinghu
+          Apache 用户认证&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有时候，需要给一些特殊的访问设置一个用户认证机制，增加安全。为了使 WEB 服务器更安全，需要将一些特定用户才能访问的目录设置用户认证，例如：网站后台登陆地址 ，可以再设置一层用户认证。
+1[root@lamp ~]# vim /usr/local/apache2/conf/ext
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Tomcat/2. tomcat 安装/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/19. Apache 用户认证/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -407,7 +406,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Tomcat/10. tomcat常用功能的配置方法/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/17. 如何使用apache的 work模式还是 prefork 模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -426,7 +425,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Tomcat/10. tomcat常用功能的配置方法/" itemprop="url">tomcat常用功能的配置方法</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/17. 如何使用apache的 work模式还是 prefork 模式/" itemprop="url">如何使用apache的 work模式还是 prefork 模式</a></h1>
         
 
         <div class="post-meta">
@@ -475,13 +474,12 @@
       
         
           
-          tomcat常用功能的配置方法启动内存参数的配置&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;tomcat/bin/catalina.bat 如果是linux 就是 catalina.sh
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在rem 的后面增加如下参数
-1set JAVA_OPTS= -
+          如何使用apache的 work模式还是 prefork 模式&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意：2.4之前版本默认为prefork， 2.4已经变为event模式。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在编译apache的时候，有一个参数叫做  --with-mpm=..
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Tomcat/10. tomcat常用功能的配置方法/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/17. 如何使用apache的 work模式还是 prefork 模式/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -527,7 +525,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Squid/9. squid代理加用户认证/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/15. apache的两种工作模式详解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -546,7 +544,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Squid/9. squid代理加用户认证/" itemprop="url">squid代理加用户认证</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/15. apache的两种工作模式详解/" itemprop="url">apache的两种工作模式详解</a></h1>
         
 
         <div class="post-meta">
@@ -595,12 +593,11 @@
       
         
           
-          squid代理加用户认证&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用authentication helpers添加身份验证
-有如下几种认证方式 ：12345678=&gt; NCSA: Uses an NCSA-style username and password file.=&gt; LDAP: Uses the Lightweight 
+          apache的两种工作模式详解1、prefork.c模块(一个非线程型的、预派生的MPM)&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;prefork MPM 使用多个子进程，每个子进程只有一个线程。每个进程在某个确定的时间只能维持一个连接。在大多数平台上，Prefork MPM在效率上要比Worker MPM要高，但是内存使用大得多。prefor
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Squid/9. squid代理加用户认证/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/15. apache的两种工作模式详解/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -646,7 +643,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Squid/7. squid 日志不记录图片、js、css等静态文件/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/16. mod_usertrack.so 的扩展安装以及使用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -665,7 +662,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Squid/7. squid 日志不记录图片、js、css等静态文件/" itemprop="url">squid 日志不记录图片、js、css等静态文件</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/16. mod_usertrack.so 的扩展安装以及使用/" itemprop="url">mod_usertrack.so 的扩展安装以及使用</a></h1>
         
 
         <div class="post-meta">
@@ -714,12 +711,11 @@
       
         
           
-          squid 日志不记录图片、js、css等静态文件&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在squid.conf中加入：
-12acl nolog urlpath_regex -i \.css \.js \.swf \.jpg \.gif \.png \.jpegaccess_log /var/log/squid/access.log comm
+          mod_usertrack.so 的扩展安装以及使用&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mod_usertrack.so 是在用户首次来到当前网站的时候给用户种下一个唯一的cookie，这个cookie是用户首次来当前网站的IP地址加上一个随机字符串组成的。用这个IP加随机字符串来标识用户的唯一性。这样就可以区分同一个IP下的不同用户了。
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Squid/7. squid 日志不记录图片、js、css等静态文件/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/16. mod_usertrack.so 的扩展安装以及使用/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -765,7 +761,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Squid/8. squid 透明代理配置/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/12. apache 的动态和静态/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -784,7 +780,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Squid/8. squid 透明代理配置/" itemprop="url">squid 透明代理配置</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/12. apache 的动态和静态/" itemprop="url">apache 的动态和静态</a></h1>
         
 
         <div class="post-meta">
@@ -833,15 +829,12 @@
       
         
           
-          squid 透明代理配置什么是透明代理？&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;透明代理的意思是客户端根本不需要知道有代理服务器的存在，它改变你的request fields（报文），并会传送真实IP，多用于路由器的NAT转发中。
-透明代理的原理：
-假设A为内部网络客户机
-B为外部网络服务器，B提供的服务为httpd服务，监听端口为80
-C为
+          apache 的动态和静态&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关于apache的动态与静态编译的理解，引用某人的比喻如下：
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;好比有两个人a和m，a代表apache,m代表module，要想让a使用m的东西，一个方法是把m的东西都放到a那里去，a
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Squid/8. squid 透明代理配置/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/12. apache 的动态和静态/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -887,7 +880,7 @@ C为
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Tomcat/1. tomcat 中 JDK 安装/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/14. apache的扩展模块安装/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -906,7 +899,7 @@ C为
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Tomcat/1. tomcat 中 JDK 安装/" itemprop="url">tomcat 中 JDK 安装</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/14. apache的扩展模块安装/" itemprop="url">apache的扩展模块安装</a></h1>
         
 
         <div class="post-meta">
@@ -955,11 +948,13 @@ C为
       
         
           
-          tomcat 中 JDK 安装&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;目前很多网站使用 jsp 的程序编写，所以解析 jsp 的程序就必须要有相关的软件来完成。 tomcat 就是用来解析 jsp 程序的一个软件，tomcat 是 apache 软件基金会（apache software foundation）的jakarta 项目中的一个核
+          apache的扩展模块安装&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个用到了apache的扩展工具  apxs
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在使用这个功能之前，请先确认是否已经加载了 mod_so 模块，方法是：
+1/usr/local/apache2/bin/httpd -
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Tomcat/1. tomcat 中 JDK 安装/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/14. apache的扩展模块安装/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1005,7 +1000,7 @@ C为
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/正则表达式/4. 正则表达式-运算符优先级/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/1. Apache编译安装/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1024,7 +1019,7 @@ C为
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/正则表达式/4. 正则表达式-运算符优先级/" itemprop="url">正则表达式-运算符优先级</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/1. Apache编译安装/" itemprop="url">Apache编译安装</a></h1>
         
 
         <div class="post-meta">
@@ -1073,12 +1068,12 @@ C为
       
         
           
-          正则表达式-运算符优先级&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;正则表达式从左到右进行计算，并遵循优先级顺序，这与算数表达式非常类似。
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;相同优先级的从左到右进行运算，不同优先级的运算先高后低。下表从最高到最低说明了各种正则表达式运算符的优先级顺序：
+          Apache编译安装&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Apache也需要到官网下载合适的版本，目前使用较多的版本为2.0或者2.2建议下载2.2版本。Apache官网下载地址 实际上，我们所谓的 apache ，真正的名字叫 httpd 。
+1.下载12[root@localhost mysql]# cd /usr/local/src/
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/正则表达式/4. 正则表达式-运算符优先级/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/1. Apache编译安装/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1124,7 +1119,7 @@ C为
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/正则表达式/2. 正则表达式-语法/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/13. apache的server status 功能/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1143,7 +1138,7 @@ C为
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/正则表达式/2. 正则表达式-语法/" itemprop="url">正则表达式-语法</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/13. apache的server status 功能/" itemprop="url">apache的server status 功能</a></h1>
         
 
         <div class="post-meta">
@@ -1192,12 +1187,13 @@ C为
       
         
           
-          正则表达式-语法&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;正则表达式（regular expression）描述了一种字符串匹配的模式（pattern），可以 用来检查一个串是否含有某种子串。&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;将匹配的子串替换或者从某个串中取出符合某个条件的子串等。
-
+          apache的server status 功能&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先要查看，你的apache是否有相应的模块
+1ls  /usr/local/apache2/modules/mod_status.so
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果没有，请重新编译你的
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/正则表达式/2. 正则表达式-语法/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/13. apache的server status 功能/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1243,7 +1239,7 @@ C为
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/正则表达式/5. 正则表达式-匹配规则/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/29. apache 日志切割/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1262,7 +1258,7 @@ C为
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/正则表达式/5. 正则表达式-匹配规则/" itemprop="url">正则表达式-匹配规则</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/29. apache 日志切割/" itemprop="url">apache 日志切割</a></h1>
         
 
         <div class="post-meta">
@@ -1311,13 +1307,11 @@ C为
       
         
           
-          正则表达式-匹配规则基本模式匹配&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一切从最基本的开始。模式，是正规表达式最基本的元素，它们是一组描述字符串特征的字符。模式可以很简单，由普通的字符串组成，也可以非常复杂，往往用特殊的字符表示一个范围内的字符、重复出现，或表示上下文。例如：
-1^once
-&#160;&#160;&#160;&#160;&#
+          apache 日志切割&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里的日志指的是访问日志，没访问一次网站，就会记录若干条日志。前提是已经配置了日志，日志如果不去管理，时间长了日志文件会越来越大，这个时候这个日志是不可能 cat、less、 以及 vim 的，head 或 tail 还可以。如何避免产生这么大的日志文件？其实 apache 有相关
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/正则表达式/5. 正则表达式-匹配规则/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/29. apache 日志切割/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1363,7 +1357,7 @@ C为
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Tomcat/5. 四大Java EE容器(Tomcat、JBoss、Resin、Glassfish)之简单比较/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/28. apache 的域名重定向/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1382,7 +1376,7 @@ C为
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Tomcat/5. 四大Java EE容器(Tomcat、JBoss、Resin、Glassfish)之简单比较/" itemprop="url">四大Java EE容器(Tomcat、JBoss、Resin、Glassfish)之简单比较</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/28. apache 的域名重定向/" itemprop="url">apache 的域名重定向</a></h1>
         
 
         <div class="post-meta">
@@ -1431,11 +1425,13 @@ C为
       
         
           
-          四大Java EE容器(Tomcat、JBoss、Resin、Glassfish)之简单比较&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;现在流行的Java EE容器有很多：Tomcat、JBoss、Resin、Glassfish等等。下面对这四种Java EE容器进行了一番简单的比对。 1. Tomcat是Apache鼎力支持的Java Web应
+          apache 的域名重定向&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需求：要把访问域名 www.domain1.com 的域名转发到 www.domain2.com 上
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;实现：
+&#160;&#160;&#160;&#160;&#160;&#160;
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Tomcat/5. 四大Java EE容器(Tomcat、JBoss、Resin、Glassfish)之简单比较/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/28. apache 的域名重定向/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1476,7 +1472,7 @@ C为
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/34/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><span class="page-number current">35</span><a class="page-number" href="/page/36/">36</a><span class="space">&hellip;</span><a class="page-number" href="/page/68/">68</a><a class="extend next" rel="next" href="/page/36/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/34/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><span class="page-number current">35</span><a class="page-number" href="/page/36/">36</a><span class="space">&hellip;</span><a class="page-number" href="/page/70/">70</a><a class="extend next" rel="next" href="/page/36/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1521,7 +1517,7 @@ C为
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">675</span>
+                <span class="site-state-item-count">695</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1534,7 +1530,7 @@ C为
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-count">36</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

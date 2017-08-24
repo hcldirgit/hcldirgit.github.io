@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Resin/1. resin安装与配置/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Shell 练习/shell 练习2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -306,7 +306,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Resin/1. resin安装与配置/" itemprop="url">resin安装与配置</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Shell 练习/shell 练习2/" itemprop="url">shell 练习2</a></h1>
         
 
         <div class="post-meta">
@@ -355,13 +355,12 @@
       
         
           
-          resin安装与配置&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;resin 同样也需要 jdk 的支持，所以第一步也是安装 jdk 。
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;resin官方网站 ，它分两个版本，resin 是开源的，另外一个 resinpro 为商业版本。
-123[root
-          ...
+          抓包 ip 访问日志 /var/log/1.log 然后进行系统分析：要求统计出每个 IP 的访问量有多少？提示，先 awk 过滤出 ip ，然后进行排序，统计重复数
+12#!/bin/bashawk '&#123;print $1&#125;' /var/log/1.log |sort -n|uniq -c|sort-rn
+          
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Resin/1. resin安装与配置/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Shell 练习/shell 练习2/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -407,7 +406,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Php/9. php.ini 配置详解/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Samba/5. samba中文乱码的问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -426,7 +425,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Php/9. php.ini 配置详解/" itemprop="url">php.ini 配置详解</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Samba/5. samba中文乱码的问题/" itemprop="url">samba中文乱码的问题</a></h1>
         
 
         <div class="post-meta">
@@ -475,13 +474,15 @@
       
         
           
-          php.ini 配置详解&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个文件必须命名为’’php.ini’’并放置在httpd.conf中的PHPIniDir指令指定的目录中。
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;最新版本的php.ini可以在下面两个位置查看：
-http://cvs.p
+          samba中文乱码的问题&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用SSH登陆远程的linux服务器，用win浏览运行samba的linux服务器中有中文名的文件夹的时候，看到里面的中文文件名都是乱码，而且想用shell来设置一下权限也设置不了。
+
+打开/etc/sysconfig/i18n
+
+&#160;&#160;&#160;&#160;&
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Php/9. php.ini 配置详解/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Samba/5. samba中文乱码的问题/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -527,7 +528,7 @@ http://cvs.p
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Php/8. php.ini 文件配置/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Shell 练习/shell 练习1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -546,7 +547,7 @@ http://cvs.p
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Php/8. php.ini 文件配置/" itemprop="url">php.ini 文件配置</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Shell 练习/shell 练习1/" itemprop="url">shell 练习1</a></h1>
         
 
         <div class="post-meta">
@@ -595,12 +596,13 @@ http://cvs.p
       
         
           
-          php.ini 文件配置&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;前面已经拷贝了一个 php.ini 文件到 /usr/local/php/etc 目录下面，这是已经知道 php.ini 所在路径在哪里，但有时候并不知道 php.ini 所在路径，这时候就需要命令来查一查在哪里
-1[root@lamp ~]# /usr/local/php/bi
+          请按照这样的日期格式（xxxx-xx-xx）每日生成一个文件，例如今天生成的文件为2013-09-23.log， 并且把磁盘的使用情况写到到这个文件中
+1234#!/bin/bashd=`date +%F`logfile=$d.logdf -h &gt; $d.log
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后使用 crontab -e 把
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Php/8. php.ini 文件配置/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Shell 练习/shell 练习1/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -646,7 +648,7 @@ http://cvs.p
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Php/7. 常见apache php_admin_value php_admin_flag 设置/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Shell 练习/shell 练习10/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -665,7 +667,7 @@ http://cvs.p
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Php/7. 常见apache php_admin_value php_admin_flag 设置/" itemprop="url">常见apache php_admin_value php_admin_flag 设置</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Shell 练习/shell 练习10/" itemprop="url">shell 练习10</a></h1>
         
 
         <div class="post-meta">
@@ -714,11 +716,12 @@ http://cvs.p
       
         
           
-          常见apache php_admin_value php_admin_flag 设置12345678910111213141516php_admin_value open_basedir /data/123:/tmp/php_admin_flag engine onphp_admin_flag log_errors onphp_admin_value max_execution_time 180p
+          web服务器上有个目录，它的结构是这样的，首先有256个一级子目录和一个特殊目录，另外这256个一级子目录下还有256个二级子目录（特殊目录除外）。在这些二级子目录下有很多小文件，而且是每时每刻都会生成很多个。 虽然文件不大，但是时间长了，逐渐发现该分区的下inode快被占用满了。 所以请写一个小脚本，实现每天删除两天前的小文件，注意忽略那个特殊的一级子目录default。
+目录： /data/w
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Php/7. 常见apache php_admin_value php_admin_flag 设置/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Shell 练习/shell 练习10/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -764,7 +767,7 @@ http://cvs.p
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Php/6. LAMP测试 php 解析/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Shell 练习/shell 练习18/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -783,7 +786,7 @@ http://cvs.p
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Php/6. LAMP测试 php 解析/" itemprop="url">LAMP测试 php 解析</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Shell 练习/shell 练习18/" itemprop="url">shell 练习18</a></h1>
         
 
         <div class="post-meta">
@@ -832,15 +835,19 @@ http://cvs.p
       
         
           
-          测试 php 解析&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;测试是否正确解析 php ：
-1vim /usr/local/apache2/htdocs/1.php
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;写入：
-123&lt;?php echo "php解析正常";?&gt;
-&#160;
+          有一天，你发现你所管理的服务器磁盘某个分区马上要满了，那你如何做呢？
+提示：
+
+查看和统计各个分区使用情况，把占用空间大的目录以及文件找出来，看看是不是有一些老的没有用的文件占用了空间，比如有日志，那你可以考虑写一个任务计划每天定点删除一个月之前的；
+
+如果不能删除，那么就要想办法添加磁盘，假如你已经成功添加磁盘，请问，你如何分区，然后 如何解决某个分区快满的问题？
+
+
+1234567891011
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Php/6. LAMP测试 php 解析/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Shell 练习/shell 练习18/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -886,7 +893,7 @@ http://cvs.p
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Php/5. 一些PHP性能的优化/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Samba/6. 让Samba支持软连接/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -905,7 +912,7 @@ http://cvs.p
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Php/5. 一些PHP性能的优化/" itemprop="url">一些PHP性能的优化</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Samba/6. 让Samba支持软连接/" itemprop="url">让Samba支持软连接</a></h1>
         
 
         <div class="post-meta">
@@ -954,13 +961,12 @@ http://cvs.p
       
         
           
-          一些PHP性能的优化&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PHP优化对于PHP的优化主要是对php.ini中的相关主要参数进行合理调整和设置，以下我们就来看看php.ini中的一些对性能影响较大的参数应该如何设置。
-1vim /etc/php.ini
-PHP函数禁用找到：&#160;&#160;&#160;&#160;&#160;&#160
+          让Samba支持软连接&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;家里的系统由centos6换成linuxmint(实在是好用才换)了， 重新配置好samba后，发现里面的一个软链接到pt下载目录的目录不能访问。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;测试半天，chcon， chmod， 
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Php/5. 一些PHP性能的优化/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Samba/6. 让Samba支持软连接/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1006,7 +1012,7 @@ PHP函数禁用找到：&#160;&#160;&#160;&#160;&#160;&#160
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Php/4. 下载小知识/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Shell 练习/shell 练习19/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1025,7 +1031,7 @@ PHP函数禁用找到：&#160;&#160;&#160;&#160;&#160;&#160
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Php/4. 下载小知识/" itemprop="url">下载小知识</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Shell 练习/shell 练习19/" itemprop="url">shell 练习19</a></h1>
         
 
         <div class="post-meta">
@@ -1074,13 +1080,15 @@ PHP函数禁用找到：&#160;&#160;&#160;&#160;&#160;&#160
       
         
           
-          下载小知识&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在官网下载的源码包都提供一个md5校验值，比如 
-12PHP 5.3.27 (tar.bz2) [11,165Kb] - 11 Jul 2013  md5: 25ae23a5b9615fe8d33de5b63e1bb788
-&#160;&#160;&#160;&#160;&#160;&#160
+          请详细查看如下几个数字的规律，并使用shell脚本输出后面的十个数字。
+10 31 53 77  105 141 …….
+试题解析：
+我想大多数人都会去比较这些数字的差值：
+10&#160;&#160;31&#160;&#160;53&#160;&#160;77&#160;&#160;105&#160;&#160;141&#160;&#160;21&#160;&#160;&#160;22&#160
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Php/4. 下载小知识/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Shell 练习/shell 练习19/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1126,7 +1134,7 @@ PHP函数禁用找到：&#160;&#160;&#160;&#160;&#160;&#160
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Php/3. 通过http上传大文件超时的问题/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Samba/4. samba同时用匿名和用户登录/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1145,7 +1153,7 @@ PHP函数禁用找到：&#160;&#160;&#160;&#160;&#160;&#160
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Php/3. 通过http上传大文件超时的问题/" itemprop="url">通过http上传大文件超时的问题</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Samba/4. samba同时用匿名和用户登录/" itemprop="url">samba同时用匿名和用户登录</a></h1>
         
 
         <div class="post-meta">
@@ -1194,19 +1202,12 @@ PHP函数禁用找到：&#160;&#160;&#160;&#160;&#160;&#160
       
         
           
-          通过http上传大文件超时的问题&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;架构是 LAMP ， 上传文件的操作，并没有连接mysql，但是却使用了php资源，所以修改设置，不仅要设置apache还要设置php.ini 
-
-apache httpd.conf 的设置
-
-
-Timeout 600  这个可以设置成 3600, 单位是s 
-
-
-php
+          samba同时用匿名和用户登录&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关于同时使用匿名和用户登录，配置文件如下，已经验证成功：
+1234567891011121314151617181920212223242526272829303132333435[global]        workgroup = WORKGROUP        se
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Php/3. 通过http上传大文件超时的问题/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Samba/4. samba同时用匿名和用户登录/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1252,7 +1253,7 @@ php
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Php/2. CentOS 6 编译安装php 5.4 5.5（lamp模式）/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Shell 练习/shell 练习14/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1271,7 +1272,7 @@ php
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Php/2. CentOS 6 编译安装php 5.4 5.5（lamp模式）/" itemprop="url">CentOS 6 编译安装php 5.4 5.5（lamp模式）</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Shell 练习/shell 练习14/" itemprop="url">shell 练习14</a></h1>
         
 
         <div class="post-meta">
@@ -1320,19 +1321,12 @@ php
       
         
           
-          CentOS 6 编译安装php 5.4 5.5（lamp模式）
-下载php5.4
-
-1wget http://cn2.php.net/distributions/php-5.4.36.tar.bz2
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;5.5下载地址
-
-解压
-
-123tar jxvf php-5.4.36.tar.bz2 cd php-
+          写一个脚本实现如下功能：       输入一个数字，然后运行对应的一个命令。显示命令如下：*cmd meau**  1—date 2–ls 3–who 4–pwd当输入1时，会运行date, 输入2时运行ls, 依此类推。
+1234567891011121314151617181920#!/bin/bashecho "*cmd meau**  1--date  2--ls  3--who  4--
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Php/2. CentOS 6 编译安装php 5.4 5.5（lamp模式）/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Shell 练习/shell 练习14/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1378,7 +1372,7 @@ php
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Php/14. php-fpm配置文件/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Samba/3. samba 用户密码的几种方式对比/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1397,7 +1391,7 @@ php
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Php/14. php-fpm配置文件/" itemprop="url">php-fpm配置文件</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Samba/3. samba 用户密码的几种方式对比/" itemprop="url">samba 用户密码的几种方式对比</a></h1>
         
 
         <div class="post-meta">
@@ -1446,12 +1440,12 @@ php
       
         
           
-          php-fpm配置文件&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;之前给出了 php-fpm.conf 的内容，下面给出一个模版，配置如下
-12345678910111213141516[global]pid = /usr/local/php/var/run/php-fpm.piderror_log = /usr/local/php/var/lo
+          samba 用户密码的几种方式对比&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;passdb backend就是用户后台的意思。目前有三种后台：smbpasswd、tdbsam和ldapsam。sam应该是security account manager（安全账户管理）的简写。
+1.smbpasswd1passdb backend = smbpas
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Php/14. php-fpm配置文件/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Samba/3. samba 用户密码的几种方式对比/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1492,7 +1486,7 @@ php
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/39/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/39/">39</a><span class="page-number current">40</span><a class="page-number" href="/page/41/">41</a><span class="space">&hellip;</span><a class="page-number" href="/page/68/">68</a><a class="extend next" rel="next" href="/page/41/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/39/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/39/">39</a><span class="page-number current">40</span><a class="page-number" href="/page/41/">41</a><span class="space">&hellip;</span><a class="page-number" href="/page/70/">70</a><a class="extend next" rel="next" href="/page/41/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1537,7 +1531,7 @@ php
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">675</span>
+                <span class="site-state-item-count">695</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1550,7 +1544,7 @@ php
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-count">36</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

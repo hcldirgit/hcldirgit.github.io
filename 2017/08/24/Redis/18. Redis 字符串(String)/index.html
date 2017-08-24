@@ -1,0 +1,906 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Redis," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Redis 字符串(String)&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Redis 字符串数据类型的相关命令用于管理 redis 字符串值，基本语法如下： 语法1redis 127.0.0.1:6379&amp;gt; COMMAND KEY_NAME 实例1234redis 127.0.0.1:6379&amp;gt; SET runoobkey red">
+<meta name="keywords" content="Redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis 字符串(String)">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/08/24/Redis/18. Redis 字符串(String)/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="Redis 字符串(String)&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Redis 字符串数据类型的相关命令用于管理 redis 字符串值，基本语法如下： 语法1redis 127.0.0.1:6379&amp;gt; COMMAND KEY_NAME 实例1234redis 127.0.0.1:6379&amp;gt; SET runoobkey red">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-08-23T17:22:43.693Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis 字符串(String)">
+<meta name="twitter:description" content="Redis 字符串(String)&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Redis 字符串数据类型的相关命令用于管理 redis 字符串值，基本语法如下： 语法1redis 127.0.0.1:6379&amp;gt; COMMAND KEY_NAME 实例1234redis 127.0.0.1:6379&amp;gt; SET runoobkey red">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/08/24/Redis/18. Redis 字符串(String)/"/>
+
+
+
+
+
+  <title>Redis 字符串(String) | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/24/Redis/18. Redis 字符串(String)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Redis 字符串(String)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-24T23:52:05+08:00">
+                2017-08-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Redis-字符串-String"><a href="#Redis-字符串-String" class="headerlink" title="Redis 字符串(String)"></a>Redis 字符串(String)</h1><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis 字符串数据类型的相关命令用于管理 redis 字符串值，基本语法如下：</p>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; COMMAND KEY_NAME</div></pre></td></tr></table></figure>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; SET runoobkey redis</div><div class="line">OK</div><div class="line">redis 127.0.0.1:6379&gt; GET runoobkey</div><div class="line"><span class="string">"redis"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在以上实例中我们使用了 <strong>SET</strong> 和 <strong>GET</strong> 命令，键为 <strong>runoobkey</strong>。</p>
+<h2 id="Redis-字符串命令"><a href="#Redis-字符串命令" class="headerlink" title="Redis 字符串命令"></a>Redis 字符串命令</h2><h3 id="1-Redis-SET-命令"><a href="#1-Redis-SET-命令" class="headerlink" title="1.Redis SET 命令"></a>1.Redis SET 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>SET key value</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>设置指定 key 的值</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis SET 命令用于设置给定 key 的值。如果 key 已经存储其他值， SET 就覆写旧值，且无视类型。</p>
+<h4 id="语法-1"><a href="#语法-1" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis SET 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; SET KEY_NAME VALUE</div></pre></td></tr></table></figure>
+<h4 id="可用版本"><a href="#可用版本" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.0.0</p>
+<h4 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在 Redis 2.6.12 以前版本， SET 命令总是返回 OK 。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从 Redis 2.6.12 版本开始， SET 在设置操作成功完成时，才返回 OK 。</p>
+<h4 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先，我们在 redis 中创建一个 key 并设置值。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 对不存在的键进行设置</span></div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; SET key <span class="string">"value"</span></div><div class="line">OK</div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; GET key</div><div class="line"><span class="string">"value"</span></div><div class="line"> </div><div class="line"> </div><div class="line"><span class="comment"># 对已存在的键进行设置</span></div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; SET key <span class="string">"new-value"</span></div><div class="line">OK</div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; GET key</div><div class="line"><span class="string">"new-value"</span></div></pre></td></tr></table></figure>
+<h3 id="2-Redis-Get-命令"><a href="#2-Redis-Get-命令" class="headerlink" title="2.Redis Get 命令"></a>2.Redis Get 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>GET key</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>获取指定 key 的值。</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Get 命令用于获取指定 key 的值。如果 key 不存在，返回 nil 。如果key 储存的值不是字符串类型，返回一个错误。</p>
+<h4 id="语法-2"><a href="#语法-2" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Get 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; GET KEY_NAME</div></pre></td></tr></table></figure>
+<h4 id="可用版本-1"><a href="#可用版本-1" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.0.0</p>
+<h4 id="返回值-1"><a href="#返回值-1" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回 key 的值，如果 key 不存在时，返回 nil。 如果 key 不是字符串类型，那么返回一个错误。</p>
+<h4 id="实例-2"><a href="#实例-2" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 对不存在的 key 或字符串类型 key 进行 GET</span></div><div class="line"> </div><div class="line">redis&gt; GET db</div><div class="line">(nil)</div><div class="line"> </div><div class="line">redis&gt; SET db redis</div><div class="line">OK</div><div class="line"> </div><div class="line">redis&gt; GET db</div><div class="line"><span class="string">"redis"</span></div><div class="line"> </div><div class="line"> </div><div class="line"><span class="comment"># 对不是字符串类型的 key 进行 GET</span></div><div class="line"> </div><div class="line">redis&gt; DEL db</div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line"> </div><div class="line">redis&gt; LPUSH db redis mongodb mysql</div><div class="line">(<span class="built_in">integer</span>) 3</div><div class="line"> </div><div class="line">redis&gt; GET db</div><div class="line">(error) ERR Operation against a key holding the wrong kind of value</div></pre></td></tr></table></figure>
+<h3 id="3-Redis-Getrange-命令"><a href="#3-Redis-Getrange-命令" class="headerlink" title="3.Redis Getrange 命令"></a>3.Redis Getrange 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>GETRANGE key start end</code> </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>返回 key 中字符串值的子字符</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Getrange 命令用于获取存储在指定 key 中字符串的子字符串。字符串的截取范围由 start 和 end 两个偏移量决定(包括 start 和 end 在内)。</p>
+<h4 id="语法-3"><a href="#语法-3" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Getrange 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; GETRANGE KEY_NAME start end</div></pre></td></tr></table></figure>
+<h4 id="可用版本-2"><a href="#可用版本-2" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 2.4.0</p>
+<h4 id="返回值-2"><a href="#返回值-2" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;截取得到的子字符串。</p>
+<h4 id="实例-3"><a href="#实例-3" class="headerlink" title="实例"></a>实例</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先，设置 mykey 的值并截取字符串。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; SET mykey <span class="string">"This is my test key"</span></div><div class="line">OK</div><div class="line">redis 127.0.0.1:6379&gt; GETRANGE mykey 0 3</div><div class="line"><span class="string">"This"</span></div><div class="line">redis 127.0.0.1:6379&gt; GETRANGE mykey 0 -1</div><div class="line"><span class="string">"This is my test key"</span></div></pre></td></tr></table></figure>
+<h3 id="4-Redis-Getset-命令"><a href="#4-Redis-Getset-命令" class="headerlink" title="4.Redis Getset 命令"></a>4.Redis Getset 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>GETSET key value</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>将给定 key 的值设为 value ，并返回 key 的旧值(old value)。</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Getset 命令用于设置指定 key 的值，并返回 key 旧的值。</p>
+<h4 id="语法-4"><a href="#语法-4" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Getset 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; GETSET KEY_NAME VALUE</div></pre></td></tr></table></figure>
+<h4 id="可用版本-3"><a href="#可用版本-3" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.0.0</p>
+<h4 id="返回值-3"><a href="#返回值-3" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回给定 key 的旧值。 当 key 没有旧值时，即 key 不存在时，返回 nil 。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当 key 存在但不是字符串类型时，返回一个错误。</p>
+<h4 id="实例-4"><a href="#实例-4" class="headerlink" title="实例"></a>实例</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先，设置 mykey 的值并截取字符串。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; GETSET mynewkey <span class="string">"This is my test key"</span></div><div class="line">(nil)</div><div class="line">redis 127.0.0.1:6379&gt; GETSET mynewkey <span class="string">"This is my new value to test getset"</span></div><div class="line"><span class="string">"This is my test key"</span></div></pre></td></tr></table></figure>
+<h3 id="5-Redis-Getbit-命令"><a href="#5-Redis-Getbit-命令" class="headerlink" title="5.Redis Getbit 命令"></a>5.Redis Getbit 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>GETBIT key offset</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>对 key 所储存的字符串值，获取指定偏移量上的位(bit)。</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Getbit 命令用于对 key 所储存的字符串值，获取指定偏移量上的位(bit)。</p>
+<h4 id="语法-5"><a href="#语法-5" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Getbit 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; GETBIT KEY_NAME OFFSET</div></pre></td></tr></table></figure>
+<h4 id="可用版本-4"><a href="#可用版本-4" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 2.2.0</p>
+<h4 id="返回值-4"><a href="#返回值-4" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;字符串值指定偏移量上的位(bit)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当偏移量 OFFSET 比字符串值的长度大，或者 key 不存在时，返回 0 。</p>
+<h4 id="实例-5"><a href="#实例-5" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 对不存在的 key 或者不存在的 offset 进行 GETBIT， 返回 0</span></div><div class="line"> </div><div class="line">redis&gt; EXISTS bit</div><div class="line">(<span class="built_in">integer</span>) 0</div><div class="line"> </div><div class="line">redis&gt; GETBIT bit 10086</div><div class="line">(<span class="built_in">integer</span>) 0</div><div class="line"> </div><div class="line"> </div><div class="line"><span class="comment"># 对已存在的 offset 进行 GETBIT</span></div><div class="line"> </div><div class="line">redis&gt; SETBIT bit 10086 1</div><div class="line">(<span class="built_in">integer</span>) 0</div><div class="line"> </div><div class="line">redis&gt; GETBIT bit 10086</div><div class="line">(<span class="built_in">integer</span>) 1</div></pre></td></tr></table></figure>
+<h3 id="6-Redis-Mget-命令"><a href="#6-Redis-Mget-命令" class="headerlink" title="6.Redis Mget 命令"></a>6.Redis Mget 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>MGET key1 [key2..]</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>获取所有(一个或多个)给定 key 的值。</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Mget 命令返回所有(一个或多个)给定 key 的值。 如果给定的 key 里面，有某个 key 不存在，那么这个 key 返回特殊值 nil 。</p>
+<h4 id="语法-6"><a href="#语法-6" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Mget 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; MGET KEY1 KEY2 .. KEYN</div></pre></td></tr></table></figure>
+<h4 id="可用版本-5"><a href="#可用版本-5" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.0.0</p>
+<h4 id="返回值-5"><a href="#返回值-5" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一个包含所有给定 key 的值的列表。</p>
+<h4 id="实例-6"><a href="#实例-6" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; SET key1 <span class="string">"hello"</span></div><div class="line">OK</div><div class="line">redis 127.0.0.1:6379&gt; SET key2 <span class="string">"world"</span></div><div class="line">OK</div><div class="line">redis 127.0.0.1:6379&gt; MGET key1 key2 someOtherKey</div><div class="line">1) <span class="string">"Hello"</span></div><div class="line">2) <span class="string">"World"</span></div><div class="line">3) (nil)</div></pre></td></tr></table></figure>
+<h3 id="7-Redis-Setbit-命令"><a href="#7-Redis-Setbit-命令" class="headerlink" title="7.Redis Setbit 命令"></a>7.Redis Setbit 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>SETBIT key offset value</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>对 key 所储存的字符串值，设置或清除指定偏移量上的位(bit)。</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Setbit 命令用于对 key 所储存的字符串值，设置或清除指定偏移量上的位(bit)。</p>
+<h4 id="语法-7"><a href="#语法-7" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Setbit 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; Setbit KEY_NAME OFFSET</div></pre></td></tr></table></figure>
+<h4 id="可用版本-6"><a href="#可用版本-6" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 2.2.0</p>
+<h4 id="返回值-6"><a href="#返回值-6" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;指定偏移量原来储存的位。</p>
+<h4 id="实例-7"><a href="#实例-7" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">redis&gt; SETBIT bit 10086 1</div><div class="line">(<span class="built_in">integer</span>) 0</div><div class="line"> </div><div class="line">redis&gt; GETBIT bit 10086</div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line"> </div><div class="line">redis&gt; GETBIT bit 100 <span class="comment"># bit 默认被初始化为 0</span></div><div class="line">(<span class="built_in">integer</span>) 0</div></pre></td></tr></table></figure>
+<h3 id="8-Redis-Setex-命令"><a href="#8-Redis-Setex-命令" class="headerlink" title="8.Redis Setex 命令"></a>8.Redis Setex 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>SETEX key seconds value</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>将值 value 关联到 key ，并将 key 的过期时间设为 seconds (以秒为单位)。</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Setex 命令为指定的 key 设置值及其过期时间。如果 key 已经存在， SETEX 命令将会替换旧的值。</p>
+<h4 id="语法-8"><a href="#语法-8" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Setex 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; SETEX KEY_NAME TIMEOUT VALUE</div></pre></td></tr></table></figure>
+<h4 id="可用版本-7"><a href="#可用版本-7" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 2.0.0</p>
+<h4 id="返回值-7"><a href="#返回值-7" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;设置成功时返回 OK 。</p>
+<h4 id="实例-8"><a href="#实例-8" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; SETEX mykey 60 redis</div><div class="line">OK</div><div class="line">redis 127.0.0.1:6379&gt; TTL mykey</div><div class="line">60</div><div class="line">redis 127.0.0.1:6379&gt; GET mykey</div><div class="line"><span class="string">"redis</span></div></pre></td></tr></table></figure>
+<h3 id="9-Redis-Setnx-命令"><a href="#9-Redis-Setnx-命令" class="headerlink" title="9.Redis Setnx 命令"></a>9.Redis Setnx 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>SETNX key value</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>只有在 key 不存在时设置 key 的值。</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Setnx（SET if Not eXists） 命令在指定的 key 不存在时，为 key 设置指定的值。</p>
+<h4 id="语法-9"><a href="#语法-9" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Setnx 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; SETNX KEY_NAME VALUE</div></pre></td></tr></table></figure>
+<h4 id="可用版本-8"><a href="#可用版本-8" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.0.0</p>
+<h4 id="返回值-8"><a href="#返回值-8" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;设置成功，返回 1 。 设置失败，返回 0 。</p>
+<h4 id="实例-9"><a href="#实例-9" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">redis&gt; EXISTS job <span class="comment"># job 不存在</span></div><div class="line">(<span class="built_in">integer</span>) 0</div><div class="line"> </div><div class="line">redis&gt; SETNX job <span class="string">"programmer"</span> <span class="comment"># job 设置成功</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line"> </div><div class="line">redis&gt; SETNX job <span class="string">"code-farmer"</span> <span class="comment"># 尝试覆盖 job ，失败</span></div><div class="line">(<span class="built_in">integer</span>) 0</div><div class="line"> </div><div class="line">redis&gt; GET job <span class="comment"># 没有被覆盖</span></div><div class="line"><span class="string">"programmer"</span></div></pre></td></tr></table></figure>
+<h3 id="10-Redis-Setrange-命令"><a href="#10-Redis-Setrange-命令" class="headerlink" title="10.Redis Setrange 命令"></a>10.Redis Setrange 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>SETRANGE key offset value</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>用 value 参数覆写给定 key 所储存的字符串值，从偏移量 offset 开始。</code> </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;edis Setrange 命令用指定的字符串覆盖给定 key 所储存的字符串值，覆盖的位置从偏移量 offset 开始。</p>
+<h4 id="语法-10"><a href="#语法-10" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Setrange 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; SETRANGE KEY_NAME OFFSET VALUE</div></pre></td></tr></table></figure>
+<h4 id="可用版本-9"><a href="#可用版本-9" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 2.2.0</p>
+<h4 id="返回值-9"><a href="#返回值-9" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;被修改后的字符串长度。</p>
+<h4 id="实例-10"><a href="#实例-10" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; SET key1 <span class="string">"Hello World"</span></div><div class="line">OK</div><div class="line">redis 127.0.0.1:6379&gt; SETRANGE key1 6 <span class="string">"Redis"</span></div><div class="line">(<span class="built_in">integer</span>) 11</div><div class="line">redis 127.0.0.1:6379&gt; GET key1</div><div class="line"><span class="string">"Hello Redis"</span></div></pre></td></tr></table></figure>
+<h3 id="11-Redis-Strlen-命令"><a href="#11-Redis-Strlen-命令" class="headerlink" title="11.Redis Strlen 命令"></a>11.Redis Strlen 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>STRLEN key</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>返回 key 所储存的字符串值的长度。</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Strlen 命令用于获取指定 key 所储存的字符串值的长度。当 key 储存的不是字符串值时，返回一个错误。</p>
+<h4 id="语法-11"><a href="#语法-11" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Strlen 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; STRLEN KEY_NAME</div></pre></td></tr></table></figure>
+<h4 id="可用版本-10"><a href="#可用版本-10" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 2.2.0</p>
+<h4 id="返回值-10"><a href="#返回值-10" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;字符串值的长度。 当 key 不存在时，返回 0。</p>
+<h4 id="实例-11"><a href="#实例-11" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 获取字符串的长度</span></div><div class="line"> </div><div class="line">redis&gt; SET mykey <span class="string">"Hello world"</span></div><div class="line">OK</div><div class="line"> </div><div class="line">redis&gt; STRLEN mykey</div><div class="line">(<span class="built_in">integer</span>) 11</div><div class="line"> </div><div class="line"> </div><div class="line"><span class="comment"># 不存在的 key 长度为 0</span></div><div class="line"> </div><div class="line">redis&gt; STRLEN nonexisting</div><div class="line">(<span class="built_in">integer</span>) 0</div></pre></td></tr></table></figure>
+<h3 id="12-Redis-Mset-命令"><a href="#12-Redis-Mset-命令" class="headerlink" title="12.Redis Mset 命令"></a>12.Redis Mset 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>MSET key value [key value ...]</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>同时设置一个或多个 key-value 对</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Mset 命令用于同时设置一个或多个 key-value 对。</p>
+<h4 id="语法-12"><a href="#语法-12" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Mset 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; MSET key1 value1 key2 value2 .. keyN valueN</div></pre></td></tr></table></figure>
+<h4 id="可用版本-11"><a href="#可用版本-11" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.0.1</p>
+<h4 id="返回值-11"><a href="#返回值-11" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;总是返回 OK 。</p>
+<h4 id="实例-12"><a href="#实例-12" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; MSET key1 <span class="string">"Hello"</span> key2 <span class="string">"World"</span></div><div class="line">OK</div><div class="line">redis 127.0.0.1:6379&gt; GET key1</div><div class="line"><span class="string">"Hello"</span></div><div class="line">redis 127.0.0.1:6379&gt; GET key2</div><div class="line">1) <span class="string">"World"</span></div></pre></td></tr></table></figure>
+<h3 id="13-Redis-Msetnx-命令"><a href="#13-Redis-Msetnx-命令" class="headerlink" title="13.Redis Msetnx 命令"></a>13.Redis Msetnx 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>MSETNX key value [key value ...]</code> </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>同时设置一个或多个 key-value 对，当且仅当所有给定 key 都不存在。</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Msetnx 命令用于所有给定 key 都不存在时，同时设置一个或多个 key-value 对。</p>
+<h4 id="语法-13"><a href="#语法-13" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Msetnx 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; MSETNX key1 value1 key2 value2 .. keyN valueN</div></pre></td></tr></table></figure>
+<h4 id="可用版本-12"><a href="#可用版本-12" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.0.1</p>
+<h4 id="返回值-12"><a href="#返回值-12" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当所有 key 都成功设置，返回 1 。 如果所有给定 key 都设置失败(至少有一个 key 已经存在)，那么返回 0 。</p>
+<h4 id="实例-13"><a href="#实例-13" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 对不存在的 key 进行 MSETNX</span></div><div class="line"> </div><div class="line">redis&gt; MSETNX rmdbs <span class="string">"MySQL"</span> nosql <span class="string">"MongoDB"</span> key-value-store <span class="string">"redis"</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line"> </div><div class="line">redis&gt; MGET rmdbs nosql key-value-store</div><div class="line">1) <span class="string">"MySQL"</span></div><div class="line">2) <span class="string">"MongoDB"</span></div><div class="line">3) <span class="string">"redis"</span></div><div class="line"> </div><div class="line"> </div><div class="line"><span class="comment"># MSET 的给定 key 当中有已存在的 key</span></div><div class="line"> </div><div class="line">redis&gt; MSETNX rmdbs <span class="string">"Sqlite"</span> language <span class="string">"python"</span> <span class="comment"># rmdbs 键已经存在，操作失败</span></div><div class="line">(<span class="built_in">integer</span>) 0</div><div class="line"> </div><div class="line">redis&gt; EXISTS language <span class="comment"># 因为 MSET 是原子性操作，language 没有被设置</span></div><div class="line">(<span class="built_in">integer</span>) 0</div><div class="line"> </div><div class="line">redis&gt; GET rmdbs <span class="comment"># rmdbs 也没有被修改</span></div><div class="line"><span class="string">"MySQL"</span></div></pre></td></tr></table></figure>
+<h3 id="14-Redis-Psetex-命令"><a href="#14-Redis-Psetex-命令" class="headerlink" title="14.Redis Psetex 命令"></a>14.Redis Psetex 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>PSETEX key milliseconds value</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>这个命令和 SETEX 命令相似，但它以毫秒为单位设置 key 的生存时间，而不是像 SETEX 命令那样，以秒为单位</code>  </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Psetex 命令以毫秒为单位设置 key 的生存时间。</p>
+<h4 id="语法-14"><a href="#语法-14" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Psetex 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; PSETEX key1 EXPIRY_IN_MILLISECONDS value1</div></pre></td></tr></table></figure>
+<h4 id="可用版本-13"><a href="#可用版本-13" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 2.6.0</p>
+<h4 id="返回值-13"><a href="#返回值-13" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;设置成功时返回 OK 。</p>
+<h4 id="实例-14"><a href="#实例-14" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; PSETEX mykey 1000 <span class="string">"Hello"</span></div><div class="line">OK</div><div class="line">redis 127.0.0.1:6379&gt; PTTL mykey</div><div class="line">999</div><div class="line">redis 127.0.0.1:6379&gt; GET mykey</div><div class="line">1) <span class="string">"Hello"</span></div></pre></td></tr></table></figure>
+<h3 id="15-Redis-Incr-命令"><a href="#15-Redis-Incr-命令" class="headerlink" title="15.Redis Incr 命令"></a>15.Redis Incr 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>INCR key</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>将 key 中储存的数字值增一。</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Incr 命令将 key 中储存的数字值增一。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果 key 不存在，那么 key 的值会先被初始化为 0 ，然后再执行 INCR 操作。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果值包含错误的类型，或字符串类型的值不能表示为数字，那么返回一个错误。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;本操作的值限制在 64 位(bit)有符号数字表示之内。</p>
+<h4 id="语法-15"><a href="#语法-15" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Incr 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; INCR KEY_NAME</div></pre></td></tr></table></figure>
+<h4 id="可用版本-14"><a href="#可用版本-14" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.0.0</p>
+<h4 id="返回值-14"><a href="#返回值-14" class="headerlink" title="返回值"></a>返回值</h4><h4 id="实例-15"><a href="#实例-15" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">redis&gt; SET page_view 20</div><div class="line">OK</div><div class="line"> </div><div class="line">redis&gt; INCR page_view</div><div class="line">(<span class="built_in">integer</span>) 21</div><div class="line"> </div><div class="line">redis&gt; GET page_view <span class="comment"># 数字值在 Redis 中以字符串的形式保存</span></div><div class="line"><span class="string">"21"</span></div></pre></td></tr></table></figure>
+<h3 id="16-Redis-Incrby-命令"><a href="#16-Redis-Incrby-命令" class="headerlink" title="16.Redis Incrby 命令"></a>16.Redis Incrby 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>INCRBY key increment</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>将 key 所储存的值加上给定的增量值（increment）</code> </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Incrby 命令将 key 中储存的数字加上指定的增量值。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果 key 不存在，那么 key 的值会先被初始化为 0 ，然后再执行 INCRBY 命令。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果值包含错误的类型，或字符串类型的值不能表示为数字，那么返回一个错误。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;本操作的值限制在 64 位(bit)有符号数字表示之内。</p>
+<h4 id="语法-16"><a href="#语法-16" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Incrby 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; INCRBY KEY_NAME INCR_AMOUNT</div></pre></td></tr></table></figure>
+<h4 id="可用版本-15"><a href="#可用版本-15" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.0.0</p>
+<h4 id="返回值-15"><a href="#返回值-15" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加上指定的增量值之后， key 的值。</p>
+<h4 id="实例-16"><a href="#实例-16" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># key 存在且是数字值</span></div><div class="line"> </div><div class="line">redis&gt; SET rank 50</div><div class="line">OK</div><div class="line"> </div><div class="line">redis&gt; INCRBY rank 20</div><div class="line">(<span class="built_in">integer</span>) 70</div><div class="line"> </div><div class="line">redis&gt; GET rank</div><div class="line"><span class="string">"70"</span></div><div class="line"> </div><div class="line"> </div><div class="line"><span class="comment"># key 不存在时</span></div><div class="line"> </div><div class="line">redis&gt; EXISTS counter</div><div class="line">(<span class="built_in">integer</span>) 0</div><div class="line"> </div><div class="line">redis&gt; INCRBY counter 30</div><div class="line">(<span class="built_in">integer</span>) 30</div><div class="line"> </div><div class="line">redis&gt; GET counter</div><div class="line"><span class="string">"30"</span></div><div class="line"> </div><div class="line"> </div><div class="line"><span class="comment"># key 不是数字值时</span></div><div class="line"> </div><div class="line">redis&gt; SET book <span class="string">"long long ago..."</span></div><div class="line">OK</div><div class="line"> </div><div class="line">redis&gt; INCRBY book 200</div><div class="line">(error) ERR value is not an <span class="built_in">integer</span> or out of range</div></pre></td></tr></table></figure>
+<h3 id="17-Redis-Incrbyfloat-命令"><a href="#17-Redis-Incrbyfloat-命令" class="headerlink" title="17.Redis Incrbyfloat 命令"></a>17.Redis Incrbyfloat 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>INCRBYFLOAT key increment</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>将 key 所储存的值加上给定的浮点增量值（increment）</code> </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Incrbyfloat 命令为 key 中所储存的值加上指定的浮点数增量值。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果 key 不存在，那么 INCRBYFLOAT 会先将 key 的值设为 0 ，再执行加法操作。</p>
+<h4 id="语法-17"><a href="#语法-17" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Incrbyfloat 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; INCRBYFLOAT KEY_NAME INCR_AMOUNT</div></pre></td></tr></table></figure>
+<h4 id="可用版本-16"><a href="#可用版本-16" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 2.6.0</p>
+<h4 id="返回值-16"><a href="#返回值-16" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;执行命令之后 key 的值。</p>
+<h4 id="实例-17"><a href="#实例-17" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 值和增量都不是指数符号</span></div><div class="line"> </div><div class="line">redis&gt; SET mykey 10.50</div><div class="line">OK</div><div class="line"> </div><div class="line">redis&gt; INCRBYFLOAT mykey 0.1</div><div class="line"><span class="string">"10.6"</span></div><div class="line"> </div><div class="line"> </div><div class="line"><span class="comment"># 值和增量都是指数符号</span></div><div class="line"> </div><div class="line">redis&gt; SET mykey 314e-2</div><div class="line">OK</div><div class="line"> </div><div class="line">redis&gt; GET mykey <span class="comment"># 用 SET 设置的值可以是指数符号</span></div><div class="line"><span class="string">"314e-2"</span></div><div class="line"> </div><div class="line">redis&gt; INCRBYFLOAT mykey 0 <span class="comment"># 但执行 INCRBYFLOAT 之后格式会被改成非指数符号</span></div><div class="line"><span class="string">"3.14"</span></div><div class="line"> </div><div class="line"> </div><div class="line"><span class="comment"># 可以对整数类型执行</span></div><div class="line"> </div><div class="line">redis&gt; SET mykey 3</div><div class="line">OK</div><div class="line"> </div><div class="line">redis&gt; INCRBYFLOAT mykey 1.1</div><div class="line"><span class="string">"4.1"</span></div><div class="line"> </div><div class="line"> </div><div class="line"><span class="comment"># 后跟的 0 会被移除</span></div><div class="line"> </div><div class="line">redis&gt; SET mykey 3.0</div><div class="line">OK</div><div class="line"> </div><div class="line">redis&gt; GET mykey <span class="comment"># SET 设置的值小数部分可以是 0</span></div><div class="line"><span class="string">"3.0"</span></div><div class="line"> </div><div class="line">redis&gt; INCRBYFLOAT mykey 1.000000000000000000000 <span class="comment"># 但 INCRBYFLOAT 会将无用的 0 忽略掉，有需要的话，将浮点变为整数</span></div><div class="line"><span class="string">"4"</span></div><div class="line"> </div><div class="line">redis&gt; GET mykey</div><div class="line"><span class="string">"4"</span></div></pre></td></tr></table></figure>
+<h3 id="18-Redis-Decr-命令"><a href="#18-Redis-Decr-命令" class="headerlink" title="18.Redis Decr 命令"></a>18.Redis Decr 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>DECR key</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>将 key 中储存的数字值减一</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Decr 命令将 key 中储存的数字值减一。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果 key 不存在，那么 key 的值会先被初始化为 0 ，然后再执行 DECR 操作。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果值包含错误的类型，或字符串类型的值不能表示为数字，那么返回一个错误。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;本操作的值限制在 64 位(bit)有符号数字表示之内。</p>
+<h4 id="语法-18"><a href="#语法-18" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Decr 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; DECR KEY_NAME</div></pre></td></tr></table></figure>
+<h4 id="可用版本-17"><a href="#可用版本-17" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.0.0</p>
+<h4 id="返回值-17"><a href="#返回值-17" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;执行命令之后 key 的值。</p>
+<h4 id="实例-18"><a href="#实例-18" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 对存在的数字值 key 进行 DECR</span></div><div class="line"> </div><div class="line">redis&gt; SET failure_times 10</div><div class="line">OK</div><div class="line"> </div><div class="line">redis&gt; DECR failure_times</div><div class="line">(<span class="built_in">integer</span>) 9</div><div class="line"> </div><div class="line"> </div><div class="line"><span class="comment"># 对不存在的 key 值进行 DECR</span></div><div class="line"> </div><div class="line">redis&gt; EXISTS count</div><div class="line">(<span class="built_in">integer</span>) 0</div><div class="line"> </div><div class="line">redis&gt; DECR count</div><div class="line">(<span class="built_in">integer</span>) -1</div><div class="line"> </div><div class="line"> </div><div class="line"><span class="comment"># 对存在但不是数值的 key 进行 DECR</span></div><div class="line"> </div><div class="line">redis&gt; SET company YOUR_CODE_SUCKS.LLC</div><div class="line">OK</div><div class="line"> </div><div class="line">redis&gt; DECR company</div><div class="line">(error) ERR value is not an <span class="built_in">integer</span> or out of range</div></pre></td></tr></table></figure>
+<h3 id="19-Redis-Decrby-命令"><a href="#19-Redis-Decrby-命令" class="headerlink" title="19.Redis Decrby 命令"></a>19.Redis Decrby 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>DECRBY key decrement</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>key 所储存的值减去给定的减量值（decrement）</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Decrby 命令将 key 所储存的值减去指定的减量值。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果 key 不存在，那么 key 的值会先被初始化为 0 ，然后再执行 DECRBY 操作。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果值包含错误的类型，或字符串类型的值不能表示为数字，那么返回一个错误。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;本操作的值限制在 64 位(bit)有符号数字表示之内。</p>
+<h4 id="语法-19"><a href="#语法-19" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Decrby 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; DECRBY KEY_NAME DECREMENT_AMOUNT</div></pre></td></tr></table></figure>
+<h4 id="可用版本-18"><a href="#可用版本-18" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.0.0</p>
+<h4 id="返回值-18"><a href="#返回值-18" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;减去指定减量值之后， key 的值。</p>
+<h4 id="实例-19"><a href="#实例-19" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 对已存在的 key 进行 DECRBY</span></div><div class="line"> </div><div class="line">redis&gt; SET count 100</div><div class="line">OK</div><div class="line"> </div><div class="line">redis&gt; DECRBY count 20</div><div class="line">(<span class="built_in">integer</span>) 80</div><div class="line"> </div><div class="line"> </div><div class="line"><span class="comment"># 对不存在的 key 进行DECRBY</span></div><div class="line"> </div><div class="line">redis&gt; EXISTS pages</div><div class="line">(<span class="built_in">integer</span>) 0</div><div class="line"> </div><div class="line">redis&gt; DECRBY pages 10</div><div class="line">(<span class="built_in">integer</span>) -10</div></pre></td></tr></table></figure>
+<h3 id="20-Redis-Append-命令"><a href="#20-Redis-Append-命令" class="headerlink" title="20.Redis Append 命令"></a>20.Redis Append 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>APPEND key value</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>如果 key 已经存在并且是一个字符串， APPEND 命令将 value 追加到 key 原来的值的末尾</code> </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Append 命令用于为指定的 key 追加值。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果 key 已经存在并且是一个字符串， APPEND 命令将 value 追加到 key 原来的值的末尾。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果 key 不存在， APPEND 就简单地将给定 key 设为 value ，就像执行 SET key value 一样。</p>
+<h4 id="语法-20"><a href="#语法-20" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Append 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; APPEND KEY_NAME NEW_VALUE</div></pre></td></tr></table></figure>
+<h4 id="可用版本-19"><a href="#可用版本-19" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 2.0.0</p>
+<h4 id="返回值-19"><a href="#返回值-19" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;追加指定值之后， key 中字符串的长度。</p>
+<h4 id="实例-20"><a href="#实例-20" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 对不存在的 key 执行 APPEND</span></div><div class="line"> </div><div class="line">redis&gt; EXISTS myphone <span class="comment"># 确保 myphone 不存在</span></div><div class="line">(<span class="built_in">integer</span>) 0</div><div class="line"> </div><div class="line">redis&gt; APPEND myphone <span class="string">"nokia"</span> <span class="comment"># 对不存在的 key 进行 APPEND ，等同于 SET myphone "nokia"</span></div><div class="line">(<span class="built_in">integer</span>) 5 <span class="comment"># 字符长度</span></div><div class="line"> </div><div class="line"> </div><div class="line"><span class="comment"># 对已存在的字符串进行 APPEND</span></div><div class="line"> </div><div class="line">redis&gt; APPEND myphone <span class="string">" - 1110"</span> <span class="comment"># 长度从 5 个字符增加到 12 个字符</span></div><div class="line">(<span class="built_in">integer</span>) 12</div><div class="line"> </div><div class="line">redis&gt; GET myphone</div><div class="line"><span class="string">"nokia - 1110"</span></div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag"># Redis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/24/Redis/17. Redis 命令/" rel="next" title="Redis 命令">
+                <i class="fa fa-chevron-left"></i> Redis 命令
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/24/Redis/12. 几点建议，让Redis在你的系统中发挥更大作用/" rel="prev" title="几点建议，让Redis在你的系统中发挥更大作用">
+                几点建议，让Redis在你的系统中发挥更大作用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">695</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis-字符串-String"><span class="nav-number">1.</span> <span class="nav-text">Redis 字符串(String)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#语法"><span class="nav-number">1.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实例"><span class="nav-number">1.2.</span> <span class="nav-text">实例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis-字符串命令"><span class="nav-number">1.3.</span> <span class="nav-text">Redis 字符串命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Redis-SET-命令"><span class="nav-number">1.3.1.</span> <span class="nav-text">1.Redis SET 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-1"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值"><span class="nav-number">1.3.1.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-1"><span class="nav-number">1.3.1.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Redis-Get-命令"><span class="nav-number">1.3.2.</span> <span class="nav-text">2.Redis Get 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-2"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-1"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-1"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-2"><span class="nav-number">1.3.2.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Redis-Getrange-命令"><span class="nav-number">1.3.3.</span> <span class="nav-text">3.Redis Getrange 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-3"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-2"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-2"><span class="nav-number">1.3.3.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-3"><span class="nav-number">1.3.3.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Redis-Getset-命令"><span class="nav-number">1.3.4.</span> <span class="nav-text">4.Redis Getset 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-4"><span class="nav-number">1.3.4.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-3"><span class="nav-number">1.3.4.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-3"><span class="nav-number">1.3.4.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-4"><span class="nav-number">1.3.4.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-Redis-Getbit-命令"><span class="nav-number">1.3.5.</span> <span class="nav-text">5.Redis Getbit 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-5"><span class="nav-number">1.3.5.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-4"><span class="nav-number">1.3.5.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-4"><span class="nav-number">1.3.5.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-5"><span class="nav-number">1.3.5.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-Redis-Mget-命令"><span class="nav-number">1.3.6.</span> <span class="nav-text">6.Redis Mget 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-6"><span class="nav-number">1.3.6.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-5"><span class="nav-number">1.3.6.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-5"><span class="nav-number">1.3.6.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-6"><span class="nav-number">1.3.6.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-Redis-Setbit-命令"><span class="nav-number">1.3.7.</span> <span class="nav-text">7.Redis Setbit 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-7"><span class="nav-number">1.3.7.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-6"><span class="nav-number">1.3.7.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-6"><span class="nav-number">1.3.7.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-7"><span class="nav-number">1.3.7.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-Redis-Setex-命令"><span class="nav-number">1.3.8.</span> <span class="nav-text">8.Redis Setex 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-8"><span class="nav-number">1.3.8.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-7"><span class="nav-number">1.3.8.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-7"><span class="nav-number">1.3.8.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-8"><span class="nav-number">1.3.8.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-Redis-Setnx-命令"><span class="nav-number">1.3.9.</span> <span class="nav-text">9.Redis Setnx 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-9"><span class="nav-number">1.3.9.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-8"><span class="nav-number">1.3.9.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-8"><span class="nav-number">1.3.9.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-9"><span class="nav-number">1.3.9.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-Redis-Setrange-命令"><span class="nav-number">1.3.10.</span> <span class="nav-text">10.Redis Setrange 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-10"><span class="nav-number">1.3.10.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-9"><span class="nav-number">1.3.10.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-9"><span class="nav-number">1.3.10.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-10"><span class="nav-number">1.3.10.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-Redis-Strlen-命令"><span class="nav-number">1.3.11.</span> <span class="nav-text">11.Redis Strlen 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-11"><span class="nav-number">1.3.11.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-10"><span class="nav-number">1.3.11.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-10"><span class="nav-number">1.3.11.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-11"><span class="nav-number">1.3.11.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-Redis-Mset-命令"><span class="nav-number">1.3.12.</span> <span class="nav-text">12.Redis Mset 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-12"><span class="nav-number">1.3.12.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-11"><span class="nav-number">1.3.12.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-11"><span class="nav-number">1.3.12.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-12"><span class="nav-number">1.3.12.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-Redis-Msetnx-命令"><span class="nav-number">1.3.13.</span> <span class="nav-text">13.Redis Msetnx 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-13"><span class="nav-number">1.3.13.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-12"><span class="nav-number">1.3.13.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-12"><span class="nav-number">1.3.13.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-13"><span class="nav-number">1.3.13.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-Redis-Psetex-命令"><span class="nav-number">1.3.14.</span> <span class="nav-text">14.Redis Psetex 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-14"><span class="nav-number">1.3.14.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-13"><span class="nav-number">1.3.14.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-13"><span class="nav-number">1.3.14.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-14"><span class="nav-number">1.3.14.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-Redis-Incr-命令"><span class="nav-number">1.3.15.</span> <span class="nav-text">15.Redis Incr 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-15"><span class="nav-number">1.3.15.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-14"><span class="nav-number">1.3.15.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-14"><span class="nav-number">1.3.15.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-15"><span class="nav-number">1.3.15.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-Redis-Incrby-命令"><span class="nav-number">1.3.16.</span> <span class="nav-text">16.Redis Incrby 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-16"><span class="nav-number">1.3.16.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-15"><span class="nav-number">1.3.16.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-15"><span class="nav-number">1.3.16.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-16"><span class="nav-number">1.3.16.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-Redis-Incrbyfloat-命令"><span class="nav-number">1.3.17.</span> <span class="nav-text">17.Redis Incrbyfloat 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-17"><span class="nav-number">1.3.17.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-16"><span class="nav-number">1.3.17.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-16"><span class="nav-number">1.3.17.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-17"><span class="nav-number">1.3.17.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-Redis-Decr-命令"><span class="nav-number">1.3.18.</span> <span class="nav-text">18.Redis Decr 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-18"><span class="nav-number">1.3.18.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-17"><span class="nav-number">1.3.18.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-17"><span class="nav-number">1.3.18.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-18"><span class="nav-number">1.3.18.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#19-Redis-Decrby-命令"><span class="nav-number">1.3.19.</span> <span class="nav-text">19.Redis Decrby 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-19"><span class="nav-number">1.3.19.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-18"><span class="nav-number">1.3.19.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-18"><span class="nav-number">1.3.19.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-19"><span class="nav-number">1.3.19.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#20-Redis-Append-命令"><span class="nav-number">1.3.20.</span> <span class="nav-text">20.Redis Append 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-20"><span class="nav-number">1.3.20.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-19"><span class="nav-number">1.3.20.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-19"><span class="nav-number">1.3.20.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-20"><span class="nav-number">1.3.20.4.</span> <span class="nav-text">实例</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
