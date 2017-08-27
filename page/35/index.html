@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/46. apache几种限制ip的方法/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/36. apache 不记录指定文件类型日志/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -306,7 +306,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/46. apache几种限制ip的方法/" itemprop="url">apache几种限制ip的方法</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/36. apache 不记录指定文件类型日志/" itemprop="url">apache 不记录指定文件类型日志</a></h1>
         
 
         <div class="post-meta">
@@ -355,18 +355,12 @@
       
         
           
-          apache几种限制ip的方法
-禁止访问某些文件/目录增加Files选项来控制，比如要不允许访问 .inc 扩展名的文件，保护php类库：
-
-1234&lt;Files ~ "\.inc$"&gt; Order allow,deny Deny from all&lt;/Files&gt;
-
-禁止访问某些指定的目录：（可以用  来进行正则匹配）
-
-1234&lt;Directory ~ "^/var
+          apache 不记录指定文件类型日志&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果一个站点访问量特别大，那么访问日志就会很多。但有一些访问日志其实可以忽略掉的，比如网站的一些图片，还有 js，css 等静态对象。而这些文件的访问往往是巨量的，而且即使记录这些日志也没有什么用，如何忽略掉这些访问日志呢？
+&#160;&#160;&#160;&#1
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/46. apache几种限制ip的方法/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/36. apache 不记录指定文件类型日志/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -412,7 +406,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/45. apache的order、allow、deny/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/37. apache 配置静态缓存/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -431,7 +425,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/45. apache的order、allow、deny/" itemprop="url">apache的order、allow、deny</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/37. apache 配置静态缓存/" itemprop="url">apache 配置静态缓存</a></h1>
         
 
         <div class="post-meta">
@@ -480,13 +474,11 @@
       
         
           
-          apache的order、allow、deny&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个东西确实挺容易让人迷糊。其实也不难，只要掌握这样一条规律即可：
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先举个例子：
-123Order deny,allowdeny from allallow f
+          apache 配置静态缓存&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里的静态文件指的是图片、js、css等文件，用户访问一个站点，其实大多数元素都是图片、js、css等，这些静态文件其实是会被客户端的浏览器缓存到本地电脑上的，目的就是为了下次再请求时不再去服务器上下载，这样就加快了速度，提高了用户体验。但这些静态文件总不能一直缓存，它总有一些
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/45. apache的order、allow、deny/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/37. apache 配置静态缓存/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -532,7 +524,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/49. apache 禁止解析 php/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/38. Linux Apache安装加载mod_headers模块/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -551,7 +543,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/49. apache 禁止解析 php/" itemprop="url">apache 禁止解析 php</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/38. Linux Apache安装加载mod_headers模块/" itemprop="url">Linux Apache安装加载mod_headers模块</a></h1>
         
 
         <div class="post-meta">
@@ -600,12 +592,19 @@
       
         
           
-          apache 禁止解析 php&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;某个目录下禁止解析 php ，这个很有用，做网站安全的时候，这个用得很多，比如某些目录可以上传文件，为了避免上传的文件有木马，所以我们禁止这个目录下面的访问解析 php。
-12345678910[root@lamp ~]# vim /usr/local/apache2/co
+          Linux Apache安装加载mod_headers模块&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mod_headers模块用于控制和修改HTTP请求头和应答头
+
+进入到mod_headers.c目录
+
+1cd /usr/local/src/httpd-2.2.24/modules/metadata
+
+执行编译加载程序
+
+1/usr/loca
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/49. apache 禁止解析 php/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/38. Linux Apache安装加载mod_headers模块/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -651,7 +650,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/48. 针对访问uri 限制ip/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/39. apache 设置图片等静态文件的过期时间/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -670,7 +669,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/48. 针对访问uri 限制ip/" itemprop="url">针对访问uri 限制ip</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/39. apache 设置图片等静态文件的过期时间/" itemprop="url">apache 设置图片等静态文件的过期时间</a></h1>
         
 
         <div class="post-meta">
@@ -719,13 +718,12 @@
       
         
           
-          针对访问uri 限制ip&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在虚拟主机配置文件中加入如下字段：
-1234Order deny,allowDeny from allAllow from 127.0.0.1Allow from  2.2.2.2
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;假
+          apache 设置图片等静态文件的过期时间&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;httpd.conf 中加入
+12345678ExpiresActive onExpiresByType image/gif  "access plus 1 days"ExpiresByType image/jpeg "access plus 24 hours"
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/48. 针对访问uri 限制ip/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/39. apache 设置图片等静态文件的过期时间/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -771,7 +769,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/32. apache日志记录客户端请求的域名/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/4. apache 的默认编码/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -790,7 +788,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/32. apache日志记录客户端请求的域名/" itemprop="url">apache日志记录客户端请求的域名</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/4. apache 的默认编码/" itemprop="url">apache 的默认编码</a></h1>
         
 
         <div class="post-meta">
@@ -839,13 +837,11 @@
       
         
           
-          apache日志记录客户端请求的域名&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;正常情况下，根本就没有必要记录这一项，毕竟咱们大都根据虚拟主机来设置相应的访问日志，但也有个别的情况，比如
-1ServerName *.abc.com
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样泛解析的形式，所
+          apache 的默认编码&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在httpd.conf 中有一个参数是控制apache的默认编码的，AddDefaultCharset  它的作用就是当开发者没有指定程序的编码时，apache会按照这里的配置来显示效果。一般这个参数是不需要的，因为很少有程序不指定编码。为了引起不必要的麻烦，建议开启这个编码的童
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/32. apache日志记录客户端请求的域名/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/4. apache 的默认编码/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -891,7 +887,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/5. apache编译安装参数说明/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/40. 什么是etag工作原理及配置/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -910,7 +906,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/5. apache编译安装参数说明/" itemprop="url">apache编译安装参数说明</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/40. 什么是etag工作原理及配置/" itemprop="url">什么是etag工作原理及配置</a></h1>
         
 
         <div class="post-meta">
@@ -959,12 +955,12 @@
       
         
           
-          apache编译安装参数说明&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;apache编译安装参数说明
-12345678910111213141516171819202122./configure #配置源代码树--prefix=/usr/local/apache2 #体系无关文件的顶级安装目录prefix ，也就apache的安装目录。如果没有指
+          什么是etag工作原理及配置&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Etag 是URL的Entity Tag，用于标示URL对象是否改变，区分不同语言和Session等等。具体内部含义是使服务器控制的，就像Cookie那样。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;HTTP协议规格说明定
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/5. apache编译安装参数说明/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/40. 什么是etag工作原理及配置/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1010,7 +1006,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/26.  HTTP返回码中301与302的区别/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/41. apache配置防盗链/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1029,7 +1025,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/26.  HTTP返回码中301与302的区别/" itemprop="url">HTTP返回码中301与302的区别</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/41. apache配置防盗链/" itemprop="url">apache配置防盗链</a></h1>
         
 
         <div class="post-meta">
@@ -1078,12 +1074,11 @@
       
         
           
-          HTTP返回码中301与302的区别一．官方说法&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;301，302 都是HTTP状态的编码，都代表着某个URL发生了转移，不同之处在于： 
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;301 redirect: 301 代表永久性转移(Permanentl
+          apache配置防盗链&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果站点是一个图片站，有很多非常漂亮的美女图片，时间久了会有很多人来网站借图片，有的直接下载走了，还有的直接取走图片的地址，那么他就可以直接把图片地址放到他自己的网站上，他的用户可以直接从他的网站上查看这个图片，而实际上浏览这个图片是从我的网站上访问的。这样，这个图片所产生的宽带开
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/26.  HTTP返回码中301与302的区别/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/41. apache配置防盗链/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1129,7 +1124,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/20. apache options参数/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/42. apache 访问控制/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1148,7 +1143,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/20. apache options参数/" itemprop="url">apache options参数</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/42. apache 访问控制/" itemprop="url">apache 访问控制</a></h1>
         
 
         <div class="post-meta">
@@ -1197,11 +1192,15 @@
       
         
           
-          apache options参数&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;指令控制了在特定目录中将使用哪些服务器特性。Options属性有一个非常特别的功能： 如果你没有用“+”或者“-”来增加或者减少一个功能的时候，每个之前定义的Options的所有功能都会被取消， 直到你又为它指定一些功能。所以options属性在整体设置和虚拟主机设置的是
+          apache 访问控制allow 和 deny 规则&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先举例：
+123Order deny,allowdeny from allallow from 127.0.0.1
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们判断的依据是这样的：
+
+看 Ord
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/20. apache options参数/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/42. apache 访问控制/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1247,7 +1246,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/12. apache 的动态和静态/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/15. apache的两种工作模式详解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1266,7 +1265,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/12. apache 的动态和静态/" itemprop="url">apache 的动态和静态</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/15. apache的两种工作模式详解/" itemprop="url">apache的两种工作模式详解</a></h1>
         
 
         <div class="post-meta">
@@ -1315,12 +1314,11 @@
       
         
           
-          apache 的动态和静态&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关于apache的动态与静态编译的理解，引用某人的比喻如下：
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;好比有两个人a和m，a代表apache,m代表module，要想让a使用m的东西，一个方法是把m的东西都放到a那里去，a
+          apache的两种工作模式详解1、prefork.c模块(一个非线程型的、预派生的MPM)&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;prefork MPM 使用多个子进程，每个子进程只有一个线程。每个进程在某个确定的时间只能维持一个连接。在大多数平台上，Prefork MPM在效率上要比Worker MPM要高，但是内存使用大得多。prefor
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/12. apache 的动态和静态/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/15. apache的两种工作模式详解/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1527,7 +1525,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">713</span>
+                <span class="site-state-item-count">715</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
