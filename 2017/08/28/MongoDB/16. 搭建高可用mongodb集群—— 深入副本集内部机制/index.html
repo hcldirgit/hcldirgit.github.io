@@ -1,0 +1,835 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="MongoDB," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="搭建高可用mongodb集群—— 深入副本集内部机制&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;在搭建高可用mongodb集群—— 副本集介绍了副本集的配置，这篇文章深入研究一下副本集的内部机制。还是带着副本集的问题来看吧！  副本集故障转移，主节点是如何选举的？能否手动干涉下架某一台主节点。 官方说副本集数量最好是奇数，为什么？ mongodb">
+<meta name="keywords" content="MongoDB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搭建高可用mongodb集群—— 深入副本集内部机制">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/08/28/MongoDB/16. 搭建高可用mongodb集群—— 深入副本集内部机制/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="搭建高可用mongodb集群—— 深入副本集内部机制&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;在搭建高可用mongodb集群—— 副本集介绍了副本集的配置，这篇文章深入研究一下副本集的内部机制。还是带着副本集的问题来看吧！  副本集故障转移，主节点是如何选举的？能否手动干涉下架某一台主节点。 官方说副本集数量最好是奇数，为什么？ mongodb">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E6%90%AD%E5%BB%BA%E9%AB%98%E5%8F%AF%E7%94%A8mongodb%E9%9B%86%E7%BE%A4%E2%80%94%E2%80%94%20%E6%B7%B1%E5%85%A5%E5%89%AF%E6%9C%AC%E9%9B%86%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6/01.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E6%90%AD%E5%BB%BA%E9%AB%98%E5%8F%AF%E7%94%A8mongodb%E9%9B%86%E7%BE%A4%E2%80%94%E2%80%94%20%E6%B7%B1%E5%85%A5%E5%89%AF%E6%9C%AC%E9%9B%86%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6/02.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E6%90%AD%E5%BB%BA%E9%AB%98%E5%8F%AF%E7%94%A8mongodb%E9%9B%86%E7%BE%A4%E2%80%94%E2%80%94%20%E6%B7%B1%E5%85%A5%E5%89%AF%E6%9C%AC%E9%9B%86%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6/03.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E6%90%AD%E5%BB%BA%E9%AB%98%E5%8F%AF%E7%94%A8mongodb%E9%9B%86%E7%BE%A4%E2%80%94%E2%80%94%20%E6%B7%B1%E5%85%A5%E5%89%AF%E6%9C%AC%E9%9B%86%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6/04.png?raw=true">
+<meta property="og:updated_time" content="2017-08-27T16:12:21.985Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="搭建高可用mongodb集群—— 深入副本集内部机制">
+<meta name="twitter:description" content="搭建高可用mongodb集群—— 深入副本集内部机制&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;在搭建高可用mongodb集群—— 副本集介绍了副本集的配置，这篇文章深入研究一下副本集的内部机制。还是带着副本集的问题来看吧！  副本集故障转移，主节点是如何选举的？能否手动干涉下架某一台主节点。 官方说副本集数量最好是奇数，为什么？ mongodb">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/%E6%90%AD%E5%BB%BA%E9%AB%98%E5%8F%AF%E7%94%A8mongodb%E9%9B%86%E7%BE%A4%E2%80%94%E2%80%94%20%E6%B7%B1%E5%85%A5%E5%89%AF%E6%9C%AC%E9%9B%86%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6/01.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/08/28/MongoDB/16. 搭建高可用mongodb集群—— 深入副本集内部机制/"/>
+
+
+
+
+
+  <title>搭建高可用mongodb集群—— 深入副本集内部机制 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/28/MongoDB/16. 搭建高可用mongodb集群—— 深入副本集内部机制/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">搭建高可用mongodb集群—— 深入副本集内部机制</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-28T00:13:00+08:00">
+                2017-08-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="搭建高可用mongodb集群——-深入副本集内部机制"><a href="#搭建高可用mongodb集群——-深入副本集内部机制" class="headerlink" title="搭建高可用mongodb集群—— 深入副本集内部机制"></a>搭建高可用mongodb集群—— 深入副本集内部机制</h1><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在<a href="https://hcldirgit.github.io/2017/08/27/MongoDB/15.%20%E6%90%AD%E5%BB%BA%E9%AB%98%E5%8F%AF%E7%94%A8mongodb%E9%9B%86%E7%BE%A4%E2%80%94%E2%80%94%20%E5%89%AF%E6%9C%AC%E9%9B%86/">搭建高可用mongodb集群—— 副本集</a>介绍了副本集的配置，这篇文章深入研究一下副本集的内部机制。还是带着副本集的问题来看吧！</p>
+<ul>
+<li>副本集故障转移，主节点是如何选举的？能否手动干涉下架某一台主节点。</li>
+<li>官方说副本集数量最好是奇数，为什么？</li>
+<li>mongodb副本集是如何同步的？如果同步不及时会出现什么情况？会不会出现不一致性？</li>
+<li>mongodb的故障转移会不会无故自动发生？什么条件会触发？频繁触发可能会带来系统负载加重？</li>
+</ul>
+<h2 id="Bully算法"><a href="#Bully算法" class="headerlink" title="Bully算法"></a>Bully算法</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mongodb副本集故障转移功能得益于它的选举机制。选举机制采用了Bully算法，可以很方便从分布式节点中选出主节点。一个分布式集群架构中一般都有一个所谓的主节点，可以有很多用途，比如缓存机器节点元数据，作为集群的访问入口等等。主节点有就有吧，我们干嘛要什么Bully算法？要明白这个我们先看看这两种架构：</p>
+<ol>
+<li>指定主节点的架构，这种架构一般都会申明一个节点为主节点，其他节点都是从节点，如我们常用的mysql就是这样。但是这样架构我们在第一节说了整个集群如果主节点挂掉了就得手工操作，上架一个新的主节点或者从从节点恢复数据，不太灵活。</li>
+</ol>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E6%90%AD%E5%BB%BA%E9%AB%98%E5%8F%AF%E7%94%A8mongodb%E9%9B%86%E7%BE%A4%E2%80%94%E2%80%94%20%E6%B7%B1%E5%85%A5%E5%89%AF%E6%9C%AC%E9%9B%86%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6/01.png?raw=true" alt=""></p>
+<ol>
+<li>不指定主节点，集群中的任意节点都可以成为主节点。mongodb也就是采用这种架构，一但主节点挂了其他从节点自动接替变成主节点。如下图：</li>
+</ol>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E6%90%AD%E5%BB%BA%E9%AB%98%E5%8F%AF%E7%94%A8mongodb%E9%9B%86%E7%BE%A4%E2%80%94%E2%80%94%20%E6%B7%B1%E5%85%A5%E5%89%AF%E6%9C%AC%E9%9B%86%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6/02.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;好了，问题就在这个地方，既然所有节点都是一样，一但主节点挂了，怎么选择出来下一个节点是谁来做为主节点呢？这就是Bully算法解决的问题。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;那什么是Bully算法，<strong>Bully算法</strong>是一种协调者（主节点）竞选算法，主要思想是集群的每个成员都可以声明它是主节点并通知其他节点。别的节点可以选择接受这个声称或是拒绝并进入主节点竞争。被其他所有节点接受的节点才能成为主节点。节点按照一些属性来判断谁应该胜出。这个属性可以是一个静态ID，也可以是更新的度量像最近一次事务ID（最新的节点会胜出）。详情请参考<a href="http://blog.nosqlfan.com/html/4139.html" target="_blank" rel="external">NoSQL数据库分布式算法的协调者竞选</a>还有<a href="https://en.wikipedia.org/wiki/Bully_algorithm" target="_blank" rel="external">维基百科的解释</a> 。</p>
+<h2 id="选举"><a href="#选举" class="headerlink" title="选举"></a>选举</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;那mongodb是怎进行选举的呢？官方这么描述:</p>
+<blockquote>
+<p>We use a consensus protocol to pick a primary. Exact details will be spared here but that basic process is:</p>
+<ol>
+<li>get maxLocalOpOrdinal from each server.</li>
+<li>if a majority of servers are not up (from this server’s POV), remain in Secondary mode and stop.</li>
+<li>if the last op time seems very old, stop and await human intervention.</li>
+<li>else, using a consensus protocol, pick the server with the highest maxLocalOpOrdinal as the Primary.</li>
+</ol>
+</blockquote>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;大致翻译过来为使用一致协议选择主节点。基本步骤为：</p>
+<ol>
+<li><p>得到每个服务器节点的最后操作时间戳。每个mongodb都有oplog机制会记录本机的操作，方便和主服务器进行对比数据是否同步还可以用于错误恢复。</p>
+</li>
+<li><p>如果集群中大部分服务器down机了，保留活着的节点都为 secondary状态并停止，不选举了。</p>
+</li>
+<li><p>如果集群中选举出来的主节点或者所有从节点最后一次同步时间看起来很旧了，停止选举等待人来操作。</p>
+</li>
+<li><p>如果上面都没有问题就选择最后操作时间戳最新（保证数据是最新的）的服务器节点作为主节点。</p>
+</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里提到了一个一致协议（其实就是bully算法），这个和数据库的一致性协议还是有些区别，一致协议主要强调的是通过一些机制保证大家达成共识；而一致性协议强调的是操作的顺序一致性，比如同时读写一个数据会不会出现脏数据。一致协议在分布式里有一个经典的算法叫“Paxos算法”，后续再介绍。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上面有个问题，就是所有从节点的最后操作时间都是一样怎么办？就是谁先成为主节点的时间最快就选谁。</p>
+<h2 id="选举触发条件"><a href="#选举触发条件" class="headerlink" title="选举触发条件"></a>选举触发条件</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;选举不是什么时刻都会被触发的，有以下情况可以触发。</p>
+<ol>
+<li><p>初始化一个副本集时。</p>
+</li>
+<li><p>副本集和主节点断开连接，可能是网络问题。</p>
+</li>
+<li><p>主节点挂掉。</p>
+</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;选举还有个前提条件，参与选举的节点数量必须大于副本集总节点数量的一半，如果已经小于一半了所有节点保持只读状态。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;日志将会出现：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">can<span class="string">'t see a majority of the set, relinquishing primary</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;主节点挂掉能否人为干预？答案是肯定的。</p>
+<ol>
+<li>可以通过replSetStepDown命令下架主节点。这个命令可以登录主节点使用</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.adminCommand(&#123;replSetStepDown : 1&#125;)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果杀不掉可以使用强制开关</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.adminCommand(&#123;replSetStepDown : 1, force : <span class="literal">true</span>&#125;)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;或者使用 rs.stepDown(120)也可以达到同样的效果，中间的数字指不能在停止服务这段时间成为主节点，单位为秒。</p>
+<ol>
+<li>设置一个从节点有比主节点有更高的优先级。</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;先查看当前集群中优先级，通过rs.conf()命令，默认优先级为1是不显示的，这里标示出来。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">rs.conf();</div><div class="line">&#123;</div><div class="line">        <span class="string">"_id"</span> : <span class="string">"rs0"</span>,</div><div class="line">        <span class="string">"version"</span> : 9,</div><div class="line">        <span class="string">"members"</span> : [</div><div class="line">                &#123;</div><div class="line">                        <span class="string">"_id"</span> : 0,</div><div class="line">                        <span class="string">"host"</span> : <span class="string">"192.168.1.136:27017"</span> &#125;,</div><div class="line">                &#123;</div><div class="line">                        <span class="string">"_id"</span> : 1,</div><div class="line">                        <span class="string">"host"</span> : <span class="string">"192.168.1.137:27017"</span> &#125;,</div><div class="line">                &#123;</div><div class="line">                        <span class="string">"_id"</span> : 2,</div><div class="line">                        <span class="string">"host"</span> : <span class="string">"192.168.1.138:27017"</span> &#125;</div><div class="line">        ]</div><div class="line">        &#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们来设置，让id为1的主机可以优先成为主节点。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">cfg = rs.conf()</div><div class="line">cfg.members[0].priority = 1</div><div class="line">cfg.members[1].priority = 2</div><div class="line">cfg.members[2].priority = 1</div><div class="line">rs.reconfig(cfg)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后再执行rs.conf()命令查看优先级已经设置成功，主节点选举也会触发。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">        <span class="string">"_id"</span> : <span class="string">"rs0"</span>,</div><div class="line">        <span class="string">"version"</span> : 9,</div><div class="line">        <span class="string">"members"</span> : [</div><div class="line">                &#123;</div><div class="line">                        <span class="string">"_id"</span> : 0,</div><div class="line">                        <span class="string">"host"</span> : <span class="string">"192.168.1.136:27017"</span> &#125;,</div><div class="line">                &#123;</div><div class="line">                        <span class="string">"_id"</span> : 1,</div><div class="line">                        <span class="string">"host"</span> : <span class="string">"192.168.1.137:27017"</span>,</div><div class="line">                        <span class="string">"priority"</span> : 2</div><div class="line">                 &#125;,</div><div class="line">                 &#123;</div><div class="line">                        <span class="string">"_id"</span> : 2,</div><div class="line">                        <span class="string">"host"</span> : <span class="string">"192.168.1.138:27017"</span> &#125;</div><div class="line">                 ]</div><div class="line">                 &#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果不想让一个从节点成为主节点可以怎么操作？</p>
+<ul>
+<li>使用rs.freeze(120)冻结指定的秒数不能选举成为主节点。</li>
+<li>按照上一篇设置节点为Non-Voting类型。</li>
+</ul>
+<ol>
+<li>当主节点不能和大部分从节点通讯。把主机节点网线拔掉，嘿嘿：）</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;优先级还可以这么用，如果我们不想设置什么hidden节点，就用secondary类型作为备份节点也不想让他成为主节点怎么办？看下图，共三个节点分布在两个数据中心，数据中心2的节点设置优先级为0不能成为主节点，但是可以参与选举、数据复制。架构还是很灵活吧！</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E6%90%AD%E5%BB%BA%E9%AB%98%E5%8F%AF%E7%94%A8mongodb%E9%9B%86%E7%BE%A4%E2%80%94%E2%80%94%20%E6%B7%B1%E5%85%A5%E5%89%AF%E6%9C%AC%E9%9B%86%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6/03.png?raw=true" alt=""></p>
+<h2 id="奇数"><a href="#奇数" class="headerlink" title="奇数"></a>奇数</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;官方推荐副本集的成员数量为奇数，最多12个副本集节点，最多7个节点参与选举。最多12个副本集节点是因为没必要一份数据复制那么多份，备份太多反而增加了网络负载和拖慢了集群性能；而最多7个节点参与选举是因为内部选举机制节点数量太多就会导致1分钟内还选不出主节点，凡事只要适当就好。这个“12”、“7”数字还好，通过他们官方经过性能测试定义出来可以理解。具体还有哪些限制参考官方文档<a href="https://docs.mongodb.com/manual/reference/limits/" target="_blank" rel="external">《 MongoDB Limits and Thresholds 》</a>但是这里一直没搞懂整个集群为什么要奇数，通过测试集群的数量为偶数也是可以运行的，参考这个文章 <a href="https://hcldirgit.github.io/2017/08/27/MongoDB/13.%20MongoDB%E2%80%9C%E5%85%B3%E4%BA%8EReplSet%E6%88%90%E5%91%98%E5%BF%85%E9%A1%BB%E4%B8%BA%E5%A5%87%E6%95%B0%E2%80%9D%E7%9A%84%E8%AF%B4%E6%B3%95%EF%BC%8C%E5%85%B6%E5%AE%9E%E6%88%90%E5%91%98%E8%8A%82%E7%82%B9%E6%95%B0%E7%9B%AE%E5%8F%AF%E4%BB%A5%E4%B8%BA%E5%81%B6%E6%95%B0%E7%9A%84/">MongoDB “关于ReplSet成员必须为奇数”的说法，其实成员节点数目可以为偶数的</a>。后来突然看了一篇stackoverflow的文章终于顿悟了，mongodb本身设计的就是一个可以跨IDC的分布式数据库，所以我们应该把它放到大的环境来看。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;假设四个节点被分成两个IDC，每个IDC各两台机器，如下图。但这样就出现了个问题，如果两个IDC网络断掉，这在广域网上很容易出现的问题，在上面选举中提到只要主节点和集群中大部分节点断开链接就会开始一轮新的选举操作，不过mongodb副本集两边都只有两个节点，但是选举要求参与的节点数量必须大于一半，这样所有集群节点都没办法参与选举，只会处于只读状态。但是如果是奇数节点就不会出现这个问题，假设3个节点，只要有2个节点活着就可以选举，5个中的3个，7个中的4个。。。</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E6%90%AD%E5%BB%BA%E9%AB%98%E5%8F%AF%E7%94%A8mongodb%E9%9B%86%E7%BE%A4%E2%80%94%E2%80%94%20%E6%B7%B1%E5%85%A5%E5%89%AF%E6%9C%AC%E9%9B%86%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6/04.png?raw=true" alt=""></p>
+<h2 id="心跳"><a href="#心跳" class="headerlink" title="心跳"></a>心跳</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;综上所述，整个集群需要保持一定的通信才能知道哪些节点活着哪些节点挂掉。mongodb节点会向副本集中的其他节点每两秒就会发送一次pings包，如果其他节点在10秒钟之内没有返回就标示为不能访问。每个节点内部都会维护一个状态映射表，表明当前每个节点是什么角色、日志时间戳等关键信息。如果是主节点，除了维护映射表外还需要检查自己能否和集群中内大部分节点通讯，如果不能则把自己降级为secondary只读节点。</p>
+<h2 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;副本集同步分为初始化同步和keep复制。初始化同步指全量从主节点同步数据，如果主节点数据量比较大同步时间会比较长。而keep复制指初始化同步过后，节点之间的实时同步一般是增量同步。初始化同步不只是在第一次才会被处罚，有以下两种情况会触发：</p>
+<ol>
+<li><p>secondary第一次加入，这个是肯定的。</p>
+</li>
+<li><p>secondary落后的数据量超过了oplog的大小，这样也会被全量复制。</p>
+</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;那什么是oplog的大小？前面说过oplog保存了数据的操作记录，secondary复制oplog并把里面的操作在secondary执行一遍。但是oplog也是mongodb的一个集合，保存在 local.oplog.rs里，但是这个oplog是一个capped collection也就是固定大小的集合，新 数据加入超过集合的大小会覆盖。所以这里需要注意，跨IDC的复制要设置合适的oplogSize，避免在生产环境经常产生全量复制。oplogSize 可以通过–oplogSize设置大小，对于linux 和windows 64位，oplog size默认为剩余磁盘空间的5%。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;同步也并非只能从主节点同步，假设集群中3个节点，节点1是主节点在IDC1，节点2、节点3在IDC2，初始化节点2、节点3会从节点1同步数据。后面节点2、节点3会使用就近原则从当前IDC的副本集中进行复制，只要有一个节点从IDC1的节点1复制数据。<br>设置同步还要注意以下几点：</p>
+<ol>
+<li><p>secondary不会从delayed和hidden成员上复制数据。</p>
+</li>
+<li><p>只要是需要同步，两个成员的buildindexes必须要相同无论是否是true和false。buildindexes主要用来设置是否这个节点的数据用于查询，默认为true。</p>
+</li>
+<li><p>如果同步操作30秒都没有反应，则会重新选择一个节点进行同步。</p>
+</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;到此，本章前面提到的问题全部解决了，不得不说mongodb的设计还真是强大！</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;后续继续解决上一节这几个问题：</p>
+<ul>
+<li>主节点挂了能否自动切换连接？目前需要手工切换。</li>
+<li>主节点的读写压力过大如何解决？</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;还有这两个问题后续解决：</p>
+<ul>
+<li>从节点每个上面的数据都是对数据库全量拷贝，从节点压力会不会过大？</li>
+<li>数据压力大到机器支撑不了的时候能否做到自动扩展？</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MongoDB/" rel="tag"># MongoDB</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/27/MongoDB/15. 搭建高可用mongodb集群—— 副本集/" rel="next" title="搭建高可用mongodb集群—— 副本集">
+                <i class="fa fa-chevron-left"></i> 搭建高可用mongodb集群—— 副本集
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">717</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#搭建高可用mongodb集群——-深入副本集内部机制"><span class="nav-number">1.</span> <span class="nav-text">搭建高可用mongodb集群—— 深入副本集内部机制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Bully算法"><span class="nav-number">1.1.</span> <span class="nav-text">Bully算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#选举"><span class="nav-number">1.2.</span> <span class="nav-text">选举</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#选举触发条件"><span class="nav-number">1.3.</span> <span class="nav-text">选举触发条件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#奇数"><span class="nav-number">1.4.</span> <span class="nav-text">奇数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#心跳"><span class="nav-number">1.5.</span> <span class="nav-text">心跳</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#同步"><span class="nav-number">1.6.</span> <span class="nav-text">同步</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Shell 练习/shell 练习3/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Shell 练习/shell 练习7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -306,7 +306,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Shell 练习/shell 练习3/" itemprop="url">shell 练习3</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Shell 练习/shell 练习7/" itemprop="url">shell 练习7</a></h1>
         
 
         <div class="post-meta">
@@ -355,12 +355,11 @@
       
         
           
-          ps 可以查看进程的内存占用大小，写一个脚本计算一下所有进程所占用内存大小的和。（提示，使用ps aux 列出所有进程，过滤出RSS那列，然后求和）
-1234567#! /bin/bashsum=0for mem in `ps aux |awk '&#123;print $6&#125;' |grep -v 'RSS'`do    sum=$[$sum+$mem]doneecho "The tot
+          设计一个shell脚本来备份数据库，首先在本地服务器上保存一份数据，然后再远程拷贝一份，本地保存一周的数据，远程保存一个月。&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;假定，我们知道mysql root账号的密码，要备份的库为discuz，本地备份目录为/bak/mysql, 远程服务器ip为192.168.123.30，远程提供了一个rsync
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Shell 练习/shell 练习3/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Shell 练习/shell 练习7/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -406,7 +405,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Squid/6. Squid优化/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Shell 练习/shell 练习2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -425,7 +424,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Squid/6. Squid优化/" itemprop="url">Squid优化</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Shell 练习/shell 练习2/" itemprop="url">shell 练习2</a></h1>
         
 
         <div class="post-meta">
@@ -474,15 +473,255 @@
       
         
           
-          Squid优化Squid优化(一)&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;几个SQUID重要参数：
+          抓包 ip 访问日志 /var/log/1.log 然后进行系统分析：要求统计出每个 IP 的访问量有多少？提示，先 awk 过滤出 ip ，然后进行排序，统计重复数
+12#!/bin/bashawk '&#123;print $1&#125;' /var/log/1.log |sort -n|uniq -c|sort-rn
+          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/10/Shell 练习/shell 练习2/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
 
-maximum_object_size 是 能cache最大的文件大小.对应wmv,rm文件,建议设置为32768 kB
-maximum_object_size_in_memory 是在内存中cache的最大文件大小.
-cache_mem 是
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Shell 练习/shell 练习8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/10/Shell 练习/shell 练习8/" itemprop="url">shell 练习8</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          需求： 两台web:A和B机器，其中一台B只打算跑附件（大多为图片），另一台A跑除了附件外的其他东西。其中附件会在A上生成，默认附件会通过A机器访问，但当我们更改某个附件的标志位时，那么附件则会跑到B上去访问。 假如提供给我们了将要在B上跑的附件列表和更改这些附件的标志位的一个sql文件，那么我们如何做呢？
+12345678910111213141516171819202122232425#! /
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Squid/6. Squid优化/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Shell 练习/shell 练习8/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Shell 练习/shell 练习15/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/10/Shell 练习/shell 练习15/" itemprop="url">shell 练习15</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          用shell脚本实现如下需求：添加user_00 - user_09 10个用户，并且给他们设置一个随机密码，密码要求10位包含大小写字母以及数字，注意需要把每个用户的密码记录到一个日志文件里。
+提示： 
+
+随机密码使用命令 mkpasswd
+在脚本中给用户设置密码，可以使用echo 然后管道passwd命令
+
+123456789#!/bin/bash#add user and set passw
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/10/Shell 练习/shell 练习15/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1241,249 +1480,6 @@ Bash also interprets a number of multi-character options.
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Shell 练习/shell 练习14/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="失落的乐章">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/0.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="失落的乐章">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/10/Shell 练习/shell 练习14/" itemprop="url">shell 练习14</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
-                2017-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          写一个脚本实现如下功能：       输入一个数字，然后运行对应的一个命令。显示命令如下：*cmd meau**  1—date 2–ls 3–who 4–pwd当输入1时，会运行date, 输入2时运行ls, 依此类推。
-1234567891011121314151617181920#!/bin/bashecho "*cmd meau**  1--date  2--ls  3--who  4--
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Shell 练习/shell 练习14/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Shell 练习/shell 练习15/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="失落的乐章">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/0.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="失落的乐章">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/10/Shell 练习/shell 练习15/" itemprop="url">shell 练习15</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
-                2017-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          用shell脚本实现如下需求：添加user_00 - user_09 10个用户，并且给他们设置一个随机密码，密码要求10位包含大小写字母以及数字，注意需要把每个用户的密码记录到一个日志文件里。
-提示： 
-
-随机密码使用命令 mkpasswd
-在脚本中给用户设置密码，可以使用echo 然后管道passwd命令
-
-123456789#!/bin/bash#add user and set passw
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Shell 练习/shell 练习15/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1533,7 +1529,7 @@ Bash also interprets a number of multi-character options.
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">716</span>
+                <span class="site-state-item-count">717</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
