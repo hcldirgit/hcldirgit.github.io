@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/29. apache 日志切割/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/46. apache几种限制ip的方法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -306,7 +306,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/29. apache 日志切割/" itemprop="url">apache 日志切割</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/46. apache几种限制ip的方法/" itemprop="url">apache几种限制ip的方法</a></h1>
         
 
         <div class="post-meta">
@@ -355,11 +355,18 @@
       
         
           
-          apache 日志切割&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里的日志指的是访问日志，没访问一次网站，就会记录若干条日志。前提是已经配置了日志，日志如果不去管理，时间长了日志文件会越来越大，这个时候这个日志是不可能 cat、less、 以及 vim 的，head 或 tail 还可以。如何避免产生这么大的日志文件？其实 apache 有相关
+          apache几种限制ip的方法
+禁止访问某些文件/目录增加Files选项来控制，比如要不允许访问 .inc 扩展名的文件，保护php类库：
+
+1234&lt;Files ~ "\.inc$"&gt; Order allow,deny Deny from all&lt;/Files&gt;
+
+禁止访问某些指定的目录：（可以用  来进行正则匹配）
+
+1234&lt;Directory ~ "^/var
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/29. apache 日志切割/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/46. apache几种限制ip的方法/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -405,7 +412,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/26.  HTTP返回码中301与302的区别/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/47. httpd-2.4.x 版本客户端访问控制/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -424,7 +431,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/26.  HTTP返回码中301与302的区别/" itemprop="url">HTTP返回码中301与302的区别</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/47. httpd-2.4.x 版本客户端访问控制/" itemprop="url">httpd-2.4.x 版本客户端访问控制</a></h1>
         
 
         <div class="post-meta">
@@ -473,12 +480,13 @@
       
         
           
-          HTTP返回码中301与302的区别一．官方说法&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;301，302 都是HTTP状态的编码，都代表着某个URL发生了转移，不同之处在于： 
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;301 redirect: 301 代表永久性转移(Permanentl
+          httpd-2.4.x 版本客户端访问控制&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在apache2.4版本之前做客户端访问控制,是用Allow Deny Order指令做访问控制的,而在2.4的版本上是用的用法跟之前的版本大不相同,如下
+
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;2.2上
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/26.  HTTP返回码中301与302的区别/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/47. httpd-2.4.x 版本客户端访问控制/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -524,7 +532,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/25. Apache域名301跳转/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/49. apache 禁止解析 php/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -543,7 +551,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/25. Apache域名301跳转/" itemprop="url">Apache域名301跳转</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/49. apache 禁止解析 php/" itemprop="url">apache 禁止解析 php</a></h1>
         
 
         <div class="post-meta">
@@ -592,12 +600,12 @@
       
         
           
-          Apache域名301跳转&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一个站点难免会有多个域名，而多个域名总得有一个主次，比如一个网站有两个域名访问，但不管用哪个域名访问，最终都会跳到其中固定的一个域名上去。这个行为就叫域名跳转， 301 只是一个状态码，跳转除了301 还有 302.如何配置跳转
-1[root@lamp ~]# vim /usr
+          apache 禁止解析 php&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;某个目录下禁止解析 php ，这个很有用，做网站安全的时候，这个用得很多，比如某些目录可以上传文件，为了避免上传的文件有木马，所以我们禁止这个目录下面的访问解析 php。
+12345678910[root@lamp ~]# vim /usr/local/apache2/co
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/25. Apache域名301跳转/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/49. apache 禁止解析 php/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -643,7 +651,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/24. Apache默认虚拟主机/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/48. 针对访问uri 限制ip/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -662,7 +670,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/24. Apache默认虚拟主机/" itemprop="url">Apache默认虚拟主机</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/48. 针对访问uri 限制ip/" itemprop="url">针对访问uri 限制ip</a></h1>
         
 
         <div class="post-meta">
@@ -711,12 +719,13 @@
       
         
           
-          Apache默认虚拟主机&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为了防止其他不是自己的域名解析到自己的IP,我们可以通过更改虚拟主机文件限制其他域名。我们创建的新的虚拟主机，创建一个新的空目录将其权限设置为600。这样只有我们在配置文件中定义的域名在能访问。命令如下：
-1[root@lamp ~]# vim /usr/local/apache
+          针对访问uri 限制ip&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在虚拟主机配置文件中加入如下字段：
+1234Order deny,allowDeny from allAllow from 127.0.0.1Allow from  2.2.2.2
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;假
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/24. Apache默认虚拟主机/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/48. 针对访问uri 限制ip/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -762,7 +771,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/22. htpasswd 默认创建的密码只有前8位有效/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/1. Apache编译安装/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -781,7 +790,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/22. htpasswd 默认创建的密码只有前8位有效/" itemprop="url">htpasswd 默认创建的密码只有前8位有效</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/1. Apache编译安装/" itemprop="url">Apache编译安装</a></h1>
         
 
         <div class="post-meta">
@@ -830,14 +839,12 @@
       
         
           
-          htpasswd 默认创建的密码只有前8位有效&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;按照如下命令创建密码
-1htpasswd -c .htpasswd  user1
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;假如，密码为123456789
-&#160;&#160;&#160;&#160;
+          Apache编译安装&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Apache也需要到官网下载合适的版本，目前使用较多的版本为2.0或者2.2建议下载2.2版本。Apache官网下载地址 实际上，我们所谓的 apache ，真正的名字叫 httpd 。
+1.下载12[root@localhost mysql]# cd /usr/local/src/
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/22. htpasswd 默认创建的密码只有前8位有效/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/1. Apache编译安装/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -883,7 +890,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/23. httpd.conf文件如何配置KeepAlive/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/10. Apache模块动态加载和静态加载/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -902,7 +909,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/23. httpd.conf文件如何配置KeepAlive/" itemprop="url">httpd.conf文件如何配置KeepAlive</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/10. Apache模块动态加载和静态加载/" itemprop="url">Apache模块动态加载和静态加载</a></h1>
         
 
         <div class="post-meta">
@@ -951,12 +958,12 @@
       
         
           
-          httpd.conf文件如何配置KeepAlive&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;KeepAlive  意思为是否长连接。 后边可以设置 On 或者 Off
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;简单理解就是这样： 如果设置成On，那么当apache完成用户的请求后，那么apa
+          Apache模块动态加载和静态加载&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以前对apache研究的不够深刻，甚至连模块的动态以及静态都搞不清楚。查了资料，基本上明了。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;静态，顾名思义就是apache本身不用干什么，不用动就可以使用模块。这就需要把模
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/23. httpd.conf文件如何配置KeepAlive/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/10. Apache模块动态加载和静态加载/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1002,7 +1009,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/28. apache 的域名重定向/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/11. apache mod_proxy 扩展模块安装/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1021,7 +1028,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/28. apache 的域名重定向/" itemprop="url">apache 的域名重定向</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/11. apache mod_proxy 扩展模块安装/" itemprop="url">apache mod_proxy 扩展模块安装</a></h1>
         
 
         <div class="post-meta">
@@ -1070,13 +1077,12 @@
       
         
           
-          apache 的域名重定向&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需求：要把访问域名 www.domain1.com 的域名转发到 www.domain2.com 上
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;实现：
-&#160;&#160;&#160;&#160;&#160;&#160;
+          apache mod_proxy 扩展模块安装&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;现在用到apache的扩展功能了，可是在第一次编译的时候，没有编译进这个模块去？怎么办呢，可以通过扩展的方式编译一下。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下载相同版本的apache源代码，注意，一
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/28. apache 的域名重定向/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/11. apache mod_proxy 扩展模块安装/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1122,7 +1128,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/21. apache如何在虚拟主机中实现用户验证/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/16. mod_usertrack.so 的扩展安装以及使用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1141,7 +1147,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/21. apache如何在虚拟主机中实现用户验证/" itemprop="url">apache如何在虚拟主机中实现用户验证</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/16. mod_usertrack.so 的扩展安装以及使用/" itemprop="url">mod_usertrack.so 的扩展安装以及使用</a></h1>
         
 
         <div class="post-meta">
@@ -1190,14 +1196,11 @@
       
         
           
-          apache如何在虚拟主机中实现用户验证&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;虚拟主机配置文件中，需要加入
-1AllowOverride AuthConfig
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后在虚拟主机的主目录，即DocumentRoot  目录下
-1vim   /data
+          mod_usertrack.so 的扩展安装以及使用&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mod_usertrack.so 是在用户首次来到当前网站的时候给用户种下一个唯一的cookie，这个cookie是用户首次来当前网站的IP地址加上一个随机字符串组成的。用这个IP加随机字符串来标识用户的唯一性。这样就可以区分同一个IP下的不同用户了。
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/21. apache如何在虚拟主机中实现用户验证/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/16. mod_usertrack.so 的扩展安装以及使用/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1243,7 +1246,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/2. Apache 的 httpd.conf 详解/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/13. apache的server status 功能/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1262,7 +1265,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/2. Apache 的 httpd.conf 详解/" itemprop="url">Apache 的 httpd.conf 详解</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/13. apache的server status 功能/" itemprop="url">apache的server status 功能</a></h1>
         
 
         <div class="post-meta">
@@ -1311,12 +1314,13 @@
       
         
           
-          Apache 的 httpd.conf 详解1ServerRoot “/usr/local“
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;ServerRoot用于指定守护进程httpd的运行目录，httpd在启动之后将自动将进程的当前目录改变为这个目录，因此如果设置文件中指定的文件或目录是相对路径，那么真实路径就位于这个ServerR oot定义
+          apache的server status 功能&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先要查看，你的apache是否有相应的模块
+1ls  /usr/local/apache2/modules/mod_status.so
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果没有，请重新编译你的
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/2. Apache 的 httpd.conf 详解/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/13. apache的server status 功能/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1362,7 +1366,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/20. apache options参数/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/14. apache的扩展模块安装/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1381,7 +1385,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/20. apache options参数/" itemprop="url">apache options参数</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/14. apache的扩展模块安装/" itemprop="url">apache的扩展模块安装</a></h1>
         
 
         <div class="post-meta">
@@ -1430,11 +1434,13 @@
       
         
           
-          apache options参数&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;指令控制了在特定目录中将使用哪些服务器特性。Options属性有一个非常特别的功能： 如果你没有用“+”或者“-”来增加或者减少一个功能的时候，每个之前定义的Options的所有功能都会被取消， 直到你又为它指定一些功能。所以options属性在整体设置和虚拟主机设置的是
+          apache的扩展模块安装&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个用到了apache的扩展工具  apxs
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在使用这个功能之前，请先确认是否已经加载了 mod_so 模块，方法是：
+1/usr/local/apache2/bin/httpd -
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/20. apache options参数/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/14. apache的扩展模块安装/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1520,7 +1526,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">744</span>
+                <span class="site-state-item-count">749</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

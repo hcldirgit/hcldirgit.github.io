@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/6. MySQL调优/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/29. nginx中location的规则/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -306,7 +306,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/6. MySQL调优/" itemprop="url">MySQL调优</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Nginx/29. nginx中location的规则/" itemprop="url">nginx中location的规则</a></h1>
         
 
         <div class="post-meta">
@@ -355,16 +355,14 @@
       
         
           
-          MySQL调优&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MySQL调优可以从几个方面来做：
-架构层：&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;做从库，实现读写分离；
-系统层次：
-增加内存；
-给磁盘做raid0或者raid5以增加磁盘的读写速度；
-可以重新挂载磁盘，并加上noatime参数，这
+          nginx中location的规则语法规则1location [=|~|~*|^~] /uri/ &#123; … &#125;
+
+= 开头表示精确匹配
+^~ 开头表示uri以某个常规字符串开头，不是正则匹配。#^~表示普通字符匹配，如果该选项匹配，只匹配该选项，不匹配别的选项，一般用来匹配目录。nginx不对url做编码，因此请求为/static/20%/aa，可以被规则^~ /static/ 
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/6. MySQL调优/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Nginx/29. nginx中location的规则/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -410,7 +408,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/10. nginx配置详解/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/5. mod_php和mod_fastcgi和php-fpm的介绍,对比,和性能数据/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -429,7 +427,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Nginx/10. nginx配置详解/" itemprop="url">nginx配置详解</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Nginx/5. mod_php和mod_fastcgi和php-fpm的介绍,对比,和性能数据/" itemprop="url">mod_php和mod_fastcgi和php-fpm的介绍,对比,和性能数据</a></h1>
         
 
         <div class="post-meta">
@@ -478,11 +476,11 @@
       
         
           
-          nginx配置详解12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697989910
+          mod_php和mod_fastcgi和php-fpm的介绍,对比,和性能数据什么是mod_php和mod_fastcgi&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在lamp体系中，对于apache端php的配置，我们最常用的就是mod_php, 它把PHP做为APACHE一个内置模块。让apache http服务器本身能够支持PHP语言，不需
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Nginx/10. nginx配置详解/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Nginx/5. mod_php和mod_fastcgi和php-fpm的介绍,对比,和性能数据/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -528,7 +526,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/14. nginx用户认证/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/6. 概念了解：CGI，FastCGI，PHP-CGI与PHP-FPM/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -547,7 +545,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Nginx/14. nginx用户认证/" itemprop="url">nginx用户认证</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Nginx/6. 概念了解：CGI，FastCGI，PHP-CGI与PHP-FPM/" itemprop="url">概念了解：CGI，FastCGI，PHP-CGI与PHP-FPM</a></h1>
         
 
         <div class="post-meta">
@@ -596,13 +594,12 @@
       
         
           
-          nginx用户认证&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;nginx 如何做用户认证，首先需要安装 apache ，也可以使用 yum install -y httpd 安装。
-1[root@lnmp ~]# yum install -y httpd
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#16
+          概念了解：CGI，FastCGI，PHP-CGI与PHP-FPMCGI&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;CGI全称是“公共网关接口”(Common Gateway Interface)，HTTP服务器与你的或其它机器上的程序进行“交谈”的一种工具，其程序须运行在网络服务器上。
+&#160;&#160;&#160;&#160;&#160;
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Nginx/14. nginx用户认证/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Nginx/6. 概念了解：CGI，FastCGI，PHP-CGI与PHP-FPM/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -648,7 +645,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/11. php-fpm配置文件/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/4. Nginx为什么比Apache Httpd高效：原理篇/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -667,7 +664,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Nginx/11. php-fpm配置文件/" itemprop="url">php-fpm配置文件 高并发参数配置及linux内核参数优化</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Nginx/4. Nginx为什么比Apache Httpd高效：原理篇/" itemprop="url">Nginx为什么比Apache Httpd高效：原理篇</a></h1>
         
 
         <div class="post-meta">
@@ -716,12 +713,12 @@
       
         
           
-          php-fpm配置文件 高并发参数配置及linux内核参数优化&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;  之前给出了 php-fpm.conf 的内容，下面给出一个模版，配置如下
-12345678910111213141516[global]pid = /usr/local/php/var/run/php-fpm.piderror_log =
+          Nginx为什么比Apache Httpd高效：原理篇&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Nginx才短短几年，就拿下了web服务器大笔江山，众所周知，Nginx在处理大并发静态请求方面，效率明显高于httpd，甚至能轻松解决C10K问题。下面我们就来聊聊Web服务器背后的一些原理。
+一、进程、线程？&#160;&#160;&#160;&
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Nginx/11. php-fpm配置文件/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Nginx/4. Nginx为什么比Apache Httpd高效：原理篇/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -767,7 +764,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/13. LNMP安装 Discuz！/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/31. nginx的负载均衡集群/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -786,7 +783,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Nginx/13. LNMP安装 Discuz！/" itemprop="url">LNMP安装 Discuz！</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Nginx/31. nginx的负载均衡集群/" itemprop="url">nginx的负载均衡和反向代理</a></h1>
         
 
         <div class="post-meta">
@@ -835,11 +832,11 @@
       
         
           
-          LNMP安装 Discuz！1.下载 discuz！123456[root@lnmp ~]# mkdir /data/www[root@lnmp ~]# cd /data/www[root@lnmp www]# wget http://download.comsenz.com/DiscuzX/3.2/Discuz_X3.2_SC_GBK.zip[root@lnmp www]# unzip Disc
+          nginx的负载均衡集群&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;之前提到过的 nginx 的负载均衡功能，实际上和 nginx 的代理是同一个功能，只是把之前代理一台机器改为代理多台机器而已。 nginx 的负载均衡和 lvs 相比， nginx 属于更该机的应用层，不牵扯到 IP 和内核的改动， 它只是单纯地把用户的请求转发到后面的机器上，
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Nginx/13. LNMP安装 Discuz！/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Nginx/31. nginx的负载均衡集群/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -885,7 +882,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/9. mysql的root密码重置/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/37. 数据库死锁原理及解决思路/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -904,7 +901,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/9. mysql的root密码重置/" itemprop="url">mysql的root密码重置</a></h1>
+                <a class="post-title-link" href="/2017/08/10/MySQL/37. 数据库死锁原理及解决思路/" itemprop="url">数据库死锁原理及解决思路</a></h1>
         
 
         <div class="post-meta">
@@ -953,13 +950,132 @@
       
         
           
-          mysql的root密码重置mysql设置密码1[root@lamp ~]# mysqladmin -uroot password 'yanyi'
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意：如果mysql已经有密码，该命令要加上 -p
-1[root@lamp ~]# mysqladmin -uroot -pyanyi password '
+          数据库死锁原理及解决思路一、什么是锁？&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;数据库是一个多用户使用的共享资源。当多个用户并发地存取数据时，在数据库中就会产生多个事务同时存取同一数据的情况。若对并发操作不加控制就可能会读取和存储不正确的数据，破坏数据库的一致性。
+&#160;&#160;&#160;&#160;&#160;&#160;&#16
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/9. mysql的root密码重置/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/MySQL/37. 数据库死锁原理及解决思路/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/5. MySQL配置讲解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/10/MySQL/5. MySQL配置讲解/" itemprop="url">MySQL配置讲解</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          MySQL配置讲解&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mysql 安装好后，是从安装包的 support-files 里面复制过来一个模板配置文件，默认 mysql 配置文件是在 /etc/my.cnf 下，其实这个路径或者文件名字是可以修改的，在启动脚本中修改。
+12[mysqld]socket = /tmp/mysql.sock
+&#
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/10/MySQL/5. MySQL配置讲解/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1124,6 +1240,129 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/6. MySQL调优/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/10/MySQL/6. MySQL调优/" itemprop="url">MySQL调优</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          MySQL调优&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MySQL调优可以从几个方面来做：
+架构层：&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;做从库，实现读写分离；
+系统层次：
+增加内存；
+给磁盘做raid0或者raid5以增加磁盘的读写速度；
+可以重新挂载磁盘，并加上noatime参数，这
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/10/MySQL/6. MySQL调优/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/8. 关于mysql一些优化心得/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1234,248 +1473,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/NFS/1. nfs部署和优化/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="失落的乐章">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/0.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="失落的乐章">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/10/NFS/1. nfs部署和优化/" itemprop="url">nfs部署和优化</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
-                2017-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          nfs部署和优化&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;NFS = network file system
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;NFS服务比较常用，用于在网络上共享储存。
-服务端配置 NFS&#160;&#160;&#160;&#160;&#160;&#160;&#1
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/NFS/1. nfs部署和优化/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/12. LNMP常见的502错误/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="失落的乐章">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/0.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="失落的乐章">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/10/Nginx/12. LNMP常见的502错误/" itemprop="url">LNMP常见的502错误</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
-                2017-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          LNMP常见的502错误&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;对于 LNMP 来说，最常见的问题就是502问题了。配置完环境后，一访问网站直接提示“502 Bad Gateway”。出现502的原因大致分为两种
-
-配置错误
-
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;因为nginx找不到
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Nginx/12. LNMP常见的502错误/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1525,7 +1522,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">744</span>
+                <span class="site-state-item-count">749</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
