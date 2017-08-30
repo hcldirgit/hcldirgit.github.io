@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/5. MySQL配置讲解/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/22. nginx禁止指定user_agent/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -306,7 +306,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/5. MySQL配置讲解/" itemprop="url">MySQL配置讲解</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Nginx/22. nginx禁止指定user_agent/" itemprop="url">nginx禁止指定user_agent</a></h1>
         
 
         <div class="post-meta">
@@ -355,13 +355,13 @@
       
         
           
-          MySQL配置讲解&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mysql 安装好后，是从安装包的 support-files 里面复制过来一个模板配置文件，默认 mysql 配置文件是在 /etc/my.cnf 下，其实这个路径或者文件名字是可以修改的，在启动脚本中修改。
-12[mysqld]socket = /tmp/mysql.sock
-&#
+          nginx禁止指定user_agent&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;具体配置如下：
+123456location / &#123; if ($http_user_agent ~ 'curl|baidu|111111')     &#123;         return 403;     &#125; &#125;
+&#160;&#
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/5. MySQL配置讲解/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Nginx/22. nginx禁止指定user_agent/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -407,7 +407,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/34. 查看mysql主从复制延迟和数据中断/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/23. nginx代理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -426,7 +426,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/34. 查看mysql主从复制延迟和数据中断/" itemprop="url">查看mysql主从复制延迟和数据中断</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Nginx/23. nginx代理/" itemprop="url">nginx代理</a></h1>
         
 
         <div class="post-meta">
@@ -475,12 +475,13 @@
       
         
           
-          查看mysql主从复制延迟和数据中断&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看mySQL延迟的方法，查看了多个案例，大家众说纷纭，意见差不多一致。如下也是我参考别人经验做的一些测试，希望能检测到mysql复制延迟、数据中断。
-方法一：查看Seconds_Behind_Master&#160;&#160;&#160;&#160;&#160;&
+          nginx代理1[root@lnmp ~]# vim /usr/local/nginx/conf/vhosts/proxy.conf
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加入内容：
+123456789101112server &#123;    listen 80;    server_name www.baidu.com;    loc
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/34. 查看mysql主从复制延迟和数据中断/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Nginx/23. nginx代理/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -526,7 +527,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/23. mysql主从复制/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/24. Nginx的rewrite应用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -545,7 +546,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/23. mysql主从复制/" itemprop="url">mysql 主从复制</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Nginx/24. Nginx的rewrite应用/" itemprop="url">Nginx的rewrite应用</a></h1>
         
 
         <div class="post-meta">
@@ -594,11 +595,12 @@
       
         
           
-          mysql主从复制mysql复制&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MySQL复制支持单向，异步复制。通过一台主服务器将更新写入二进制日志文件，并维护文件的一个索引以跟踪日志循环。这些日志可以记录发送到从服务器的更新。当一个从服务器连接主服务器时，它通知主服务器从服务器在日志中读取的最后一次成功更新的位置。从服务器接收从那时起发生的任何更
+          Nginx的rewrite应用&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Rewrite主要的功能是实现URL重写，Nginx 的 Rewrite 规则采用 PCRE Perl 兼容正则表达式的语法进行规则匹配，如相使用 Nginx 的 Rewrite 功能，在编译 Nginx 前要编译安装 PCRE 库。
+一、Nginx使用if进行条件匹配&#
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/23. mysql主从复制/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Nginx/24. Nginx的rewrite应用/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -644,7 +646,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/31. mysql5.1的RBR和SBR的优缺点/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/25. nginx代理--根据访问的目录来区分后端的web/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -663,7 +665,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/31. mysql5.1的RBR和SBR的优缺点/" itemprop="url">mysql5.1的RBR和SBR的优缺点</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Nginx/25. nginx代理--根据访问的目录来区分后端的web/" itemprop="url">nginx代理--根据访问的目录来区分后端的web</a></h1>
         
 
         <div class="post-meta">
@@ -712,13 +714,12 @@
       
         
           
-          mysql5.1的RBR和SBR的优缺点&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MySQL 5.1 中，在复制方面的改进就是引进了新的复制技术：基于行的复制。
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;简言之，这种新技术就是关注表中发生变化的记录，而非以前的照抄 binlog 模式。
-&#
+          nginx代理–根据访问的目录来区分后端的web&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需求： 当请求的目录是 /aaa/ 则把请求发送到机器a，当请求的目录为/bbb/则把请求发送到机器b，除了目录/aaa/与目录/bbb/外，其他的请求发送到机器b
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#1
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/31. mysql5.1的RBR和SBR的优缺点/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Nginx/25. nginx代理--根据访问的目录来区分后端的web/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -764,7 +765,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/30. mysql架构由小变大的演变过程/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/26. nginx针对请求的uri来代理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -783,7 +784,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/30. mysql架构由小变大的演变过程/" itemprop="url">mysql架构由小变大的演变过程</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Nginx/26. nginx针对请求的uri来代理/" itemprop="url">nginx针对请求的uri来代理</a></h1>
         
 
         <div class="post-meta">
@@ -832,12 +833,13 @@
       
         
           
-          mysql架构由小变大的演变过程&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;假设一个网站（discuz）从最开始访问量很小做到日pv千万，我们来推测一下它的mysql服务器架构演变过程。
-第一阶段&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;网站访问量日pv量级在1w以下。单台机器跑web和db，
+          nginx针对请求的uri来代理&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;场景：1台nginx去代理4台apache
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需求：根据不同的请求uri 代理到不同的apache
+&#160;&#160;&#160;&#160;&#160;&#160;&#1
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/30. mysql架构由小变大的演变过程/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Nginx/26. nginx针对请求的uri来代理/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -883,7 +885,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/33. mysql主从数据库不同步的2种解决方法/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/27. Nginx：承受3万并发连接数，胜过Apache 10倍/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -902,7 +904,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/33. mysql主从数据库不同步的2种解决方法/" itemprop="url">mysql主从数据库不同步的2种解决方法</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Nginx/27. Nginx：承受3万并发连接数，胜过Apache 10倍/" itemprop="url">Nginx：承受3万并发连接数，胜过Apache 10倍</a></h1>
         
 
         <div class="post-meta">
@@ -951,14 +953,12 @@
       
         
           
-          mysql主从数据库不同步的2种解决方法&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;发现Mysql的主从数据库没有同步 
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;先上Master库： 
-1mysql&gt;show processlist;
-&#160;&#160;&#160;&#160;&
+          Nginx：承受3万并发连接数，胜过Apache 10倍&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Nginx是目前比较重要的开源性负载均衡技术，新浪、网易、六间房等很多网站都将Nginx部署进自己的网站系统架构，并解决部分问题。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;本文是关于搭建“Ng
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/33. mysql主从数据库不同步的2种解决方法/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Nginx/27. Nginx：承受3万并发连接数，胜过Apache 10倍/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1004,7 +1004,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/26. Mysql数据库主从心得整理/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/28. 深入理解PHP之：Nginx 与 FPM 的工作机制/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1023,7 +1023,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/26. Mysql数据库主从心得整理/" itemprop="url">Mysql数据库主从心得整理</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Nginx/28. 深入理解PHP之：Nginx 与 FPM 的工作机制/" itemprop="url">深入理解PHP之：Nginx 与 FPM 的工作机制</a></h1>
         
 
         <div class="post-meta">
@@ -1072,11 +1072,11 @@
       
         
           
-          Mysql数据库主从心得整理一、mysql主从的原理1、Replication 线程&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Mysql的 Replication 是一个异步的复制过程（mysql5.1.7以上版本分为异步复制和半同步两种模式），从一个 Mysql instace(我们称之为 Master)复制到另一个 Mysql instan
+          深入理解PHP之：Nginx 与 FPM 的工作机制&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;网络上有很多关于如何配置 Nginx + FPM 的文章，但它们更多从操作的角度出发，告诉我们怎么做，但却没有告诉我们为什么要这么做，本文从 Nginx 与 FPM 的工作机制出发，探讨配置背后的原理，让我们真正理解 Nginx 与 PHP 是如何协同
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/26. Mysql数据库主从心得整理/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Nginx/28. 深入理解PHP之：Nginx 与 FPM 的工作机制/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1122,7 +1122,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/24. mysql主从同步问题集/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/31. nginx的负载均衡集群/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1141,7 +1141,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/24. mysql主从同步问题集/" itemprop="url">mysql 主从同步问题集</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Nginx/31. nginx的负载均衡集群/" itemprop="url">nginx的负载均衡和反向代理</a></h1>
         
 
         <div class="post-meta">
@@ -1190,12 +1190,11 @@
       
         
           
-          mysql主从同步问题集&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在InnoDB引擎下发现，Mysql的主从热备存在数据不一致的问题，一些数据没有成功同步到备机。在use databases后，更新的表必须是当前选择的database才同步。譬如连上Mysql服务后操作： 
-12USE test2; UPDATE client SET name
+          nginx的负载均衡集群&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;之前提到过的 nginx 的负载均衡功能，实际上和 nginx 的代理是同一个功能，只是把之前代理一台机器改为代理多台机器而已。 nginx 的负载均衡和 lvs 相比， nginx 属于更该机的应用层，不牵扯到 IP 和内核的改动， 它只是单纯地把用户的请求转发到后面的机器上，
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/24. mysql主从同步问题集/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Nginx/31. nginx的负载均衡集群/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1241,7 +1240,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/3. 源码编译安装MySQL5.6报错及解决方法/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/3. Apache和Nginx运行原理解析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1260,7 +1259,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/3. 源码编译安装MySQL5.6报错及解决方法/" itemprop="url">源码编译安装MySQL5.6报错及解决方法</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Nginx/3. Apache和Nginx运行原理解析/" itemprop="url">Apache和Nginx运行原理解析</a></h1>
         
 
         <div class="post-meta">
@@ -1309,12 +1308,13 @@
       
         
           
-          源码编译安装MySQL5.6报错及解决方法&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以前都是mysql5.1做的LAMP搭建，比较顺利。试了一下安装mysql5.6.
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;由于系统没有cmake命令，于是 yum install -y cmake 进行安
+          Apache和Nginx运行原理解析Web服务器&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Web服务器也称为WWW(WORLD WIDE WEB)服务器，主要功能是提供网上信息浏览服务。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;应用层使用HTTP协议。
+&#160;&#160;&#160;
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/3. 源码编译安装MySQL5.6报错及解决方法/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Nginx/3. Apache和Nginx运行原理解析/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1360,7 +1360,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/29. mysql AB 常见错误/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Nginx/30. nginx的负载均衡和反向代理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1379,7 +1379,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/29. mysql AB 常见错误/" itemprop="url">mysql AB 常见错误</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Nginx/30. nginx的负载均衡和反向代理/" itemprop="url">nginx的负载均衡和反向代理</a></h1>
         
 
         <div class="post-meta">
@@ -1428,11 +1428,17 @@
       
         
           
-          mysql AB 常见错误&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这篇文章旨在记录MySQL Replication的常见错误，包括自己工作中遇到的与网友在工作中遇到的，方面自己及别人以后进行查找。每个案例都是通过Last_IO_Errno/Last_IO_Error或者Last_SQL_Errno/Last_SQL_Error给出错误关键信
+          nginx的负载均衡和反向代理负载均衡模块upstream：
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;nginx的负载均衡的算法：
+
+轮询（默认）
+weight 权重轮询
+ip_hash  每个请求按访问ip的hash结果分配，这样来自同一个ip的请求固定到后台的一段服务器上，有效的解决动态网页存在的session共享问题
+fair 根据服务
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/29. mysql AB 常见错误/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Nginx/30. nginx的负载均衡和反向代理/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1473,7 +1479,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/49/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/49/">49</a><span class="page-number current">50</span><a class="page-number" href="/page/51/">51</a><span class="space">&hellip;</span><a class="page-number" href="/page/72/">72</a><a class="extend next" rel="next" href="/page/51/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/49/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/49/">49</a><span class="page-number current">50</span><a class="page-number" href="/page/51/">51</a><span class="space">&hellip;</span><a class="page-number" href="/page/75/">75</a><a class="extend next" rel="next" href="/page/51/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1518,7 +1524,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">719</span>
+                <span class="site-state-item-count">744</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

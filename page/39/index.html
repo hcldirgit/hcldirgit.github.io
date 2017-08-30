@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/15. apache的两种工作模式详解/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/47. httpd-2.4.x 版本客户端访问控制/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -306,7 +306,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/15. apache的两种工作模式详解/" itemprop="url">apache的两种工作模式详解</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/47. httpd-2.4.x 版本客户端访问控制/" itemprop="url">httpd-2.4.x 版本客户端访问控制</a></h1>
         
 
         <div class="post-meta">
@@ -355,11 +355,13 @@
       
         
           
-          apache的两种工作模式详解1、prefork.c模块(一个非线程型的、预派生的MPM)&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;prefork MPM 使用多个子进程，每个子进程只有一个线程。每个进程在某个确定的时间只能维持一个连接。在大多数平台上，Prefork MPM在效率上要比Worker MPM要高，但是内存使用大得多。prefor
+          httpd-2.4.x 版本客户端访问控制&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在apache2.4版本之前做客户端访问控制,是用Allow Deny Order指令做访问控制的,而在2.4的版本上是用的用法跟之前的版本大不相同,如下
+
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;2.2上
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/15. apache的两种工作模式详解/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/47. httpd-2.4.x 版本客户端访问控制/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -405,7 +407,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/2. Apache 的 httpd.conf 详解/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/46. apache几种限制ip的方法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -424,7 +426,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/2. Apache 的 httpd.conf 详解/" itemprop="url">Apache 的 httpd.conf 详解</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/46. apache几种限制ip的方法/" itemprop="url">apache几种限制ip的方法</a></h1>
         
 
         <div class="post-meta">
@@ -473,12 +475,18 @@
       
         
           
-          Apache 的 httpd.conf 详解1ServerRoot “/usr/local“
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;ServerRoot用于指定守护进程httpd的运行目录，httpd在启动之后将自动将进程的当前目录改变为这个目录，因此如果设置文件中指定的文件或目录是相对路径，那么真实路径就位于这个ServerR oot定义
+          apache几种限制ip的方法
+禁止访问某些文件/目录增加Files选项来控制，比如要不允许访问 .inc 扩展名的文件，保护php类库：
+
+1234&lt;Files ~ "\.inc$"&gt; Order allow,deny Deny from all&lt;/Files&gt;
+
+禁止访问某些指定的目录：（可以用  来进行正则匹配）
+
+1234&lt;Directory ~ "^/var
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/2. Apache 的 httpd.conf 详解/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/46. apache几种限制ip的方法/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -524,7 +532,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/16. mod_usertrack.so 的扩展安装以及使用/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/45. apache的order、allow、deny/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -543,7 +551,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/16. mod_usertrack.so 的扩展安装以及使用/" itemprop="url">mod_usertrack.so 的扩展安装以及使用</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/45. apache的order、allow、deny/" itemprop="url">apache的order、allow、deny</a></h1>
         
 
         <div class="post-meta">
@@ -592,11 +600,13 @@
       
         
           
-          mod_usertrack.so 的扩展安装以及使用&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mod_usertrack.so 是在用户首次来到当前网站的时候给用户种下一个唯一的cookie，这个cookie是用户首次来当前网站的IP地址加上一个随机字符串组成的。用这个IP加随机字符串来标识用户的唯一性。这样就可以区分同一个IP下的不同用户了。
+          apache的order、allow、deny&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个东西确实挺容易让人迷糊。其实也不难，只要掌握这样一条规律即可：
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先举个例子：
+123Order deny,allowdeny from allallow f
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/16. mod_usertrack.so 的扩展安装以及使用/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/45. apache的order、allow、deny/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -642,7 +652,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/17. 如何使用apache的 work模式还是 prefork 模式/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/44. apache2.2 到 2.4后配置文件需要更改的部分/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -661,7 +671,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/17. 如何使用apache的 work模式还是 prefork 模式/" itemprop="url">如何使用apache的 work模式还是 prefork 模式</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/44. apache2.2 到 2.4后配置文件需要更改的部分/" itemprop="url">apache2.2 到 2.4后配置文件需要更改的部分</a></h1>
         
 
         <div class="post-meta">
@@ -710,12 +720,17 @@
       
         
           
-          如何使用apache的 work模式还是 prefork 模式&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意：2.4之前版本默认为prefork， 2.4已经变为event模式。
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在编译apache的时候，有一个参数叫做  --with-mpm=..
+          apache2.2 到 2.4后配置文件需要更改的部分
+访问控制
+
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;2.2 的时候
+12Order deny,allowDeny from all
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在 2.4 需要改成
+1Require all denied
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/17. 如何使用apache的 work模式还是 prefork 模式/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/44. apache2.2 到 2.4后配置文件需要更改的部分/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -761,7 +776,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/29. apache 日志切割/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/43. apache 配置https 支持ssl/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -780,7 +795,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/29. apache 日志切割/" itemprop="url">apache 日志切割</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/43. apache 配置https 支持ssl/" itemprop="url">apache 配置https 支持ssl</a></h1>
         
 
         <div class="post-meta">
@@ -829,11 +844,12 @@
       
         
           
-          apache 日志切割&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里的日志指的是访问日志，没访问一次网站，就会记录若干条日志。前提是已经配置了日志，日志如果不去管理，时间长了日志文件会越来越大，这个时候这个日志是不可能 cat、less、 以及 vim 的，head 或 tail 还可以。如何避免产生这么大的日志文件？其实 apache 有相关
+          apache 配置https 支持ssl安装openssl&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;apache2.0 建议安装0.9版本，曾经试过2.0.59 对openssl-1.0编译不过去。下载Openssl
+1234tar -zxf openssl-0.9.8k.tar.gz    #解压安装包   cd openssl-0.9.8k
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/29. apache 日志切割/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/43. apache 配置https 支持ssl/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -879,7 +895,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/12. apache 的动态和静态/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/42. apache 访问控制/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -898,7 +914,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/12. apache 的动态和静态/" itemprop="url">apache 的动态和静态</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/42. apache 访问控制/" itemprop="url">apache 访问控制</a></h1>
         
 
         <div class="post-meta">
@@ -947,12 +963,15 @@
       
         
           
-          apache 的动态和静态&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关于apache的动态与静态编译的理解，引用某人的比喻如下：
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;好比有两个人a和m，a代表apache,m代表module，要想让a使用m的东西，一个方法是把m的东西都放到a那里去，a
+          apache 访问控制allow 和 deny 规则&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先举例：
+123Order deny,allowdeny from allallow from 127.0.0.1
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们判断的依据是这样的：
+
+看 Ord
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/12. apache 的动态和静态/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/42. apache 访问控制/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -998,7 +1017,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/27. URL网址规范化/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/41. apache配置防盗链/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1017,7 +1036,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/27. URL网址规范化/" itemprop="url">URL网址规范化</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/41. apache配置防盗链/" itemprop="url">apache配置防盗链</a></h1>
         
 
         <div class="post-meta">
@@ -1066,13 +1085,11 @@
       
         
           
-          URL网址规范化&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;网址URL规范化（URL canonicalization）是近一年来在Google搜索结果中出现的一个很大的问题。它指的是搜索引擎挑选最好的URL网址作为真正网址的过程。举例来说，下面这几个URL一般来说指的是同一个文件或网页：
-http://www.domainname.com
-ht
+          apache配置防盗链&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果站点是一个图片站，有很多非常漂亮的美女图片，时间久了会有很多人来网站借图片，有的直接下载走了，还有的直接取走图片的地址，那么他就可以直接把图片地址放到他自己的网站上，他的用户可以直接从他的网站上查看这个图片，而实际上浏览这个图片是从我的网站上访问的。这样，这个图片所产生的宽带开
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/27. URL网址规范化/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/41. apache配置防盗链/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1118,7 +1135,7 @@ ht
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/24. Apache默认虚拟主机/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/40. 什么是etag工作原理及配置/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1137,7 +1154,7 @@ ht
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/24. Apache默认虚拟主机/" itemprop="url">Apache默认虚拟主机</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/40. 什么是etag工作原理及配置/" itemprop="url">什么是etag工作原理及配置</a></h1>
         
 
         <div class="post-meta">
@@ -1186,12 +1203,12 @@ ht
       
         
           
-          Apache默认虚拟主机&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为了防止其他不是自己的域名解析到自己的IP,我们可以通过更改虚拟主机文件限制其他域名。我们创建的新的虚拟主机，创建一个新的空目录将其权限设置为600。这样只有我们在配置文件中定义的域名在能访问。命令如下：
-1[root@lamp ~]# vim /usr/local/apache
+          什么是etag工作原理及配置&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Etag 是URL的Entity Tag，用于标示URL对象是否改变，区分不同语言和Session等等。具体内部含义是使服务器控制的，就像Cookie那样。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;HTTP协议规格说明定
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/24. Apache默认虚拟主机/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/40. 什么是etag工作原理及配置/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1237,7 +1254,7 @@ ht
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/22. htpasswd 默认创建的密码只有前8位有效/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/4. apache 的默认编码/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1256,7 +1273,7 @@ ht
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/22. htpasswd 默认创建的密码只有前8位有效/" itemprop="url">htpasswd 默认创建的密码只有前8位有效</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/4. apache 的默认编码/" itemprop="url">apache 的默认编码</a></h1>
         
 
         <div class="post-meta">
@@ -1305,14 +1322,11 @@ ht
       
         
           
-          htpasswd 默认创建的密码只有前8位有效&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;按照如下命令创建密码
-1htpasswd -c .htpasswd  user1
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;假如，密码为123456789
-&#160;&#160;&#160;&#160;
+          apache 的默认编码&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在httpd.conf 中有一个参数是控制apache的默认编码的，AddDefaultCharset  它的作用就是当开发者没有指定程序的编码时，apache会按照这里的配置来显示效果。一般这个参数是不需要的，因为很少有程序不指定编码。为了引起不必要的麻烦，建议开启这个编码的童
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/22. htpasswd 默认创建的密码只有前8位有效/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/4. apache 的默认编码/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1358,7 +1372,7 @@ ht
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/26.  HTTP返回码中301与302的区别/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Apache/39. apache 设置图片等静态文件的过期时间/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1377,7 +1391,7 @@ ht
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Apache/26.  HTTP返回码中301与302的区别/" itemprop="url">HTTP返回码中301与302的区别</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Apache/39. apache 设置图片等静态文件的过期时间/" itemprop="url">apache 设置图片等静态文件的过期时间</a></h1>
         
 
         <div class="post-meta">
@@ -1426,12 +1440,12 @@ ht
       
         
           
-          HTTP返回码中301与302的区别一．官方说法&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;301，302 都是HTTP状态的编码，都代表着某个URL发生了转移，不同之处在于： 
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;301 redirect: 301 代表永久性转移(Permanentl
+          apache 设置图片等静态文件的过期时间&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;httpd.conf 中加入
+12345678ExpiresActive onExpiresByType image/gif  "access plus 1 days"ExpiresByType image/jpeg "access plus 24 hours"
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Apache/26.  HTTP返回码中301与302的区别/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Apache/39. apache 设置图片等静态文件的过期时间/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1472,7 +1486,7 @@ ht
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/38/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/38/">38</a><span class="page-number current">39</span><a class="page-number" href="/page/40/">40</a><span class="space">&hellip;</span><a class="page-number" href="/page/72/">72</a><a class="extend next" rel="next" href="/page/40/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/38/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/38/">38</a><span class="page-number current">39</span><a class="page-number" href="/page/40/">40</a><span class="space">&hellip;</span><a class="page-number" href="/page/75/">75</a><a class="extend next" rel="next" href="/page/40/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1517,7 +1531,7 @@ ht
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">719</span>
+                <span class="site-state-item-count">744</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
