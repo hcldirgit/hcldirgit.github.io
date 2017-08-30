@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Shell 练习/shell 练习8/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Tomcat/6.  tomcat配置文件server.xml详解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -306,7 +306,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Shell 练习/shell 练习8/" itemprop="url">shell 练习8</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Tomcat/6.  tomcat配置文件server.xml详解/" itemprop="url">tomcat配置文件server.xml详解</a></h1>
         
 
         <div class="post-meta">
@@ -355,12 +355,13 @@
       
         
           
-          需求： 两台web:A和B机器，其中一台B只打算跑附件（大多为图片），另一台A跑除了附件外的其他东西。其中附件会在A上生成，默认附件会通过A机器访问，但当我们更改某个附件的标志位时，那么附件则会跑到B上去访问。 假如提供给我们了将要在B上跑的附件列表和更改这些附件的标志位的一个sql文件，那么我们如何做呢？
-12345678910111213141516171819202122232425#! /
+          tomcat配置文件server.xml详解
+元素&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;它代表整个容器,是Tomcat实例的顶层元素.由org.apache.catalina.Server接口来定义.它包含一个元素.并且它不能做为任何元素的子元素.
+1&lt; Server port ="8005" shutdown ="SHUTDOWN"
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Shell 练习/shell 练习8/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Tomcat/6.  tomcat配置文件server.xml详解/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -406,7 +407,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Shell 练习/shell 练习7/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Tomcat/10. tomcat常用功能的配置方法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -425,7 +426,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Shell 练习/shell 练习7/" itemprop="url">shell 练习7</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Tomcat/10. tomcat常用功能的配置方法/" itemprop="url">tomcat常用功能的配置方法</a></h1>
         
 
         <div class="post-meta">
@@ -474,11 +475,13 @@
       
         
           
-          设计一个shell脚本来备份数据库，首先在本地服务器上保存一份数据，然后再远程拷贝一份，本地保存一周的数据，远程保存一个月。&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;假定，我们知道mysql root账号的密码，要备份的库为discuz，本地备份目录为/bak/mysql, 远程服务器ip为192.168.123.30，远程提供了一个rsync
+          tomcat常用功能的配置方法启动内存参数的配置&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;tomcat/bin/catalina.bat 如果是linux 就是 catalina.sh
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在rem 的后面增加如下参数
+1set JAVA_OPTS= -
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Shell 练习/shell 练习7/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Tomcat/10. tomcat常用功能的配置方法/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -524,7 +527,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Shell 练习/shell 练习3/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Tomcat/7. Nginx + Tomcat 配置负载均衡集群/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -543,7 +546,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Shell 练习/shell 练习3/" itemprop="url">shell 练习3</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Tomcat/7. Nginx + Tomcat 配置负载均衡集群/" itemprop="url">Nginx + Tomcat 配置负载均衡集群</a></h1>
         
 
         <div class="post-meta">
@@ -592,12 +595,25 @@
       
         
           
-          ps 可以查看进程的内存占用大小，写一个脚本计算一下所有进程所占用内存大小的和。（提示，使用ps aux 列出所有进程，过滤出RSS那列，然后求和）
-1234567#! /bin/bashsum=0for mem in `ps aux |awk '&#123;print $6&#125;' |grep -v 'RSS'`do    sum=$[$sum+$mem]doneecho "The tot
+          Nginx + Tomcat 配置负载均衡集群一、Hello world前期环境准备
+准备两个解压版tomcat，如何同时启动两个tomcat，请看我的另一篇文章《一台机器同时启动多个tomcat》。
+
+nginx官网下载解压版nginx。
+
+创建一个简单的web项目。为了直观的区分访问的哪个tomcat，在页面写上标记8081、8082。
+
+
+
+
+分别部署到对应的tomcat下。如图：
+
+
+
+配
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Shell 练习/shell 练习3/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Tomcat/7. Nginx + Tomcat 配置负载均衡集群/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -643,7 +659,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Shell 练习/shell 练习2/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Tomcat/5. 四大Java EE容器(Tomcat、JBoss、Resin、Glassfish)之简单比较/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -662,7 +678,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Shell 练习/shell 练习2/" itemprop="url">shell 练习2</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Tomcat/5. 四大Java EE容器(Tomcat、JBoss、Resin、Glassfish)之简单比较/" itemprop="url">四大Java EE容器(Tomcat、JBoss、Resin、Glassfish)之简单比较</a></h1>
         
 
         <div class="post-meta">
@@ -711,12 +727,11 @@
       
         
           
-          抓包 ip 访问日志 /var/log/1.log 然后进行系统分析：要求统计出每个 IP 的访问量有多少？提示，先 awk 过滤出 ip ，然后进行排序，统计重复数
-12#!/bin/bashawk '&#123;print $1&#125;' /var/log/1.log |sort -n|uniq -c|sort-rn
-          
+          四大Java EE容器(Tomcat、JBoss、Resin、Glassfish)之简单比较&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;现在流行的Java EE容器有很多：Tomcat、JBoss、Resin、Glassfish等等。下面对这四种Java EE容器进行了一番简单的比对。 1. Tomcat是Apache鼎力支持的Java Web应
+          ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Shell 练习/shell 练习2/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Tomcat/5. 四大Java EE容器(Tomcat、JBoss、Resin、Glassfish)之简单比较/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -762,7 +777,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Shell 练习/shell 练习5/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Tomcat/2. tomcat 安装/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -781,7 +796,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Shell 练习/shell 练习5/" itemprop="url">shell 练习5</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Tomcat/2. tomcat 安装/" itemprop="url">tomcat 安装</a></h1>
         
 
         <div class="post-meta">
@@ -830,12 +845,13 @@
       
         
           
-          在你的/root 目录下有 .bak 后缀的备份文件，请写一脚本批量把这些文件都还原，也就是把.bak的后缀都去掉。
-1234567#! /bin/bashcd /rootfor i in `ls|grep 'bak'`;doa=`echo $i|awk -F'.bak' '&#123;print $0&#125;'`b=`echo $i|awk -F'.bak' '&#123;print $1&
+          tomcat 安装&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;tomcat 官网
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下载
+12[root@192 ~]# cd /usr/local/src[root@192 src]# wget https://mirrors.tuna.tsinghu
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Shell 练习/shell 练习5/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Tomcat/2. tomcat 安装/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -881,7 +897,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Samba/5. samba中文乱码的问题/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Tomcat/4. j2ee、j2se、ejb、javabean、serverlet、jsp之间关系/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -900,7 +916,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Samba/5. samba中文乱码的问题/" itemprop="url">samba中文乱码的问题</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Tomcat/4. j2ee、j2se、ejb、javabean、serverlet、jsp之间关系/" itemprop="url">j2ee、j2se、ejb、javabean、serverlet、jsp之间关系</a></h1>
         
 
         <div class="post-meta">
@@ -949,15 +965,12 @@
       
         
           
-          samba中文乱码的问题&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用SSH登陆远程的linux服务器，用win浏览运行samba的linux服务器中有中文名的文件夹的时候，看到里面的中文文件名都是乱码，而且想用shell来设置一下权限也设置不了。
-
-打开/etc/sysconfig/i18n
-
-&#160;&#160;&#160;&#160;&
+          j2ee、j2se、ejb、javabean、serverlet、jsp之间关系&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;j2ee：这个东西代表两个不同的东西，一种是sun的一种服务器软件，注意是一种具体的软件，不是技术。另一种是泛指sun的java技术，包括jsp,servlet,javabean,ejb等。
+&#160;&#160;&#16
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Samba/5. samba中文乱码的问题/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Tomcat/4. j2ee、j2se、ejb、javabean、serverlet、jsp之间关系/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1003,7 +1016,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Samba/6. 让Samba支持软连接/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Squid/10. squid故障汇总/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1022,7 +1035,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Samba/6. 让Samba支持软连接/" itemprop="url">让Samba支持软连接</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Squid/10. squid故障汇总/" itemprop="url">squid故障汇总</a></h1>
         
 
         <div class="post-meta">
@@ -1071,12 +1084,12 @@
       
         
           
-          让Samba支持软连接&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;家里的系统由centos6换成linuxmint(实在是好用才换)了， 重新配置好samba后，发现里面的一个软链接到pt下载目录的目录不能访问。
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;测试半天，chcon， chmod， 
+          squid故障汇总&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;1、COSS will not function without large file support (off_t is 4 bytes long. Please reconsider recompiling squid with –with-large-files
+&#160;&#
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Samba/6. 让Samba支持软连接/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Squid/10. squid故障汇总/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1122,7 +1135,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Samba/4. samba同时用匿名和用户登录/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Squid/6. Squid优化/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1141,7 +1154,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Samba/4. samba同时用匿名和用户登录/" itemprop="url">samba同时用匿名和用户登录</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Squid/6. Squid优化/" itemprop="url">Squid优化</a></h1>
         
 
         <div class="post-meta">
@@ -1190,12 +1203,15 @@
       
         
           
-          samba同时用匿名和用户登录&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关于同时使用匿名和用户登录，配置文件如下，已经验证成功：
-1234567891011121314151617181920212223242526272829303132333435[global]        workgroup = WORKGROUP        se
+          Squid优化Squid优化(一)&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;几个SQUID重要参数：
+
+maximum_object_size 是 能cache最大的文件大小.对应wmv,rm文件,建议设置为32768 kB
+maximum_object_size_in_memory 是在内存中cache的最大文件大小.
+cache_mem 是
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Samba/4. samba同时用匿名和用户登录/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Squid/6. Squid优化/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1241,7 +1257,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Shell 练习/shell 练习10/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Squid/14. 删除squid缓存/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1260,7 +1276,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Shell 练习/shell 练习10/" itemprop="url">shell 练习10</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Squid/14. 删除squid缓存/" itemprop="url">删除squid缓存</a></h1>
         
 
         <div class="post-meta">
@@ -1309,12 +1325,15 @@
       
         
           
-          web服务器上有个目录，它的结构是这样的，首先有256个一级子目录和一个特殊目录，另外这256个一级子目录下还有256个二级子目录（特殊目录除外）。在这些二级子目录下有很多小文件，而且是每时每刻都会生成很多个。 虽然文件不大，但是时间长了，逐渐发现该分区的下inode快被占用满了。 所以请写一个小脚本，实现每天删除两天前的小文件，注意忽略那个特殊的一级子目录default。
-目录： /data/w
+          删除squid缓存&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如何清除squid 缓存
+
+首先在squid 的主配置文件中添加acl 列表，并允许受信任的主机有权限清除缓存  
+
+1234acl managercache src 192.168.1.145 127.0.0.1acl Purge method PURGEhttp_access al
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Shell 练习/shell 练习10/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Squid/14. 删除squid缓存/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1360,7 +1379,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Shell 练习/shell 练习15/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Squid/15. Squid的防盗链/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1379,7 +1398,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Shell 练习/shell 练习15/" itemprop="url">shell 练习15</a></h1>
+                <a class="post-title-link" href="/2017/08/10/Squid/15. Squid的防盗链/" itemprop="url">Squid的防盗链</a></h1>
         
 
         <div class="post-meta">
@@ -1428,17 +1447,12 @@
       
         
           
-          用shell脚本实现如下需求：添加user_00 - user_09 10个用户，并且给他们设置一个随机密码，密码要求10位包含大小写字母以及数字，注意需要把每个用户的密码记录到一个日志文件里。
-提示： 
-
-随机密码使用命令 mkpasswd
-在脚本中给用户设置密码，可以使用echo 然后管道passwd命令
-
-123456789#!/bin/bash#add user and set passw
+          Squid的防盗链&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有了Varnish防盗链，自然也要有Squid的防盗链。原理都一样，对Referer进行判断，当然网上有所谓的终极解决方案还对cookies进行判断的，这里还是只讨论Referer这种。在Squid里就是在配置文件添加acl控制，在squid.conf中的acl段添加如下配置:
+123
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Shell 练习/shell 练习15/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/Squid/15. Squid的防盗链/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
