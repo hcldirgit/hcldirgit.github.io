@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/24. mysql主从同步问题集/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/27. Mysql主主复制架构配置/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -306,7 +306,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/24. mysql主从同步问题集/" itemprop="url">mysql 主从同步问题集</a></h1>
+                <a class="post-title-link" href="/2017/08/10/MySQL/27. Mysql主主复制架构配置/" itemprop="url">Mysql主主复制架构配置</a></h1>
         
 
         <div class="post-meta">
@@ -355,12 +355,13 @@
       
         
           
-          mysql主从同步问题集&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在InnoDB引擎下发现，Mysql的主从热备存在数据不一致的问题，一些数据没有成功同步到备机。在use databases后，更新的表必须是当前选择的database才同步。譬如连上Mysql服务后操作： 
-12USE test2; UPDATE client SET name
+          Mysql主主复制架构配置&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MySQL主主复制结构区别于主从复制结构。在主主复制结构中，两台服务器的任
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;何一台上面的数据库存发生了改变都会同步到另一台服务器上，这样两台服务器
+&#160;&#160;&#160
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/24. mysql主从同步问题集/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/MySQL/27. Mysql主主复制架构配置/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -406,7 +407,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/23. mysql主从复制/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/31. mysql5.1的RBR和SBR的优缺点/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -425,7 +426,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/23. mysql主从复制/" itemprop="url">mysql 主从复制</a></h1>
+                <a class="post-title-link" href="/2017/08/10/MySQL/31. mysql5.1的RBR和SBR的优缺点/" itemprop="url">mysql5.1的RBR和SBR的优缺点</a></h1>
         
 
         <div class="post-meta">
@@ -474,11 +475,13 @@
       
         
           
-          mysql主从复制mysql复制&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MySQL复制支持单向，异步复制。通过一台主服务器将更新写入二进制日志文件，并维护文件的一个索引以跟踪日志循环。这些日志可以记录发送到从服务器的更新。当一个从服务器连接主服务器时，它通知主服务器从服务器在日志中读取的最后一次成功更新的位置。从服务器接收从那时起发生的任何更
+          mysql5.1的RBR和SBR的优缺点&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MySQL 5.1 中，在复制方面的改进就是引进了新的复制技术：基于行的复制。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;简言之，这种新技术就是关注表中发生变化的记录，而非以前的照抄 binlog 模式。
+&#
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/23. mysql主从复制/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/MySQL/31. mysql5.1的RBR和SBR的优缺点/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -524,7 +527,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/22. mysql主从搭建/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/14. SQL—什么是事物？事物的特性有哪些？/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -543,7 +546,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/22. mysql主从搭建/" itemprop="url">mysql 主从搭建</a></h1>
+                <a class="post-title-link" href="/2017/08/10/MySQL/14. SQL—什么是事物？事物的特性有哪些？/" itemprop="url">SQL—什么是事物？事物的特性有哪些？</a></h1>
         
 
         <div class="post-meta">
@@ -592,490 +595,11 @@
       
         
           
-          mysql 主从搭建&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mysql 主从 （mysql replication），主要用于 mysql 的实时备份或者读写分离。在配置之前做准备工作，配置两台 mysql 服务器；或者在同一个机器上跑两个 mysql 服务。
-&#160;&#160;&#160;&#160;&#160;&#160;&#160
+          SQL—什么是事物？事物的特性有哪些？概念&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;事务(Transaction)是访问并可能更新数据库中各种数据项的一个程序执行单元(unit)。事务通常由高级数据库操纵语言或编程语言（如SQL，C++或Java）书写的用户程序的执行所引起，并用形如begin transaction和end transacti
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/22. mysql主从搭建/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/21. 同一台MySQL服务器启动多个端口/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="失落的乐章">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/0.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="失落的乐章">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/10/MySQL/21. 同一台MySQL服务器启动多个端口/" itemprop="url">同一台MySQL服务器启动多个端口</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
-                2017-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          同一台MySQL服务器启动多个端口&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先安装二进制源码包的mysql
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安装到初始化数据库的时候，因为是多个端口，所以要根据配置文件来初始化多个数据库。
-&#160;&#160;&#160;&#160;&#160
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/21. 同一台MySQL服务器启动多个端口/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/30. mysql架构由小变大的演变过程/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="失落的乐章">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/0.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="失落的乐章">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/10/MySQL/30. mysql架构由小变大的演变过程/" itemprop="url">mysql架构由小变大的演变过程</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
-                2017-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          mysql架构由小变大的演变过程&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;假设一个网站（discuz）从最开始访问量很小做到日pv千万，我们来推测一下它的mysql服务器架构演变过程。
-第一阶段&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;网站访问量日pv量级在1w以下。单台机器跑web和db，
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/30. mysql架构由小变大的演变过程/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/20.mysql字符集调整总结/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="失落的乐章">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/0.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="失落的乐章">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/10/MySQL/20.mysql字符集调整总结/" itemprop="url">mysql字符集调整总结</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
-                2017-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          mysql字符集调整总结&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;字符集是一套符号和编码的规则，不论是在oracle数据库还是在mysql数据库，都存在字符集的选择问题。对于数据库来说，字符集又是比较重要的，因为数据库存储的数据大部分都是各种文字，字符集对于数据库的存储、处理性能以及数据迁移都有重要的影响。
-&#160;&#160;&#160;
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/20.mysql字符集调整总结/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/19. mysqld_multi stop 不能停掉mysql/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="失落的乐章">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/0.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="失落的乐章">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/10/MySQL/19. mysqld_multi stop 不能停掉mysql/" itemprop="url">mysqld_multi stop 不能停掉mysql</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
-                2017-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          mysqld_multi stop 不能停掉mysql&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用mysqld_multi start  启动了多个mysql实例，但是mysqld_multi stop 却不能停止，为啥呢？因为还没有授权呢。
-1/usr/local/mysql/bin/mysqld_multi stop
-&#160;&#16
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/19. mysqld_multi stop 不能停掉mysql/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/MySQL/14. SQL—什么是事物？事物的特性有哪些？/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1262,6 +786,125 @@ Archive
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/15. MySQL存储引擎MyISAM与InnoDB的优劣/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/10/MySQL/15. MySQL存储引擎MyISAM与InnoDB的优劣/" itemprop="url">MySQL存储引擎MyISAM与InnoDB的优劣</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          MySQL存储引擎MyISAM与InnoDB的优劣&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用MySQL当然会接触到MySQL的存储引擎，在新建数据库和新建数据表的时候都会看到。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MySQL默认的存储引擎是MyISAM，其他常用的就是InnoDB了
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/10/MySQL/15. MySQL存储引擎MyISAM与InnoDB的优劣/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/18. innobackupex 备份 Xtrabackup 增量备份/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1383,7 +1026,7 @@ innobackupex - 对xtrabackup封装的perl脚本，提供了myisam表
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/15. MySQL存储引擎MyISAM与InnoDB的优劣/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/16. Mysql binlog 日志的三种模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1402,7 +1045,7 @@ innobackupex - 对xtrabackup封装的perl脚本，提供了myisam表
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/15. MySQL存储引擎MyISAM与InnoDB的优劣/" itemprop="url">MySQL存储引擎MyISAM与InnoDB的优劣</a></h1>
+                <a class="post-title-link" href="/2017/08/10/MySQL/16. Mysql binlog 日志的三种模式/" itemprop="url">Mysql binlog 日志的三种模式</a></h1>
         
 
         <div class="post-meta">
@@ -1451,12 +1094,377 @@ innobackupex - 对xtrabackup封装的perl脚本，提供了myisam表
       
         
           
-          MySQL存储引擎MyISAM与InnoDB的优劣&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用MySQL当然会接触到MySQL的存储引擎，在新建数据库和新建数据表的时候都会看到。
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MySQL默认的存储引擎是MyISAM，其他常用的就是InnoDB了
+          Mysql binlog 日志的三种模式&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Row Level：日志中会记录成每一行数据被修改的形式，然后在slave端再对相同的数据进行修改。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;优点：在row level模式下，bin-log中可以不记录执行的
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/15. MySQL存储引擎MyISAM与InnoDB的优劣/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/MySQL/16. Mysql binlog 日志的三种模式/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/24. mysql主从同步问题集/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/10/MySQL/24. mysql主从同步问题集/" itemprop="url">mysql 主从同步问题集</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          mysql主从同步问题集&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在InnoDB引擎下发现，Mysql的主从热备存在数据不一致的问题，一些数据没有成功同步到备机。在use databases后，更新的表必须是当前选择的database才同步。譬如连上Mysql服务后操作： 
+12USE test2; UPDATE client SET name
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/10/MySQL/24. mysql主从同步问题集/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/2. MySQL 5.5 源码安装/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/10/MySQL/2. MySQL 5.5 源码安装/" itemprop="url">MySQL 5.5 源码安装</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          MySQL 5.5 源码安装&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先安装必要的库
+1yum install -y gcc*
+首先安装cmake
+支持yum安装
+
+1yum install -y cmake
+
+也可以源码安装
+
+123456789cd /usr/local/src#下载cmakewget http://www.cmake.o
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/10/MySQL/2. MySQL 5.5 源码安装/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/12. mysql备份与恢复/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/10/MySQL/12. mysql备份与恢复/" itemprop="url">mysql备份与恢复</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          mysql备份与恢复备份1[root@lamp ~]# mysqldump -uroot -pyanyi discuz &gt; /data/discuz.sql
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：-p跟密码，中间不要有空格，后边的discuz是database名字，mysqldump出来的都是一些sql语句，所以用重定向符号 &
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/10/MySQL/12. mysql备份与恢复/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1497,7 +1505,7 @@ innobackupex - 对xtrabackup封装的perl脚本，提供了myisam表
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/53/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/53/">53</a><span class="page-number current">54</span><a class="page-number" href="/page/55/">55</a><span class="space">&hellip;</span><a class="page-number" href="/page/75/">75</a><a class="extend next" rel="next" href="/page/55/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/53/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/53/">53</a><span class="page-number current">54</span><a class="page-number" href="/page/55/">55</a><span class="space">&hellip;</span><a class="page-number" href="/page/76/">76</a><a class="extend next" rel="next" href="/page/55/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1542,7 +1550,7 @@ innobackupex - 对xtrabackup封装的perl脚本，提供了myisam表
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">749</span>
+                <span class="site-state-item-count">751</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

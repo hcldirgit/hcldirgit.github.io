@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/16. Mysql binlog 日志的三种模式/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/21. 同一台MySQL服务器启动多个端口/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -306,7 +306,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/16. Mysql binlog 日志的三种模式/" itemprop="url">Mysql binlog 日志的三种模式</a></h1>
+                <a class="post-title-link" href="/2017/08/10/MySQL/21. 同一台MySQL服务器启动多个端口/" itemprop="url">同一台MySQL服务器启动多个端口</a></h1>
         
 
         <div class="post-meta">
@@ -355,12 +355,13 @@
       
         
           
-          Mysql binlog 日志的三种模式&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Row Level：日志中会记录成每一行数据被修改的形式，然后在slave端再对相同的数据进行修改。
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;优点：在row level模式下，bin-log中可以不记录执行的
+          同一台MySQL服务器启动多个端口&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先安装二进制源码包的mysql
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安装到初始化数据库的时候，因为是多个端口，所以要根据配置文件来初始化多个数据库。
+&#160;&#160;&#160;&#160;&#160
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/16. Mysql binlog 日志的三种模式/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/MySQL/21. 同一台MySQL服务器启动多个端口/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -406,7 +407,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/14. SQL—什么是事物？事物的特性有哪些？/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/20.mysql字符集调整总结/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -425,7 +426,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/14. SQL—什么是事物？事物的特性有哪些？/" itemprop="url">SQL—什么是事物？事物的特性有哪些？</a></h1>
+                <a class="post-title-link" href="/2017/08/10/MySQL/20.mysql字符集调整总结/" itemprop="url">mysql字符集调整总结</a></h1>
         
 
         <div class="post-meta">
@@ -474,11 +475,12 @@
       
         
           
-          SQL—什么是事物？事物的特性有哪些？概念&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;事务(Transaction)是访问并可能更新数据库中各种数据项的一个程序执行单元(unit)。事务通常由高级数据库操纵语言或编程语言（如SQL，C++或Java）书写的用户程序的执行所引起，并用形如begin transaction和end transacti
+          mysql字符集调整总结&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;字符集是一套符号和编码的规则，不论是在oracle数据库还是在mysql数据库，都存在字符集的选择问题。对于数据库来说，字符集又是比较重要的，因为数据库存储的数据大部分都是各种文字，字符集对于数据库的存储、处理性能以及数据迁移都有重要的影响。
+&#160;&#160;&#160;
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/14. SQL—什么是事物？事物的特性有哪些？/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/MySQL/20.mysql字符集调整总结/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -524,7 +526,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/12. mysql备份与恢复/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/25. Mysql分库分表方案/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -543,7 +545,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/12. mysql备份与恢复/" itemprop="url">mysql备份与恢复</a></h1>
+                <a class="post-title-link" href="/2017/08/10/MySQL/25. Mysql分库分表方案/" itemprop="url">Mysql分库分表方案</a></h1>
         
 
         <div class="post-meta">
@@ -592,12 +594,369 @@
       
         
           
-          mysql备份与恢复备份1[root@lamp ~]# mysqldump -uroot -pyanyi discuz &gt; /data/discuz.sql
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：-p跟密码，中间不要有空格，后边的discuz是database名字，mysqldump出来的都是一些sql语句，所以用重定向符号 &
+          Mysql分库分表方案为什么要分表：&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当一张表的数据达到几千万时，你查询一次所花的时间会变多，如果有联合查询的话，我想有可能会死在那儿了。分表的目的就在于此，减小数据库的负担，缩短查询时间。        
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;m
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/12. mysql备份与恢复/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/MySQL/25. Mysql分库分表方案/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/23. mysql主从复制/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/10/MySQL/23. mysql主从复制/" itemprop="url">mysql 主从复制</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          mysql主从复制mysql复制&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MySQL复制支持单向，异步复制。通过一台主服务器将更新写入二进制日志文件，并维护文件的一个索引以跟踪日志循环。这些日志可以记录发送到从服务器的更新。当一个从服务器连接主服务器时，它通知主服务器从服务器在日志中读取的最后一次成功更新的位置。从服务器接收从那时起发生的任何更
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/10/MySQL/23. mysql主从复制/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/19. mysqld_multi stop 不能停掉mysql/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/10/MySQL/19. mysqld_multi stop 不能停掉mysql/" itemprop="url">mysqld_multi stop 不能停掉mysql</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          mysqld_multi stop 不能停掉mysql&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用mysqld_multi start  启动了多个mysql实例，但是mysqld_multi stop 却不能停止，为啥呢？因为还没有授权呢。
+1/usr/local/mysql/bin/mysqld_multi stop
+&#160;&#16
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/10/MySQL/19. mysqld_multi stop 不能停掉mysql/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/22. mysql主从搭建/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/10/MySQL/22. mysql主从搭建/" itemprop="url">mysql 主从搭建</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          mysql 主从搭建&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mysql 主从 （mysql replication），主要用于 mysql 的实时备份或者读写分离。在配置之前做准备工作，配置两台 mysql 服务器；或者在同一个机器上跑两个 mysql 服务。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/10/MySQL/22. mysql主从搭建/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -766,7 +1125,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/33. mysql主从数据库不同步的2种解决方法/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/28. cobar实现mysql分库分表/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -785,7 +1144,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/33. mysql主从数据库不同步的2种解决方法/" itemprop="url">mysql主从数据库不同步的2种解决方法</a></h1>
+                <a class="post-title-link" href="/2017/08/10/MySQL/28. cobar实现mysql分库分表/" itemprop="url">cobar实现mysql分库分表</a></h1>
         
 
         <div class="post-meta">
@@ -834,14 +1193,12 @@
       
         
           
-          mysql主从数据库不同步的2种解决方法&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;发现Mysql的主从数据库没有同步 
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;先上Master库： 
-1mysql&gt;show processlist;
-&#160;&#160;&#160;&#160;&
+          cobar实现mysql分库分表&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;cobar 编译安装配置笔记:https://github.com/alibaba/cobar
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;windows下使用eclipse导入cobar项目,eclipse File 
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/33. mysql主从数据库不同步的2种解决方法/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/MySQL/28. cobar实现mysql分库分表/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -887,7 +1244,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/31. mysql5.1的RBR和SBR的优缺点/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/LVS/7. keepalived 和 lvs 的结合配置文件详解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -906,7 +1263,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/31. mysql5.1的RBR和SBR的优缺点/" itemprop="url">mysql5.1的RBR和SBR的优缺点</a></h1>
+                <a class="post-title-link" href="/2017/08/10/LVS/7. keepalived 和 lvs 的结合配置文件详解/" itemprop="url">keepalived 和 lvs 的结合配置文件详解</a></h1>
         
 
         <div class="post-meta">
@@ -955,13 +1312,12 @@
       
         
           
-          mysql5.1的RBR和SBR的优缺点&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MySQL 5.1 中，在复制方面的改进就是引进了新的复制技术：基于行的复制。
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;简言之，这种新技术就是关注表中发生变化的记录，而非以前的照抄 binlog 模式。
-&#
+          keepalived 和 lvs 的结合配置文件详解&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;/export/servers/keepalived/conf/keepalived.conf配置文件详解：
+12345678910111213141516171819202122232425262728293031323334353637383940
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/31. mysql5.1的RBR和SBR的优缺点/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/LVS/7. keepalived 和 lvs 的结合配置文件详解/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1007,7 +1363,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/1. Mysql安装/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/LVS/17. LVS的NAT设置/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1026,7 +1382,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/MySQL/1. Mysql安装/" itemprop="url">MySQL安装</a></h1>
+                <a class="post-title-link" href="/2017/08/10/LVS/17. LVS的NAT设置/" itemprop="url">LVS的NAT设置</a></h1>
         
 
         <div class="post-meta">
@@ -1075,367 +1431,11 @@
       
         
           
-          MySQL安装&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;平时安装mysql都是源码包安装的，但是由于它的编译需要很长的时间，所以建议使用二进制免编译包安装。可以到MySQL官方网站去下载，具体版本根据平台和需求而定，目前比较常用的为mysql-5.0/mysql-5.1，5.5和5.7版本虽然已经发布有段日子了，但是在线上跑服务器的还是少数。所
+          LVS的NAT设置1.环境说明&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;三台服务器一台作为 director ，两台作为 real server ，Diretcor 有一个外网 ip （192.168.119.110）和一个内网 ip（192.168.0.67），两个 real server 上只有内网 ip （192.168.0.66）和（1
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/1. Mysql安装/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/MySQL/10. mysql5.7 root密码更改/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="失落的乐章">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/0.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="失落的乐章">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/10/MySQL/10. mysql5.7 root密码更改/" itemprop="url">mysql5.7root密码更改</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
-                2017-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          mysql5.7 root密码更改&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mysql5.7root有默认密码，必须重设密码后，才能进行mysql的操作，以下是设置root密码的步骤
-一、查看默认密码12[root@localhost src]# cat /root/.mysql_secret# The random password set 
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/MySQL/10. mysql5.7 root密码更改/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/LVS/12. LVS原理详解及部署之五：LVS+keepalived实现负载均衡&高可用/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="失落的乐章">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/0.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="失落的乐章">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/10/LVS/12. LVS原理详解及部署之五：LVS+keepalived实现负载均衡&高可用/" itemprop="url">LVS原理详解及部署之五：LVS+keepalived实现负载均衡&高可用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
-                2017-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          LVS原理详解及部署之五：LVS+keepalived实现负载均衡&amp;高可用一、实验环境需求&amp;准备&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这次实验要完成的一个架构如下图所示，通过LVS-DR-MASTER,LVS-DR-BACKUP作为LVS负载均衡调度器，并且两者之间通过keepalived来两者之间的HA。keepalive
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/LVS/12. LVS原理详解及部署之五：LVS+keepalived实现负载均衡&高可用/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/LVS/13. LB 集群之 LVS 介绍/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="失落的乐章">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/0.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="失落的乐章">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/10/LVS/13. LB 集群之 LVS 介绍/" itemprop="url">LB 集群之 LVS 介绍</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T13:41:48+08:00">
-                2017-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          LB 集群之 LVS 介绍&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;LB 集群是 load balance 集群的简写，翻译成中文就是负载均衡集群。常用的负载均衡开源软件有 nginx 、lvs 、keepalived ，商业的硬件负载设备 F5 、Netscale 。
-&#160;&#160;&#160;&#160;&#160;&#160;&
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/LVS/13. LB 集群之 LVS 介绍/#more" rel="contents">
+            <a class="btn" href="/2017/08/10/LVS/17. LVS的NAT设置/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1476,7 +1476,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/54/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/54/">54</a><span class="page-number current">55</span><a class="page-number" href="/page/56/">56</a><span class="space">&hellip;</span><a class="page-number" href="/page/75/">75</a><a class="extend next" rel="next" href="/page/56/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/54/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/54/">54</a><span class="page-number current">55</span><a class="page-number" href="/page/56/">56</a><span class="space">&hellip;</span><a class="page-number" href="/page/76/">76</a><a class="extend next" rel="next" href="/page/56/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1521,7 +1521,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">749</span>
+                <span class="site-state-item-count">751</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
