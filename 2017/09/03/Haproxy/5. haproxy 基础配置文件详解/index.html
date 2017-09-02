@@ -1,0 +1,821 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="haproxy," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;HAproxy可以实现基于TCP（四层 例如:SSH,SMTP,MYSQL）和HTTP（七层 例如:web服务器）应用的代理软件，同时也可以作为负载均衡器使用，并且是开源完全免费的。HAproxy完全可以支持数以万计的并发链接，它的工作模式可以将其简单而安全地整合到当前的服务架构中，同时可以保护你的W">
+<meta name="keywords" content="haproxy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="haproxy 基础配置文件详解">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/09/03/Haproxy/5. haproxy 基础配置文件详解/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;HAproxy可以实现基于TCP（四层 例如:SSH,SMTP,MYSQL）和HTTP（七层 例如:web服务器）应用的代理软件，同时也可以作为负载均衡器使用，并且是开源完全免费的。HAproxy完全可以支持数以万计的并发链接，它的工作模式可以将其简单而安全地整合到当前的服务架构中，同时可以保护你的W">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/haproxy%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%A6%E8%A7%A3/01.png?raw=true">
+<meta property="og:updated_time" content="2017-09-01T08:51:10.348Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="haproxy 基础配置文件详解">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;HAproxy可以实现基于TCP（四层 例如:SSH,SMTP,MYSQL）和HTTP（七层 例如:web服务器）应用的代理软件，同时也可以作为负载均衡器使用，并且是开源完全免费的。HAproxy完全可以支持数以万计的并发链接，它的工作模式可以将其简单而安全地整合到当前的服务架构中，同时可以保护你的W">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/haproxy%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%A6%E8%A7%A3/01.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/09/03/Haproxy/5. haproxy 基础配置文件详解/"/>
+
+
+
+
+
+  <title>haproxy 基础配置文件详解 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Haproxy/5. haproxy 基础配置文件详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">haproxy 基础配置文件详解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:04:46+08:00">
+                2017-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="https://github.com/hcldirgit/image/blob/master/haproxy%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%A6%E8%A7%A3/01.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>HAproxy可以实现基于TCP（四层 例如:SSH,SMTP,MYSQL）和HTTP（七层 例如:web服务器）应用的代理软件，同时也可以作为负载均衡器使用，并且是开源完全免费的。HAproxy完全可以支持数以万计的并发链接，它的工作模式可以将其简单而安全地整合到当前的服务架构中，同时可以保护你的WEB服务器不暴露到网络上（设置成代理来实现的 通过VIP将后端的web服务器隐藏到内网中）。</strong></p>
+<h2 id="HAProxy有以下几个优点"><a href="#HAProxy有以下几个优点" class="headerlink" title="HAProxy有以下几个优点"></a>HAProxy有以下几个优点</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;1、免费开源，稳定性也非常好，其稳定性可以与硬件级别的F5 BIG-IP相媲美。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;2、负载带宽非常大。根据官方文档可知，HAproxy可以跑满10Gbps的带宽，对于软件级负载均衡器来说，是相当惊人的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;3、支持链接拒绝。因为保护一个链接保持打开状态的开销是很低的，有时我们需要防止蠕虫攻击，也就是通过限制它们的连接打开来防止它们的危害，可以用于防止DDoS攻击，这也是其他负载均衡器所不具备的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;4、支持全透明代理（已具备硬件防火墙的典型特点）。可以用客户端IP地址或任何其他地址来链接后端服务器，这个特性仅在Linux 2.4/2.6 内核打了cttproxy补丁后才可以使用。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;5、支持TCP层（四层）的负载均衡。HAproxy现在多用于线上的MySQL集群环境，常用它作为MySQL（读）负载均衡，不过在后端的MySQL Slaves数量超过10台时性能不如LVS，所以更推荐推荐LVS+Keepalived。<strong>一般情况下都是前端通过LVS做四层负载 HAProxy做后端web服务器的负载 这样性能会比单独用HAProxy高很多</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;6、强大的监控服务。自带强大的监控服务器状态的页面，在生产环境中可结合Nagios来实现邮件或短信报警。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;7、能支持多种的负载均衡算法，现在为止可以支持8种</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;8、支持虚拟主机。</p>
+<h2 id="haproxy-的配置文件（haproxy-conf）详解"><a href="#haproxy-的配置文件（haproxy-conf）详解" class="headerlink" title="haproxy 的配置文件（haproxy.conf）详解"></a>haproxy 的配置文件（haproxy.conf）详解</h2><h3 id="1-global"><a href="#1-global" class="headerlink" title="1.global"></a>1.global</h3><ul>
+<li>local0日志设备，info日志级别，日志界别有：err warning  info  debug  4种。这个配置表示使用127.0.0.1上的rsyslog服务中的local0日志设备</li>
+<li>maxconn 20480   最大并发数</li>
+<li>daemon  后台模式</li>
+<li>nbproc：进程数</li>
+<li>user：需要些用户名</li>
+<li>gid：需要写数字</li>
+<li>pidfile：pid文件、</li>
+</ul>
+<h3 id="2-defaults"><a href="#2-defaults" class="headerlink" title="2.defaults"></a>2.defaults</h3><ul>
+<li>mode：http    tcp模式，http模式和health模式（健康检查已经废弃）</li>
+<li>retries：3   设置后端服务器的失败重试次数，如果连接失败的次数超过这里设置的值，haproxy就会对后端服务器标记不可用，也可以在后面进行设置</li>
+<li>timeout connect 10s 设置成功连接到一台服务器的最长等待时间，默认单位是毫秒，也可以使用其他单位换算</li>
+<li>timeout client 20s   设置成功连接客户端发动数据时最长等待时间，………………</li>
+<li>imeout server 30s     设置服务器端回应客户端数据发送的最长等待时间…………</li>
+<li>timeout check 5s      设置对后端服务器的检测超时时间，…………</li>
+</ul>
+<h3 id="3-frontend"><a href="#3-frontend" class="headerlink" title="3.frontend"></a>3.frontend</h3><ul>
+<li>frontend关键字定义了一个名字为www的前端虚拟节点</li>
+<li>bind格式：bind [<address>:<port>]  interface <interface>    interface可选项，用来指定网络接口的名称，只在linux上使用</interface></port></address></li>
+<li>option httplog        默认情况下，haproxy日志是不记录http请求的，这样不方便haproxy的排错和监控，此项启动日志记录http请求</li>
+<li>option forwardfor     后端服务器需要获得客户端的真实ip，就需要配置此参数</li>
+<li>option httpclose:           此项表示客户端和服务器端完成一次连接请求后，haproxy将主动关闭tcp连接。这是对性能非常有帮助的参数</li>
+<li>log global：     表示使用全局的日志配置，</li>
+<li>default_backend：    指定默认的后端服务器池，也就是指一组后端真是服务器，而真是服务器组将在backend段定义。这里的htmpool就是一个后端服务器组。</li>
+</ul>
+<h3 id="4-backend"><a href="#4-backend" class="headerlink" title="4.backend"></a>4.backend</h3><ul>
+<li>backend关键字定义了一个名为htmpool的后端真是服务器组。</li>
+<li>mode  http   http模式</li>
+<li>option  redispatch：此参数用于cookie保持的环境中。在默认的环境下，HAProxy会将其请求的后端服务器的serverID插入到cookie中，以保证会话的session持久性。而如果后端的服务器出现故障，客户端的cookie是不会刷新的，这就会出现问题。此时如果设置此参数，将会将客户端的请求强制定向到另外一台监控的后端服务器上，一保证服务器的正常。</li>
+<li>option abortonclose：如果设置此参数，在服务器负载很高的情况下，自动结束当前队列处理时间比较长的连接</li>
+<li>balance：此关键字用来定义负载均衡算法：常用的算法有：<ul>
+<li>1.roundrobin：基于权重轮训    </li>
+<li>2.static-rr：静态权重轮训，运行时调整其服务器权重不会生效</li>
+<li>3.source：ip算法，ip_hash，同一个客户端的请求转发在特定的后端服务器上</li>
+<li>4.leastconn：此算法会将新的连接请求转发到最少连接数目的后端服务器，在回话时间较长的环境中使用，比如：数据库负载均衡等，不适合会话短的环境</li>
+<li>5.uri：此算法会对部分或者整个URL进行hash运算，在经过与服务器的总权重相除，最后转发到某台匹配的后端服务器上</li>
+<li>6.uri_param：此算法会根据URL路劲中的参数进行转发，这样可保证在后端真是服务器数量不变时，同一个用户的请求始终分发到一台机器上</li>
+<li>7.hdr：此算法根据http头进行转发，如果指定的http头名称不存在，则使用roundrobin算法进行策略转发。</li>
+</ul>
+</li>
+<li>cookie：表示允许向cookie插入SERVERID，每台服务器的SERVERID可在下面的server关键字中使用cookie关键字定义</li>
+<li>option httpchk：此选项表示启用http的服务状态监测功能。haproxy作为一个专业的负载均衡器，他支持对backend部分指定的后端服务器节点的健康检查，以保证在后端backend中某个节点不能服务时，吧从frotend段进来的客户端请求分配至backend中其他健康节点上，从而保证整理服务的可用性。option httpchk具体用法如下：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">option httpchk &lt;mothod&gt; &lt;uri&gt; &lt;version&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;method:常用的请求的方法：OPTIONS, GET,HEAD，一般用head方式，head仅检查response的head是不是状态码200，head相对get更快，更简单<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;uri：表示要检测的url地址，200为正常，其他都为错误<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;version：指定心跳检测时的http版本号    </p>
+<ul>
+<li>server：定义后端真实服务器，不能用于default和frontend部分，使用格式：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">server	&lt;name&gt;		&lt;address&gt;[:port]  [param*]</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;参数含义：</p>
+<ul>
+<li><p><name>：后端服务器指定一个内部名称，随便写</name></p>
+</li>
+<li><p>[param*]：常用参数：</p>
+</li>
+<li><p>check：表示启用对此后端服务器执行健康检查</p>
+</li>
+<li><p>inter：设置健康状态检查的时间间隔，单位毫秒</p>
+</li>
+<li><p>rise：社会中重故障状态转换正常状态的次数</p>
+</li>
+<li><p>fall：设置后端服务器从正常状态转换至不可用状态的检查次数：</p>
+</li>
+<li><p>cookie：指定后端服务器设定的cookie值。</p>
+</li>
+<li><p>weight：权重，值1-256，0代表不参与负载均衡</p>
+</li>
+<li><p>backup：设置后端服务器的备份服务器，仅仅在后端所有真是服务器均不可用的情况下次啊启用</p>
+</li>
+</ul>
+<h3 id="5-listen"><a href="#5-listen" class="headerlink" title="5.listen"></a>5.listen</h3><ul>
+<li>listen关键字定义了一个admin_stats的实例，</li>
+<li>stats refresh：设置haproxy监控统计页面自动刷新的时间。</li>
+<li>stats uri：设置haproxy监控统计页面的URL路劲，通过ip：port/haproxy-status查看，路劲自己随意设置</li>
+<li>stats realm：设置登录haproxy统计页面的密码框上的文本信息</li>
+<li>stats auth：设置登录haproxy统计页面的用户名和密码。可以设置多个，设置多行</li>
+<li>stats hide-version：用来隐藏统计页面上haproxy的版本信息</li>
+<li>stats admin if TURE：在1.4.9版本以后，可以在监控页面上手工启动或者禁用后端服务器</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/haproxy/" rel="tag"># haproxy</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/03/Haproxy/4. haproxy 常用的8种算法/" rel="next" title="haproxy 常用的8种算法">
+                <i class="fa fa-chevron-left"></i> haproxy 常用的8种算法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/03/Haproxy/6. 源码编译安装 haproxy/" rel="prev" title="haproxy 源码编译安装">
+                haproxy 源码编译安装 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">599</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#HAProxy有以下几个优点"><span class="nav-number">1.</span> <span class="nav-text">HAProxy有以下几个优点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#haproxy-的配置文件（haproxy-conf）详解"><span class="nav-number">2.</span> <span class="nav-text">haproxy 的配置文件（haproxy.conf）详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-global"><span class="nav-number">2.1.</span> <span class="nav-text">1.global</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-defaults"><span class="nav-number">2.2.</span> <span class="nav-text">2.defaults</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-frontend"><span class="nav-number">2.3.</span> <span class="nav-text">3.frontend</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-backend"><span class="nav-number">2.4.</span> <span class="nav-text">4.backend</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-listen"><span class="nav-number">2.5.</span> <span class="nav-text">5.listen</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

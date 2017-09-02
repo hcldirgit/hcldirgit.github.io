@@ -1,0 +1,926 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Redis," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Redis 有序集合和集合一样也是string类型元素的集合,且不允许重复的成员。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;不同的是每个元素都会关联一个double类型的分数。redis正是通过分数来为集合中的成员进行从小到大的排序。 &amp;#160;">
+<meta name="keywords" content="Redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis 有序集合(sorted set)">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/09/03/Redis/22. Redis 有序集合(sorted set)/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Redis 有序集合和集合一样也是string类型元素的集合,且不允许重复的成员。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;不同的是每个元素都会关联一个double类型的分数。redis正是通过分数来为集合中的成员进行从小到大的排序。 &amp;#160;">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-02T17:32:21.436Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis 有序集合(sorted set)">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Redis 有序集合和集合一样也是string类型元素的集合,且不允许重复的成员。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;不同的是每个元素都会关联一个double类型的分数。redis正是通过分数来为集合中的成员进行从小到大的排序。 &amp;#160;">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/09/03/Redis/22. Redis 有序集合(sorted set)/"/>
+
+
+
+
+
+  <title>Redis 有序集合(sorted set) | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Redis/22. Redis 有序集合(sorted set)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Redis 有序集合(sorted set)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:09:22+08:00">
+                2017-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis 有序集合和集合一样也是string类型元素的集合,且不允许重复的成员。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;不同的是每个元素都会关联一个double类型的分数。redis正是通过分数来为集合中的成员进行从小到大的排序。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有序集合的成员是唯一的,但分数(score)却可以重复。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;集合是通过哈希表实现的，所以添加，删除，查找的复杂度都是O(1)。 集合中最大的成员数为 232 - 1 (4294967295, 每个集合可存储40多亿个成员)。</p>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZADD runoobkey 1 redis</div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; ZADD runoobkey 2 mongodb</div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; ZADD runoobkey 3 mysql</div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; ZADD runoobkey 3 mysql</div><div class="line">(<span class="built_in">integer</span>) 0</div><div class="line">redis 127.0.0.1:6379&gt; ZADD runoobkey 4 mysql</div><div class="line">(<span class="built_in">integer</span>) 0</div><div class="line">redis 127.0.0.1:6379&gt; ZRANGE runoobkey 0 10 WITHSCORES</div><div class="line"> </div><div class="line">1) <span class="string">"redis"</span></div><div class="line">2) <span class="string">"1"</span></div><div class="line">3) <span class="string">"mongodb"</span></div><div class="line">4) <span class="string">"2"</span></div><div class="line">5) <span class="string">"mysql"</span></div><div class="line">6) <span class="string">"4"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在以上实例中我们通过命令 <strong>ZADD</strong> 向 redis 的有序集合中添加了三个值并关联上分数。</p>
+<h2 id="Redis-有序集合命令"><a href="#Redis-有序集合命令" class="headerlink" title="Redis 有序集合命令"></a>Redis 有序集合命令</h2><h3 id="1-Redis-Zadd-命令"><a href="#1-Redis-Zadd-命令" class="headerlink" title="1.Redis Zadd 命令"></a>1.Redis Zadd 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>ZADD key score1 member1 [score2 member2]</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>向有序集合添加一个或多个成员，或者更新已存在成员的分数</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Zadd 命令用于将一个或多个成员元素及其分数值加入到有序集当中。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果某个成员已经是有序集的成员，那么更新这个成员的分数值，并通过重新插入这个成员元素，来保证该成员在正确的位置上。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;分数值可以是整数值或双精度浮点数。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果有序集合 key 不存在，则创建一个空的有序集并执行 ZADD 操作。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当 key 存在但不是有序集类型时，返回一个错误。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意： 在 Redis 2.4 版本以前， ZADD 每次只能添加一个元素。</p>
+<h4 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Zadd 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZADD KEY_NAME SCORE1 VALUE1.. SCOREN VALUEN</div></pre></td></tr></table></figure>
+<h4 id="可用版本"><a href="#可用版本" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.2.0</p>
+<h4 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;被成功添加的新成员的数量，不包括那些被更新的、已经存在的成员。</p>
+<h4 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZADD myset 1 <span class="string">"hello"</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; ZADD myset 1 <span class="string">"foo"</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; ZADD myset 2 <span class="string">"world"</span> 3 <span class="string">"bar"</span></div><div class="line">(<span class="built_in">integer</span>) 2</div><div class="line">redis 127.0.0.1:6379&gt; ZRANGE myzset 0 -1 WITHSCORES</div><div class="line">1) <span class="string">"hello"</span></div><div class="line">2) <span class="string">"1"</span></div><div class="line">3) <span class="string">"foo"</span></div><div class="line">4) <span class="string">"1"</span></div><div class="line">5) <span class="string">"world"</span></div><div class="line">6) <span class="string">"2"</span></div><div class="line">7) <span class="string">"bar"</span></div><div class="line">8) <span class="string">"3"</span></div></pre></td></tr></table></figure>
+<h3 id="2-Redis-Zcard-命令"><a href="#2-Redis-Zcard-命令" class="headerlink" title="2.Redis Zcard 命令"></a>2.Redis Zcard 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>ZCARD key</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>获取有序集合的成员数</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Zcard 命令用于计算集合中元素的数量。</p>
+<h4 id="语法-1"><a href="#语法-1" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Zcard 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZCARD KEY_NAME</div></pre></td></tr></table></figure>
+<h4 id="可用版本-1"><a href="#可用版本-1" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.2.0</p>
+<h4 id="返回值-1"><a href="#返回值-1" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当 key 存在且是有序集类型时，返回有序集的基数。 当 key 不存在时，返回 0 。</p>
+<h4 id="实例-2"><a href="#实例-2" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZADD myset 1 <span class="string">"hello"</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; ZADD myset 1 <span class="string">"foo"</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; ZADD myset 2 <span class="string">"world"</span> 3 <span class="string">"bar"</span></div><div class="line">(<span class="built_in">integer</span>) 2</div><div class="line">redis 127.0.0.1:6379&gt; ZCARD myzset</div><div class="line">(<span class="built_in">integer</span>) 4</div></pre></td></tr></table></figure>
+<h3 id="3-Redis-Zcount-命令"><a href="#3-Redis-Zcount-命令" class="headerlink" title="3.Redis Zcount 命令"></a>3.Redis Zcount 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>ZCOUNT key min max</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>计算在有序集合中指定区间分数的成员数</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Zcount 命令用于计算有序集合中指定分数区间的成员数量。</p>
+<h4 id="语法-2"><a href="#语法-2" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Zcount 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZCOUNT key min max</div></pre></td></tr></table></figure>
+<h4 id="可用版本-2"><a href="#可用版本-2" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 2.0.0</p>
+<h4 id="返回值-2"><a href="#返回值-2" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;分数值在 min 和 max 之间的成员的数量。</p>
+<h4 id="实例-3"><a href="#实例-3" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZADD myzset 1 <span class="string">"hello"</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; ZADD myzset 1 <span class="string">"foo"</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; ZADD myzset 2 <span class="string">"world"</span> 3 <span class="string">"bar"</span></div><div class="line">(<span class="built_in">integer</span>) 2</div><div class="line">redis 127.0.0.1:6379&gt; ZCOUNT myzset 1 3</div><div class="line">(<span class="built_in">integer</span>) 4</div></pre></td></tr></table></figure>
+<h3 id="4-Redis-Zincrby-命令"><a href="#4-Redis-Zincrby-命令" class="headerlink" title="4.Redis Zincrby 命令"></a>4.Redis Zincrby 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>ZINCRBY key increment member</code> </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>有序集合中对指定成员的分数加上增量 increment</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Zincrby 命令对有序集合中指定成员的分数加上增量 increment</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以通过传递一个负数值 increment ，让分数减去相应的值，比如 ZINCRBY key -5  member ，就是让 member 的 score 值减去 5 。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当 key 不存在，或分数不是 key 的成员时， ZINCRBY key increment member 等同于 ZADD key increment member 。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当 key 不是有序集类型时，返回一个错误。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;分数值可以是整数值或双精度浮点数。</p>
+<h4 id="语法-3"><a href="#语法-3" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Zincrby 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZINCRBY key increment member</div></pre></td></tr></table></figure>
+<h4 id="可用版本-3"><a href="#可用版本-3" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.2.0</p>
+<h4 id="返回值-3"><a href="#返回值-3" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;member 成员的新分数值，以字符串形式表示。</p>
+<h4 id="实例-4"><a href="#实例-4" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">edis 127.0.0.1:6379&gt; ZADD myzset 1 <span class="string">"hello"</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; ZADD myzset 1 <span class="string">"foo"</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; ZINCRBY myzset 2 <span class="string">"hello"</span></div><div class="line">(<span class="built_in">integer</span>) 3</div><div class="line">redis 127.0.0.1:6379&gt; ZRANGE myzset 0 -1 WITHSCORES</div><div class="line">1) <span class="string">"foo"</span></div><div class="line">2) <span class="string">"2"</span></div><div class="line">3) <span class="string">"hello"</span></div><div class="line">4) <span class="string">"3"</span></div></pre></td></tr></table></figure>
+<h3 id="5-Redis-Zinterstore-命令"><a href="#5-Redis-Zinterstore-命令" class="headerlink" title="5.Redis Zinterstore 命令"></a>5.Redis Zinterstore 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>ZINTERSTORE destination numkeys key [key ...]</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>计算给定的一个或多个有序集的交集并将结果集存储在新的有序集合 key 中</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Zinterstore 命令计算给定的一个或多个有序集的交集，其中给定 key 的数量必须以 numkeys 参数指定，并将该交集(结果集)储存到 destination 。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认情况下，结果集中某个成员的分数值是所有给定集下该成员分数值之和。</p>
+<h4 id="语法-4"><a href="#语法-4" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Zinterstore 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZINTERSTORE destination numkeys key [key ...] [WEIGHTS weight [weight ...]] [AGGREGATE SUM|MIN|MAX]</div></pre></td></tr></table></figure>
+<h4 id="可用版本-4"><a href="#可用版本-4" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 2.0.0</p>
+<h4 id="返回值-4"><a href="#返回值-4" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;保存到目标结果集的的成员数量。</p>
+<h4 id="实例-5"><a href="#实例-5" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 有序集 mid_test</span></div><div class="line">redis 127.0.0.1:6379&gt; ZADD mid_test 70 <span class="string">"Li Lei"</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; ZADD mid_test 70 <span class="string">"Han Meimei"</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; ZADD mid_test 99.5 <span class="string">"Tom"</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line"> </div><div class="line"><span class="comment"># 另一个有序集 fin_test</span></div><div class="line">redis 127.0.0.1:6379&gt; ZADD fin_test 88 <span class="string">"Li Lei"</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; ZADD fin_test 75 <span class="string">"Han Meimei"</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; ZADD fin_test 99.5 <span class="string">"Tom"</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line"> </div><div class="line"><span class="comment"># 交集</span></div><div class="line">redis 127.0.0.1:6379&gt; ZINTERSTORE sum_point 2 mid_test fin_test</div><div class="line">(<span class="built_in">integer</span>) 3</div><div class="line"> </div><div class="line"><span class="comment"># 显示有序集内所有成员及其分数值</span></div><div class="line">redis 127.0.0.1:6379&gt; ZRANGE sum_point 0 -1 WITHSCORES </div><div class="line">1) <span class="string">"Han Meimei"</span></div><div class="line">2) <span class="string">"145"</span></div><div class="line">3) <span class="string">"Li Lei"</span></div><div class="line">4) <span class="string">"158"</span></div><div class="line">5) <span class="string">"Tom"</span></div><div class="line">6) <span class="string">"199"</span></div></pre></td></tr></table></figure>
+<h3 id="6-Redis-Zlexcount-命令"><a href="#6-Redis-Zlexcount-命令" class="headerlink" title="6.Redis Zlexcount 命令"></a>6.Redis Zlexcount 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>ZLEXCOUNT key min max</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>在有序集合中计算指定字典区间内成员数量</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Zlexcount 命令在计算有序集合中指定字典区间内成员数量。</p>
+<h4 id="语法-5"><a href="#语法-5" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Zlexcount 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZLEXCOUNT KEY MIN MAX</div></pre></td></tr></table></figure>
+<h4 id="可用版本-5"><a href="#可用版本-5" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 2.8.9</p>
+<h4 id="返回值-5"><a href="#返回值-5" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;指定区间内的成员数量。</p>
+<h4 id="实例-6"><a href="#实例-6" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZADD myzset 0 a 0 b 0 c 0 d 0 e</div><div class="line">(<span class="built_in">integer</span>) 5</div><div class="line">redis 127.0.0.1:6379&gt; ZADD myzset 0 f 0 g</div><div class="line">(<span class="built_in">integer</span>) 2</div><div class="line">redis 127.0.0.1:6379&gt; ZLEXCOUNT myzset - +</div><div class="line">(<span class="built_in">integer</span>) 7</div><div class="line">redis 127.0.0.1:6379&gt; ZLEXCOUNT myzset [b [f</div><div class="line">(<span class="built_in">integer</span>) 5</div></pre></td></tr></table></figure>
+<h3 id="7-Redis-Zrange-命令"><a href="#7-Redis-Zrange-命令" class="headerlink" title="7.Redis Zrange 命令"></a>7.Redis Zrange 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>ZRANGE key start stop [WITHSCORES]</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>通过索引区间返回有序集合成指定区间内的成员</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Zrange 返回有序集中，指定区间内的成员。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其中成员的位置按分数值递增(从小到大)来排序。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;具有相同分数值的成员按字典序(lexicographical order )来排列。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果你需要成员按值递减(从大到小)来排列，请使用 ZREVRANGE 命令。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下标参数 start 和 stop 都以 0 为底，也就是说，以 0 表示有序集第一个成员，以 1 表示有序集第二个成员，以此类推。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;你也可以使用负数下标，以 -1 表示最后一个成员， -2 表示倒数第二个成员，以此类推。</p>
+<h4 id="语法-6"><a href="#语法-6" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Zrange 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZRANGE key start stop [WITHSCORES]</div></pre></td></tr></table></figure>
+<h4 id="可用版本-6"><a href="#可用版本-6" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.2.0</p>
+<h4 id="返回值-6"><a href="#返回值-6" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;指定区间内，带有分数值(可选)的有序集成员的列表。</p>
+<h4 id="实例-7"><a href="#实例-7" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZRANGE salary 0 -1 WITHSCORES <span class="comment"># 显示整个有序集成员</span></div><div class="line">1) <span class="string">"jack"</span></div><div class="line">2) <span class="string">"3500"</span></div><div class="line">3) <span class="string">"tom"</span></div><div class="line">4) <span class="string">"5000"</span></div><div class="line">5) <span class="string">"boss"</span></div><div class="line">6) <span class="string">"10086"</span></div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; ZRANGE salary 1 2 WITHSCORES <span class="comment"># 显示有序集下标区间 1 至 2 的成员</span></div><div class="line">1) <span class="string">"tom"</span></div><div class="line">2) <span class="string">"5000"</span></div><div class="line">3) <span class="string">"boss"</span></div><div class="line">4) <span class="string">"10086"</span></div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; ZRANGE salary 0 200000 WITHSCORES <span class="comment"># 测试 end 下标超出最大下标时的情况</span></div><div class="line">1) <span class="string">"jack"</span></div><div class="line">2) <span class="string">"3500"</span></div><div class="line">3) <span class="string">"tom"</span></div><div class="line">4) <span class="string">"5000"</span></div><div class="line">5) <span class="string">"boss"</span></div><div class="line">6) <span class="string">"10086"</span></div><div class="line"> </div><div class="line">redis &gt; ZRANGE salary 200000 3000000 WITHSCORES <span class="comment"># 测试当给定区间不存在于有序集时的情况</span></div><div class="line">(empty list or <span class="built_in">set</span>)</div></pre></td></tr></table></figure>
+<h3 id="8-Redis-Zrangebylex-命令"><a href="#8-Redis-Zrangebylex-命令" class="headerlink" title="8.Redis Zrangebylex 命令"></a>8.Redis Zrangebylex 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>ZRANGEBYLEX key min max [LIMIT offset count]</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>通过字典区间返回有序集合的成员</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Zrangebylex 通过字典区间返回有序集合的成员。</p>
+<h4 id="语法-7"><a href="#语法-7" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Zrange 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZRANGEBYLEX key min max [LIMIT offset count]</div></pre></td></tr></table></figure>
+<h4 id="可用版本-7"><a href="#可用版本-7" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 2.8.9</p>
+<h4 id="返回值-7"><a href="#返回值-7" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;指定区间内的元素列表。</p>
+<h4 id="实例-8"><a href="#实例-8" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZADD myzset 0 a 0 b 0 c 0 d 0 e 0 f 0 g</div><div class="line">(<span class="built_in">integer</span>) 7</div><div class="line">redis 127.0.0.1:6379&gt; ZRANGEBYLEX myzset - [c</div><div class="line">1) <span class="string">"a"</span></div><div class="line">2) <span class="string">"b"</span></div><div class="line">3) <span class="string">"c"</span></div><div class="line">redis 127.0.0.1:6379&gt; ZRANGEBYLEX myzset - (c</div><div class="line">1) <span class="string">"a"</span></div><div class="line">2) <span class="string">"b"</span></div><div class="line">redis 127.0.0.1:6379&gt; ZRANGEBYLEX myzset [aaa (g</div><div class="line">1) <span class="string">"b"</span></div><div class="line">2) <span class="string">"c"</span></div><div class="line">3) <span class="string">"d"</span></div><div class="line">4) <span class="string">"e"</span></div><div class="line">5) <span class="string">"f"</span></div><div class="line">redis&gt;</div></pre></td></tr></table></figure>
+<h3 id="9-Redis-Zrangebyscore-命令"><a href="#9-Redis-Zrangebyscore-命令" class="headerlink" title="9.Redis Zrangebyscore 命令"></a>9.Redis Zrangebyscore 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>ZRANGEBYSCORE key min max [WITHSCORES] [LIMIT]</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>通过分数返回有序集合指定区间内的成员</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Zrangebyscore 返回有序集合中指定分数区间的成员列表。有序集成员按分数值递增(从小到大)次序排列。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;具有相同分数值的成员按字典序来排列(该属性是有序集提供的，不需要额外的计算)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认情况下，区间的取值使用闭区间 (小于等于或大于等于)，你也可以通过给参数前增加   ( 符号来使用可选的开区间 (小于或大于)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;举个例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ZRANGEBYSCORE zset (1 5</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回所有符合条件 1 &lt; score &lt;= 5 的成员，而</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ZRANGEBYSCORE zset (5 (10</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;则返回所有符合条件 5 &lt; score &lt; 10 的成员。</p>
+<h4 id="语法-8"><a href="#语法-8" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Zrangebyscore 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZRANGEBYSCORE key min max [WITHSCORES] [LIMIT offset count]</div></pre></td></tr></table></figure>
+<h4 id="可用版本-8"><a href="#可用版本-8" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.0.5</p>
+<h4 id="返回值-8"><a href="#返回值-8" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;指定区间内，带有分数值(可选)的有序集成员的列表。</p>
+<h4 id="实例-9"><a href="#实例-9" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZADD salary 2500 jack <span class="comment"># 测试数据</span></div><div class="line">(<span class="built_in">integer</span>) 0</div><div class="line">redis 127.0.0.1:6379&gt; ZADD salary 5000 tom</div><div class="line">(<span class="built_in">integer</span>) 0</div><div class="line">redis 127.0.0.1:6379&gt; ZADD salary 12000 peter</div><div class="line">(<span class="built_in">integer</span>) 0</div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; ZRANGEBYSCORE salary -inf +inf <span class="comment"># 显示整个有序集</span></div><div class="line">1) <span class="string">"jack"</span></div><div class="line">2) <span class="string">"tom"</span></div><div class="line">3) <span class="string">"peter"</span></div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; ZRANGEBYSCORE salary -inf +inf WITHSCORES <span class="comment"># 显示整个有序集及成员的 score 值</span></div><div class="line">1) <span class="string">"jack"</span></div><div class="line">2) <span class="string">"2500"</span></div><div class="line">3) <span class="string">"tom"</span></div><div class="line">4) <span class="string">"5000"</span></div><div class="line">5) <span class="string">"peter"</span></div><div class="line">6) <span class="string">"12000"</span></div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; ZRANGEBYSCORE salary -inf 5000 WITHSCORES <span class="comment"># 显示工资 &lt;=5000 的所有成员</span></div><div class="line">1) <span class="string">"jack"</span></div><div class="line">2) <span class="string">"2500"</span></div><div class="line">3) <span class="string">"tom"</span></div><div class="line">4) <span class="string">"5000"</span></div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; ZRANGEBYSCORE salary (5000 400000 <span class="comment"># 显示工资大于 5000 小于等于 400000 的成员</span></div><div class="line">1) <span class="string">"peter"</span></div></pre></td></tr></table></figure>
+<h3 id="10-Redis-Zrank-命令"><a href="#10-Redis-Zrank-命令" class="headerlink" title="10.Redis Zrank 命令"></a>10.Redis Zrank 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>ZRANK key member</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>返回有序集合中指定成员的索引</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Zrank 返回有序集中指定成员的排名。其中有序集成员按分数值递增(从小到大)顺序排列。</p>
+<h4 id="语法-9"><a href="#语法-9" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Zrank 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZRANK key member</div></pre></td></tr></table></figure>
+<h4 id="可用版本-9"><a href="#可用版本-9" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 2.0.0</p>
+<h4 id="返回值-9"><a href="#返回值-9" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果成员是有序集 key 的成员，返回 member 的排名。 如果成员不是有序集 key 的成员，返回 nil 。</p>
+<h4 id="实例-10"><a href="#实例-10" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZRANGE salary 0 -1 WITHSCORES <span class="comment"># 显示所有成员及其 score 值</span></div><div class="line">1) <span class="string">"peter"</span></div><div class="line">2) <span class="string">"3500"</span></div><div class="line">3) <span class="string">"tom"</span></div><div class="line">4) <span class="string">"4000"</span></div><div class="line">5) <span class="string">"jack"</span></div><div class="line">6) <span class="string">"5000"</span></div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; ZRANK salary tom <span class="comment"># 显示 tom 的薪水排名，第二</span></div><div class="line">(<span class="built_in">integer</span>) 1</div></pre></td></tr></table></figure>
+<h3 id="11-Redis-Zrem-命令"><a href="#11-Redis-Zrem-命令" class="headerlink" title="11.Redis Zrem 命令"></a>11.Redis Zrem 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>ZREM key member [member ...]</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>移除有序集合中的一个或多个成员</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Zrem 命令用于移除有序集中的一个或多个成员，不存在的成员将被忽略。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当 key 存在但不是有序集类型时，返回一个错误。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意： 在 Redis 2.4 版本以前， ZREM 每次只能删除一个元素。</p>
+<h4 id="语法-10"><a href="#语法-10" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Zrem 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZREM key member [member ...]</div></pre></td></tr></table></figure>
+<h4 id="可用版本-10"><a href="#可用版本-10" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.2.0</p>
+<h4 id="返回值-10"><a href="#返回值-10" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;被成功移除的成员的数量，不包括被忽略的成员。</p>
+<h4 id="实例-11"><a href="#实例-11" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 测试数据</span></div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; ZRANGE page_rank 0 -1 WITHSCORES</div><div class="line">1) <span class="string">"bing.com"</span></div><div class="line">2) <span class="string">"8"</span></div><div class="line">3) <span class="string">"baidu.com"</span></div><div class="line">4) <span class="string">"9"</span></div><div class="line">5) <span class="string">"google.com"</span></div><div class="line">6) <span class="string">"10"</span></div><div class="line"> </div><div class="line"> </div><div class="line"><span class="comment"># 移除单个元素</span></div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; ZREM page_rank google.com</div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; ZRANGE page_rank 0 -1 WITHSCORES</div><div class="line">1) <span class="string">"bing.com"</span></div><div class="line">2) <span class="string">"8"</span></div><div class="line">3) <span class="string">"baidu.com"</span></div><div class="line">4) <span class="string">"9"</span></div><div class="line"> </div><div class="line"> </div><div class="line"><span class="comment"># 移除多个元素</span></div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; ZREM page_rank baidu.com bing.com</div><div class="line">(<span class="built_in">integer</span>) 2</div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; ZRANGE page_rank 0 -1 WITHSCORES</div><div class="line">(empty list or <span class="built_in">set</span>)</div><div class="line"> </div><div class="line"> </div><div class="line"><span class="comment"># 移除不存在元素</span></div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; ZREM page_rank non-exists-element</div><div class="line">(<span class="built_in">integer</span>) 0</div></pre></td></tr></table></figure>
+<h3 id="12-Redis-Zremrangebylex-命令"><a href="#12-Redis-Zremrangebylex-命令" class="headerlink" title="12.Redis Zremrangebylex 命令"></a>12.Redis Zremrangebylex 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>ZREMRANGEBYLEX key min max</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>移除有序集合中给定的字典区间的所有成员</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Zremrangebylex 命令用于移除有序集合中给定的字典区间的所有成员。</p>
+<h4 id="语法-11"><a href="#语法-11" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Zremrangebylex命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZREMRANGEBYLEX key min max</div></pre></td></tr></table></figure>
+<h4 id="可用版本-11"><a href="#可用版本-11" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 2.8.9</p>
+<h4 id="返回值-11"><a href="#返回值-11" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;被成功移除的成员的数量，不包括被忽略的成员。</p>
+<h4 id="实例-12"><a href="#实例-12" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZADD myzset 0 aaaa 0 b 0 c 0 d 0 e</div><div class="line">(<span class="built_in">integer</span>) 5</div><div class="line">redis 127.0.0.1:6379&gt; ZADD myzset 0 foo 0 zap 0 zip 0 ALPHA 0 alpha</div><div class="line">(<span class="built_in">integer</span>) 5</div><div class="line">redis 127.0.0.1:6379&gt; ZRANGE myzset 0 -1</div><div class="line">1) <span class="string">"ALPHA"</span></div><div class="line"> 2) <span class="string">"aaaa"</span></div><div class="line"> 3) <span class="string">"alpha"</span></div><div class="line"> 4) <span class="string">"b"</span></div><div class="line"> 5) <span class="string">"c"</span></div><div class="line"> 6) <span class="string">"d"</span></div><div class="line"> 7) <span class="string">"e"</span></div><div class="line"> 8) <span class="string">"foo"</span></div><div class="line"> 9) <span class="string">"zap"</span></div><div class="line">10) <span class="string">"zip"</span></div><div class="line">redis 127.0.0.1:6379&gt; ZREMRANGEBYLEX myzset [alpha [omega</div><div class="line">(<span class="built_in">integer</span>) 6</div><div class="line">redis 127.0.0.1:6379&gt; ZRANGE myzset 0 -1</div><div class="line">1) <span class="string">"ALPHA"</span></div><div class="line">2) <span class="string">"aaaa"</span></div><div class="line">3) <span class="string">"zap"</span></div><div class="line">4) <span class="string">"zip"</span></div><div class="line">redis&gt;</div></pre></td></tr></table></figure>
+<h3 id="13-Redis-Zremrangebyrank-命令"><a href="#13-Redis-Zremrangebyrank-命令" class="headerlink" title="13.Redis Zremrangebyrank 命令"></a>13.Redis Zremrangebyrank 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>ZREMRANGEBYRANK key start stop</code> </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>移除有序集合中给定的排名区间的所有成员</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Zremrangebyrank 命令用于移除有序集中，指定排名(rank)区间内的所有成员。</p>
+<h4 id="语法-12"><a href="#语法-12" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Zremrangebyrank 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZREMRANGEBYRANK key start stop</div></pre></td></tr></table></figure>
+<h4 id="可用版本-12"><a href="#可用版本-12" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 2.0.0</p>
+<h4 id="返回值-12"><a href="#返回值-12" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;被移除成员的数量。</p>
+<h4 id="实例-13"><a href="#实例-13" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZADD salary 2000 jack</div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; ZADD salary 5000 tom</div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; ZADD salary 3500 peter</div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; ZREMRANGEBYRANK salary 0 1 <span class="comment"># 移除下标 0 至 1 区间内的成员</span></div><div class="line">(<span class="built_in">integer</span>) 2</div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; ZRANGE salary 0 -1 WITHSCORES <span class="comment"># 有序集只剩下一个成员</span></div><div class="line">1) <span class="string">"tom"</span></div><div class="line">2) <span class="string">"5000"</span></div></pre></td></tr></table></figure>
+<h3 id="14-Redis-Zremrangebyscore-命令"><a href="#14-Redis-Zremrangebyscore-命令" class="headerlink" title="14.Redis Zremrangebyscore 命令"></a>14.Redis Zremrangebyscore 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>ZREMRANGEBYSCORE key min max</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>移除有序集合中给定的分数区间的所有成员</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Zremrangebyscore 命令用于移除有序集中，指定分数（score）区间内的所有成员。</p>
+<h4 id="语法-13"><a href="#语法-13" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Zremrangebyscore 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZREMRANGEBYSCORE key min max</div></pre></td></tr></table></figure>
+<h4 id="可用版本-13"><a href="#可用版本-13" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.2.0</p>
+<h4 id="返回值-13"><a href="#返回值-13" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;被移除成员的数量。</p>
+<h4 id="实例-14"><a href="#实例-14" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZRANGE salary 0 -1 WITHSCORES <span class="comment"># 显示有序集内所有成员及其 score 值</span></div><div class="line">1) <span class="string">"tom"</span></div><div class="line">2) <span class="string">"2000"</span></div><div class="line">3) <span class="string">"peter"</span></div><div class="line">4) <span class="string">"3500"</span></div><div class="line">5) <span class="string">"jack"</span></div><div class="line">6) <span class="string">"5000"</span></div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; ZREMRANGEBYSCORE salary 1500 3500 <span class="comment"># 移除所有薪水在 1500 到 3500 内的员工</span></div><div class="line">(<span class="built_in">integer</span>) 2</div><div class="line"> </div><div class="line">redis&gt; ZRANGE salary 0 -1 WITHSCORES <span class="comment"># 剩下的有序集成员</span></div><div class="line">1) <span class="string">"jack"</span></div><div class="line">2) <span class="string">"5000"</span></div></pre></td></tr></table></figure>
+<h3 id="15-Redis-Zrevrange-命令"><a href="#15-Redis-Zrevrange-命令" class="headerlink" title="15.Redis Zrevrange 命令"></a>15.Redis Zrevrange 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>ZREVRANGE key start stop [WITHSCORES]</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>返回有序集中指定区间内的成员，通过索引，分数从高到底</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Zrevrange 命令返回有序集中，指定区间内的成员。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其中成员的位置按分数值递减(从大到小)来排列。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;具有相同分数值的成员按字典序的逆序(reverse lexicographical order)排列。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;除了成员按分数值递减的次序排列这一点外， ZREVRANGE 命令的其他方面和 ZRANGE 命令一样。</p>
+<h4 id="语法-14"><a href="#语法-14" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Zrevrange 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZREVRANGE key start stop [WITHSCORES]</div></pre></td></tr></table></figure>
+<h4 id="可用版本-14"><a href="#可用版本-14" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.2.0</p>
+<h4 id="返回值-14"><a href="#返回值-14" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;指定区间内，带有分数值(可选)的有序集成员的列表。</p>
+<h4 id="实例-15"><a href="#实例-15" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZRANGE salary 0 -1 WITHSCORES <span class="comment"># 递增排列</span></div><div class="line">1) <span class="string">"peter"</span></div><div class="line">2) <span class="string">"3500"</span></div><div class="line">3) <span class="string">"tom"</span></div><div class="line">4) <span class="string">"4000"</span></div><div class="line">5) <span class="string">"jack"</span></div><div class="line">6) <span class="string">"5000"</span></div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; ZREVRANGE salary 0 -1 WITHSCORES <span class="comment"># 递减排列</span></div><div class="line">1) <span class="string">"jack"</span></div><div class="line">2) <span class="string">"5000"</span></div><div class="line">3) <span class="string">"tom"</span></div><div class="line">4) <span class="string">"4000"</span></div><div class="line">5) <span class="string">"peter"</span></div><div class="line">6) <span class="string">"3500"</span></div></pre></td></tr></table></figure>
+<h3 id="16-Redis-Zrevrangebyscore-命令"><a href="#16-Redis-Zrevrangebyscore-命令" class="headerlink" title="16.Redis Zrevrangebyscore 命令"></a>16.Redis Zrevrangebyscore 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>ZREVRANGEBYSCORE key max min [WITHSCORES]</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>返回有序集中指定分数区间内的成员，分数从高到低排序</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Zrevrangebyscore 返回有序集中指定分数区间内的所有的成员。有序集成员按分数值递减(从大到小)的次序排列。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;具有相同分数值的成员按字典序的逆序(reverse lexicographical order )排列。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;除了成员按分数值递减的次序排列这一点外， ZREVRANGEBYSCORE 命令的其他方面 和 ZRANGEBYSCORE 命令一样。</p>
+<h4 id="语法-15"><a href="#语法-15" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Zrevrangebyscore 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZREVRANGEBYSCORE key max min [WITHSCORES] [LIMIT offset count]</div></pre></td></tr></table></figure>
+<h4 id="可用版本-15"><a href="#可用版本-15" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 2.2.0</p>
+<h4 id="返回值-15"><a href="#返回值-15" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;指定区间内，带有分数值(可选)的有序集成员的列表。</p>
+<h4 id="实例-16"><a href="#实例-16" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZADD salary 10086 jack</div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis &gt; ZADD salary 5000 tom</div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; ZADD salary 7500 peter</div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; ZADD salary 3500 joe</div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; ZREVRANGEBYSCORE salary +inf -inf <span class="comment"># 逆序排列所有成员</span></div><div class="line">1) <span class="string">"jack"</span></div><div class="line">2) <span class="string">"peter"</span></div><div class="line">3) <span class="string">"tom"</span></div><div class="line">4) <span class="string">"joe"</span></div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; ZREVRANGEBYSCORE salary 10000 2000 <span class="comment"># 逆序排列薪水介于 10000 和 2000 之间的成员</span></div><div class="line">1) <span class="string">"peter"</span></div><div class="line">2) <span class="string">"tom"</span></div><div class="line">3) <span class="string">"joe"</span></div></pre></td></tr></table></figure>
+<h3 id="17-Redis-Zrevrank-命令"><a href="#17-Redis-Zrevrank-命令" class="headerlink" title="17.Redis Zrevrank 命令"></a>17.Redis Zrevrank 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>ZREVRANK key member</code> </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>返回有序集合中指定成员的排名，有序集成员按分数值递减(从大到小)排序</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Zrevrank 命令返回有序集中成员的排名。其中有序集成员按分数值递减(从大到小)排序。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;排名以 0 为底，也就是说， 分数值最大的成员排名为 0 。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用 ZRANK 命令可以获得成员按分数值递增(从小到大)排列的排名。</p>
+<h4 id="语法-16"><a href="#语法-16" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Zrevrank 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZREVRANK key member</div></pre></td></tr></table></figure>
+<h4 id="可用版本-16"><a href="#可用版本-16" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 2.2.0</p>
+<h4 id="返回值-16"><a href="#返回值-16" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果成员是有序集 key 的成员，返回成员的排名。 如果成员不是有序集 key 的成员，返回 nil 。</p>
+<h4 id="实例-17"><a href="#实例-17" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZRANGE salary 0 -1 WITHSCORES <span class="comment"># 测试数据</span></div><div class="line">1) <span class="string">"jack"</span></div><div class="line">2) <span class="string">"2000"</span></div><div class="line">3) <span class="string">"peter"</span></div><div class="line">4) <span class="string">"3500"</span></div><div class="line">5) <span class="string">"tom"</span></div><div class="line">6) <span class="string">"5000"</span></div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; ZREVRANK salary peter <span class="comment"># peter 的工资排第二</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; ZREVRANK salary tom <span class="comment"># tom 的工资最高</span></div><div class="line">(<span class="built_in">integer</span>) 0</div></pre></td></tr></table></figure>
+<h3 id="18-Redis-Zscore-命令"><a href="#18-Redis-Zscore-命令" class="headerlink" title="18.Redis Zscore 命令"></a>18.Redis Zscore 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>ZSCORE key member</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>返回有序集中，成员的分数值</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Zscore 命令返回有序集中，成员的分数值。 如果成员元素不是有序集 key 的成员，或 key 不存在，返回 nil 。</p>
+<h4 id="语法-17"><a href="#语法-17" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Zscore 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZSCORE key member</div></pre></td></tr></table></figure>
+<h4 id="可用版本-17"><a href="#可用版本-17" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.2.0</p>
+<h4 id="返回值-17"><a href="#返回值-17" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;成员的分数值，以字符串形式表示。</p>
+<h4 id="实例-18"><a href="#实例-18" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZRANGE salary 0 -1 WITHSCORES <span class="comment"># 测试数据</span></div><div class="line">1) <span class="string">"tom"</span></div><div class="line">2) <span class="string">"2000"</span></div><div class="line">3) <span class="string">"peter"</span></div><div class="line">4) <span class="string">"3500"</span></div><div class="line">5) <span class="string">"jack"</span></div><div class="line">6) <span class="string">"5000"</span></div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; ZSCORE salary peter <span class="comment"># 注意返回值是字符串</span></div><div class="line"><span class="string">"3500"</span></div></pre></td></tr></table></figure>
+<h3 id="19-Redis-Zunionstore-命令"><a href="#19-Redis-Zunionstore-命令" class="headerlink" title="19.Redis Zunionstore 命令"></a>19.Redis Zunionstore 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>ZUNIONSTORE destination numkeys key [key ...]</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>计算给定的一个或多个有序集的并集，并存储在新的 key 中</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Zunionstore 命令计算给定的一个或多个有序集的并集，其中给定 key 的数量必须以 numkeys 参数指定，并将该并集(结果集)储存到 destination 。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认情况下，结果集中某个成员的分数值是所有给定集下该成员分数值之和 。</p>
+<h4 id="语法-18"><a href="#语法-18" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Zunionstore 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZUNIONSTORE destination numkeys key [key ...] [WEIGHTS weight [weight ...]] [AGGREGATE SUM|MIN|MAX]</div></pre></td></tr></table></figure>
+<h4 id="可用版本-18"><a href="#可用版本-18" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 2.0.0</p>
+<h4 id="返回值-18"><a href="#返回值-18" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;保存到 destination 的结果集的成员数量。</p>
+<h4 id="实例-19"><a href="#实例-19" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; ZRANGE programmer 0 -1 WITHSCORES</div><div class="line">1) <span class="string">"peter"</span></div><div class="line">2) <span class="string">"2000"</span></div><div class="line">3) <span class="string">"jack"</span></div><div class="line">4) <span class="string">"3500"</span></div><div class="line">5) <span class="string">"tom"</span></div><div class="line">6) <span class="string">"5000"</span></div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; ZRANGE manager 0 -1 WITHSCORES</div><div class="line">1) <span class="string">"herry"</span></div><div class="line">2) <span class="string">"2000"</span></div><div class="line">3) <span class="string">"mary"</span></div><div class="line">4) <span class="string">"3500"</span></div><div class="line">5) <span class="string">"bob"</span></div><div class="line">6) <span class="string">"4000"</span></div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; ZUNIONSTORE salary 2 programmer manager WEIGHTS 1 3 <span class="comment"># 公司决定加薪。。。除了程序员。。。</span></div><div class="line">(<span class="built_in">integer</span>) 6</div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; ZRANGE salary 0 -1 WITHSCORES</div><div class="line">1) <span class="string">"peter"</span></div><div class="line">2) <span class="string">"2000"</span></div><div class="line">3) <span class="string">"jack"</span></div><div class="line">4) <span class="string">"3500"</span></div><div class="line">5) <span class="string">"tom"</span></div><div class="line">6) <span class="string">"5000"</span></div><div class="line">7) <span class="string">"herry"</span></div><div class="line">8) <span class="string">"6000"</span></div><div class="line">9) <span class="string">"mary"</span></div><div class="line">10) <span class="string">"10500"</span></div><div class="line">11) <span class="string">"bob"</span></div><div class="line">12) <span class="string">"12000"</span></div></pre></td></tr></table></figure>
+<h3 id="20-Redis-Zscan-命令"><a href="#20-Redis-Zscan-命令" class="headerlink" title="20.Redis Zscan 命令"></a>20.Redis Zscan 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>ZSCAN key cursor [MATCH pattern] [COUNT count]</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>迭代有序集合中的元素（包括元素成员和元素分值）</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Zscan 命令用于迭代有序集合中的元素（包括元素成员和元素分值）</p>
+<h4 id="语法-19"><a href="#语法-19" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Zscan 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; redis 127.0.0.1:6379&gt; ZSCAN key cursor [MATCH pattern] [COUNT count]</div></pre></td></tr></table></figure>
+<h4 id="可用版本-19"><a href="#可用版本-19" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 2.8.0</p>
+<h4 id="返回值-19"><a href="#返回值-19" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回的每个元素都是一个有序集合元素，一个有序集合元素由一个成员（member）和一个分值（score）组成。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag"># Redis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/03/Redis/21. Redis 集合(Set)/" rel="next" title="Redis 集合(Set)">
+                <i class="fa fa-chevron-left"></i> Redis 集合(Set)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/03/Redis/23. Redis 安装/" rel="prev" title="Redis 安装">
+                Redis 安装 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">599</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#实例"><span class="nav-number">1.</span> <span class="nav-text">实例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis-有序集合命令"><span class="nav-number">2.</span> <span class="nav-text">Redis 有序集合命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Redis-Zadd-命令"><span class="nav-number">2.1.</span> <span class="nav-text">1.Redis Zadd 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法"><span class="nav-number">2.1.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本"><span class="nav-number">2.1.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值"><span class="nav-number">2.1.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-1"><span class="nav-number">2.1.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Redis-Zcard-命令"><span class="nav-number">2.2.</span> <span class="nav-text">2.Redis Zcard 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-1"><span class="nav-number">2.2.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-2"><span class="nav-number">2.2.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Redis-Zcount-命令"><span class="nav-number">2.3.</span> <span class="nav-text">3.Redis Zcount 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-2"><span class="nav-number">2.3.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-2"><span class="nav-number">2.3.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-2"><span class="nav-number">2.3.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-3"><span class="nav-number">2.3.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Redis-Zincrby-命令"><span class="nav-number">2.4.</span> <span class="nav-text">4.Redis Zincrby 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-3"><span class="nav-number">2.4.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-3"><span class="nav-number">2.4.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-3"><span class="nav-number">2.4.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-4"><span class="nav-number">2.4.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-Redis-Zinterstore-命令"><span class="nav-number">2.5.</span> <span class="nav-text">5.Redis Zinterstore 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-4"><span class="nav-number">2.5.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-4"><span class="nav-number">2.5.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-4"><span class="nav-number">2.5.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-5"><span class="nav-number">2.5.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-Redis-Zlexcount-命令"><span class="nav-number">2.6.</span> <span class="nav-text">6.Redis Zlexcount 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-5"><span class="nav-number">2.6.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-5"><span class="nav-number">2.6.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-5"><span class="nav-number">2.6.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-6"><span class="nav-number">2.6.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-Redis-Zrange-命令"><span class="nav-number">2.7.</span> <span class="nav-text">7.Redis Zrange 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-6"><span class="nav-number">2.7.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-6"><span class="nav-number">2.7.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-6"><span class="nav-number">2.7.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-7"><span class="nav-number">2.7.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-Redis-Zrangebylex-命令"><span class="nav-number">2.8.</span> <span class="nav-text">8.Redis Zrangebylex 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-7"><span class="nav-number">2.8.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-7"><span class="nav-number">2.8.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-7"><span class="nav-number">2.8.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-8"><span class="nav-number">2.8.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-Redis-Zrangebyscore-命令"><span class="nav-number">2.9.</span> <span class="nav-text">9.Redis Zrangebyscore 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-8"><span class="nav-number">2.9.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-8"><span class="nav-number">2.9.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-8"><span class="nav-number">2.9.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-9"><span class="nav-number">2.9.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-Redis-Zrank-命令"><span class="nav-number">2.10.</span> <span class="nav-text">10.Redis Zrank 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-9"><span class="nav-number">2.10.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-9"><span class="nav-number">2.10.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-9"><span class="nav-number">2.10.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-10"><span class="nav-number">2.10.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-Redis-Zrem-命令"><span class="nav-number">2.11.</span> <span class="nav-text">11.Redis Zrem 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-10"><span class="nav-number">2.11.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-10"><span class="nav-number">2.11.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-10"><span class="nav-number">2.11.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-11"><span class="nav-number">2.11.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-Redis-Zremrangebylex-命令"><span class="nav-number">2.12.</span> <span class="nav-text">12.Redis Zremrangebylex 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-11"><span class="nav-number">2.12.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-11"><span class="nav-number">2.12.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-11"><span class="nav-number">2.12.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-12"><span class="nav-number">2.12.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-Redis-Zremrangebyrank-命令"><span class="nav-number">2.13.</span> <span class="nav-text">13.Redis Zremrangebyrank 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-12"><span class="nav-number">2.13.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-12"><span class="nav-number">2.13.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-12"><span class="nav-number">2.13.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-13"><span class="nav-number">2.13.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-Redis-Zremrangebyscore-命令"><span class="nav-number">2.14.</span> <span class="nav-text">14.Redis Zremrangebyscore 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-13"><span class="nav-number">2.14.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-13"><span class="nav-number">2.14.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-13"><span class="nav-number">2.14.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-14"><span class="nav-number">2.14.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-Redis-Zrevrange-命令"><span class="nav-number">2.15.</span> <span class="nav-text">15.Redis Zrevrange 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-14"><span class="nav-number">2.15.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-14"><span class="nav-number">2.15.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-14"><span class="nav-number">2.15.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-15"><span class="nav-number">2.15.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-Redis-Zrevrangebyscore-命令"><span class="nav-number">2.16.</span> <span class="nav-text">16.Redis Zrevrangebyscore 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-15"><span class="nav-number">2.16.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-15"><span class="nav-number">2.16.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-15"><span class="nav-number">2.16.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-16"><span class="nav-number">2.16.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-Redis-Zrevrank-命令"><span class="nav-number">2.17.</span> <span class="nav-text">17.Redis Zrevrank 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-16"><span class="nav-number">2.17.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-16"><span class="nav-number">2.17.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-16"><span class="nav-number">2.17.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-17"><span class="nav-number">2.17.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-Redis-Zscore-命令"><span class="nav-number">2.18.</span> <span class="nav-text">18.Redis Zscore 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-17"><span class="nav-number">2.18.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-17"><span class="nav-number">2.18.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-17"><span class="nav-number">2.18.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-18"><span class="nav-number">2.18.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#19-Redis-Zunionstore-命令"><span class="nav-number">2.19.</span> <span class="nav-text">19.Redis Zunionstore 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-18"><span class="nav-number">2.19.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-18"><span class="nav-number">2.19.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-18"><span class="nav-number">2.19.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例-19"><span class="nav-number">2.19.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#20-Redis-Zscan-命令"><span class="nav-number">2.20.</span> <span class="nav-text">20.Redis Zscan 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法-19"><span class="nav-number">2.20.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可用版本-19"><span class="nav-number">2.20.2.</span> <span class="nav-text">可用版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值-19"><span class="nav-number">2.20.3.</span> <span class="nav-text">返回值</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,763 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Zabbix," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Zabbix自己提供的模板可以监控mysql slow queries,mysqlversion,uptime,alive等。  Zabbix官方提供的监控mysql的模板Template AppMySQL,可以看到相关的Items和key。  把该模板Template App MySQL Link到相">
+<meta name="keywords" content="Zabbix">
+<meta property="og:type" content="article">
+<meta property="og:title" content="zabbix监控mysql数据库状态">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/09/03/Zabbix/14. zabbix监控mysql数据库状态/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Zabbix自己提供的模板可以监控mysql slow queries,mysqlversion,uptime,alive等。  Zabbix官方提供的监控mysql的模板Template AppMySQL,可以看到相关的Items和key。  把该模板Template App MySQL Link到相">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E7%8A%B6%E6%80%81/01.jpeg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E7%8A%B6%E6%80%81/02.jpeg?raw=true">
+<meta property="og:updated_time" content="2017-09-02T17:38:48.327Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="zabbix监控mysql数据库状态">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Zabbix自己提供的模板可以监控mysql slow queries,mysqlversion,uptime,alive等。  Zabbix官方提供的监控mysql的模板Template AppMySQL,可以看到相关的Items和key。  把该模板Template App MySQL Link到相">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E7%8A%B6%E6%80%81/01.jpeg?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/09/03/Zabbix/14. zabbix监控mysql数据库状态/"/>
+
+
+
+
+
+  <title>zabbix监控mysql数据库状态 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/14. zabbix监控mysql数据库状态/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">zabbix监控mysql数据库状态</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:13:44+08:00">
+                2017-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Zabbix自己提供的模板可以监控mysql slow queries,mysqlversion,uptime,alive等。</p>
+<ol>
+<li><p>Zabbix官方提供的监控mysql的模板Template AppMySQL,可以看到相关的Items和key。</p>
+</li>
+<li><p>把该模板Template App MySQL Link到相关的主机上面,发现Item的Status是不可用的，因为key的值是通过Mysql用户查看”showglobal status”信息或者用mysqladmin命令查看status或extended-status的信息而取的值。</p>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mysql&gt; show global status; </div><div class="line">mysql&gt; show status;</div></pre></td></tr></table></figure>
+<ol>
+<li>结合官方提供的key编写Shell脚本，从数据库中取出Items的key的值。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/sh</span></div><div class="line"><span class="comment">#Create by huxianglin 2015.04.14</span></div><div class="line">MYSQL_SOCK=<span class="string">"/tmp/mysql.sock"</span></div><div class="line">MYSQL_PWD=xxxxxx</div><div class="line"><span class="built_in">source</span> /etc/profile.d/mysqld.sh</div><div class="line">ARGS=1</div><div class="line"><span class="keyword">if</span> [ <span class="variable">$#</span> -ne <span class="string">"<span class="variable">$ARGS</span>"</span> ];<span class="keyword">then</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"Please input onearguement:"</span></div><div class="line"><span class="keyword">fi</span></div><div class="line"><span class="keyword">case</span> <span class="variable">$1</span> <span class="keyword">in</span></div><div class="line">Uptime)</div><div class="line">result=`mysqladmin -uroot-p<span class="variable">$&#123;MYSQL_PWD&#125;</span> -S <span class="variable">$MYSQL_SOCK</span> status|cut -f2 -d<span class="string">":"</span>|cut -f1 -d<span class="string">"T"</span>`</div><div class="line"><span class="built_in">echo</span> <span class="variable">$result</span></div><div class="line">;;</div><div class="line">Com_update)</div><div class="line">result=`mysqladmin -uroot-p<span class="variable">$&#123;MYSQL_PWD&#125;</span> -S <span class="variable">$MYSQL_SOCK</span> extended-status |grep -w <span class="string">"Com_update"</span>|cut -d<span class="string">"|"</span> -f3`</div><div class="line"><span class="built_in">echo</span> <span class="variable">$result</span></div><div class="line">;;</div><div class="line">Slow_queries)</div><div class="line">result=`mysqladmin -uroot -p<span class="variable">$&#123;MYSQL_PWD&#125;</span> -S <span class="variable">$MYSQL_SOCK</span> status |cut -f5 -d<span class="string">":"</span>|cut -f1 -d<span class="string">"O"</span>`</div><div class="line"><span class="built_in">echo</span> <span class="variable">$result</span></div><div class="line">;;</div><div class="line">Com_select)</div><div class="line">result=`mysqladmin -uroot-p<span class="variable">$&#123;MYSQL_PWD&#125;</span> -S <span class="variable">$MYSQL_SOCK</span> extended-status |grep -w <span class="string">"Com_select"</span>|cut -d<span class="string">"|"</span> -f3`</div><div class="line"><span class="built_in">echo</span> <span class="variable">$result</span></div><div class="line">;;</div><div class="line">Com_rollback)</div><div class="line">result=`mysqladmin -uroot-p<span class="variable">$&#123;MYSQL_PWD&#125;</span> -S <span class="variable">$MYSQL_SOCK</span> extended-status |grep -w <span class="string">"Com_rollback"</span>|cut -d<span class="string">"|"</span> -f3`</div><div class="line"><span class="built_in">echo</span> <span class="variable">$result</span></div><div class="line">;;</div><div class="line">Questions)</div><div class="line">result=`mysqladmin -uroot -p<span class="variable">$&#123;MYSQL_PWD&#125;</span> -S <span class="variable">$MYSQL_SOCK</span> status|cut -f4 -d<span class="string">":"</span>|cut -f1 -d<span class="string">"S"</span>`</div><div class="line"><span class="built_in">echo</span> <span class="variable">$result</span></div><div class="line">;;</div><div class="line">Com_insert)</div><div class="line">result=`mysqladmin -uroot-p<span class="variable">$&#123;MYSQL_PWD&#125;</span> -S <span class="variable">$MYSQL_SOCK</span> extended-status |grep -w <span class="string">"Com_insert"</span>|cut -d<span class="string">"|"</span> -f3`</div><div class="line"><span class="built_in">echo</span> <span class="variable">$result</span></div><div class="line">;;</div><div class="line">Com_delete)</div><div class="line">result=`mysqladmin -uroot-p<span class="variable">$&#123;MYSQL_PWD&#125;</span> -S <span class="variable">$MYSQL_SOCK</span> extended-status |grep -w <span class="string">"Com_delete"</span>|cut -d<span class="string">"|"</span> -f3`</div><div class="line"><span class="built_in">echo</span> <span class="variable">$result</span></div><div class="line">;;</div><div class="line">Com_commit)</div><div class="line">result=`mysqladmin -uroot-p<span class="variable">$&#123;MYSQL_PWD&#125;</span> -S <span class="variable">$MYSQL_SOCK</span> extended-status |grep -w <span class="string">"Com_commit"</span>|cut -d<span class="string">"|"</span> -f3`</div><div class="line"><span class="built_in">echo</span> <span class="variable">$result</span></div><div class="line">;;</div><div class="line">Bytes_sent)</div><div class="line">result=`mysqladmin -uroot-p<span class="variable">$&#123;MYSQL_PWD&#125;</span> -S <span class="variable">$MYSQL_SOCK</span> extended-status |grep -w <span class="string">"Bytes_sent"</span>|cut -d<span class="string">"|"</span> -f3`</div><div class="line"><span class="built_in">echo</span> <span class="variable">$result</span></div><div class="line">;;</div><div class="line">Bytes_received)</div><div class="line">result=`mysqladmin -uroot-p<span class="variable">$&#123;MYSQL_PWD&#125;</span> -S <span class="variable">$MYSQL_SOCK</span> extended-status |grep -w <span class="string">"Bytes_received"</span> |cut -d<span class="string">"|"</span> -f3`</div><div class="line"><span class="built_in">echo</span> <span class="variable">$result</span></div><div class="line">;;</div><div class="line">Com_begin)</div><div class="line">result=`mysqladmin -uroot-p<span class="variable">$&#123;MYSQL_PWD&#125;</span> -S <span class="variable">$MYSQL_SOCK</span> extended-status |grep -w <span class="string">"Com_begin"</span>|cut -d<span class="string">"|"</span> -f3`</div><div class="line"><span class="built_in">echo</span> <span class="variable">$result</span></div><div class="line">;;</div><div class="line"></div><div class="line">*)</div><div class="line"><span class="built_in">echo</span><span class="string">"Usage:<span class="variable">$0</span>(Uptime|Com_update|Slow_queries|Com_select|Com_rollback|Questions)"</span></div><div class="line">;;</div><div class="line"><span class="keyword">esac</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>修改权限chmod 755 /etc/zabbix-2.4.4/scripts/checkmysqlperformance.sh</strong></p>
+<ol>
+<li>在Zabbix_agentd.conf里面添加UserParameter，格式如下，对于Zabbix来说，脚本其实就是一个插件。</li>
+</ol>
+<ul>
+<li>UserParameter=mysql.version,mysql -V </li>
+<li>UserParameter=mysql.ping,mysqladmin -uroot -pxxxxxx -S /tmp/mysql.sock ping | grep -c alive </li>
+<li>UserParameter=mysql.status[*],/etc/zabbix-2.4.4/scripts/checkmysqlperformance.sh $1 $2 </li>
+<li>重启agentd服务器，然后在zabbix server中添加模板Template AppMySQL。 </li>
+<li>在zabbix前端可以实时查看SQL语句每秒钟的操作次数。</li>
+</ul>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E7%8A%B6%E6%80%81/01.jpeg?raw=true" alt=""></p>
+<ul>
+<li>在zabbix前端可以实时查看mysql发送接收的字节数。其中bytes received表示从所有客户端接收到的字节数，bytes sent表示发送给所有客户端的字节数。</li>
+</ul>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E7%8A%B6%E6%80%81/02.jpeg?raw=true" alt=""></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;把该脚本放到要监控的服务器上面（Modifymysql user and password），修改UserParameter的参数并重启agentd,Link官方提供的Template App MySQL模板即可。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里是测试环境用root账号，线上服务器安全期间可以给mysql用户授权readonly权限。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;根据实际的需求，除了监控上述监控项之外，还可以监控mysqlprocesslist,Innodb等。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Zabbix/" rel="tag"># Zabbix</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/03/Zabbix/13. zabbix监控mongodb/" rel="next" title="zabbix监控mongodb">
+                <i class="fa fa-chevron-left"></i> zabbix监控mongodb
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/03/Zabbix/15. zabbix监控nginx状态/" rel="prev" title="zabbix监控nginx状态">
+                zabbix监控nginx状态 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">599</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

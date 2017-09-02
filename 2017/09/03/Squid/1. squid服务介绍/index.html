@@ -1,0 +1,774 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Squid," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;squid 是比较知名的代理软件，它不仅可以跑在 linux 上还可以跑在 windows 以及 unix 上，它的技术已经非常成熟，目前使用 squid 的用户也是什么广泛的。squid 与 linux 下其他的代理软件如 apache，socks，TIS FWTK 相比，下载安装简单，配置简单灵活，">
+<meta name="keywords" content="Squid">
+<meta property="og:type" content="article">
+<meta property="og:title" content="squid服务介绍">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/09/03/Squid/1. squid服务介绍/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;squid 是比较知名的代理软件，它不仅可以跑在 linux 上还可以跑在 windows 以及 unix 上，它的技术已经非常成熟，目前使用 squid 的用户也是什么广泛的。squid 与 linux 下其他的代理软件如 apache，socks，TIS FWTK 相比，下载安装简单，配置简单灵活，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/squid%E6%9C%8D%E5%8A%A1%E4%BB%8B%E7%BB%8D/01.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/squid%E6%9C%8D%E5%8A%A1%E4%BB%8B%E7%BB%8D/02.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/squid%E6%9C%8D%E5%8A%A1%E4%BB%8B%E7%BB%8D/03.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/squid%E6%9C%8D%E5%8A%A1%E4%BB%8B%E7%BB%8D/04.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/squid%E6%9C%8D%E5%8A%A1%E4%BB%8B%E7%BB%8D/05.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/squid%E6%9C%8D%E5%8A%A1%E4%BB%8B%E7%BB%8D/06.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/squid%E6%9C%8D%E5%8A%A1%E4%BB%8B%E7%BB%8D/07.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/squid%E6%9C%8D%E5%8A%A1%E4%BB%8B%E7%BB%8D/08.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/squid%E6%9C%8D%E5%8A%A1%E4%BB%8B%E7%BB%8D/09.png?raw=true">
+<meta property="og:updated_time" content="2017-09-02T17:35:10.337Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="squid服务介绍">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;squid 是比较知名的代理软件，它不仅可以跑在 linux 上还可以跑在 windows 以及 unix 上，它的技术已经非常成熟，目前使用 squid 的用户也是什么广泛的。squid 与 linux 下其他的代理软件如 apache，socks，TIS FWTK 相比，下载安装简单，配置简单灵活，">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/squid%E6%9C%8D%E5%8A%A1%E4%BB%8B%E7%BB%8D/01.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/09/03/Squid/1. squid服务介绍/"/>
+
+
+
+
+
+  <title>squid服务介绍 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Squid/1. squid服务介绍/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">squid服务介绍</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:13:44+08:00">
+                2017-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;squid 是比较知名的代理软件，它不仅可以跑在 linux 上还可以跑在 windows 以及 unix 上，它的技术已经非常成熟，目前使用 squid 的用户也是什么广泛的。squid 与 linux 下其他的代理软件如 apache，socks，TIS FWTK 相比，下载安装简单，配置简单灵活，支持缓存和多种协议。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;squid之所以用的很多，是因为它的缓存功能。squid 缓存不仅可以节省宝贵的宽带资源，也可以大大降低服务器的 I/O 。从经济角度考虑，它是很多网站架构中不可或缺的角色 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;squid 不仅可以做正向代理，也可以做反向代理。当作为正向代理时，squid 后面是客户端，客户端想上网需经过 squid 。当一个用户（客户端）想要请求一个主页时，它向 squid 发出一个申请，，要 squid 替他请求，谈后 squid 连接用户要请求的网站并请求该主页，接着把该主页传给用户同时保留一个备份，当别的用户请求同样的页面时，squid 把保存的备份立即传给用户，使用户觉得速度相当快。使用正向代理时，客户端需要做一些设置，才能实现，也就是平时在 IE 选项中设置的那个代理。 而反向代理是，squid 后面为某个站点的服务器，客户端请求带站点时，会先把请求发送到 squid  上，然后 squid 去处理用户的请求动作。</p>
+<h2 id="一、正向代理（forward-proxy）"><a href="#一、正向代理（forward-proxy）" class="headerlink" title="一、正向代理（forward proxy）"></a>一、正向代理（forward proxy）</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一般情况下，如果没有特别说明，代理技术默认说的是正向代理技术。关于正向代理的概念如下： 正向代理(forward)是一个位于客户端<code>用户A</code>和原始服务器(origin server)<code>服务器B</code>之间的服务器<code>代理服务器Z</code>，为了从原始服务器取得内容，用户A向代理服务器Z发送一个请求并指定目标(服务器B)，然后代理服务器Z向服务器B转交请求并将获得的内容返回给客户端。客户端必须要进行一些特别的设置才能使用正向代理。</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/squid%E6%9C%8D%E5%8A%A1%E4%BB%8B%E7%BB%8D/01.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>正向代理</strong>就是<strong>代理服务器替代访问方<code>用户A</code>去访问目标服务器<code>服务器B</code></strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这就是正向代理的意义所在。而为什么要用代理服务器去代替访问方<code>用户A</code>去访问服务器B呢？这就要从代理服务器使用的意义说起。 </p>
+<pre><code>&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;使用正向代理服务器作用主要有以下几点：
+</code></pre><h2 id="1、访问本无法访问的服务器B"><a href="#1、访问本无法访问的服务器B" class="headerlink" title="1、访问本无法访问的服务器B"></a>1、访问本无法访问的服务器B</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们抛除复杂的网络路由情节来看图，假设图中路由器从左到右命名为R1,R2假设最初用户A要访问服务器B需要经过R1和R2路由器这样一个路由节点，如果路由器R1或者路由器R2发生故障，那么就无法访问服务器B了。但是如果用户A让代理服务器Z去代替自己访问服务器B，由于代理服务器Z没有在路由器R1或R2节点中，而是通过其它的路由节点访问服务器B，那么用户A就可以得到服务器B的数据了。现实中的例子就是“翻墙”。不过自从VPN技术被广泛应用外，“翻墙”不但使用了传统的正向代理技术，有的还使用了VPN技术。    </p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/squid%E6%9C%8D%E5%8A%A1%E4%BB%8B%E7%BB%8D/02.png?raw=true" alt=""></p>
+<h3 id="2、加速访问服务器B"><a href="#2、加速访问服务器B" class="headerlink" title="2、加速访问服务器B"></a>2、加速访问服务器B</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这种说法目前不像以前那么流行了，主要是带宽流量的飞速发展。早期的正向代理中，很多人使用正向代理就是提速。还是如上图 假设用户A到服务器B，经过R1路由器和R2路由器，而R1到R2路由器的链路是一个低带宽链路。而用户A到代理服务器Z，从代理服务器Z到服务器B都是高带宽链路。那么很显然就可以加速访问服务器B了。</p>
+<h3 id="3、Cache作用"><a href="#3、Cache作用" class="headerlink" title="3、Cache作用"></a>3、Cache作用</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Cache（缓存）技术和代理服务技术是紧密联系的（不光是正向代理，反向代理也使用了Cache（缓存）技术。还如上图所示，如果在用户A访问服务器B某数据J之前，已经有人通过代理服务器Z访问过服务器B上得数据J，那么代理服务器Z会把数据J保存一段时间，如果有人正好取该数据J，那么代理服务器Z不再访问服务器B，而把缓存的数据J直接发给用户A。这一技术在Cache中术语就叫Cache命中。如果有更多的像用户A的用户来访问代理服务器Z，那么这些用户都可以直接从代理服务器Z中取得数据J，而不用千里迢迢的去服务器B下载数据了。</p>
+<h3 id="4、客户端访问授权"><a href="#4、客户端访问授权" class="headerlink" title="4、客户端访问授权"></a>4、客户端访问授权</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; 这方面的内容现今使用的还是比较多的，例如一些公司采用ISA SERVER做为正向代理服务器来授权用户是否有权限访问互联网，挼下图</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/squid%E6%9C%8D%E5%8A%A1%E4%BB%8B%E7%BB%8D/03.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;防火墙作为网关，用来过滤外网对其的访问。假设用户A和用户B都设置了代理服务器，用户A允许访问互联网，而用户B不允许访问互联网（这个在代理服务器Z上做限制）这样用户A因为授权，可以通过代理服务器访问到服务器B，而用户B因为没有被代理服务器Z授权，所以访问服务器B时，数据包会被直接丢弃。</p>
+<h3 id="5、隐藏访问者的行踪"><a href="#5、隐藏访问者的行踪" class="headerlink" title="5、隐藏访问者的行踪"></a>5、隐藏访问者的行踪</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如下图我们可以看出服务器B并不知道访问自己的实际是用户A，因为代理服务器Z代替用户A去直接与服务器B进行交互。如果代理服务器Z被用户A完全控制（或不完全控制），会惯以“肉鸡”术语称呼。 </p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/squid%E6%9C%8D%E5%8A%A1%E4%BB%8B%E7%BB%8D/04.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们总结一下 正向代理是一个位于客户端和原始服务器(origin server)之间的服务器，为了从原始服务器取得内容，客户端向代理发送一个请求并指定目标(原始服务器)，然后代理向原始服务器转交请求并将获得的内容返回给客户端。客户端必须设置正向代理服务器，当然前提是要知道正向代理服务器的IP地址，还有代理程序的端口。   </p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/squid%E6%9C%8D%E5%8A%A1%E4%BB%8B%E7%BB%8D/05.png?raw=true" alt=""></p>
+<h2 id="二、反向代理（reverse-proxy）"><a href="#二、反向代理（reverse-proxy）" class="headerlink" title="二、反向代理（reverse proxy）"></a>二、反向代理（reverse proxy）</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;反向代理正好与正向代理相反，对于客户端而言代理服务器就像是原始服务器，并且客户端不需要进行任何特别的设置。客户端向反向代理的命名空间(name-space)中的内容发送普通请求，接着反向代理将判断向何处(原始服务器)转交请求，并将获得的内容返回给客户端。 使用反向代理服务器的作用如下：</p>
+<h3 id="1、保护和隐藏原始资源服务器如下图"><a href="#1、保护和隐藏原始资源服务器如下图" class="headerlink" title="1、保护和隐藏原始资源服务器如下图"></a>1、保护和隐藏原始资源服务器如下图</h3><p><img src="https://github.com/hcldirgit/image/blob/master/squid%E6%9C%8D%E5%8A%A1%E4%BB%8B%E7%BB%8D/06.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用户A始终认为它访问的是原始服务器B而不是代理服务器Z，但实用际上反向代理服务器接受用户A的应答，从原始资源服务器B中取得用户A的需求资源，然后发送给用户A。由于防火墙的作用，只允许代理服务器Z访问原始资源服务器B。尽管在这个虚拟的环境下，防火墙和反向代理的共同作用保护了原始资源服务器B，但用户A并不知情。</p>
+<h3 id="2、负载均衡如下图"><a href="#2、负载均衡如下图" class="headerlink" title="2、负载均衡如下图"></a>2、负载均衡如下图</h3><p><img src="https://github.com/hcldirgit/image/blob/master/squid%E6%9C%8D%E5%8A%A1%E4%BB%8B%E7%BB%8D/07.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当反向代理服务器不止一个的时候，我们甚至可以把它们做成集群，当更多的用户访问资源服务器B的时候，让不同的代理服务器Z（x）去应答不同的用户，然后发送不同用户需要的资源。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当然反向代理服务器像正向代理服务器一样拥有CACHE的作用，它可以缓存原始资源服务器B的资源，而不是每次都要向原始资源服务器B请求数据，特别是一些静态的数据，比如图片和文件，如果这些反向代理服务器能够做到和用户X来自同一个网络，那么用户X访问反向代理服务器X，就会得到很高质量的速度。这正是CDN技术的核心。如下图</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/squid%E6%9C%8D%E5%8A%A1%E4%BB%8B%E7%BB%8D/08.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们并不是讲解CDN，所以去掉了CDN最关键的核心技术智能DNS。只是展示CDN技术实际上利用的正是反向代理原理这块。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;反向代理结论与正向代理正好相反，对于客户端而言它就像是原始服务器，并且客户端不需要进行任何特别的设置。客户端向反向代理的命名空间(name-space)中的内容发送普通请求，接着反向代理将判断向何处(原始服务器)转交请求，并将获得的内容返回给客户端，就像这些内容原本就是它自己的一样。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;基本上，网上做正反向代理的程序很多，能做正向代理的软件大部分也可以做反向代理。开源软件中最流行的就是squid，既可以做正向代理，也有很多人用来做反向代理的前端服务器。另外MS ISA也可以用来在WINDOWS平台下做正向代理。反向代理中最主要的实践就是WEB服务，近些年来最火的就是Nginx了。网上有人说NGINX不能做正向代理，其实是不对的。NGINX也可以做正向代理，不过用的人比较少了。</p>
+<h2 id="三、透明代理"><a href="#三、透明代理" class="headerlink" title="三、透明代理"></a>三、透明代理</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果把正向代理、反向代理和透明代理按照人类血缘关系来划分的话。那么正向代理和透明代理是很明显堂亲关系，而正向代理和反向代理就是表亲关系了 。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;透明代理的意思是客户端根本不需要知道有代理服务器的存在，它改编你的request fields（报文），并会传送真实IP。注意，加密的透明代理则是属于匿名代理，意思是不用设置使用代理了。 透明代理实践的例子就是时下很多公司使用的行为管理软件。如下图</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/squid%E6%9C%8D%E5%8A%A1%E4%BB%8B%E7%BB%8D/09.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用户A和用户B并不知道行为管理设备充当透明代理行为，当用户A或用户B向服务器A或服务器B提交请求的时候，透明代理设备根据自身策略拦截并修改用户A或B的报文，并作为实际的请求方，向服务器A或B发送请求，当接收信息回传，透明代理再根据自身的设置把允许的报文发回至用户A或B，如上图，如果透明代理设置不允许访问服务器B，那么用户A或者用户B就不会得到服务器B的数据。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关于正向代理、反向代理这两个概念有一个特别容易的区分：正向代理，squid 后面是客户端，客户端上网要通过 squid 去上。反向代理， squid 后面是服务器，服务器返回给用户数据需要走 squid。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;那么，什么时候需要配置正向代理，什么时候需要配置反向代理呢。正向代理用在企业的办公环境中，员工上网需要通过 squid 代理来上，这样可以节省网络带宽资源。而反向代理用来搭建网站静态项（图片、html、流媒体、js、css等）的缓存服务器，它用于网站架构中。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Squid/" rel="tag"># Squid</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/03/正则表达式/6. 正则表达式-示例/" rel="next" title="正则表达式-示例">
+                <i class="fa fa-chevron-left"></i> 正则表达式-示例
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/03/Squid/10. squid故障汇总/" rel="prev" title="squid故障汇总">
+                squid故障汇总 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">599</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、正向代理（forward-proxy）"><span class="nav-number">1.</span> <span class="nav-text">一、正向代理（forward proxy）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1、访问本无法访问的服务器B"><span class="nav-number">2.</span> <span class="nav-text">1、访问本无法访问的服务器B</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2、加速访问服务器B"><span class="nav-number">2.1.</span> <span class="nav-text">2、加速访问服务器B</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、Cache作用"><span class="nav-number">2.2.</span> <span class="nav-text">3、Cache作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、客户端访问授权"><span class="nav-number">2.3.</span> <span class="nav-text">4、客户端访问授权</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5、隐藏访问者的行踪"><span class="nav-number">2.4.</span> <span class="nav-text">5、隐藏访问者的行踪</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、反向代理（reverse-proxy）"><span class="nav-number">3.</span> <span class="nav-text">二、反向代理（reverse proxy）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、保护和隐藏原始资源服务器如下图"><span class="nav-number">3.1.</span> <span class="nav-text">1、保护和隐藏原始资源服务器如下图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、负载均衡如下图"><span class="nav-number">3.2.</span> <span class="nav-text">2、负载均衡如下图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、透明代理"><span class="nav-number">4.</span> <span class="nav-text">三、透明代理</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

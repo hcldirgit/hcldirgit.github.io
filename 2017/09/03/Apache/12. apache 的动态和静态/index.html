@@ -1,0 +1,742 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Apache,LAMP," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;关于apache的动态与静态编译的理解，引用某人的比喻如下： &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;好比有两个人a和m，a代表apache,m代表module，要想让a使用m的东西，一个方法是把m的东西都放到a那里去，a使用的时候就是现成的了，就">
+<meta name="keywords" content="Apache,LAMP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="apache 的动态和静态">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/09/03/Apache/12. apache 的动态和静态/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;关于apache的动态与静态编译的理解，引用某人的比喻如下： &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;好比有两个人a和m，a代表apache,m代表module，要想让a使用m的东西，一个方法是把m的东西都放到a那里去，a使用的时候就是现成的了，就">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-01T08:41:08.505Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="apache 的动态和静态">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;关于apache的动态与静态编译的理解，引用某人的比喻如下： &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;好比有两个人a和m，a代表apache,m代表module，要想让a使用m的东西，一个方法是把m的东西都放到a那里去，a使用的时候就是现成的了，就">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/09/03/Apache/12. apache 的动态和静态/"/>
+
+
+
+
+
+  <title>apache 的动态和静态 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Apache/12. apache 的动态和静态/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">apache 的动态和静态</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:00:30+08:00">
+                2017-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>关于apache的动态与静态编译的理解</strong>，引用某人的比喻如下：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;好比有两个人a和m，a代表apache,m代表module，要想让a使用m的东西，一个方法是把m的东西都放到a那里去，a使用的时候就是现成的了，就是所谓的静态编译</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;还有一个方法，就是告诉a，m的住址，当a要使用m的东西的时候,a去找m,然后使用，不过，这种方法要注意的一个问题就是：m必须要有实际的住址，否则a会找不到m而产生错误的，这种方法也就是apache 的动态(DSO)编译了。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>下面说说在apache1.3和apache2.0动态与静态编译编译的区别</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先是<strong>apache1.3.29</strong>+php4.3.4+mysql4.0.13的<strong>静态编译</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;apache第一次编译,并不要安装，因为php的编译需要apache至少已经编译过一次 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">tar zvxf apache_1.3.27.tar.gz </div><div class="line"><span class="built_in">cd</span> apache_1.3.27 </div><div class="line">./configure --prefix=/usr/<span class="built_in">local</span>/apache</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编译php</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">tar zvxf php4.3.4.tar.gz </div><div class="line"><span class="built_in">cd</span> php4.3.4</div><div class="line">./configure --prefix=/usr/<span class="built_in">local</span>/php \</div><div class="line">--with-mysql=/usr/<span class="built_in">local</span>/mysql \</div><div class="line">--with-apache=../apache_1.3.27 </div><div class="line">make</div><div class="line">make install</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第二次编译安装apache: </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> ../apache_1.3.29</div><div class="line">./configure --prefi=/usr/<span class="built_in">local</span>/apache \</div><div class="line">--activate-module=src/modules/php4/libphp4.a </div><div class="line">make </div><div class="line">make install</div><div class="line">cp ../php4.3.4/php.ini.dist /usr/<span class="built_in">local</span>/php/lib/php.ini</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改/usr/local/apache/conf/httpd.conf</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查找<ifmodule mod_mime.c=""></ifmodule></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在此范围添加</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">AddType application/x-httpd-php .php </div><div class="line">AddType application/x-httpd-php-source .phps</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意：apache和php的源码包在同一个目录，–with-apache=../apache_1.3.27是指向源码解压的目录</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;ok!静态编译完成。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;再看<strong>DSO动态编译</strong>方法：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先编译安装apache</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">tar zvxf apache_1.3.29</div><div class="line"><span class="built_in">cd</span> apache_1.3.29</div><div class="line">./configure --prefix=/usr/<span class="built_in">local</span>/apache \</div><div class="line">--<span class="built_in">enable</span>-module=so \</div><div class="line">--<span class="built_in">enable</span>-module=rewrite \</div><div class="line">--<span class="built_in">enable</span>-shared=max</div><div class="line">make </div><div class="line">make install</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;so模块用来提供DSO支持的apachehe核心模块，rewrite是地址重写的模块，如果不需要可以不编译enable－shared＝max是指除了so以外的所有标准模块都编译成DSO模块。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后编译php</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">tar zvxf php4.3.4.tar.gz </div><div class="line"><span class="built_in">cd</span> php4.3.2 </div><div class="line">./configure --prefix=/usr/<span class="built_in">local</span>/php \</div><div class="line">--with-mysql=/usr/<span class="built_in">local</span>/mysql \</div><div class="line">--with-apxs=/usr/<span class="built_in">local</span>/apache/bin/apxs </div><div class="line">make</div><div class="line">make install</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后修改httpd.conf，方法同静态编译的方法</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;OK，DSO动态编译就完成了！</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;接下来我们讲<strong>apache2.0.46</strong>+php4.3.2的<strong>动态编译</strong>方法</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一样先编译安装apache</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">tar zvxf httpd-2.0.46.tar.gz</div><div class="line"><span class="built_in">cd</span> httpd-2.0.46</div><div class="line">./configure --prefix=/usr/<span class="built_in">local</span>/apache2 \</div><div class="line">--<span class="built_in">enable</span>-so \</div><div class="line">--<span class="built_in">enable</span>-mods-shared=most</div><div class="line">make</div><div class="line">make install</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>大家注意了–enable-so相当与1.3.27的–enable-module=so，而–enable-mods-shared=most又等同与以前的–enable-shared=max</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后还是编译PHP</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">tar zvxf php4.3.2.tar.gz</div><div class="line">./configure --prefix=/usr/<span class="built_in">local</span>/php \</div><div class="line">--with-mysql=/usr/<span class="built_in">local</span>/mysql \</div><div class="line">--with-apxs2=/usr/<span class="built_in">local</span>/apache2/bin/apxs </div><div class="line">make </div><div class="line">make install</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>注意这里是apxs2！！</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改httpd.conf与1.3.27也有所不同，大家寻找Add Type application/x-tar .tgz 在下面添加</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">AddType application/x-httpd-php .php </div><div class="line">AddType application/x-httpd-php-source .phps</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另外要显示中文的话，请修改:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">AddDefaultCharset gb2312</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Apache/" rel="tag"># Apache</a>
+          
+            <a href="/tags/LAMP/" rel="tag"># LAMP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/03/Apache/10. Apache模块动态加载和静态加载/" rel="next" title="Apache模块动态加载和静态加载">
+                <i class="fa fa-chevron-left"></i> Apache模块动态加载和静态加载
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/03/Apache/13. apache的server status 功能/" rel="prev" title="apache的server status 功能">
+                apache的server status 功能 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">599</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

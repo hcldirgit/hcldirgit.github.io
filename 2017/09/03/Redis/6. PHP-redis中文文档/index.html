@@ -1,0 +1,914 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Redis," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;phpredis是php的一个扩展，效率是相当高有链表排序功能，对创建内存级的模块业务关系很有用;以下是redis官方提供的命令使用技巧: &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;下载地址：https://github.com/owlient/ph">
+<meta name="keywords" content="Redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP-redis中文文档">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/09/03/Redis/6. PHP-redis中文文档/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;phpredis是php的一个扩展，效率是相当高有链表排序功能，对创建内存级的模块业务关系很有用;以下是redis官方提供的命令使用技巧: &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;下载地址：https://github.com/owlient/ph">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-02T17:30:59.749Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PHP-redis中文文档">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;phpredis是php的一个扩展，效率是相当高有链表排序功能，对创建内存级的模块业务关系很有用;以下是redis官方提供的命令使用技巧: &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;下载地址：https://github.com/owlient/ph">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/09/03/Redis/6. PHP-redis中文文档/"/>
+
+
+
+
+
+  <title>PHP-redis中文文档 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Redis/6. PHP-redis中文文档/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">PHP-redis中文文档</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:09:22+08:00">
+                2017-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;phpredis是php的一个扩展，效率是相当高有链表排序功能，对创建内存级的模块业务关系很有用;以下是redis官方提供的命令使用技巧:</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下载地址：<a href="https://github.com/owlient/phpredis（支持redis" target="_blank" rel="external">https://github.com/owlient/phpredis（支持redis</a> 2.0.4）</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>Redis::__construct</strong>构造函数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span> = new Redis();</div></pre></td></tr></table></figure>
+<h2 id="connect-open-链接redis服务"><a href="#connect-open-链接redis服务" class="headerlink" title="connect, open 链接redis服务"></a>connect, open 链接redis服务</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;参数</p>
+<ul>
+<li>host: string，服务地址</li>
+<li>port: int,端口号</li>
+<li>timeout: float,链接时长 (可选, 默认为 0 ，不限链接时间)</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注: 在redis.conf中也有时间，默认为300</p>
+<h2 id="pconnect-popen-不会主动关闭的链接"><a href="#pconnect-popen-不会主动关闭的链接" class="headerlink" title="pconnect, popen 不会主动关闭的链接"></a>pconnect, popen 不会主动关闭的链接</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;参考上面</p>
+<h2 id="setOption"><a href="#setOption" class="headerlink" title="setOption"></a>setOption</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;设置redis模式</p>
+<h2 id="getOption"><a href="#getOption" class="headerlink" title="getOption"></a>getOption</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看redis设置的模式</p>
+<h2 id="ping"><a href="#ping" class="headerlink" title="ping"></a>ping</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看连接状态</p>
+<h2 id="get"><a href="#get" class="headerlink" title="get"></a>get</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;得到某个key的值（string值）<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果该key不存在，return <strong>false</strong><br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>set</strong> 写入key 和 value（string值）<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果写入成功，return ture</p>
+<h2 id="setex"><a href="#setex" class="headerlink" title="setex"></a>setex</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;带生存时间的写入值     </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;setex(<span class="string">'key'</span>, 3600, <span class="string">'value'</span>);</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;sets key → value, with 1h TTL.</p>
+<h2 id="setnx"><a href="#setnx" class="headerlink" title="setnx"></a>setnx</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;判断是否重复的，写入值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;setnx(<span class="string">'key'</span>, <span class="string">'value'</span>);</div><div class="line"><span class="variable">$redis</span>-&gt;setnx(<span class="string">'key'</span>, <span class="string">'value'</span>);</div></pre></td></tr></table></figure>
+<h2 id="delete"><a href="#delete" class="headerlink" title="delete"></a>delete</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;删除指定key的值<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回已经删除key的个数（长整数）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;delete(<span class="string">'key1'</span>, <span class="string">'key2'</span>);</div><div class="line"><span class="variable">$redis</span>-&gt;delete(array(<span class="string">'key3'</span>, <span class="string">'key4'</span>, <span class="string">'key5'</span>));</div></pre></td></tr></table></figure>
+<h2 id="ttl"><a href="#ttl" class="headerlink" title="ttl"></a>ttl</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;得到一个key的生存时间</p>
+<h2 id="persist"><a href="#persist" class="headerlink" title="persist"></a>persist</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;移除生存时间到期的key<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果key到期 true 如果不到期 false</p>
+<h2 id="mset（redis版本1-1以上才可以用）"><a href="#mset（redis版本1-1以上才可以用）" class="headerlink" title="mset（redis版本1.1以上才可以用）"></a>mset（redis版本1.1以上才可以用）</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;同时给多个key赋值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;mset(array(<span class="string">'key0'</span> =&gt; <span class="string">'value0'</span>, <span class="string">'key1'</span> =&gt; <span class="string">'value1'</span>));</div></pre></td></tr></table></figure>
+<h2 id="multi-exec-discard"><a href="#multi-exec-discard" class="headerlink" title="multi, exec, discard"></a>multi, exec, discard</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;进入或者退出事务模式<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;参数可选Redis::MULTI或Redis::PIPELINE. 默认是 Redis::MULTI<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis::MULTI：将多个操作当成一个事务执行<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis::PIPELINE:让（多条）执行命令简单的，更加快速的发送给服务器，但是没   有任何原子性的保证<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;discard:删除一个事务<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回值<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;multi()，返回一个redis对象，并进入multi-mode模式，一旦进入multi-mode模式，以后调用的所有方法都会返回相同的对象，只到exec(）方法被调用。    </p>
+<h2 id="watch-unwatch（代码测试后，不能达到所说的效果）"><a href="#watch-unwatch（代码测试后，不能达到所说的效果）" class="headerlink" title="watch, unwatch（代码测试后，不能达到所说的效果）"></a>watch, unwatch（代码测试后，不能达到所说的效果）</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;监测一个key的值是否被其它的程序更改。如果这个key在watch 和 exec （方法）间被修改，这个 MULTI/EXEC 事务的执行将失败（return false）<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;unwatch      取消被这个程序监测的所有key<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; 参数，一对key的列表    </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;watch(<span class="string">'x'</span>);</div><div class="line"></div><div class="line"><span class="variable">$ret</span> = <span class="variable">$redis</span>-&gt;multi() -&gt;incr(<span class="string">'x'</span>) -&gt;<span class="built_in">exec</span>();</div></pre></td></tr></table></figure>
+<h2 id="subscribe"><a href="#subscribe" class="headerlink" title="subscribe *"></a>subscribe *</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;方法回调。注意，该方法可能在未来里发生改变</p>
+<h2 id="publish"><a href="#publish" class="headerlink" title="publish *"></a>publish *</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;发表内容到某一个通道。注意，该方法可能在未来里发生改变</p>
+<h2 id="exists"><a href="#exists" class="headerlink" title="exists"></a>exists</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;判断key是否存在。存在 true 不在 false</p>
+<h2 id="incr-incrBy"><a href="#incr-incrBy" class="headerlink" title="incr, incrBy"></a>incr, incrBy</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;key中的值进行自增1，如果填写了第二个参数，者自增第二个参数所填的值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;incr(<span class="string">'key1'</span>);</div><div class="line"><span class="variable">$redis</span>-&gt;incrBy(<span class="string">'key1'</span>, 10);</div></pre></td></tr></table></figure>
+<h2 id="decr-decrBy"><a href="#decr-decrBy" class="headerlink" title="decr, decrBy"></a>decr, decrBy</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;做减法，使用方法同incr</p>
+<h2 id="getMultiple"><a href="#getMultiple" class="headerlink" title="getMultiple"></a>getMultiple</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;传参<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;由key组成的数组<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回参数<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果key存在返回value，不存在返回false</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;<span class="built_in">set</span>(<span class="string">'key1'</span>, <span class="string">'value1'</span>); <span class="variable">$redis</span>-&gt;<span class="built_in">set</span>(<span class="string">'key2'</span>, <span class="string">'value2'</span>); <span class="variable">$redis</span>-&gt;<span class="built_in">set</span>(<span class="string">'key3'</span>, <span class="string">'value3'</span>); <span class="variable">$redis</span>-&gt;getMultiple(array(<span class="string">'key1'</span>, <span class="string">'key2'</span>, <span class="string">'key3'</span>));</div><div class="line"><span class="variable">$redis</span>-&gt;lRem(<span class="string">'key1'</span>, <span class="string">'A'</span>, 2);</div><div class="line"><span class="variable">$redis</span>-&gt;lRange(<span class="string">'key1'</span>, 0, -1);</div></pre></td></tr></table></figure>
+<h2 id="list相关操作"><a href="#list相关操作" class="headerlink" title="list相关操作"></a>list相关操作</h2><h3 id="lPush"><a href="#lPush" class="headerlink" title="lPush"></a>lPush</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;lPush(key, value);</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在名称为key的list左边（头）添加一个值为value的 元素</p>
+<h3 id="rPush"><a href="#rPush" class="headerlink" title="rPush"></a>rPush</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;rPush(key, value);</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在名称为key的list右边（尾）添加一个值为value的 元素</p>
+<h3 id="lPushx-rPushx"><a href="#lPushx-rPushx" class="headerlink" title="lPushx/rPushx"></a>lPushx/rPushx</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;lPushx(key, value);</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在名称为key的list左边(头)/右边（尾）添加一个值为value的元素,如果value已经存在，则不添加</p>
+<h3 id="lPop-rPop"><a href="#lPop-rPop" class="headerlink" title="lPop/rPop"></a>lPop/rPop</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;lPop(<span class="string">'key'</span>);</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出名称为key的list左(头)起/右（尾）起的第一个元素，删除该元素</p>
+<h3 id="blPop-brPop"><a href="#blPop-brPop" class="headerlink" title="blPop/brPop"></a>blPop/brPop</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;blPop(<span class="string">'key1'</span>, <span class="string">'key2'</span>, 10);</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;lpop命令的block版本。即当timeout为0时，若遇到名称为key i的list不存在或该list为空，则命令结束。如果timeout&gt;0，则遇到上述情况时，等待timeout秒，如果问题没有解决，则对keyi+1开始的list执行pop操作</p>
+<h3 id="lSize"><a href="#lSize" class="headerlink" title="lSize"></a>lSize</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;lSize(<span class="string">'key'</span>);</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回名称为key的list有多少个元素</p>
+<h3 id="lIndex-lGet"><a href="#lIndex-lGet" class="headerlink" title="lIndex, lGet"></a>lIndex, lGet</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;lGet(<span class="string">'key'</span>, 0);</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回名称为key的list中index位置的元素</p>
+<h3 id="lSet"><a href="#lSet" class="headerlink" title="lSet"></a>lSet</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;lSet(<span class="string">'key'</span>, 0, <span class="string">'X'</span>);</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;给名称为key的list中index位置的元素赋值为value</p>
+<h3 id="lRange-lGetRange"><a href="#lRange-lGetRange" class="headerlink" title="lRange, lGetRange"></a>lRange, lGetRange</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;lRange(<span class="string">'key1'</span>, 0, -1);</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回名称为key的list中start至end之间的元素（end为 -1 ，返回所有）</p>
+<h3 id="lTrim-listTrim"><a href="#lTrim-listTrim" class="headerlink" title="lTrim, listTrim"></a>lTrim, listTrim</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;lTrim(<span class="string">'key'</span>, start, end);</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;截取名称为key的list，保留start至end之间的元素</p>
+<h3 id="lRem-lRemove"><a href="#lRem-lRemove" class="headerlink" title="lRem, lRemove"></a>lRem, lRemove</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;lRem(<span class="string">'key'</span>, <span class="string">'A'</span>, 2);</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;删除count个名称为key的list中值为value的元素。count为0，删除所有值为value的元素，count&gt;0从头至尾删除count个值为value的元素，count &lt; 0从尾到头删除|count|个值为value的元素</p>
+<h3 id="lInsert"><a href="#lInsert" class="headerlink" title="lInsert"></a>lInsert</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在名称为为key的list中，找到值为pivot 的value，并根据参数Redis::BEFORE |  Redis::AFTER，来确定，newvalue 是放在 pivot 的前面，或者后面。如果key不存在，  不会插入，如果 pivot不存在，return -1</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;delete(<span class="string">'key1'</span>); <span class="variable">$redis</span>-&gt;lInsert(<span class="string">'key1'</span>, Redis::AFTER, <span class="string">'A'</span>, <span class="string">'X'</span>); <span class="variable">$redis</span>-&gt;lPush(<span class="string">'key1'</span>, <span class="string">'A'</span>); <span class="variable">$redis</span>-&gt;lPush(<span class="string">'key1'</span>, <span class="string">'B'</span>); <span class="variable">$redis</span>-&gt;lPush(<span class="string">'key1'</span>, <span class="string">'C'</span>); <span class="variable">$redis</span>-&gt;lInsert(<span class="string">'key1'</span>, Redis::BEFORE, <span class="string">'C'</span>, <span class="string">'X'</span>);</div><div class="line"><span class="variable">$redis</span>-&gt;lRange(<span class="string">'key1'</span>, 0, -1);</div><div class="line"><span class="variable">$redis</span>-&gt;lInsert(<span class="string">'key1'</span>, Redis::AFTER, <span class="string">'C'</span>, <span class="string">'Y'</span>);</div><div class="line"><span class="variable">$redis</span>-&gt;lRange(<span class="string">'key1'</span>, 0, -1);</div><div class="line"><span class="variable">$redis</span>-&gt;lInsert(<span class="string">'key1'</span>, Redis::AFTER, <span class="string">'W'</span>, <span class="string">'value'</span>);</div></pre></td></tr></table></figure>
+<h3 id="rpoplpush"><a href="#rpoplpush" class="headerlink" title="rpoplpush"></a>rpoplpush</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回并删除名称为srckey的list的尾元素，并将该元素添加到名称为dstkey的list的头部</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;delete(<span class="string">'x'</span>, <span class="string">'y'</span>);</div><div class="line"><span class="variable">$redis</span>-&gt;lPush(<span class="string">'x'</span>, <span class="string">'abc'</span>); <span class="variable">$redis</span>-&gt;lPush(<span class="string">'x'</span>, <span class="string">'def'</span>); <span class="variable">$redis</span>-&gt;lPush(<span class="string">'y'</span>, <span class="string">'123'</span>); <span class="variable">$redis</span>-&gt;lPush(<span class="string">'y'</span>, <span class="string">'456'</span>); // move the last of x to the front of y. var_dump(<span class="variable">$redis</span>-&gt;rpoplpush(<span class="string">'x'</span>, <span class="string">'y'</span>));</div><div class="line">var_dump(<span class="variable">$redis</span>-&gt;lRange(<span class="string">'x'</span>, 0, -1));</div><div class="line">var_dump(<span class="variable">$redis</span>-&gt;lRange(<span class="string">'y'</span>, 0, -1)); </div><div class="line"></div><div class="line">string(3) <span class="string">"abc"</span> </div><div class="line">array(1) &#123; [0]=&gt; string(3) <span class="string">"def"</span> &#125; </div><div class="line">array(3) &#123; [0]=&gt; string(3) <span class="string">"abc"</span> [1]=&gt; string(3) <span class="string">"456"</span> [2]=&gt; string(3) <span class="string">"123"</span> &#125;</div></pre></td></tr></table></figure>
+<h2 id="SET操作相关"><a href="#SET操作相关" class="headerlink" title="SET操作相关"></a>SET操作相关</h2><h3 id="sAdd"><a href="#sAdd" class="headerlink" title="sAdd"></a>sAdd</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;向名称为key的set中添加元素value,如果value存在，不写入，return false</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;sAdd(key , value);</div></pre></td></tr></table></figure>
+<h3 id="sRem-sRemove"><a href="#sRem-sRemove" class="headerlink" title="sRem, sRemove"></a>sRem, sRemove</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;删除名称为key的set中的元素value</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;sAdd(<span class="string">'key1'</span> , <span class="string">'set1'</span>);</div><div class="line"><span class="variable">$redis</span>-&gt;sAdd(<span class="string">'key1'</span> , <span class="string">'set2'</span>);</div><div class="line"><span class="variable">$redis</span>-&gt;sAdd(<span class="string">'key1'</span> , <span class="string">'set3'</span>);</div><div class="line"><span class="variable">$redis</span>-&gt;sRem(<span class="string">'key1'</span>, <span class="string">'set2'</span>);</div></pre></td></tr></table></figure>
+<h3 id="sMove"><a href="#sMove" class="headerlink" title="sMove"></a>sMove</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;将value元素从名称为srckey的集合移到名称为dstkey的集合</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;sMove(seckey, dstkey, value);</div></pre></td></tr></table></figure>
+<h3 id="sIsMember-sContains"><a href="#sIsMember-sContains" class="headerlink" title="sIsMember, sContains"></a>sIsMember, sContains</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;名称为key的集合中查找是否有value元素，有ture 没有 false</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;sIsMember(key, value);</div></pre></td></tr></table></figure>
+<h3 id="sCard-sSize"><a href="#sCard-sSize" class="headerlink" title="sCard, sSize"></a>sCard, sSize</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回名称为key的set的元素个数</p>
+<h3 id="sPop"><a href="#sPop" class="headerlink" title="sPop"></a>sPop</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;随机返回并删除名称为key的set中一个元素</p>
+<h3 id="sRandMember"><a href="#sRandMember" class="headerlink" title="sRandMember"></a>sRandMember</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;随机返回名称为key的set中一个元素，不删除</p>
+<h3 id="sInter"><a href="#sInter" class="headerlink" title="sInter"></a>sInter</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;求交集</p>
+<h3 id="sInterStore"><a href="#sInterStore" class="headerlink" title="sInterStore"></a>sInterStore</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;求交集并将交集保存到output的集合</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;sInterStore(<span class="string">'output'</span>, <span class="string">'key1'</span>, <span class="string">'key2'</span>, <span class="string">'key3'</span>)</div></pre></td></tr></table></figure>
+<h3 id="sUnion"><a href="#sUnion" class="headerlink" title="sUnion"></a>sUnion</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;求并集</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;sUnion(<span class="string">'s0'</span>, <span class="string">'s1'</span>, <span class="string">'s2'</span>);</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;s0,s1,s2 同时求并集</p>
+<h3 id="sUnionStore"><a href="#sUnionStore" class="headerlink" title="sUnionStore"></a>sUnionStore</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;求并集并将并集保存到output的集合</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;sUnionStore(<span class="string">'output'</span>, <span class="string">'key1'</span>, <span class="string">'key2'</span>, <span class="string">'key3'</span>)；</div></pre></td></tr></table></figure>
+<h3 id="sDiff"><a href="#sDiff" class="headerlink" title="sDiff"></a>sDiff</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;求差集</p>
+<h3 id="sDiffStore"><a href="#sDiffStore" class="headerlink" title="sDiffStore"></a>sDiffStore</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;求差集并将差集保存到output的集合</p>
+<h3 id="sMembers-sGetMembers"><a href="#sMembers-sGetMembers" class="headerlink" title="sMembers, sGetMembers"></a>sMembers, sGetMembers</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回名称为key的set的所有元素</p>
+<h3 id="sort"><a href="#sort" class="headerlink" title="sort"></a>sort</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;排序，分页等</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;参数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="string">'by'</span> =&gt; <span class="string">'some_pattern_*'</span>,</div><div class="line"><span class="string">'limit'</span> =&gt; array(0, 1),</div><div class="line"><span class="string">'get'</span> =&gt; <span class="string">'some_other_pattern_*'</span> or an array of patterns,</div><div class="line"><span class="string">'sort'</span> =&gt; <span class="string">'asc'</span> or <span class="string">'desc'</span>,</div><div class="line"><span class="string">'alpha'</span> =&gt; TRUE,</div><div class="line"><span class="string">'store'</span> =&gt; <span class="string">'external-key'</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例子</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;delete(<span class="string">'s'</span>); <span class="variable">$redis</span>-&gt;sadd(<span class="string">'s'</span>, 5); <span class="variable">$redis</span>-&gt;sadd(<span class="string">'s'</span>, 4); <span class="variable">$redis</span>-&gt;sadd(<span class="string">'s'</span>, 2); <span class="variable">$redis</span>-&gt;sadd(<span class="string">'s'</span>, 1); <span class="variable">$redis</span>-&gt;sadd(<span class="string">'s'</span>, 3);</div><div class="line">var_dump(<span class="variable">$redis</span>-&gt;sort(<span class="string">'s'</span>)); // 1,2,3,4,5</div><div class="line">var_dump(<span class="variable">$redis</span>-&gt;sort(<span class="string">'s'</span>, array(<span class="string">'sort'</span> =&gt; <span class="string">'desc'</span>))); // 5,4,3,2,1</div><div class="line">var_dump(<span class="variable">$redis</span>-&gt;sort(<span class="string">'s'</span>, array(<span class="string">'sort'</span> =&gt; <span class="string">'desc'</span>, <span class="string">'store'</span> =&gt; <span class="string">'out'</span>))); // (int)5</div></pre></td></tr></table></figure>
+<h2 id="string命令"><a href="#string命令" class="headerlink" title="string命令"></a>string命令</h2><h3 id="getSet"><a href="#getSet" class="headerlink" title="getSet"></a>getSet</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回原来key中的值，并将value写入key</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;<span class="built_in">set</span>(<span class="string">'x'</span>, <span class="string">'42'</span>);</div><div class="line"><span class="variable">$exValue</span> = <span class="variable">$redis</span>-&gt;getSet(<span class="string">'x'</span>, <span class="string">'lol'</span>); // <span class="built_in">return</span> <span class="string">'42'</span>, replaces x by <span class="string">'lol'</span></div><div class="line"><span class="variable">$newValue</span> = <span class="variable">$redis</span>-&gt;get(<span class="string">'x'</span>)<span class="string">' // return '</span>lol<span class="string">'</span></div></pre></td></tr></table></figure>
+<h3 id="append"><a href="#append" class="headerlink" title="append"></a>append</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;string，名称为key的string的值在后面加上value</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;<span class="built_in">set</span>(<span class="string">'key'</span>, <span class="string">'value1'</span>);</div><div class="line"><span class="variable">$redis</span>-&gt;append(<span class="string">'key'</span>, <span class="string">'value2'</span>);</div><div class="line"><span class="variable">$redis</span>-&gt;get(<span class="string">'key'</span>);</div></pre></td></tr></table></figure>
+<h3 id="getRange（方法不存在）"><a href="#getRange（方法不存在）" class="headerlink" title="getRange（方法不存在）"></a>getRange（方法不存在）</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回名称为key的string中start至end之间的字符</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;<span class="built_in">set</span>(<span class="string">'key'</span>, <span class="string">'string value'</span>);</div><div class="line"><span class="variable">$redis</span>-&gt;getRange(<span class="string">'key'</span>, 0, 5);</div><div class="line"><span class="variable">$redis</span>-&gt;getRange(<span class="string">'key'</span>, -5, -1);</div></pre></td></tr></table></figure>
+<h3 id="setRange（方法不存在）"><a href="#setRange（方法不存在）" class="headerlink" title="setRange（方法不存在）"></a>setRange（方法不存在）</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;改变key的string中start至end之间的字符为value</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;<span class="built_in">set</span>(<span class="string">'key'</span>, <span class="string">'Hello world'</span>);</div><div class="line"><span class="variable">$redis</span>-&gt;setRange(<span class="string">'key'</span>, 6, <span class="string">"redis"</span>);</div><div class="line"><span class="variable">$redis</span>-&gt;get(<span class="string">'key'</span>);</div></pre></td></tr></table></figure>
+<h3 id="strlen"><a href="#strlen" class="headerlink" title="strlen"></a>strlen</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;得到key的string的长度</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;strlen(<span class="string">'key'</span>);</div></pre></td></tr></table></figure>
+<h3 id="getBit-setBit"><a href="#getBit-setBit" class="headerlink" title="getBit/setBit"></a>getBit/setBit</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回2进制信息</p>
+<h2 id="zset（sorted-set）操作相关"><a href="#zset（sorted-set）操作相关" class="headerlink" title="zset（sorted set）操作相关"></a>zset（sorted set）操作相关</h2><h3 id="zAdd-key-score-member"><a href="#zAdd-key-score-member" class="headerlink" title="zAdd(key, score, member)"></a>zAdd(key, score, member)</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;向名称为key的zset中添加元素member，score用于排序。如果该元素已经存在，则根据score更新该元素的顺序。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;zAdd(<span class="string">'key'</span>, 1, <span class="string">'val1'</span>);</div><div class="line"><span class="variable">$redis</span>-&gt;zAdd(<span class="string">'key'</span>, 0, <span class="string">'val0'</span>);</div><div class="line"><span class="variable">$redis</span>-&gt;zAdd(<span class="string">'key'</span>, 5, <span class="string">'val5'</span>);</div><div class="line"><span class="variable">$redis</span>-&gt;zRange(<span class="string">'key'</span>, 0, -1); // array(val0, val1, val5)</div></pre></td></tr></table></figure>
+<h3 id="zRange-key-start-end-withscores"><a href="#zRange-key-start-end-withscores" class="headerlink" title="zRange(key, start, end,withscores)"></a>zRange(key, start, end,withscores)</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回名称为key的zset（元素已按score从小到大排序）中的index从start到end的所有元素</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;zAdd(<span class="string">'key1'</span>, 0, <span class="string">'val0'</span>);</div><div class="line"><span class="variable">$redis</span>-&gt;zAdd(<span class="string">'key1'</span>, 2, <span class="string">'val2'</span>);</div><div class="line"><span class="variable">$redis</span>-&gt;zAdd(<span class="string">'key1'</span>, 10, <span class="string">'val10'</span>);</div><div class="line"><span class="variable">$redis</span>-&gt;zRange(<span class="string">'key1'</span>, 0, -1); // with scores <span class="variable">$redis</span>-&gt;zRange(<span class="string">'key1'</span>, 0, -1, <span class="literal">true</span>);</div></pre></td></tr></table></figure>
+<h2 id="zDelete-zRem"><a href="#zDelete-zRem" class="headerlink" title="zDelete, zRem"></a>zDelete, zRem</h2><h3 id="zRem-key-member"><a href="#zRem-key-member" class="headerlink" title="zRem(key, member)"></a>zRem(key, member)</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;删除名称为key的zset中的元素member</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;zAdd(<span class="string">'key'</span>, 0, <span class="string">'val0'</span>);</div><div class="line"><span class="variable">$redis</span>-&gt;zAdd(<span class="string">'key'</span>, 2, <span class="string">'val2'</span>);</div><div class="line"><span class="variable">$redis</span>-&gt;zAdd(<span class="string">'key'</span>, 10, <span class="string">'val10'</span>);</div><div class="line"><span class="variable">$redis</span>-&gt;zDelete(<span class="string">'key'</span>, <span class="string">'val2'</span>);</div><div class="line"><span class="variable">$redis</span>-&gt;zRange(<span class="string">'key'</span>, 0, -1);</div></pre></td></tr></table></figure>
+<h3 id="zRevRange-key-start-end-withscores"><a href="#zRevRange-key-start-end-withscores" class="headerlink" title="zRevRange(key, start, end,withscores)"></a>zRevRange(key, start, end,withscores)</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回名称为key的zset（元素已按score从大到小排序）中的index从start到end的所有元素.withscores: 是否输出socre的值，默认false，不输出</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;zAdd(<span class="string">'key'</span>, 0, <span class="string">'val0'</span>);</div><div class="line"><span class="variable">$redis</span>-&gt;zAdd(<span class="string">'key'</span>, 2, <span class="string">'val2'</span>);</div><div class="line"><span class="variable">$redis</span>-&gt;zAdd(<span class="string">'key'</span>, 10, <span class="string">'val10'</span>);</div><div class="line"><span class="variable">$redis</span>-&gt;zRevRange(<span class="string">'key'</span>, 0, -1); // with scores <span class="variable">$redis</span>-&gt;zRevRange(<span class="string">'key'</span>, 0, -1, <span class="literal">true</span>);</div></pre></td></tr></table></figure>
+<h3 id="zRangeByScore-zRevRangeByScore"><a href="#zRangeByScore-zRevRangeByScore" class="headerlink" title="zRangeByScore, zRevRangeByScore"></a>zRangeByScore, zRevRangeByScore</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;zRangeByScore(key, star, end, array(withscores， <span class="built_in">limit</span> ));</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回名称为key的zset中score &gt;= star且score &lt;= end的所有元素</p>
+<h3 id="zCount"><a href="#zCount" class="headerlink" title="zCount"></a>zCount</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;zCount(key, star, end);</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回名称为key的zset中score &gt;= star且score &lt;= end的所有元素的个数</p>
+<h3 id="zRemRangeByScore-zDeleteRangeByScore"><a href="#zRemRangeByScore-zDeleteRangeByScore" class="headerlink" title="zRemRangeByScore, zDeleteRangeByScore"></a>zRemRangeByScore, zDeleteRangeByScore</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;zRemRangeByScore(<span class="string">'key'</span>, star, end);</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;删除名称为key的zset中score &gt;= star且score &lt;= end的所有元素，返回删除个数</p>
+<h3 id="zSize-zCard"><a href="#zSize-zCard" class="headerlink" title="zSize, zCard"></a>zSize, zCard</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回名称为key的zset的所有元素的个数</p>
+<h3 id="zScore"><a href="#zScore" class="headerlink" title="zScore"></a>zScore</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;zScore(key, val2);</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回名称为key的zset中元素val2的score</p>
+<h3 id="zRank-zRevRank"><a href="#zRank-zRevRank" class="headerlink" title="zRank, zRevRank"></a>zRank, zRevRank</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;zRevRank(key, val);</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回名称为key的zset（元素已按score从小到大排序）中val元素的rank（即index，从0开始），若没有val元素，返回“null”。zRevRank 是从大到小排序</p>
+<h3 id="zIncrBy"><a href="#zIncrBy" class="headerlink" title="zIncrBy"></a>zIncrBy</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;zIncrBy(<span class="string">'key'</span>, increment, <span class="string">'member'</span>);</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果在名称为key的zset中已经存在元素member，则该元素的score增加increment；否则向集合中添加该元素，其score的值为increment</p>
+<h3 id="zUnion-zInter"><a href="#zUnion-zInter" class="headerlink" title="zUnion/zInter"></a>zUnion/zInter</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;参数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">keyOutput</div><div class="line">arrayZSetKeys</div><div class="line">arrayWeights</div><div class="line">aggregateFunction Either <span class="string">"SUM"</span>, <span class="string">"MIN"</span>, or <span class="string">"MAX"</span>: defines the behaviour to use on duplicate entries during the zUnion.</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;对N个zset求并集和交集，并将最后的集合保存在dstkeyN中。对于集合中每一个元素的score，在进行AGGREGATE运算前，都要乘以对于的WEIGHT参数。如果没有提供WEIGHT，默认为1。默认的AGGREGATE是SUM，即结果集合中元素的score是所有集合对应元素进行SUM运算的值，而MIN和MAX是指，结果集合中元素的score是所有集合对应元素  中最小值和最大值。</p>
+<h2 id="Hash操作"><a href="#Hash操作" class="headerlink" title="Hash操作"></a>Hash操作</h2><h3 id="hSet"><a href="#hSet" class="headerlink" title="hSet"></a>hSet</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;hSet(<span class="string">'h'</span>, <span class="string">'key1'</span>, <span class="string">'hello'</span>);</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;向名称为h的hash中添加元素key1—&gt;hello</p>
+<h3 id="hGet"><a href="#hGet" class="headerlink" title="hGet"></a>hGet</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;hGet(<span class="string">'h'</span>, <span class="string">'key1'</span>);</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回名称为h的hash中key1对应的value（hello）</p>
+<h3 id="hLen"><a href="#hLen" class="headerlink" title="hLen"></a>hLen</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;hLen(<span class="string">'h'</span>);</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回名称为h的hash中元素个数</p>
+<h3 id="hDel"><a href="#hDel" class="headerlink" title="hDel"></a>hDel</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;hDel(<span class="string">'h'</span>, <span class="string">'key1'</span>);</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;删除名称为h的hash中键为key1的域</p>
+<h3 id="hKeys"><a href="#hKeys" class="headerlink" title="hKeys"></a>hKeys</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;hKeys(<span class="string">'h'</span>);</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回名称为key的hash中所有键</p>
+<h3 id="hVals"><a href="#hVals" class="headerlink" title="hVals"></a>hVals</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;hVals(<span class="string">'h'</span>)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回名称为h的hash中所有键对应的value</p>
+<h3 id="hGetAll"><a href="#hGetAll" class="headerlink" title="hGetAll"></a>hGetAll</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;hGetAll(<span class="string">'h'</span>);</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回名称为h的hash中所有的键（field）及其对应的value</p>
+<h3 id="hExists"><a href="#hExists" class="headerlink" title="hExists"></a>hExists</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;hExists(<span class="string">'h'</span>, <span class="string">'a'</span>);</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;名称为h的hash中是否存在键名字为a的域</p>
+<h3 id="hIncrBy"><a href="#hIncrBy" class="headerlink" title="hIncrBy"></a>hIncrBy</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;hIncrBy(<span class="string">'h'</span>, <span class="string">'x'</span>, 2);</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;将名称为h的hash中x的value增加2</p>
+<h3 id="hMset"><a href="#hMset" class="headerlink" title="hMset"></a>hMset</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;hMset(<span class="string">'user:1'</span>, array(<span class="string">'name'</span> =&gt; <span class="string">'Joe'</span>, <span class="string">'salary'</span> =&gt; 2000));</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;向名称为key的hash中批量添加元素</p>
+<h3 id="hMGet"><a href="#hMGet" class="headerlink" title="hMGet"></a>hMGet</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;hmGet(<span class="string">'h'</span>, array(<span class="string">'field1'</span>, <span class="string">'field2'</span>));</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回名称为h的hash中field1,field2对应的value</p>
+<h2 id="redis-操作相关"><a href="#redis-操作相关" class="headerlink" title="redis 操作相关"></a>redis 操作相关</h2><h3 id="flushDB"><a href="#flushDB" class="headerlink" title="flushDB"></a>flushDB</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;清空当前数据库</p>
+<h3 id="flushAll"><a href="#flushAll" class="headerlink" title="flushAll"></a>flushAll</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;清空所有数据库</p>
+<h3 id="randomKey"><a href="#randomKey" class="headerlink" title="randomKey"></a>randomKey</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;随机返回key空间的一个key</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$key</span> = <span class="variable">$redis</span>-&gt;randomKey();</div></pre></td></tr></table></figure>
+<h3 id="select"><a href="#select" class="headerlink" title="select"></a>select</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;选择一个数据库</p>
+<h3 id="move"><a href="#move" class="headerlink" title="move"></a>move</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;转移一个key到另外一个数据库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;select(0); // switch to DB 0</div><div class="line"><span class="variable">$redis</span>-&gt;<span class="built_in">set</span>(<span class="string">'x'</span>, <span class="string">'42'</span>); // write 42 to x</div><div class="line"><span class="variable">$redis</span>-&gt;move(<span class="string">'x'</span>, 1); // move to DB 1</div><div class="line"><span class="variable">$redis</span>-&gt;select(1); // switch to DB 1</div><div class="line"><span class="variable">$redis</span>-&gt;get(<span class="string">'x'</span>); // will <span class="built_in">return</span> 42</div></pre></td></tr></table></figure>
+<h3 id="rename-renameKey"><a href="#rename-renameKey" class="headerlink" title="rename, renameKey"></a>rename, renameKey</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;给key重命名</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;<span class="built_in">set</span>(<span class="string">'x'</span>, <span class="string">'42'</span>);</div><div class="line"><span class="variable">$redis</span>-&gt;rename(<span class="string">'x'</span>, <span class="string">'y'</span>);</div><div class="line"><span class="variable">$redis</span>-&gt;get(<span class="string">'y'</span>); // → 42</div><div class="line"><span class="variable">$redis</span>-&gt;get(<span class="string">'x'</span>); // → `FALSE`</div></pre></td></tr></table></figure>
+<h3 id="renameNx"><a href="#renameNx" class="headerlink" title="renameNx"></a>renameNx</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;与remane类似，但是，如果重新命名的名字已经存在，不会替换成功</p>
+<h3 id="setTimeout-expire"><a href="#setTimeout-expire" class="headerlink" title="setTimeout, expire"></a>setTimeout, expire</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;设定一个key的活动时间（s）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;setTimeout(<span class="string">'x'</span>, 3);</div></pre></td></tr></table></figure>
+<h3 id="expireAt"><a href="#expireAt" class="headerlink" title="expireAt"></a>expireAt</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;key存活到一个unix时间戳时间</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;expireAt(<span class="string">'x'</span>, time() + 3);</div></pre></td></tr></table></figure>
+<h3 id="keys-getKeys"><a href="#keys-getKeys" class="headerlink" title="keys, getKeys"></a>keys, getKeys</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回满足给定pattern的所有key</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$keyWithUserPrefix</span> = <span class="variable">$redis</span>-&gt;keys(<span class="string">'user*'</span>);</div></pre></td></tr></table></figure>
+<h3 id="dbSize"><a href="#dbSize" class="headerlink" title="dbSize"></a>dbSize</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看现在数据库有多少key</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$count</span> = <span class="variable">$redis</span>-&gt;dbSize();</div></pre></td></tr></table></figure>
+<h3 id="auth"><a href="#auth" class="headerlink" title="auth"></a>auth</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;密码认证</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;auth(<span class="string">'foobared'</span>);</div></pre></td></tr></table></figure>
+<h3 id="bgrewriteaof"><a href="#bgrewriteaof" class="headerlink" title="bgrewriteaof"></a>bgrewriteaof</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用aof来进行数据库持久化</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;bgrewriteaof();</div></pre></td></tr></table></figure>
+<h3 id="slaveof"><a href="#slaveof" class="headerlink" title="slaveof"></a>slaveof</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;选择从服务器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$redis</span>-&gt;slaveof(<span class="string">'10.0.1.7'</span>, 6379);</div></pre></td></tr></table></figure>
+<h3 id="save"><a href="#save" class="headerlink" title="save"></a>save</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;将数据同步保存到磁盘</p>
+<h3 id="bgsave"><a href="#bgsave" class="headerlink" title="bgsave"></a>bgsave</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;将数据异步保存到磁盘</p>
+<h3 id="lastSave"><a href="#lastSave" class="headerlink" title="lastSave"></a>lastSave</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回上次成功将数据保存到磁盘的Unix时戳</p>
+<h3 id="info"><a href="#info" class="headerlink" title="info"></a>info</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回redis的版本信息等详情</p>
+<h3 id="type"><a href="#type" class="headerlink" title="type"></a>type</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回key的类型值</p>
+<ul>
+<li>string: Redis::REDIS_STRING</li>
+<li>set: Redis::REDIS_SET</li>
+<li>list: Redis::REDIS_LIST</li>
+<li>zset: Redis::REDIS_ZSET</li>
+<li>hash: Redis::REDIS_HASH</li>
+<li>other: Redis::REDIS_NOT_FOUND</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag"># Redis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/03/Redis/5. php 使用 redis 储存/" rel="next" title="php 使用 redis 储存">
+                <i class="fa fa-chevron-left"></i> php 使用 redis 储存
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/03/Redis/7. Redis list 之增删改查/" rel="prev" title="Redis list 之增删改查">
+                Redis list 之增删改查 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">599</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#connect-open-链接redis服务"><span class="nav-number">1.</span> <span class="nav-text">connect, open 链接redis服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pconnect-popen-不会主动关闭的链接"><span class="nav-number">2.</span> <span class="nav-text">pconnect, popen 不会主动关闭的链接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#setOption"><span class="nav-number">3.</span> <span class="nav-text">setOption</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#getOption"><span class="nav-number">4.</span> <span class="nav-text">getOption</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ping"><span class="nav-number">5.</span> <span class="nav-text">ping</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#get"><span class="nav-number">6.</span> <span class="nav-text">get</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#setex"><span class="nav-number">7.</span> <span class="nav-text">setex</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#setnx"><span class="nav-number">8.</span> <span class="nav-text">setnx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#delete"><span class="nav-number">9.</span> <span class="nav-text">delete</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ttl"><span class="nav-number">10.</span> <span class="nav-text">ttl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#persist"><span class="nav-number">11.</span> <span class="nav-text">persist</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mset（redis版本1-1以上才可以用）"><span class="nav-number">12.</span> <span class="nav-text">mset（redis版本1.1以上才可以用）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#multi-exec-discard"><span class="nav-number">13.</span> <span class="nav-text">multi, exec, discard</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#watch-unwatch（代码测试后，不能达到所说的效果）"><span class="nav-number">14.</span> <span class="nav-text">watch, unwatch（代码测试后，不能达到所说的效果）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#subscribe"><span class="nav-number">15.</span> <span class="nav-text">subscribe *</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#publish"><span class="nav-number">16.</span> <span class="nav-text">publish *</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exists"><span class="nav-number">17.</span> <span class="nav-text">exists</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#incr-incrBy"><span class="nav-number">18.</span> <span class="nav-text">incr, incrBy</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#decr-decrBy"><span class="nav-number">19.</span> <span class="nav-text">decr, decrBy</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#getMultiple"><span class="nav-number">20.</span> <span class="nav-text">getMultiple</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#list相关操作"><span class="nav-number">21.</span> <span class="nav-text">list相关操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#lPush"><span class="nav-number">21.1.</span> <span class="nav-text">lPush</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rPush"><span class="nav-number">21.2.</span> <span class="nav-text">rPush</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lPushx-rPushx"><span class="nav-number">21.3.</span> <span class="nav-text">lPushx/rPushx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lPop-rPop"><span class="nav-number">21.4.</span> <span class="nav-text">lPop/rPop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#blPop-brPop"><span class="nav-number">21.5.</span> <span class="nav-text">blPop/brPop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lSize"><span class="nav-number">21.6.</span> <span class="nav-text">lSize</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lIndex-lGet"><span class="nav-number">21.7.</span> <span class="nav-text">lIndex, lGet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lSet"><span class="nav-number">21.8.</span> <span class="nav-text">lSet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lRange-lGetRange"><span class="nav-number">21.9.</span> <span class="nav-text">lRange, lGetRange</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lTrim-listTrim"><span class="nav-number">21.10.</span> <span class="nav-text">lTrim, listTrim</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lRem-lRemove"><span class="nav-number">21.11.</span> <span class="nav-text">lRem, lRemove</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lInsert"><span class="nav-number">21.12.</span> <span class="nav-text">lInsert</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rpoplpush"><span class="nav-number">21.13.</span> <span class="nav-text">rpoplpush</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SET操作相关"><span class="nav-number">22.</span> <span class="nav-text">SET操作相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sAdd"><span class="nav-number">22.1.</span> <span class="nav-text">sAdd</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sRem-sRemove"><span class="nav-number">22.2.</span> <span class="nav-text">sRem, sRemove</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sMove"><span class="nav-number">22.3.</span> <span class="nav-text">sMove</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sIsMember-sContains"><span class="nav-number">22.4.</span> <span class="nav-text">sIsMember, sContains</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sCard-sSize"><span class="nav-number">22.5.</span> <span class="nav-text">sCard, sSize</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sPop"><span class="nav-number">22.6.</span> <span class="nav-text">sPop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sRandMember"><span class="nav-number">22.7.</span> <span class="nav-text">sRandMember</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sInter"><span class="nav-number">22.8.</span> <span class="nav-text">sInter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sInterStore"><span class="nav-number">22.9.</span> <span class="nav-text">sInterStore</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sUnion"><span class="nav-number">22.10.</span> <span class="nav-text">sUnion</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sUnionStore"><span class="nav-number">22.11.</span> <span class="nav-text">sUnionStore</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sDiff"><span class="nav-number">22.12.</span> <span class="nav-text">sDiff</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sDiffStore"><span class="nav-number">22.13.</span> <span class="nav-text">sDiffStore</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sMembers-sGetMembers"><span class="nav-number">22.14.</span> <span class="nav-text">sMembers, sGetMembers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sort"><span class="nav-number">22.15.</span> <span class="nav-text">sort</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#string命令"><span class="nav-number">23.</span> <span class="nav-text">string命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#getSet"><span class="nav-number">23.1.</span> <span class="nav-text">getSet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#append"><span class="nav-number">23.2.</span> <span class="nav-text">append</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#getRange（方法不存在）"><span class="nav-number">23.3.</span> <span class="nav-text">getRange（方法不存在）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#setRange（方法不存在）"><span class="nav-number">23.4.</span> <span class="nav-text">setRange（方法不存在）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#strlen"><span class="nav-number">23.5.</span> <span class="nav-text">strlen</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#getBit-setBit"><span class="nav-number">23.6.</span> <span class="nav-text">getBit/setBit</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#zset（sorted-set）操作相关"><span class="nav-number">24.</span> <span class="nav-text">zset（sorted set）操作相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#zAdd-key-score-member"><span class="nav-number">24.1.</span> <span class="nav-text">zAdd(key, score, member)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zRange-key-start-end-withscores"><span class="nav-number">24.2.</span> <span class="nav-text">zRange(key, start, end,withscores)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#zDelete-zRem"><span class="nav-number">25.</span> <span class="nav-text">zDelete, zRem</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#zRem-key-member"><span class="nav-number">25.1.</span> <span class="nav-text">zRem(key, member)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zRevRange-key-start-end-withscores"><span class="nav-number">25.2.</span> <span class="nav-text">zRevRange(key, start, end,withscores)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zRangeByScore-zRevRangeByScore"><span class="nav-number">25.3.</span> <span class="nav-text">zRangeByScore, zRevRangeByScore</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zCount"><span class="nav-number">25.4.</span> <span class="nav-text">zCount</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zRemRangeByScore-zDeleteRangeByScore"><span class="nav-number">25.5.</span> <span class="nav-text">zRemRangeByScore, zDeleteRangeByScore</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zSize-zCard"><span class="nav-number">25.6.</span> <span class="nav-text">zSize, zCard</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zScore"><span class="nav-number">25.7.</span> <span class="nav-text">zScore</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zRank-zRevRank"><span class="nav-number">25.8.</span> <span class="nav-text">zRank, zRevRank</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zIncrBy"><span class="nav-number">25.9.</span> <span class="nav-text">zIncrBy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zUnion-zInter"><span class="nav-number">25.10.</span> <span class="nav-text">zUnion/zInter</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hash操作"><span class="nav-number">26.</span> <span class="nav-text">Hash操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#hSet"><span class="nav-number">26.1.</span> <span class="nav-text">hSet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hGet"><span class="nav-number">26.2.</span> <span class="nav-text">hGet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hLen"><span class="nav-number">26.3.</span> <span class="nav-text">hLen</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hDel"><span class="nav-number">26.4.</span> <span class="nav-text">hDel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hKeys"><span class="nav-number">26.5.</span> <span class="nav-text">hKeys</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hVals"><span class="nav-number">26.6.</span> <span class="nav-text">hVals</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hGetAll"><span class="nav-number">26.7.</span> <span class="nav-text">hGetAll</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hExists"><span class="nav-number">26.8.</span> <span class="nav-text">hExists</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hIncrBy"><span class="nav-number">26.9.</span> <span class="nav-text">hIncrBy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hMset"><span class="nav-number">26.10.</span> <span class="nav-text">hMset</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hMGet"><span class="nav-number">26.11.</span> <span class="nav-text">hMGet</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#redis-操作相关"><span class="nav-number">27.</span> <span class="nav-text">redis 操作相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#flushDB"><span class="nav-number">27.1.</span> <span class="nav-text">flushDB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flushAll"><span class="nav-number">27.2.</span> <span class="nav-text">flushAll</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#randomKey"><span class="nav-number">27.3.</span> <span class="nav-text">randomKey</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#select"><span class="nav-number">27.4.</span> <span class="nav-text">select</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#move"><span class="nav-number">27.5.</span> <span class="nav-text">move</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rename-renameKey"><span class="nav-number">27.6.</span> <span class="nav-text">rename, renameKey</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#renameNx"><span class="nav-number">27.7.</span> <span class="nav-text">renameNx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#setTimeout-expire"><span class="nav-number">27.8.</span> <span class="nav-text">setTimeout, expire</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#expireAt"><span class="nav-number">27.9.</span> <span class="nav-text">expireAt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#keys-getKeys"><span class="nav-number">27.10.</span> <span class="nav-text">keys, getKeys</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dbSize"><span class="nav-number">27.11.</span> <span class="nav-text">dbSize</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#auth"><span class="nav-number">27.12.</span> <span class="nav-text">auth</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bgrewriteaof"><span class="nav-number">27.13.</span> <span class="nav-text">bgrewriteaof</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#slaveof"><span class="nav-number">27.14.</span> <span class="nav-text">slaveof</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#save"><span class="nav-number">27.15.</span> <span class="nav-text">save</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bgsave"><span class="nav-number">27.16.</span> <span class="nav-text">bgsave</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lastSave"><span class="nav-number">27.17.</span> <span class="nav-text">lastSave</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#info"><span class="nav-number">27.18.</span> <span class="nav-text">info</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#type"><span class="nav-number">27.19.</span> <span class="nav-text">type</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

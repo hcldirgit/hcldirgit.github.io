@@ -1,0 +1,775 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="haproxy," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="下载1234567[root@localhost ~]# cd /usr/local/src[root@localhost src]# wget http://www.haproxy.org/download/1.4/src/haproxy-1.4.25.tar.gz[root@localhost src]# yum -y install cmake  gcc gcc-c++  autoconf">
+<meta name="keywords" content="haproxy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="haproxy 源码编译安装">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/09/03/Haproxy/6. 源码编译安装 haproxy/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="下载1234567[root@localhost ~]# cd /usr/local/src[root@localhost src]# wget http://www.haproxy.org/download/1.4/src/haproxy-1.4.25.tar.gz[root@localhost src]# yum -y install cmake  gcc gcc-c++  autoconf">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-01T08:51:16.759Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="haproxy 源码编译安装">
+<meta name="twitter:description" content="下载1234567[root@localhost ~]# cd /usr/local/src[root@localhost src]# wget http://www.haproxy.org/download/1.4/src/haproxy-1.4.25.tar.gz[root@localhost src]# yum -y install cmake  gcc gcc-c++  autoconf">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/09/03/Haproxy/6. 源码编译安装 haproxy/"/>
+
+
+
+
+
+  <title>haproxy 源码编译安装 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Haproxy/6. 源码编译安装 haproxy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">haproxy 源码编译安装</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:04:46+08:00">
+                2017-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># cd /usr/local/src</span></div><div class="line">[root@localhost src]<span class="comment"># wget http://www.haproxy.org/download/1.4/src/haproxy-1.4.25.tar.gz</span></div><div class="line">[root@localhost src]<span class="comment"># yum -y install cmake  gcc gcc-c++  autoconf automake zlib*  libxml* \  </span></div><div class="line">ncurses ncurses-devel libtool-ltdl-devel* make  bison bison-devel libaio   </div><div class="line">[root@localhost src]<span class="comment"># tar zxvf haproxy-1.4.25.tar.gz   </span></div><div class="line">[root@localhost src]<span class="comment"># cd haproxy-1.4.25  </span></div><div class="line">[root@localhost haproxy-1.4.25]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<h2 id="开始编译安装"><a href="#开始编译安装" class="headerlink" title="开始编译安装"></a>开始编译安装</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MAKE 参数参考文件中的 README 文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[root@localhost haproxy-1.4.25]<span class="comment"># make TARGET=linux26 PREFIX=/usr/local/haproxy  </span></div><div class="line">[root@localhost haproxy-1.4.25]<span class="comment"># make install PREFIX=/usr/local/haproxy  </span></div><div class="line">[root@localhost haproxy-1.4.25]<span class="comment"># install -d /usr/local/sbin  </span></div><div class="line">[root@localhost haproxy-1.4.25]<span class="comment"># install haproxy /usr/local/sbin  </span></div><div class="line">[root@localhost haproxy-1.4.25]<span class="comment"># install -d /usr/local/share/man/man1  </span></div><div class="line">[root@localhost haproxy-1.4.25]<span class="comment"># install -m 644 doc/haproxy.1 /usr/local/share/man/man1  </span></div><div class="line">[root@localhost haproxy-1.4.25]<span class="comment"># install -d /usr/local/doc/haproxy  </span></div><div class="line">[root@localhost haproxy-1.4.25]<span class="comment"># for x in configuration architecture haproxy-en haproxy-fr; do \  </span></div><div class="line">&gt; install -m 644 doc/<span class="variable">$x</span>.txt /usr/<span class="built_in">local</span>/doc/haproxy ; \  </div><div class="line">&gt; <span class="keyword">done</span>  </div><div class="line">[root@localhost haproxy-1.4.25]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安装完成，检测是否安装成功</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost haproxy-1.4.25]<span class="comment"># haproxy -v  </span></div><div class="line">HA-Proxy version 1.4.25 2014/03/27  </div><div class="line">Copyright 2000-2014 Willy Tarreau &lt;w@1wt.eu&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;则安装成功</p>
+<h2 id="配置-haproxy-cfg-文件"><a href="#配置-haproxy-cfg-文件" class="headerlink" title="配置 haproxy.cfg 文件"></a>配置 haproxy.cfg 文件</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用的 /root/haproxy-1.4.25/examples/haproxy.cfg   这个是自带的配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div></pre></td><td class="code"><pre><div class="line">[root@localhost examples]<span class="comment"># vim haproxy.cfg  </span></div><div class="line">  </div><div class="line"><span class="comment"># this config needs haproxy-1.1.28 or haproxy-1.2.1  </span></div><div class="line">  </div><div class="line">global  </div><div class="line">        <span class="built_in">log</span> 127.0.0.1   local0  </div><div class="line">        <span class="built_in">log</span> 127.0.0.1   local1 notice  </div><div class="line">        <span class="comment">#log loghost    local0 info  </span></div><div class="line">        maxconn 4096  </div><div class="line"><span class="comment">#       chroot /usr/share/haproxy  </span></div><div class="line">        chroot  /usr/<span class="built_in">local</span>/haproxy  </div><div class="line">        uid 99  </div><div class="line">        gid 99  </div><div class="line">        daemon  </div><div class="line">        <span class="comment">#debug  </span></div><div class="line">        <span class="comment">#quiet  </span></div><div class="line">  </div><div class="line">defaults  </div><div class="line">        <span class="built_in">log</span>     global  </div><div class="line">        mode    http  </div><div class="line">        option  httplog  </div><div class="line">        option  dontlognull  </div><div class="line">        retries 3  </div><div class="line">        <span class="comment">#redispatch  </span></div><div class="line">        maxconn 2000  </div><div class="line">        contimeout      5000  </div><div class="line">        clitimeout      50000  </div><div class="line">        srvtimeout      50000  </div><div class="line"><span class="comment">#============================这一段是后面加上去的。 就是WEB代理  </span></div><div class="line">listen web_proxy  </div><div class="line">        <span class="built_in">bind</span> *:80  </div><div class="line">        mode    http  </div><div class="line">        option httpchk GET /index.html  </div><div class="line">        server s1 192.168.11.210:80 weight 3 check  </div><div class="line">        server s2 192.168.11.211:80 weight 3 check  </div><div class="line"><span class="comment">#后面的我做的注释  </span></div><div class="line"><span class="comment">#listen appli1-rewrite 0.0.0.0:10001  </span></div><div class="line"><span class="comment">#       cookie  SERVERID rewrite  </span></div><div class="line"><span class="comment">#       balance roundrobin  </span></div><div class="line"><span class="comment">#       server  app1_1 192.168.34.23:8080 cookie app1inst1 check inter 2000 rise 2 fall 5  </span></div><div class="line"><span class="comment">#       server  app1_2 192.168.34.32:8080 cookie app1inst2 check inter 2000 rise 2 fall 5  </span></div><div class="line"><span class="comment">#       server  app1_3 192.168.34.27:8080 cookie app1inst3 check inter 2000 rise 2 fall 5  </span></div><div class="line"><span class="comment">#       server  app1_4 192.168.34.42:8080 cookie app1inst4 check inter 2000 rise 2 fall 5  </span></div><div class="line"><span class="comment">#  </span></div><div class="line"><span class="comment">#listen appli2-insert 0.0.0.0:10002  </span></div><div class="line"><span class="comment">#       option  httpchk  </span></div><div class="line"><span class="comment">#       balance roundrobin  </span></div><div class="line"><span class="comment">#       cookie  SERVERID insert indirect nocache  </span></div><div class="line"><span class="comment">#       server  inst1 192.168.114.56:80 cookie server01 check inter 2000 fall 3  </span></div><div class="line"><span class="comment">#       server  inst2 192.168.114.56:81 cookie server02 check inter 2000 fall 3  </span></div><div class="line"><span class="comment">#       capture cookie vgnvisitor= len 32  </span></div><div class="line"><span class="comment">#  </span></div><div class="line"><span class="comment">#       option  httpclose               # disable keep-alive  </span></div><div class="line"><span class="comment">#       rspidel ^Set-cookie:\ IP=       # do not let this cookie tell our internal IP address  </span></div><div class="line"><span class="comment">#         </span></div><div class="line"><span class="comment">#listen appli3-relais 0.0.0.0:10003  </span></div><div class="line"><span class="comment">#       dispatch 192.168.135.17:80  </span></div><div class="line"><span class="comment">#  </span></div><div class="line"><span class="comment">#listen appli4-backup 0.0.0.0:10004  </span></div><div class="line"><span class="comment">#       option  httpchk /index.html  </span></div><div class="line"><span class="comment">#       option  persist  </span></div><div class="line"><span class="comment">#       balance roundrobin  </span></div><div class="line"><span class="comment">#       server  inst1 192.168.114.56:80 check inter 2000 fall 3  </span></div><div class="line"><span class="comment">#       server  inst2 192.168.114.56:81 check inter 2000 fall 3 backup  </span></div><div class="line"><span class="comment">#  </span></div><div class="line"><span class="comment">#listen ssl-relay 0.0.0.0:8443  </span></div><div class="line"><span class="comment">#       option  ssl-hello-chk  </span></div><div class="line"><span class="comment">#       balance source  </span></div><div class="line"><span class="comment">#       server  inst1 192.168.110.56:443 check inter 2000 fall 3  </span></div><div class="line"><span class="comment">#       server  inst2 192.168.110.57:443 check inter 2000 fall 3  </span></div><div class="line"><span class="comment">#       server  back1 192.168.120.58:443 backup  </span></div><div class="line"><span class="comment">#listen appli5-backup 0.0.0.0:10005  </span></div><div class="line"><span class="comment">#       option  httpchk *  </span></div><div class="line"><span class="comment">#       balance roundrobin  </span></div><div class="line"><span class="comment">#       cookie  SERVERID insert indirect nocache  </span></div><div class="line"><span class="comment">#       server  inst1 192.168.114.56:80 cookie server01 check inter 2000 fall 3  </span></div><div class="line"><span class="comment">#       server  inst2 192.168.114.56:81 cookie server02 check inter 2000 fall 3  </span></div><div class="line"><span class="comment">#       server  inst3 192.168.114.57:80 backup check inter 2000 fall 3  </span></div><div class="line"><span class="comment">#       capture cookie ASPSESSION len 32  </span></div><div class="line"><span class="comment">#       srvtimeout      20000  </span></div><div class="line"><span class="comment">#       option  httpclose               # disable keep-alive  </span></div><div class="line"><span class="comment">#       option  checkcache              # block response if set-cookie &amp; cacheable  </span></div><div class="line"><span class="comment">#       rspidel ^Set-cookie:\ IP=       # do not let this cookie tell our internal IP address  </span></div><div class="line"><span class="comment">#       errorloc        502     http://192.168.114.58/error502.html  </span></div><div class="line"><span class="comment">#       errorfile       503     /etc/haproxy/errors/503.http</span></div></pre></td></tr></table></figure>
+<h2 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost examples]<span class="comment"># haproxy -f /root/haproxy-1.4.25/examples/haproxy.cfg   </span></div><div class="line">[WARNING] 316/220055 (2376) : parsing [/root/haproxy-1.4.25/examples/haproxy.cfg:22]: keyword <span class="string">'redispatch'</span> is deprecated, please use <span class="string">'option redispatch'</span> instead.  </div><div class="line">[ALERT] 316/220055 (2376) : [haproxy.main()] Cannot chroot(/usr/<span class="built_in">local</span>/sbin/haproxy).</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;出现的报错信息，下面我们来解决问题。因为上面配置文件是我改后的，应该没有什么问题。<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>[ALERT] 316/220055 (2376) : [haproxy.main()] Cannot chroot(/usr/local/sbin/haproxy).</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>是配置文件chroot的目录不对，根据我的文档安装改成 chroot /urs/local/haproxy 就可以解决了</code>  执行 mkdir /usr/share/haproxy</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>[WARNING] 316/220055 (2376) : parsing [/root/haproxy-1.4.25/examples/haproxy.cfg:22]: keyword &#39;redispatch&#39; is deprecated, please use &#39;option redispatch&#39; instead.</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>这个报错信息是配置文件22行的问题， 我是做了注释掉就可以起动服务了。   注释到相对应的错误行</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;再次起动服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost examples]<span class="comment"># haproxy -f /root/haproxy-1.4.25/examples/haproxy.cfg   </span></div><div class="line">[root@localhost examples]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;没有任何提示，那我们检测一下是否启动成功</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;看一下进程信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost examples]<span class="comment"># ps -ef |grep haproxy  </span></div><div class="line">nobody    3826     1  0 22:38 ?        00:00:00 haproxy -f /root/haproxy-1.4.25/examples/haproxy.cfg  </div><div class="line">root      3837  1260  0 22:38 pts/0    00:00:00 grep haproxy</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;进程已经在</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;看一下端口信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost examples]<span class="comment"># netstat -anp |grep haproxy  </span></div><div class="line">tcp        0      0 0.0.0.0:80                  0.0.0.0:*                   LISTEN      3826/haproxy          </div><div class="line">udp        0      0 0.0.0.0:43549               0.0.0.0:*                               3826/haproxy</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;把配置文件移动到/etc目录下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost examples]<span class="comment"># cd /etc/  </span></div><div class="line">[root@localhost etc]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;复制haproxy配置文件到/etc/目录下面  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost etc]<span class="comment"># cp /root/haproxy-1.4.25/examples/haproxy.cfg haproxy.cfg</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;再一次查看进程 kill掉。 在用/etc/haproxy.cfg的配置文件启动看看  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">[root@localhost etc]<span class="comment"># ps -ef | grep haproxy  </span></div><div class="line">nobody    3826     1  0 22:38 ?        00:00:00 haproxy -f /root/haproxy-1.4.25/examples/haproxy.cfg  </div><div class="line">root      3901  1260  0 22:40 pts/0    00:00:00 grep haproxy  </div><div class="line">[root@localhost etc]<span class="comment"># kill 3826  </span></div><div class="line">[root@localhost etc]<span class="comment"># ps -ef | grep haproxy  </span></div><div class="line">root      3928  1260  0 22:41 pts/0    00:00:00 grep haproxy  </div><div class="line">```  </div><div class="line"></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;已经kill掉进程，进程已经没有在运行了， 我们现在用/etc/haproxy.cfg 来运行服务  </span></div><div class="line"></div><div class="line">```bash</div><div class="line">[root@localhost etc]<span class="comment"># haproxy -f /etc/haproxy.cfg  </span></div><div class="line">[root@localhost etc]<span class="comment"># ps -ef |grep haproxy.cfg  </span></div><div class="line">nobody    3959     1  0 22:42 ?        00:00:00 haproxy -f /etc/haproxy.cfg  </div><div class="line">root      3965  1260  0 22:43 pts/0    00:00:00 grep haproxy.cfg</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;已经看到运行成功</p>
+<h2 id="设置以服务形式启动"><a href="#设置以服务形式启动" class="headerlink" title="设置以服务形式启动"></a>设置以服务形式启动</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;目录切换到/etc/init.d</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div></pre></td><td class="code"><pre><div class="line">[root@localhost etc]<span class="comment"># cd /etc/init.d/  </span></div><div class="line">[root@localhost init.d]<span class="comment"># vi haproxy  </span></div><div class="line">  </div><div class="line"><span class="meta">#!/bin/bash  </span></div><div class="line">    <span class="comment">#  </span></div><div class="line">    <span class="comment"># haproxy  </span></div><div class="line">    <span class="comment">#  </span></div><div class="line">    <span class="comment"># chkconfig: 35 85 15  </span></div><div class="line">    <span class="comment"># description: HAProxy is a free, very fast and reliable solution \  </span></div><div class="line">    <span class="comment"># offering high availability, load balancing, and \  </span></div><div class="line">    <span class="comment"># proxying for TCP and HTTP-based applications  </span></div><div class="line">    <span class="comment"># processname: haproxy  </span></div><div class="line">    <span class="comment"># config: /etc/haproxy.cfg  </span></div><div class="line">    <span class="comment"># pidfile: /var/run/haproxy.pid  </span></div><div class="line">    <span class="comment"># Source function library.  </span></div><div class="line">    . /etc/rc.d/init.d/<span class="built_in">functions</span>  </div><div class="line">    <span class="comment"># Source networking configuration.  </span></div><div class="line">    . /etc/sysconfig/network  </div><div class="line">    <span class="comment"># Check that networking is up.  </span></div><div class="line">    [ <span class="string">"<span class="variable">$NETWORKING</span>"</span> = <span class="string">"no"</span> ] &amp;&amp; <span class="built_in">exit</span> 0  </div><div class="line">    config=<span class="string">"/etc/haproxy.cfg"</span>  </div><div class="line">    <span class="built_in">exec</span>=<span class="string">"/usr/local/haproxy/sbin/haproxy"</span>  </div><div class="line">    prog=$(basename <span class="variable">$exec</span>)  </div><div class="line">    [ -e /etc/sysconfig/<span class="variable">$prog</span> ] &amp;&amp; . /etc/sysconfig/<span class="variable">$prog</span>  </div><div class="line">    lockfile=/var/lock/subsys/haproxy  </div><div class="line">    <span class="function"><span class="title">check</span></span>() &#123;  </div><div class="line">        <span class="variable">$exec</span> -c -V -f <span class="variable">$config</span>  </div><div class="line">    &#125;  </div><div class="line">    <span class="function"><span class="title">start</span></span>() &#123;  </div><div class="line">        <span class="variable">$exec</span> -c -q -f <span class="variable">$config</span>  </div><div class="line">        <span class="keyword">if</span> [ $? -ne 0 ]; <span class="keyword">then</span>  </div><div class="line">            <span class="built_in">echo</span> <span class="string">"Errors in configuration file, check with <span class="variable">$prog</span> check."</span>  </div><div class="line">            <span class="built_in">return</span> 1  </div><div class="line">        <span class="keyword">fi</span>  </div><div class="line">        <span class="built_in">echo</span> -n $<span class="string">"Starting <span class="variable">$prog</span>: "</span>  </div><div class="line">        <span class="comment"># start it up here, usually something like "daemon $exec"  </span></div><div class="line">        daemon <span class="variable">$exec</span> -D -f <span class="variable">$config</span> -p /var/run/<span class="variable">$prog</span>.pid  </div><div class="line">        retval=$?  </div><div class="line">        <span class="built_in">echo</span>  </div><div class="line">        [ <span class="variable">$retval</span> -eq 0 ] &amp;&amp; touch <span class="variable">$lockfile</span>  </div><div class="line">        <span class="built_in">return</span> <span class="variable">$retval</span>  </div><div class="line">    &#125;  </div><div class="line">    <span class="function"><span class="title">stop</span></span>() &#123;  </div><div class="line">        <span class="built_in">echo</span> -n $<span class="string">"Stopping <span class="variable">$prog</span>: "</span>  </div><div class="line">        <span class="comment"># stop it here, often "killproc $prog"  </span></div><div class="line">        killproc <span class="variable">$prog</span>  </div><div class="line">        retval=$?  </div><div class="line">        <span class="built_in">echo</span>  </div><div class="line">        [ <span class="variable">$retval</span> -eq 0 ] &amp;&amp; rm -f <span class="variable">$lockfile</span>  </div><div class="line">        <span class="built_in">return</span> <span class="variable">$retval</span>  </div><div class="line">    &#125;  </div><div class="line">    <span class="function"><span class="title">restart</span></span>() &#123;  </div><div class="line">        <span class="variable">$exec</span> -c -q -f <span class="variable">$config</span>  </div><div class="line">        <span class="keyword">if</span> [ $? -ne 0 ]; <span class="keyword">then</span>  </div><div class="line">            <span class="built_in">echo</span> <span class="string">"Errors in configuration file, check with <span class="variable">$prog</span> check."</span>  </div><div class="line">            <span class="built_in">return</span> 1  </div><div class="line">        <span class="keyword">fi</span>  </div><div class="line">        stop  </div><div class="line">        start  </div><div class="line">    &#125;  </div><div class="line">    <span class="function"><span class="title">reload</span></span>() &#123;  </div><div class="line">        <span class="variable">$exec</span> -c -q -f <span class="variable">$config</span>  </div><div class="line">        <span class="keyword">if</span> [ $? -ne 0 ]; <span class="keyword">then</span>  </div><div class="line">            <span class="built_in">echo</span> <span class="string">"Errors in configuration file, check with <span class="variable">$prog</span> check."</span>  </div><div class="line">            <span class="built_in">return</span> 1  </div><div class="line">        <span class="keyword">fi</span>  </div><div class="line">        <span class="built_in">echo</span> -n $<span class="string">"Reloading <span class="variable">$prog</span>: "</span>  </div><div class="line">        <span class="variable">$exec</span> -D -f <span class="variable">$config</span> -p /var/run/<span class="variable">$prog</span>.pid -sf $(cat /var/run/<span class="variable">$prog</span>.pid)  </div><div class="line">        retval=$?  </div><div class="line">        <span class="built_in">echo</span>  </div><div class="line">        <span class="built_in">return</span> <span class="variable">$retval</span>  </div><div class="line">    &#125;  </div><div class="line">    <span class="function"><span class="title">force_reload</span></span>() &#123;  </div><div class="line">        restart  </div><div class="line">    &#125;  </div><div class="line">    <span class="function"><span class="title">fdr_status</span></span>() &#123;  </div><div class="line">        status <span class="variable">$prog</span>  </div><div class="line">    &#125;  </div><div class="line">    <span class="keyword">case</span> <span class="string">"<span class="variable">$1</span>"</span> <span class="keyword">in</span>  </div><div class="line">        start|stop|restart|reload)  </div><div class="line">            <span class="variable">$1</span>  </div><div class="line">            ;;  </div><div class="line">        force-reload)  </div><div class="line">            force_reload  </div><div class="line">            ;;  </div><div class="line">        checkconfig)  </div><div class="line">            check  </div><div class="line">            ;;  </div><div class="line">        status)  </div><div class="line">            fdr_status  </div><div class="line">            ;;  </div><div class="line">        condrestart|try-restart)  </div><div class="line">          [ ! -f <span class="variable">$lockfile</span> ] || restart  </div><div class="line">        ;;  </div><div class="line">        *)  </div><div class="line">            <span class="built_in">echo</span> $<span class="string">"Usage: <span class="variable">$0</span> &#123;start|stop|status|checkconfig|restart|try-restart|reload|force-reload&#125;"</span>  </div><div class="line">            <span class="built_in">exit</span> 2  </div><div class="line">    <span class="keyword">esac</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;重起服务haproxy</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost init.d]<span class="comment"># service haproxy restart  </span></div><div class="line">env: /etc/init.d/haproxy: Permission denied</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个提示。大概是权限问题。下面加上执行权限  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@localhost init.d]<span class="comment"># ll haproxy   </span></div><div class="line">-rw-r--r--. 1 root root 2588 Nov 13 23:02 haproxy  </div><div class="line">[root@localhost init.d]<span class="comment"># chmod -R 655 haproxy   </span></div><div class="line">[root@localhost init.d]<span class="comment"># ll haproxy   </span></div><div class="line">-rw-r-xr-x. 1 root root 2588 Nov 13 23:02 haproxy</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;看一下进程是否存在，不存在重起haproxy服务  </p>
+<pre><code class="bash">[root@localhost init.d]<span class="comment"># ps -ef | grep haproxy  </span>
+root      7409  1260  0 23:56 pts/0    00:00:00 grep haproxy  
+[root@localhost init.d]<span class="comment"># service haproxy restart  </span>
+Stopping haproxy:                                          [FAILED]  
+Starting haproxy:                                          [  OK  ]  
+[root@localhost init.d]<span class="comment"># ps -ef | grep haproxy  </span>
+nobody    7444     1  0 23:56 ?        00:00:00 /usr/<span class="built_in">local</span>/haproxy/sbin/haproxy -D -f /etc/haproxy.cfg -p /var/run/haproxy.pid  
+root      7449  1260  0 23:56 pts/0    00:00:00 grep haproxy  
+[root@localhost init.d]<span class="comment">#</span>
+</code></pre>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置上面就完成了  </p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/haproxy/" rel="tag"># haproxy</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/03/Haproxy/5. haproxy 基础配置文件详解/" rel="next" title="haproxy 基础配置文件详解">
+                <i class="fa fa-chevron-left"></i> haproxy 基础配置文件详解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/03/HA集群/1. HA 集群配置/" rel="prev" title="HA 集群配置">
+                HA 集群配置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">599</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载"><span class="nav-number">1.</span> <span class="nav-text">下载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开始编译安装"><span class="nav-number">2.</span> <span class="nav-text">开始编译安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置-haproxy-cfg-文件"><span class="nav-number">3.</span> <span class="nav-text">配置 haproxy.cfg 文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动服务"><span class="nav-number">4.</span> <span class="nav-text">启动服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置以服务形式启动"><span class="nav-number">5.</span> <span class="nav-text">设置以服务形式启动</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

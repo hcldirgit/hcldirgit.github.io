@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
+<html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -110,7 +110,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Mist',
+    scheme: 'Pisces',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
     fancybox: true,
     motion: true,
@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/10. shell 练习-每天删除两天前的文件/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Puppet/2. Puppet学习之文件管理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -306,7 +306,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/10. shell 练习-每天删除两天前的文件/" itemprop="url">shell 练习-每天删除两天前的文件</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Puppet/2. Puppet学习之文件管理/" itemprop="url">Puppet学习之文件管理</a></h1>
         
 
         <div class="post-meta">
@@ -318,8 +318,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-31T00:07:07+08:00">
-                2017-08-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:09:22+08:00">
+                2017-09-03
               </time>
             
 
@@ -355,12 +355,15 @@
       
         
           
-          web服务器上有个目录，它的结构是这样的，首先有256个一级子目录和一个特殊目录，另外这256个一级子目录下还有256个二级子目录（特殊目录除外）。在这些二级子目录下有很多小文件，而且是每时每刻都会生成很多个。 虽然文件不大，但是时间长了，逐渐发现该分区的下inode快被占用满了。 所以请写一个小脚本，实现每天删除两天前的小文件，注意忽略那个特殊的一级子目录default。
-目录： /data/w
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用puppet可以方便的进行文件管理，可以对文件的内容、属组、属主、权限等进行管理。可管理的文件类型包括普通文件、目录、链接文件。类型需要在ensure类型中明确指定。接下来从三个方面来介绍puppet文件管理的操作。
+一、Puppet服务器端的配置
+fileserver.conf文件的配置
+
+&#1
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/10. shell 练习-每天删除两天前的文件/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Puppet/2. Puppet学习之文件管理/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -406,7 +409,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/9. shell 练习-日志汇总/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Puppet/1. Puppet安装和配置/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -425,7 +428,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/9. shell 练习-日志汇总/" itemprop="url">shell 练习-日志汇总</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Puppet/1. Puppet安装和配置/" itemprop="url">Puppet安装和配置</a></h1>
         
 
         <div class="post-meta">
@@ -437,8 +440,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-31T00:07:07+08:00">
-                2017-08-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:09:22+08:00">
+                2017-09-03
               </time>
             
 
@@ -474,12 +477,13 @@
       
         
           
-          我有一个日志（php的slow_log) 几乎每分钟都有输出信息。需要我们来写个脚本分析一下它，目的就是为了归类汇总，按照它们出现的频次做个排序，假如日志是每天0点5分清空，那么按照每小时一次汇总分析该日志，最后在第二天0点0分时，再汇总一下整天的日志，怎么写呢？ 下面我给出一个日志样例和我写的分析汇总脚本供参考。日志样例：
-123456789101112131415161718192021222
+          一、准备工作&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;两台机器：192.168.0.93（服务端）  192.168.0.92 （客户端）
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;两台机器关闭selinux，清空iptables规则，并保存，设置hostname
+&#160;&#160;&
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/9. shell 练习-日志汇总/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Puppet/1. Puppet安装和配置/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -525,7 +529,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/8. shell 练习/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Php/9. php.ini 配置详解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -544,7 +548,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/8. shell 练习/" itemprop="url">shell 练习8</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Php/9. php.ini 配置详解/" itemprop="url">php.ini 配置详解</a></h1>
         
 
         <div class="post-meta">
@@ -556,8 +560,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-31T00:07:07+08:00">
-                2017-08-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:09:22+08:00">
+                2017-09-03
               </time>
             
 
@@ -593,12 +597,13 @@
       
         
           
-          需求： 两台web:A和B机器，其中一台B只打算跑附件（大多为图片），另一台A跑除了附件外的其他东西。其中附件会在A上生成，默认附件会通过A机器访问，但当我们更改某个附件的标志位时，那么附件则会跑到B上去访问。 假如提供给我们了将要在B上跑的附件列表和更改这些附件的标志位的一个sql文件，那么我们如何做呢？
-12345678910111213141516171819202122232425#! /
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个文件必须命名为’’php.ini’’并放置在httpd.conf中的PHPIniDir指令指定的目录中。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;最新版本的php.ini可以在下面两个位置查看：
+http://cvs.php.net/viewv
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/8. shell 练习/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Php/9. php.ini 配置详解/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -644,7 +649,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/7. shell 练习-备份数据库/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Php/8. php.ini 文件配置/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -663,7 +668,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/7. shell 练习-备份数据库/" itemprop="url">shell 练习-备份数据库</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Php/8. php.ini 文件配置/" itemprop="url">php.ini 文件配置</a></h1>
         
 
         <div class="post-meta">
@@ -675,8 +680,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-31T00:07:07+08:00">
-                2017-08-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:09:22+08:00">
+                2017-09-03
               </time>
             
 
@@ -712,11 +717,12 @@
       
         
           
-          设计一个shell脚本来备份数据库，首先在本地服务器上保存一份数据，然后再远程拷贝一份，本地保存一周的数据，远程保存一个月。&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;假定，我们知道mysql root账号的密码，要备份的库为discuz，本地备份目录为/bak/mysql, 远程服务器ip为192.168.123.30，远程提供了一个rsync
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;前面已经拷贝了一个 php.ini 文件到 /usr/local/php/etc 目录下面，这是已经知道 php.ini 所在路径在哪里，但有时候并不知道 php.ini 所在路径，这时候就需要命令来查一查在哪里
+1[root@lamp ~]# /usr/local/php/bin/php -i |he
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/7. shell 练习-备份数据库/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Php/8. php.ini 文件配置/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -762,7 +768,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/6. shell 练习-判断80端口是否开启/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Php/7. 常见apache php_admin_value php_admin_flag 设置/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -781,7 +787,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/6. shell 练习-判断80端口是否开启/" itemprop="url">shell 练习-判断80端口是否开启</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Php/7. 常见apache php_admin_value php_admin_flag 设置/" itemprop="url">常见apache php_admin_value php_admin_flag 设置</a></h1>
         
 
         <div class="post-meta">
@@ -793,8 +799,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-31T00:07:07+08:00">
-                2017-08-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:09:22+08:00">
+                2017-09-03
               </time>
             
 
@@ -830,12 +836,11 @@
       
         
           
-          写一个脚本，判断本机的80端口是否开启着，如果开启着什么都不做，如果发现端口不存在，那么重启一下httpd服务，并发邮件通知你自己。脚本写好后，可以每一分钟执行一次，也可以写一个死循环的脚本，30s检测一次。
-123456789101112131415161718#!/bin/bashmail=123@123.comif netstat -lnp|grep ':80'|grep -q 'LISTE
+          12345678910111213141516php_admin_value open_basedir /data/123:/tmp/php_admin_flag engine onphp_admin_flag log_errors onphp_admin_value max_execution_time 180php_admin_value upload_tmp_dir /mp/php_admi
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/6. shell 练习-判断80端口是否开启/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Php/7. 常见apache php_admin_value php_admin_flag 设置/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -881,7 +886,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/5. shell 练习-还原 .bak备份文件/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Php/6. LAMP测试 php 解析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -900,7 +905,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/5. shell 练习-还原 .bak备份文件/" itemprop="url">shell 练习-还原 .bak备份文件</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Php/6. LAMP测试 php 解析/" itemprop="url">LAMP测试 php 解析</a></h1>
         
 
         <div class="post-meta">
@@ -912,8 +917,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-31T00:07:07+08:00">
-                2017-08-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:09:22+08:00">
+                2017-09-03
               </time>
             
 
@@ -949,12 +954,15 @@
       
         
           
-          在你的/root 目录下有 .bak 后缀的备份文件，请写一脚本批量把这些文件都还原，也就是把.bak的后缀都去掉。
-1234567#! /bin/bashcd /rootfor i in `ls|grep 'bak'`;doa=`echo $i|awk -F'.bak' '&#123;print $0&#125;'`b=`echo $i|awk -F'.bak' '&#123;print $1&
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;测试是否正确解析 php ：
+1vim /usr/local/apache2/htdocs/1.php
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;写入：
+123&lt;?php echo "php解析正常";?&gt;
+&#160;&#160;&#1
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/5. shell 练习-还原 .bak备份文件/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Php/6. LAMP测试 php 解析/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1000,7 +1008,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/4. shell 练习-监控机器存活状态/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Php/5. 一些PHP性能的优化/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1019,7 +1027,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/4. shell 练习-监控机器存活状态/" itemprop="url">shell 练习-监控机器存活状态</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Php/5. 一些PHP性能的优化/" itemprop="url">一些PHP性能的优化</a></h1>
         
 
         <div class="post-meta">
@@ -1031,8 +1039,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-31T00:07:07+08:00">
-                2017-08-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:09:22+08:00">
+                2017-09-03
               </time>
             
 
@@ -1068,15 +1076,13 @@
       
         
           
-          设计一个脚本，监控远程的一台机器(假设ip为123.23.11.21)的存活状态，当发现宕机时发一封邮件给你自己。&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;提示：
-
-你可以使用ping命令   ping -c10 www.baidu.com
-发邮件的命令是  echo “邮件内容” |mail -s “主题” abc@139.com
-脚本可以搞
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PHP优化对于PHP的优化主要是对php.ini中的相关主要参数进行合理调整和设置，以下我们就来看看php.ini中的一些对性能影响较大的参数应该如何设置。
+1vim /etc/php.ini
+PHP函数禁用找到：&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#1
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/4. shell 练习-监控机器存活状态/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Php/5. 一些PHP性能的优化/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1122,7 +1128,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/3. shell 练习-计算进程占用内存和/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Php/4. 下载小知识/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1141,7 +1147,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/3. shell 练习-计算进程占用内存和/" itemprop="url">shell 练习-计算进程占用内存和</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Php/4. 下载小知识/" itemprop="url">下载小知识</a></h1>
         
 
         <div class="post-meta">
@@ -1153,8 +1159,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-31T00:07:07+08:00">
-                2017-08-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:09:22+08:00">
+                2017-09-03
               </time>
             
 
@@ -1190,12 +1196,13 @@
       
         
           
-          ps 可以查看进程的内存占用大小，写一个脚本计算一下所有进程所占用内存大小的和。（提示，使用ps aux 列出所有进程，过滤出RSS那列，然后求和）
-1234567#! /bin/bashsum=0for mem in `ps aux |awk '&#123;print $6&#125;' |grep -v 'RSS'`do    sum=$[$sum+$mem]doneecho "The tot
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在官网下载的源码包都提供一个md5校验值，比如 
+12PHP 5.3.27 (tar.bz2) [11,165Kb] - 11 Jul 2013  md5: 25ae23a5b9615fe8d33de5b63e1bb788
+&#160;&#160;&#160;&#160;&#160;&#160;&#16
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/3. shell 练习-计算进程占用内存和/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Php/4. 下载小知识/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1241,7 +1248,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/2. shell 练习-统计IP访问量/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Php/3. 通过http上传大文件超时的问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1260,7 +1267,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/2. shell 练习-统计IP访问量/" itemprop="url">shell 练习-统计IP访问量</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Php/3. 通过http上传大文件超时的问题/" itemprop="url">通过http上传大文件超时的问题</a></h1>
         
 
         <div class="post-meta">
@@ -1272,8 +1279,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-31T00:07:07+08:00">
-                2017-08-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:09:22+08:00">
+                2017-09-03
               </time>
             
 
@@ -1309,12 +1316,22 @@
       
         
           
-          抓包 ip 访问日志 /var/log/1.log 然后进行系统分析：要求统计出每个 IP 的访问量有多少？提示，先 awk 过滤出 ip ，然后进行排序，统计重复数
-12#!/bin/bashawk '&#123;print $1&#125;' /var/log/1.log |sort -n|uniq -c|sort-rn
-          
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;架构是 LAMP ， 上传文件的操作，并没有连接mysql，但是却使用了php资源，所以修改设置，不仅要设置apache还要设置php.ini 
+
+apache httpd.conf 的设置
+
+
+Timeout 600  这个可以设置成 3600, 单位是s 
+
+
+php.ini 相关的参数
+
+
+fil
+          ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/2. shell 练习-统计IP访问量/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Php/3. 通过http上传大文件超时的问题/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1360,7 +1377,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/1. shell 练习-每日生成一个文件/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Php/2. CentOS 6 编译安装php 5.4 5.5（lamp模式）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1379,7 +1396,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/1. shell 练习-每日生成一个文件/" itemprop="url">shell 练习-每日生成一个文件</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Php/2. CentOS 6 编译安装php 5.4 5.5（lamp模式）/" itemprop="url">CentOS 6 编译安装php 5.4 5.5（lamp模式）</a></h1>
         
 
         <div class="post-meta">
@@ -1391,8 +1408,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-31T00:07:07+08:00">
-                2017-08-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:09:22+08:00">
+                2017-09-03
               </time>
             
 
@@ -1428,13 +1445,23 @@
       
         
           
-          请按照这样的日期格式（xxxx-xx-xx）每日生成一个文件，例如今天生成的文件为2013-09-23.log， 并且把磁盘的使用情况写到到这个文件中
-1234#!/bin/bashd=`date +%F`logfile=$d.logdf -h &gt; $d.log
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后使用 crontab -e 把
+          
+下载php5.4
+
+1wget http://cn2.php.net/distributions/php-5.4.36.tar.bz2
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;5.5下载地址
+
+解压
+
+123tar jxvf php-5.4.36.tar.bz2 cd php-5.4.36
+
+安装yum扩展源
+
+1rpm -i 'https
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/1. shell 练习-每日生成一个文件/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Php/2. CentOS 6 编译安装php 5.4 5.5（lamp模式）/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1475,7 +1502,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/60/">60</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1520,7 +1547,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">136</span>
+                <span class="site-state-item-count">599</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1533,7 +1560,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">37</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1601,7 +1628,7 @@
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
+    NexT.Pisces
   </a>
 </div>
 
@@ -1680,6 +1707,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
 
   
     <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>

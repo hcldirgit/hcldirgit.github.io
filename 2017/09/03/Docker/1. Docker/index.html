@@ -1,0 +1,1122 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Docker," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="1.Docker简介&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;容器虚拟化，比传统的虚拟化轻量 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;2013年出现，发展非常迅猛 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Redhat在6.5版本开始支">
+<meta name="keywords" content="Docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/09/03/Docker/1. Docker/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="1.Docker简介&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;容器虚拟化，比传统的虚拟化轻量 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;2013年出现，发展非常迅猛 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Redhat在6.5版本开始支">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Docker/01.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Docker/02.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Docker/03.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Docker/04.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Docker/05.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Docker/06.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Docker/07.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Docker/08.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Docker/09.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Docker/10.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Docker/11.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Docker/12.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Docker/13.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Docker/14.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Docker/15.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Docker/16.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Docker/17.png?raw=true">
+<meta property="og:updated_time" content="2017-09-01T08:48:47.539Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Docker">
+<meta name="twitter:description" content="1.Docker简介&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;容器虚拟化，比传统的虚拟化轻量 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;2013年出现，发展非常迅猛 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Redhat在6.5版本开始支">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/Docker/01.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/09/03/Docker/1. Docker/"/>
+
+
+
+
+
+  <title>Docker | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Docker/1. Docker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Docker</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:02:06+08:00">
+                2017-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1-Docker简介"><a href="#1-Docker简介" class="headerlink" title="1.Docker简介"></a>1.Docker简介</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;容器虚拟化，比传统的虚拟化轻量</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;2013年出现，发展非常迅猛</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redhat在6.5版本开始支持docker</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用go语言开发，基于apache2.0协议</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;开源软件，项目代码在github维护</p>
+<h3 id="容器虚拟化和传统虚拟化比较"><a href="#容器虚拟化和传统虚拟化比较" class="headerlink" title="容器虚拟化和传统虚拟化比较"></a>容器虚拟化和传统虚拟化比较</h3><p><img src="https://github.com/hcldirgit/image/blob/master/Docker/01.png?raw=true" alt="01"></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Docker/02.png?raw=true" alt="02"></p>
+<h3 id="Docker的优势"><a href="#Docker的优势" class="headerlink" title="Docker的优势"></a>Docker的优势</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动非常快，秒级实现</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;资源利用率很高，一台机器可以跑上千个docker容器</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;更快的交付和部署，一次创建和配置后，可以在任意地方运行</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;内核级别的虚拟化，不需要额外的hypevisor支持，会有更高的性能和效率</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;易迁移，平台依赖性不强</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Docker/03.png?raw=true" alt="03"></p>
+<h3 id="Docker核心概念"><a href="#Docker核心概念" class="headerlink" title="Docker核心概念"></a>Docker核心概念</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;镜像，是一个只读的模板，类似于安装系统用到的那个iso文件，我们通过镜像来完成各种应用的部署。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;容器，镜像类似于操作系统，而容器类似于虚拟机本身。它可以被启动、开始、停止、删除等操作，每个容器都是相互隔离的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;仓库，存放镜像的一个场所，仓库分为公开仓库和私有仓库。 最大的公开仓库是Docker hub（hub.docker.com），国内公开仓库（dockerpool.com）</p>
+<h2 id="2-Docker安装"><a href="#2-Docker安装" class="headerlink" title="2.Docker安装"></a>2.Docker安装</h2><h3 id="centos6-上安装"><a href="#centos6-上安装" class="headerlink" title="centos6 上安装"></a>centos6 上安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># yum install -y epel-release</span></div><div class="line">[root@docker ~]<span class="comment"># yum install -y docker-io</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动docker</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># /etc/init.d/docker start</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如status 查看状态</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Docker/04.png?raw=true" alt="04"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解决办法如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># yum install device-mapper-event-libs</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;重启 docker 正常运行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># service docker restart</span></div><div class="line">停止 docker： [失败]</div><div class="line">Starting docker: [确定]</div><div class="line">[root@docker ~]<span class="comment"># service docker status</span></div><div class="line">docker (pid 24216) 正在运行...</div></pre></td></tr></table></figure>
+<h3 id="centos7-上安装"><a href="#centos7-上安装" class="headerlink" title="centos7 上安装"></a>centos7 上安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># yum install -y docker</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动docker</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># systemctl start docker</span></div></pre></td></tr></table></figure>
+<h2 id="3-Docker-镜像管理"><a href="#3-Docker-镜像管理" class="headerlink" title="3.Docker 镜像管理"></a>3.Docker 镜像管理</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从docker.com获取centos镜像 docker pull centos</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker pull centos </span></div><div class="line">Using default tag: latest</div><div class="line">Trying to pull repository docker.io/library/centos ... </div><div class="line">latest: Pulling from docker.io/library/centos</div><div class="line">45a2e645736c: Pull complete </div><div class="line">Digest: sha256:c577af3197aacedf79c5a204cd7f493c8e07ffbce7f88f7600bf19c688c38799</div><div class="line">Status: Downloaded newer image <span class="keyword">for</span> docker.io/centos:latest</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>docker images</strong> 查看本地都有哪些镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker images</span></div><div class="line">REPOSITORY       TAG    IMAGE ID     CREATED       SIZE</div><div class="line">docker.io/centos latest 67591570dd29 5 weeks ago   191.8 MB</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>docker tag centos yanyi</strong> 为centos镜像设置标签为yanyi</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker tag centos yanyi</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;再使用docker images查看会多出来一行，改行的image id和centos的一样</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker images</span></div><div class="line">REPOSITORY       TAG      IMAGE ID     CREATED     SIZE</div><div class="line">docker.io/centos latest 67591570dd29 5 weeks ago 191.8 MB</div><div class="line">yanyi            latest 67591570dd29 5 weeks ago 191.8 MB</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>docker search [image-name]</strong> 从docker仓库搜索docker镜像，后面是关键词</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker search centos</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>docker run -t -i centos /bin/bash</strong> 用下载到的镜像开启容器，<strong>-i</strong>表示让容器的标准输入打开，<strong>-t</strong>表示分配一个伪终端，要把-i -t 放到镜像名字前面</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker run -t -i centos /bin/bash</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当该镜像发生修改后，我们可以把该镜像提交重新生成一个新版本进行在本地。</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Docker/05.png?raw=true" alt="05"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>docker ps</strong> 查看运行的容器，加上<strong>-a</strong>选项可以查看没有运行的容器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker ps</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker ps -a</span></div><div class="line">CONTAINER ID IMAGE   COMMAND     CREATED       STATUS                         PORTS NAMES</div><div class="line">6e35c7590c0e centos  <span class="string">"/bin/bash"</span> 2 minutes ago Exited (0) About a minute ago        desperate_jepsen</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>docker rmi centos</strong> 用来删除指定镜像， 其中后面的参数可以是tag，如果是tag时，实际上是删除该tag，只要该镜像还有其他tag，就不会删除该镜像。当后面的参数为镜像ID时，则会彻底删除整个镜像，连通所有标签一同删除</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker rmi yanyi</span></div><div class="line">Untagged: yanyi:latest</div><div class="line">Untagged: docker.io/centos@sha256:c577af3197aacedf79c5a204cd7f493c8e07ffbce7f88f7600bf19c688c38799</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;tag 是可以更改的</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker images</span></div><div class="line">REPOSITORY       TAG    IMAGE ID     CREATED     SIZE</div><div class="line">docker.io/centos latest 67591570dd29 5 weeks ago 191.8 MB</div><div class="line">[root@docker ~]<span class="comment"># docker tag centos centos:yanyi</span></div><div class="line">[root@docker ~]<span class="comment"># docker images</span></div><div class="line">REPOSITORY       TAG    IMAGE ID     CREATED     SIZE</div><div class="line">centos           yanyi   67591570dd29 5 weeks ago 191.8 MB</div><div class="line">docker.io/centos latest 67591570dd29 5 weeks ago 191.8 MB</div></pre></td></tr></table></figure>
+<h2 id="4-docker-镜像使用容器生成新的镜像"><a href="#4-docker-镜像使用容器生成新的镜像" class="headerlink" title="4.docker 镜像使用容器生成新的镜像"></a>4.docker 镜像使用容器生成新的镜像</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>docker ps</strong> 可以查看运行的镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker ps</span></div><div class="line">CONTAINER ID  IMAGE  COMMAND  CREATED  STATUS  PORTS  NAMES</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明现在没有运行的镜像，用 <strong>docker ps -a</strong> 查看没有运行的镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker ps -a</span></div><div class="line">CONTAINER ID  IMAGE   COMMAND     CREATED      STATUS                   PORTS  NAMES</div><div class="line">6e35c7590c0e  centos  <span class="string">"/bin/bash"</span> 36 hours ago Exited (0) 36 hours ago         desperate_jepsen</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;运行没有运行的镜像，命令 <strong>docker start <container id=""></container></strong> CONTAINER ID可以只输入前3位</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker start 6e3</span></div><div class="line">6e3</div><div class="line">[root@docker ~]<span class="comment"># docker ps</span></div><div class="line">CONTAINER ID  IMAGE   COMMAND      CREATED      STATUS        PORTS   NAMES</div><div class="line">6e35c7590c0e  entos  <span class="string">"/bin/bash"</span>  36 hours ago  Up 9 seconds            desperate_jepsen</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;进入运行镜像，命令 <strong>docker exec -it <container id=""> /bin/bash</container></strong> <container id="">也可以只输入前3位</container></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]# docker exec -i -t 6e3 /bin/bash</div><div class="line">[root@6e35c7590c0e /]#</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在镜像中可以执行一些命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@914ff4a5efee /]<span class="comment"># yum install -y net-tools wget</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;也可以查看镜像版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@914ff4a5efee /]<span class="comment"># cat /etc/redhat-release </span></div><div class="line">CentOS Linux release 7.3.1611 (Core)</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@914ff4a5efee /]<span class="comment"># uname -a</span></div><div class="line">Linux 914ff4a5efee 3.10.0-514.el7.x86_64 <span class="comment">#1 SMP Tue Nov 22 16:42:41 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux</span></div></pre></td></tr></table></figure>
+<h3 id="Docker-基于已有镜像的容器创建镜像"><a href="#Docker-基于已有镜像的容器创建镜像" class="headerlink" title="Docker 基于已有镜像的容器创建镜像"></a>Docker 基于已有镜像的容器创建镜像</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;运行docker run后，进入到该容器中，我们做一些变更，比如安装一些东西，然后针对这个容器进行创建新的镜像</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>docker commit -m “change somth”  -a “somebody info”  container_id （通过docker ps -a获取id） 新镜像名字</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker commit -m "centos_with_nettools_and_wget" -a "yanyi" 914 centos_with_net</span></div><div class="line">sha256:230c1f5d9646084a345b40f75d5eca5d62f4bf7cde8ba03d26a5b161057da55b</div><div class="line">[root@docker ~]<span class="comment"># docker images</span></div><div class="line">REPOSITORY      TAG    IMAGE ID     CREATED        SIZE</div><div class="line">centos_with_net latest 230c1f5d9646 14 seconds ago 262.7 MB</div><div class="line">centos          latest 67591570dd29 5 weeks ago    191.8 MB</div><div class="line">centos          yanyi  67591570dd29 5 weeks ago    191.8 MB</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个命令有点像svn的提交，-m 加一些改动信息，-a 指定作者相关信息  914这一串为容器id，再后面为新镜像的名字</p>
+<h2 id="5-Docker-基于本地模板导入创建镜像"><a href="#5-Docker-基于本地模板导入创建镜像" class="headerlink" title="5.Docker 基于本地模板导入创建镜像"></a>5.Docker 基于本地模板导入创建镜像</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;模块获取，可以直接在网上下载一个模块<a href="https://openvz.org/Download/template/precreated" target="_blank" rel="external">https://openvz.org/Download/template/precreated</a> 可惜速度并不快，若下载了一个centos的模板 centos-6-x86_64-minimal.tar.gz 那么导入该镜像的命令为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># cat centos-6-x86_64-minimal.tar.gz |docker import - centos-6-x86_64</span></div><div class="line">sha256:601270b7e8af4f738fc5d22c0c6b9aa653ebfa917e9a5dcc371a894ed17cb7a1</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;把现有镜像，导出为一个文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker save -o centos_with_net.tar 230c1f5d9646</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;还可以用该文件恢复本地镜像：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker load --input centos_with_net.tar</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;或者</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker load &lt; centos_with_net.tar</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>docker push image_name</strong> 可以把自己的镜像传到dockerhub官方网站上去，但前提是需要先注册一个用户</p>
+<h2 id="6-Docker-容器管理"><a href="#6-Docker-容器管理" class="headerlink" title="6.Docker 容器管理"></a>6.Docker 容器管理</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>docker create -it centos</strong> 这样可以创建一个容器，但该容器并没有启动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker create -i -t centos</span></div><div class="line">15cb91256d663c18dea652145b5e970220d0295879bbd8647db276eff36a1a76</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>docker start container_id</strong> 启动容器后，可以使用 docker ps  查看到，有start 就有stop，和restart</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker start 15cb91256d66</span></div><div class="line">15cb91256d66</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;之前我们使用的<strong>docker run</strong> 相当于先create再start</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>docker attach</strong> 可以进入一个后台运行的容器，比如 <strong>docker attach container_id</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker attach 15cb91256d66</span></div><div class="line">[root@15cb91256d66 /]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;但是attach命令不算好用，比如我们想要退出终端，就得exit了，这样容器也就退出了，还有一种方法<strong>docker exec -i -t container_id /bin/bash</strong> #可以临时打开一个虚拟终端，并且exit后，容器依然运行着</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker exec -i -t 15cb91256d66 /bin/bash</span></div><div class="line">[root@15cb91256d66 /]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker run -i -t centos-6-x86_64 /bin/bash</span></div><div class="line">[root@2983f5289991 /]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样进入了一个虚拟终端里面，我们可以运行一些命令，使用命令exit或者ctrl d 退出该bash，当退出后这个容器也会停止。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>docker run -d</strong> 可以让容器在后台运行</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;比如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker run -d centos_with_net bash -c "while :; do echo 123; sleep 1; done "</span></div><div class="line">9afe4cdb5e63604a12045b104fa26008c84267665f27bf2bedebe5e6432b814f</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;停止镜像 <strong>docker stop container_id</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker stop 9afe</span></div><div class="line">9afe</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>docker run –name web -itd centos bash</strong>  –name 给容器自定义名字</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker run -i -t -d --name web centos bash</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;docker logs 可以获取到容器的运行历史信息，用法如下<strong>docker logs container_id</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker logs 9afe</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>docker rm  container_id</strong> #container_id是ps的时候查看到的，这样就可以把所有container删除。如果是运行的容器，可以加-f</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker rm 9afe4cdb5e63</span></div><div class="line">9afe4cdb5e63</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果是运行的容器，可以加-f</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker ps</span></div><div class="line">CONTAINER ID IMAGE  COMMAND     CREATED       STATUS    PORTS NAMES</div><div class="line">6e35c7590c0e centos <span class="string">"/bin/bash"</span> 2 days ago Up 4 seconds       desperate_jepsen</div><div class="line">[root@docker ~]<span class="comment"># docker ps</span></div><div class="line">CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES</div><div class="line">6e35c7590c0e centos <span class="string">"/bin/bash"</span> 2 days ago Up 7 seconds desperate_jepsen</div><div class="line">[root@docker ~]<span class="comment"># docker rm -f 6e35c7590c0e </span></div><div class="line">6e35c7590c0e</div><div class="line">[root@docker ~]<span class="comment"># docker ps</span></div><div class="line">CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>docker run –rm -it centos bash -c “sleep 30”</strong> #–rm 可以让容器退出后直接删除，在这里命令执行完容器就会退出，不能和-d一起使用 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;docker export container_id &gt; file.tar 导出容器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker ps</span></div><div class="line">CONTAINER ID IMAGE  COMMAND     CREATED         STATUS    PORTS    NAMES</div><div class="line">c42f598d215e centos <span class="string">"bash"</span>      16 hours ago Up 9 seconds            web</div><div class="line">914ff4a5efee centos <span class="string">"/bin/bash"</span> 27 hours ago Up 15 seconds high_mccarthy</div><div class="line">[root@docker ~]<span class="comment"># docker export c42f &gt; yanyi_centos.tar</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以迁移到其他机器上，需要导入<strong>cat file.tar |docker import - yanyi_centos</strong>#这样会生成yanyi_centos的镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># cat yanyi_centos.tar | docker import - yanyi_centos</span></div><div class="line">sha256:7092ed59698a2c1fbff09f883bb525d6d5fea78bbf96885ad5780459ca5bd06d</div><div class="line">[root@docker ~]<span class="comment"># docker images</span></div><div class="line">REPOSITORY   TAG    IMAGE ID    CREATED             SIZE</div><div class="line">yanyi_centos latest 7092ed59698a About a minute ago 191.8 MB</div></pre></td></tr></table></figure>
+<h2 id="7-Docker-仓库管理"><a href="#7-Docker-仓库管理" class="headerlink" title="7.Docker 仓库管理"></a>7.Docker 仓库管理</h2><h3 id="下载-registry-镜像"><a href="#下载-registry-镜像" class="headerlink" title="下载 registry 镜像"></a>下载 registry 镜像</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;docker pull registry #下载registry 镜像，registy为docker官方提供的一个镜像，我们可以用它来创建本地的docker私有仓库。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker pull registry:0.6.7</span></div><div class="line">Trying to pull repository docker.io/library/registry ... </div><div class="line">0.6.7: Pulling from docker.io/library/registry</div><div class="line">a3ed95caeb02: Pull complete </div><div class="line">b744ac11e87c: Pull complete </div><div class="line">df38afb9684e: Pull complete </div><div class="line">0018b940d299: Pull complete </div><div class="line">0f24c060f901: Pull complete </div><div class="line">95ce9ef4df17: Pull complete </div><div class="line">89843edaf725: Pull complete </div><div class="line">d1350903a0ac: Pull complete </div><div class="line">a8f3ba806716: Pull complete </div><div class="line">edeb8014d2ad: Pull complete </div><div class="line">d0b78626245e: Pull complete </div><div class="line">Digest: sha256:b48ecc989fd0b79a16c2bfe59df5354e3fe85b562ef9f7361eac4bcd19585f5d</div><div class="line">Status: Downloaded newer image <span class="keyword">for</span> docker.io/registry:0.6.7</div></pre></td></tr></table></figure>
+<h3 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>docker run -d -p 5000:5000 registy</strong> #以registry镜像启动容器，监听5000端口</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker run -d -p 5000:5000 registry</span></div><div class="line">00361bd4d3390430d61db003b7375208e82902e4bb855e5cebfb210da743121f</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;curl 127.0.0.1:5000 #可以访问它</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># curl 127.0.0.1:5000 </span></div><div class="line"><span class="string">"docker-registry server (dev)"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;也可以</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># telnet 127.0.0.1 5000</span></div><div class="line">Trying 127.0.0.1...</div><div class="line">Connected to 127.0.0.1.</div><div class="line">Escape character is <span class="string">'^]'</span>.</div><div class="line">Connection closed by foreign host.</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面我们来把其中一个<strong>镜像上传到私有仓库</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>docker tag docker.io/busybox 192.168.0.96:5000/busybox</strong> #标记一下tag，必须要带有私有仓库的ip:port </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker tag docker.io/busybox 192.168.0.96:5000/busybox</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;docker push 192.168.0.96:5000/busybox</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker push 192.168.0.96:5000/busybox</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;此时报错了类似如下</p>
+<ul>
+<li>cnetos 6</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Error response from daemon: invalid registry endpoint https://192.168.0.96:5000/v0/: unable to ping registry endpoint https://192.168.0.96:5000/v0/</div><div class="line">v2 ping attempt failed with error: Get https://192.168.0.96:5000/v2/: EOF</div><div class="line">v1 ping attempt failed with error: Get https://192.168.0.96:5000/v1/_ping: EOF. If this private registry supports only HTTP or HTTPS with an unknown CA certificate, please add `--insecure-registry 192.168.0.96:5000` to the daemon<span class="string">'s arguments. In the case of HTTPS, if you have access to the registry'</span>s CA certificate, no need <span class="keyword">for</span> the flag; simply place the CA certificate at /etc/docker/certs.d/192.168.0.96:5000/ca.crt</div></pre></td></tr></table></figure>
+<ul>
+<li>centos 7</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">The push refers to a repository [192.168.0.96:5000/busybox]</div><div class="line">unable to ping registry endpoint https://192.168.0.96:5000/v0/</div><div class="line">v2 ping attempt failed with error: Get https://192.168.0.96:5000/v2/: EOF</div><div class="line">v1 ping attempt failed with error: Get https://192.168.0.96:5000/v1/_ping: EOF</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这是因为Docker从1.3.X之后，与docker registry交互默认使用的是https，然而此处搭建的私有仓库只提供http服务，所以当与私有仓库交互时就会报上面的错误。为了解决这个问题需要在启动docker server时增加启动参数为默认使用http访问。解决该问题的方法为：</p>
+<ul>
+<li>centos 6</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># vim /etc/init.d/docker</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;把 $exec -d $other_args 改为<br>$exec -d –insecure-registry 192.168.0.96:5000 $other_args</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Docker/06.png?raw=true" alt="06"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;改为</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Docker/07.png?raw=true" alt="07"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后重启docker</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># service docker restart</span></div></pre></td></tr></table></figure>
+<ul>
+<li>centos 7</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># vim /etc/sysconfig/docker</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加上 ADD_REGISTRY=’–add-registry 192.168.0.96:5000’ 和 INSECURE_REGISTRY=’–insecure-registry 192.168.0.96:5000’</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Docker/08.png?raw=true" alt="08"></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Docker/09.png?raw=true" alt="09"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后重启docker</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># systemctl restart docker</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;再启动registry容器 <strong>docker start registry_container_id</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker start 00361bd4d339</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;再次把镜像上传私有仓库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker push 192.168.0.96:5000/busybox</span></div><div class="line">The push refers to a repository [192.168.0.96:5000/busybox]</div><div class="line">38ac8d0f5bb3: Pushed </div><div class="line">latest: digest: sha256:2efce9f5b0cb8815d192ae634b4c87943d0f0b873d98487ee98f8ed0504bd572 size: 527</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看私有仓库里面的所有镜像命令（版本不同命令不一样）</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;curl <a href="http://192.168.0.96:5000/v1/search" target="_blank" rel="external">http://192.168.0.96:5000/v1/search</a>  </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;curl <a href="http://192.168.0.96:5000/v2/_catalog" target="_blank" rel="external">http://192.168.0.96:5000/v2/_catalog</a> #最近版本（33.28m）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># curl http://192.168.0.96:5000/v2/_catalog</span></div><div class="line">&#123;<span class="string">"repositories"</span>:[<span class="string">"busybox"</span>]&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;curl <a href="http://192.168.0.96:5000/v2/image_name/tags/list" target="_blank" rel="external">http://192.168.0.96:5000/v2/image_name/tags/list</a> #最近版本（33.28m）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># curl http://192.168.0.96:5000/v2/busybox/tags/list </span></div><div class="line">&#123;<span class="string">"name"</span>:<span class="string">"busybox"</span>,<span class="string">"tags"</span>:[<span class="string">"latest"</span>]&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;docker search 192.168.0.96:5000 </p>
+<h2 id="8-Docker-数据管理"><a href="#8-Docker-数据管理" class="headerlink" title="8.Docker 数据管理"></a>8.Docker 数据管理</h2><h3 id="挂载本地的目录到容器里"><a href="#挂载本地的目录到容器里" class="headerlink" title="挂载本地的目录到容器里"></a>挂载本地的目录到容器里</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>docker run -tid -v /data/:/data centos bash</strong> #-v 用来指定挂载目录，:前面的/data/为本地目录，:后面的/data/为容器里的目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># mkdir /data/</span></div><div class="line">[root@docker ~]<span class="comment"># docker run -itd -v /data/:/data1 centos bash</span></div><div class="line">cdb5c8a578d5f720df7a263a41d84c22118696f9e5dae7591f539fb4f83ecb16</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;测试，本地 data 目录下创建文件在容器内查看。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># touch /data/1.txt</span></div><div class="line">[root@docker ~]<span class="comment"># echo asdjfklasdjfklasdjf &gt; /data/1.txt</span></div><div class="line">[root@docker ~]<span class="comment"># cat /data/1.txt</span></div><div class="line">asdjfklasdjfklasdjf</div><div class="line">[root@docker ~]<span class="comment"># docker exec -it cdb5 bash</span></div><div class="line">[root@cdb5c8a578d5 /]<span class="comment"># ls /data1/</span></div><div class="line">1.txt</div><div class="line">[root@cdb5c8a578d5 /]<span class="comment"># cat /data1/1.txt</span></div><div class="line">asdjfklasdjfklasdjf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;容器创建文件，在本地目录查看</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@cdb5c8a578d5 /]<span class="comment"># touch /data1/2.txt</span></div><div class="line">[root@cdb5c8a578d5 /]<span class="comment"># exit</span></div><div class="line">[root@docker ~]<span class="comment"># ls /data/</span></div><div class="line">1.txt 2.txt</div></pre></td></tr></table></figure>
+<h3 id="挂载数据卷"><a href="#挂载数据卷" class="headerlink" title="挂载数据卷"></a>挂载数据卷</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其实我们挂载目录的时候，可以指定容器name，如果不指定就随机定义了。比如上面我们没有指定，它就生成了一个名字为angry_bell，这个名字可以使用命令 docker ps 看最右侧一列 docker run -itd –volumes-from angry_bell centos bash</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker run -itd --volumes-from angry_bell centos bash</span></div><div class="line">e36d478d9253a4758b28fb3a3bc5596781b4e572797aee2623bfcf5f50d6492d</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样，我们使用 centos 镜像创建了新的容器，并且使用了 angry_bell 容器的数据卷。我们可以在新容器的数据卷下创建文件，然后去 angry_bell 容器里查看。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker exec -it e36 bash</span></div><div class="line">[root@e36d478d9253 /]<span class="comment"># ls /data1</span></div><div class="line">1.txt 2.txt</div><div class="line">[root@e36d478d9253 /]<span class="comment"># touch /data1/3.txt</span></div><div class="line">[root@e36d478d9253 /]<span class="comment"># exit</span></div><div class="line">[root@docker ~]<span class="comment"># docker exec -it cdb bash</span></div><div class="line">[root@cdb5c8a578d5 /]<span class="comment"># ls /data1/</span></div><div class="line">1.txt 2.txt 3.txt</div></pre></td></tr></table></figure>
+<h3 id="定义数据卷容器"><a href="#定义数据卷容器" class="headerlink" title="定义数据卷容器"></a>定义数据卷容器</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有时候，我们需要多个容器之间相互共享数据，类似于linux里面的NFS，所以就可以搭建一个专门的数据卷容器，然后其他容器直接挂载该数据卷。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先建立数据卷容器</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>docker run -itd -v /data/ –name centos_testvol centos bash</strong>  #注意这里的/data/是容器的/data目录，并非本地的/data/目录。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker run -itd -v /data/ --name centos_testvol centos bash</span></div><div class="line">cfe772a30a89886d9603e84f3078052a39f6119d8b9561752d5d2eb83b245835</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后让其他容器挂载该数据卷 <strong>docker run -itd –volumes-from centos_testvol centos bash</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker run -itd --volumes-from centos_testvol centos bash</span></div><div class="line">d3cd4e6611e18226ceb4f4622bd55c534fb313865566cc7819556b3a1a53e530</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看是否成功</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker exec -it d3c bash</span></div><div class="line">[root@d3cd4e6611e1 /]<span class="comment"># ls /data</span></div><div class="line">[root@d3cd4e6611e1 /]<span class="comment"># mkdir /data/test</span></div><div class="line">[root@d3cd4e6611e1 /]<span class="comment"># touch /data/test/1.txt</span></div><div class="line">[root@d3cd4e6611e1 /]<span class="comment"># exit</span></div><div class="line">[root@docker ~]<span class="comment"># docker exec -it centos_testvol bash </span></div><div class="line">[root@cfe772a30a89 /]<span class="comment"># ls /data</span></div><div class="line"><span class="built_in">test</span></div><div class="line">[root@cfe772a30a89 /]<span class="comment"># ls /data/test</span></div><div class="line">1.txt</div></pre></td></tr></table></figure>
+<h3 id="Docker-数据管理-数据卷的备份与恢复"><a href="#Docker-数据管理-数据卷的备份与恢复" class="headerlink" title="Docker 数据管理 - 数据卷的备份与恢复"></a>Docker 数据管理 - 数据卷的备份与恢复</h3><h4 id="备份"><a href="#备份" class="headerlink" title="备份"></a>备份</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># mkdir /vol_data_backup</span></div><div class="line">[root@docker ~]<span class="comment"># docker run -itd --volumes-from centos_testvol -v /vol_data_backup/:/backup centos bash </span></div><div class="line">b246db616639574e1d6fe5ceb3534337df71676af3362d1b4dfd3b627523be30</div><div class="line">[root@docker ~]<span class="comment"># docker exec -it b246 bash</span></div><div class="line">[root@b246db616639 /]<span class="comment"># tar cvf /backup/data.tar /data/</span></div><div class="line">tar: Removing leading `/<span class="string">' from member names</span></div><div class="line"><span class="string">/data/</span></div><div class="line"><span class="string">/data/test/</span></div><div class="line"><span class="string">/data/test/1.txt</span></div><div class="line"><span class="string">[root@b246db616639 /]# ls /backup</span></div><div class="line"><span class="string">data.tar</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;也可以直接执行命令：<strong>docker run –volumes-from centos_testvol -v  /vol_data_backup/:/backup centos tar cvf  /backup/data.tar /data/</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker run --volumes-from centos_testvol -v /vol_data_backup/:/backup centos tar cvf /backup/data.tar /data/</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：首先我们需要使用testvol数据卷新开一个容器，同时我们还需要把本地的/vol_data_backup/目录挂载到该容器的/backup下，这样在容器中/backup目录里面新建的文件，我们就可以直接在/vol_data_backup/目录中看到了。 然后再把/data/目录下面的文件打包到成data.tar文件放到/backup目录下面。</p>
+<h4 id="恢复"><a href="#恢复" class="headerlink" title="恢复"></a>恢复</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;思路： 先新建一个数据卷容器，再建一个新的容器并挂载该数据卷容器，然后再把tar包解包。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;新建数据卷容器：<strong>docker run -itd -v /data/ –name centos_testvol2 centos bash</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker run -itd -v /data/ --name centos_testvol2 centos bash</span></div><div class="line">00e733d06ece150b114490a36f0a751bed4f43de9aaede13e74331fcdeb87518</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;挂载数据卷新建容器，并解包：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker run -itd --volumes-from centos_testvol2 -v /vol_data_backup/:/backup centos bash</span></div><div class="line">3f9a5887e0dac36b9bd29c5e0925a27d627b39f1945bed66d471e8bccc0cde70</div><div class="line">[root@docker ~]<span class="comment"># docker exec -it 3f9a bash</span></div><div class="line">[root@3f9a5887e0da /]<span class="comment"># tar xvf /backup/data.tar</span></div><div class="line">data/</div><div class="line">data/<span class="built_in">test</span>/</div><div class="line">data/<span class="built_in">test</span>/1.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;也可以执行命令：<strong>docker run –volumes-from centos_testvol2 -v /vol_data_backup/:/backup centos tar xvf /backup/data.tar</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker run --volumes-from centos_testvol2 -v /vol_data_backup/:/backup centos tar xvf /backup/data.tar</span></div></pre></td></tr></table></figure>
+<h2 id="9-Docker-网络管理-四种网络模式"><a href="#9-Docker-网络管理-四种网络模式" class="headerlink" title="9.Docker 网络管理 - 四种网络模式"></a>9.Docker 网络管理 - 四种网络模式</h2><h3 id="host模式"><a href="#host模式" class="headerlink" title="host模式"></a>host模式</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;host模式，使用docker run时使用–net=host指定</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;docker使用的网络实际上和宿主机一样，在容器内看到的网卡ip是宿主机上的ip</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker run -it --rm --net=host centos_with_net bash</span></div><div class="line">[root@docker /]<span class="comment"># ifconfig</span></div><div class="line">docker0: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt; mtu 1500</div><div class="line">         inet 172.17.0.1 netmask 255.255.0.0 broadcast 0.0.0.0</div><div class="line">         inet6 fe80::42:69ff:fe81:dca8 prefixlen 64 scopeid 0x20&lt;link&gt;</div><div class="line">         ether 02:42:69:81:dc:a8 txqueuelen 0 (Ethernet)</div><div class="line">         RX packets 1551 bytes 79846 (77.9 KiB)</div><div class="line">         RX errors 0 dropped 0 overruns 0 frame 0</div><div class="line">         TX packets 1642 bytes 8892494 (8.4 MiB)</div><div class="line">         TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0</div><div class="line"></div><div class="line">ens33: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt; mtu 1500</div><div class="line">       inet 192.168.0.96 netmask 255.255.255.0 broadcast 192.168.0.255</div><div class="line">       inet6 fe80::b5f:e696:2650:f930 prefixlen 64 scopeid 0x20&lt;link&gt;</div><div class="line">       ether 00:0c:29:5a:19:a5 txqueuelen 1000 (Ethernet)</div><div class="line">       RX packets 14059 bytes 9848234 (9.3 MiB)</div><div class="line">       RX errors 0 dropped 0 overruns 0 frame 0</div><div class="line">       TX packets 5604 bytes 576835 (563.3 KiB)</div><div class="line">       TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0</div><div class="line">[root@docker /]<span class="comment"># exit</span></div><div class="line">[root@docker ~]<span class="comment"># ifconfig</span></div><div class="line">docker0: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt; mtu 1500</div><div class="line">         inet 172.17.0.1 netmask 255.255.0.0 broadcast 0.0.0.0</div><div class="line">         inet6 fe80::42:69ff:fe81:dca8 prefixlen 64 scopeid 0x20&lt;link&gt;</div><div class="line">         ether 02:42:69:81:dc:a8 txqueuelen 0 (Ethernet)</div><div class="line">         RX packets 1551 bytes 79846 (77.9 KiB)</div><div class="line">         RX errors 0 dropped 0 overruns 0 frame 0</div><div class="line">         TX packets 1642 bytes 8892494 (8.4 MiB)</div><div class="line">         TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0</div><div class="line"></div><div class="line">ens33: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt; mtu 1500</div><div class="line">       inet 192.168.0.96 netmask 255.255.255.0 broadcast 192.168.0.255</div><div class="line">       inet6 fe80::b5f:e696:2650:f930 prefixlen 64 scopeid 0x20&lt;link&gt;</div><div class="line">       ether 00:0c:29:5a:19:a5 txqueuelen 1000 (Ethernet)</div><div class="line">       RX packets 14084 bytes 9850194 (9.3 MiB)</div><div class="line">       RX errors 0 dropped 0 overruns 0 frame 0</div><div class="line">       TX packets 5620 bytes 584957 (571.2 KiB)</div><div class="line">       TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0</div></pre></td></tr></table></figure>
+<h3 id="container模式"><a href="#container模式" class="headerlink" title="container模式"></a>container模式</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;container模式，使用–net=container:container_id/container_name</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;多个容器使用共同的网络，看到的ip是一样的</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker exec -it c07 /bin/bash</span></div><div class="line">[root@c076b8953e9d /]<span class="comment"># ifconfig</span></div><div class="line">eth0: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt; mtu 1500</div><div class="line">      inet 172.17.0.3 netmask 255.255.0.0 broadcast 0.0.0.0</div><div class="line">      inet6 fe80::42:acff:fe11:3 prefixlen 64 scopeid 0x20&lt;link&gt;</div><div class="line">      ether 02:42:ac:11:00:03 txqueuelen 0 (Ethernet)</div><div class="line">      RX packets 66 bytes 5364 (5.2 KiB)</div><div class="line">      RX errors 0 dropped 0 overruns 0 frame 0</div><div class="line">      TX packets 8 bytes 648 (648.0 B)</div><div class="line">      TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0</div><div class="line"></div><div class="line">lo: flags=73&lt;UP,LOOPBACK,RUNNING&gt; mtu 65536</div><div class="line">    inet 127.0.0.1 netmask 255.0.0.0</div><div class="line">    inet6 ::1 prefixlen 128 scopeid 0x10&lt;host&gt;</div><div class="line">    loop txqueuelen 1 (Local Loopback)</div><div class="line">    RX packets 0 bytes 0 (0.0 B)</div><div class="line">    RX errors 0 dropped 0 overruns 0 frame 0</div><div class="line">    TX packets 0 bytes 0 (0.0 B)</div><div class="line">    TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0</div><div class="line"></div><div class="line">[root@c076b8953e9d /]<span class="comment"># exit</span></div><div class="line">[root@docker ~]<span class="comment"># docker run -it --rm --net=container:c076 centos_with_net bash</span></div><div class="line">[root@c076b8953e9d /]<span class="comment"># ifconfig</span></div><div class="line">eth0: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt; mtu 1500</div><div class="line">      inet 172.17.0.3 netmask 255.255.0.0 broadcast 0.0.0.0</div><div class="line">      inet6 fe80::42:acff:fe11:3 prefixlen 64 scopeid 0x20&lt;link&gt;</div><div class="line">      ether 02:42:ac:11:00:03 txqueuelen 0 (Ethernet)</div><div class="line">      RX packets 66 bytes 5364 (5.2 KiB)</div><div class="line">      RX errors 0 dropped 0 overruns 0 frame 0</div><div class="line">      TX packets 8 bytes 648 (648.0 B)</div><div class="line">      TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0</div><div class="line"></div><div class="line">lo: flags=73&lt;UP,LOOPBACK,RUNNING&gt; mtu 65536</div><div class="line">    inet 127.0.0.1 netmask 255.0.0.0</div><div class="line">    inet6 ::1 prefixlen 128 scopeid 0x10&lt;host&gt;</div><div class="line">    loop txqueuelen 1 (Local Loopback)</div><div class="line">    RX packets 0 bytes 0 (0.0 B)</div><div class="line">    RX errors 0 dropped 0 overruns 0 frame 0</div><div class="line">    TX packets 0 bytes 0 (0.0 B)</div><div class="line">    TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0</div></pre></td></tr></table></figure>
+<h3 id="none模式"><a href="#none模式" class="headerlink" title="none模式"></a>none模式</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;none模式，使用–net=none指定</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这种模式下，不会配置任何网络</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker run -it --rm --net=none centos_with_net bash</span></div><div class="line">[root@069e635bea5f /]<span class="comment"># ifconfig</span></div><div class="line">lo: flags=73&lt;UP,LOOPBACK,RUNNING&gt; mtu 65536</div><div class="line">    inet 127.0.0.1 netmask 255.0.0.0</div><div class="line">    inet6 ::1 prefixlen 128 scopeid 0x10&lt;host&gt;</div><div class="line">    loop txqueuelen 1 (Local Loopback)</div><div class="line">    RX packets 0 bytes 0 (0.0 B)</div><div class="line">    RX errors 0 dropped 0 overruns 0 frame 0</div><div class="line">    TX packets 0 bytes 0 (0.0 B)</div><div class="line">    TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0</div></pre></td></tr></table></figure>
+<h3 id="bridge模式"><a href="#bridge模式" class="headerlink" title="bridge模式"></a>bridge模式</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;bridge模式，使用–net=bridge指定</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认模式，不用指定默认就是这种网络模式。这种模式会为每个容器分配一个独立的   Network Namespace。类似于vmware的nat网络模式。同一个宿主机上的所有容器会在同一 个网段下，相互之间是可以通信的。</p>
+<h2 id="10-Docker-网络管理-外部访问容器"><a href="#10-Docker-网络管理-外部访问容器" class="headerlink" title="10.Docker 网络管理 - 外部访问容器"></a>10.Docker 网络管理 - 外部访问容器</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先使用centos镜像新建一个容器，然后在该容器中安装httpd服务，并启动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker exec -it c076 /bin/bash</span></div><div class="line">[root@c076b8953e9d /]<span class="comment"># yum install httpd</span></div><div class="line">[root@c076b8953e9d /]<span class="comment"># /usr/sbin/httpd</span></div><div class="line">AH00558: httpd: Could not reliably determine the server<span class="string">'s fully qualified domain name, using 172.17.0.3. Set the '</span>ServerName<span class="string">' directive globally to suppress this message</span></div><div class="line"><span class="string">[root@c076b8953e9d /]# ps aux |grep httpd</span></div><div class="line"><span class="string">root    92 0.1 0.1  221920  3452  ?  Ss 12:57 0:00 /usr/sbin/httpd</span></div><div class="line"><span class="string">apache  93 0.0 0.1  221920  2944  ?  S  12:57 0:00 /usr/sbin/httpd</span></div><div class="line"><span class="string">apache  94 0.0 0.1  221920  2944  ?  S  12:57 0:00 /usr/sbin/httpd</span></div><div class="line"><span class="string">apache  95 0.0 0.1  221920  2944  ?  S  12:57 0:00 /usr/sbin/httpd</span></div><div class="line"><span class="string">apache  96 0.0 0.1  221920  2944  ?  S  12:57 0:00 /usr/sbin/httpd</span></div><div class="line"><span class="string">apache  97 0.0 0.1  221920  2944  ?  S  12:57 0:00 /usr/sbin/httpd</span></div><div class="line"><span class="string">root   101 0.0 0.0    9032   656  ?  S+ 12:57 0:00 grep --color=auto httpd</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;再把该容器导成一个新的镜像（centos_httpd)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker commit -m "centos_httpd" -a "yanyi" c076 centos_httpd</span></div><div class="line">sha256:12fb12486cfe16f66686b55e6c6365c5ecac3211fd97720f9e6e3350da757ed6</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后再使用新镜像创建容器，并指定端口映射 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>docker run -itd -p 5123:80 centos_httpd bash</strong>  #-p 可以指定端口映射，本例中将容器的80端口映射为本地的5123端口</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker run -itd -p 5123:80 centos_httpd bash</span></div><div class="line">bbb931e95f37c4202634afa285fbc70c762c3a2a292b0a7655a08ed807ebee43</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>docker exec -it container_id  bash</strong> </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker exec -it bbb9 bash</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动httpd： httpd -k start </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[root@bbb931e95f37 /]<span class="comment"># httpd -k start</span></div><div class="line">AH00558: httpd: Could not reliably determine the server<span class="string">'s fully qualified domain name, using 172.17.0.11. Set the '</span>ServerName<span class="string">' directive globally to suppress this message</span></div><div class="line"><span class="string">[root@bbb931e95f37 /]# ps aux |grep httpd</span></div><div class="line"><span class="string">root   29 0.0 0.1 221920 3456 ? Ss 13:09 0:00 httpd -k start</span></div><div class="line"><span class="string">apache 30 0.0 0.1 221920 2940 ? S  13:09 0:00 httpd -k start</span></div><div class="line"><span class="string">apache 31 0.0 0.1 221920 2940 ? S  13:09 0:00 httpd -k start</span></div><div class="line"><span class="string">apache 32 0.0 0.1 221920 2940 ? S  13:09 0:00 httpd -k start</span></div><div class="line"><span class="string">apache 33 0.0 0.1 221920 2940 ? S  13:09 0:00 httpd -k start</span></div><div class="line"><span class="string">apache 34 0.0 0.1 221920 2940 ? S  13:09 0:00 httpd -k start</span></div><div class="line"><span class="string">root   36 0.0 0.0   9032  656 ? S+ 13:10 0:00 grep --color=auto httpd</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编辑1.html： vim /var/www/html/1.html 随便写点东西</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@bbb931e95f37 /]<span class="comment"># vim /var/www/html/1.html</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@bbb931e95f37 /]<span class="comment"># curl localhost/1.html</span></div><div class="line">yanyi</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;退出该容器：exit</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;测试： curl 127.0.0.1:5123/1.html </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@bbb931e95f37 /]<span class="comment"># exit</span></div><div class="line">[root@docker ~]<span class="comment"># curl 127.0.0.1:5123/1.html</span></div><div class="line">yanyi</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;-p后面也支持IP:port:ip:port 的格式，比如</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;-p 127.0.0.1:8080:80 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;也可以不写本地的端口，只写ip，这样会随意分配一个端口</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;-p 127.0.0.1::80 </p>
+<h2 id="11-Docker-网络管理-–-容器互联"><a href="#11-Docker-网络管理-–-容器互联" class="headerlink" title="11.Docker 网络管理 – 容器互联"></a>11.Docker 网络管理 – 容器互联</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下载一个mysql镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker pull mysql</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;新建一个容器，命名为db</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker run -it -d -p 13306:3306 --name db mysql bash</span></div><div class="line">53247dfe72258636e13b133ee082645cacd48ab6abc4e14442566250c6cd3c24</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在新建一个web容器，并和db互联</p>
+<p>docker run -it -d -p 12308:80 –name web –link db:db centos-httpd bash</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在web上运行env命令可以查看到关于db的环境变量</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;因 pull 的 mydql 是  Ubuntu 版本，则重新制作 centos 版本</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;centos7 yum 没有 mysql-server ，则创建 centos6 容器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker run -itd centos-6-x86 bash</span></div><div class="line">3a40c6cd247c6c7083caf2579935fb497fef6b8ca021097766b2d2585ce0642a</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;yum 安装 mysql-server</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker exec -it 3a4 bash</span></div><div class="line">[root@3a40c6cd247c /]<span class="comment"># yum install -y mysql.server</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;保存镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@3a40c6cd247c /]<span class="comment"># exit</span></div><div class="line">[root@docker ~]<span class="comment"># docker commit -m "centos-6-mysql" -a "yanyi" 3a40 centos6-mysql</span></div><div class="line">sha256:7cf0e61cef00084ad7792b8a336490c8d3a53819cc1fa1c1fc8071c8f2f8f8de</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;新建一个容器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker run -itd -p 13306:3306 centos6-mysql bash</span></div><div class="line">777952322ff56b7c3ab4126e41a4a83a105c04fd785b7d52916d5b8e4a57c17a</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;再新建一个 web 容器，并和 mysql 容器互联。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker run -itd -p 18080:80 --name web --link elegant_liskov:db centos_httpd bash </span></div><div class="line">d6ec87f1e233256d11fff15d70ce602c1e9163686f4ef128e90bce3ac31fa816</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在web上运行env命令可以查看到关于db的环境变量</p>
+<h2 id="12-Docker-网络管理"><a href="#12-Docker-网络管理" class="headerlink" title="12.Docker 网络管理"></a>12.Docker 网络管理</h2><h3 id="配置桥接网络-centos7"><a href="#配置桥接网络-centos7" class="headerlink" title="配置桥接网络(centos7)"></a>配置桥接网络(centos7)</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为了使本地网络中的机器和Docker容器更方便的通信，我们经常会有将Docker容器配置到和主机同一网段的需求。这个需求其实很容易实现，我们只要将Docker容器和宿主机的网卡桥接起来，再给Docker容器配上IP就可以了。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安装 brctl 命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># yum install bridge-utils</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编辑网卡配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># cd /etc/sysconfig/network-scripts/</span></div><div class="line">[root@docker network-scripts]<span class="comment"># cp ifcfg-ens33 ifcfg-br0</span></div><div class="line">[root@docker network-scripts]<span class="comment"># vim ifcfg-ens33</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置 ifcfg-ens33 #增加BRIDGE=br0，删除IPADDR,NETMASK,GATEWAY,DNS1</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Docker/10.png?raw=true" alt="10"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置 ifcfg-br0 #修改DEVICE为br0,Type为Bridge,把eth0的网络设置设置到这里来</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker network-scripts]<span class="comment"># vim ifcfg-br0</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Docker/11.png?raw=true" alt="11"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;重启相关服务，以及关闭相关服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@docker network-scripts]<span class="comment"># systemctl stop NetworkManager</span></div><div class="line">[root@docker network-scripts]<span class="comment"># systemctl disable NetworkManager</span></div><div class="line">Removed symlink /etc/systemd/system/multi-user.target.wants/NetworkManager.service.</div><div class="line">Removed symlink /etc/systemd/system/dbus-org.freedesktop.NetworkManager.service.</div><div class="line">Removed symlink /etc/systemd/system/dbus-org.freedesktop.nm-dispatcher.service.</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker network-scripts]<span class="comment"># systemctl restart network</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;br0 正常启动，能够正常访问该机器即可，再用下面命令查看有即可： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@docker network-scripts]<span class="comment"># brctl show </span></div><div class="line">bridge name    bridge id             STP enabled     interfaces</div><div class="line">br0            8000.000c295a19a5     yes             ens33</div><div class="line">docker0        8000.0242c3f92b21     no</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改docker配置文件，修改桥接的网卡以及IP分配范围</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker network-scripts]<span class="comment"># vim /etc/sysconfig/docker</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;将：OPTIONS=’–selinux-enabled’</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Docker/12.png?raw=true" alt="12"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改为：OPTIONS=’–selinux-enabled -b=br0 –fixed-cidr=192.168.0.198/26’</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Docker/13.png?raw=true" alt="13"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;重新启动docker</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker network-scripts]<span class="comment"># systemctl stop docker.service</span></div><div class="line">[root@docker network-scripts]<span class="comment"># systemctl start docker.service</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;新建 docker 容器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker run -itd centos7 bash</span></div><div class="line">6cb69dbd31dd3845fc0467c436942d3cf3c08b035b24d26f43433e7c761e0043</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;进入容器，查看 IP</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker exec -it 6cb6 bash</span></div><div class="line">[root@6cb69dbd31dd /]<span class="comment"># ifconfig</span></div><div class="line">eth0: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt; mtu 1500</div><div class="line">      inet 192.168.0.192 netmask 255.255.255.0 broadcast 0.0.0.0</div><div class="line">      inet6 fe80::42:c0ff:fea8:c0 prefixlen 64 scopeid 0x20&lt;link&gt;</div><div class="line">      ether 02:42:c0:a8:00:c0 txqueuelen 0 (Ethernet)</div><div class="line">      RX packets 1880 bytes 8921311 (8.5 MiB)</div><div class="line">      RX errors 0 dropped 0 overruns 0 frame 0</div><div class="line">      TX packets 1671 bytes 116955 (114.2 KiB)</div><div class="line">      TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0</div></pre></td></tr></table></figure>
+<h3 id="Docker-网络管理-–-配置桥接网络-centos6"><a href="#Docker-网络管理-–-配置桥接网络-centos6" class="headerlink" title="Docker 网络管理 – 配置桥接网络(centos6)"></a>Docker 网络管理 – 配置桥接网络(centos6)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># cd /etc/sysconfig/network-scripts/</span></div><div class="line">[root@docker network-scripts]<span class="comment"># cp ifcfg-eth0 ifcfg-br0</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置 ifcfg-eth0 #增加BRIDGE=br0，删除IPADDR,NETMASK,GATEWAY,DNS1</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker network-scripts]<span class="comment"># vim ifcfg-eth0</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Docker/14.png?raw=true" alt="14"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置 ifcfg-br0 #修改DEVICE为br0,Type为Bridge,把eth0的网络设置设置到这里来</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker network-scripts]<span class="comment"># vim ifcfg-br0</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Docker/15.png?raw=true" alt="15"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker network-scripts]<span class="comment"># service network restat</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安装 git</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># yum install -y git</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安装pipwork:  git clone <a href="https://github.com/jpetazzo/pipework" target="_blank" rel="external">https://github.com/jpetazzo/pipework</a>;</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># git clone https://github.com/jpetazzo/pipework</span></div><div class="line">Initialized empty Git repository <span class="keyword">in</span> /root/pipework/.git/</div><div class="line">remote: Counting objects: 489, <span class="keyword">done</span>.</div><div class="line">remote: Total 489 (delta 0), reused 0 (delta 0), pack-reused 489</div><div class="line">Receiving objects: 100% (489/489), 167.74 KiB | 28 KiB/s, <span class="keyword">done</span>.</div><div class="line">Resolving deltas: 100% (258/258), <span class="keyword">done</span>.</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># cp ~/pipework/pipework /usr/local/bin/</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;开启一个容器: docker run -itd –net=none –name yanyi centos6-httpd bash</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker run -itd --net=none --name yanyi centos6-httpd bash</span></div><div class="line"> e558b8afb9fc781334fdec93b7b23103bde8bda2a46d2ed14f5b6668d9b99e05</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;rpm -Uvh <a href="https://repos.fedorapeople.org/openstack/EOL/openstack-grizzly/epel-6/iproute-2.6.32-130.el6ost.netns.2.x86_64.rpm" target="_blank" rel="external">https://repos.fedorapeople.org/openstack/EOL/openstack-grizzly/epel-6/iproute-2.6.32-130.el6ost.netns.2.x86_64.rpm</a> #不安会报错Object “netns” is unknown, try “ip help”</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># rpm -Uvh https://repos.fedorapeople.org/openstack/EOL/openstack-grizzly/epel-6/iproute-2.6.32-130.el6ost.netns.2.x86_64.rpm</span></div><div class="line">Retrieving https://repos.fedorapeople.org/openstack/EOL/openstack-grizzly/epel-6/iproute-2.6.32-130.el6ost.netns.2.x86_64.rpm</div><div class="line">warning: /var/tmp/rpm-tmp.fja3UU: Header V4 RSA/SHA1 Signature, key ID d97b3247: NOKEY</div><div class="line">Preparing... <span class="comment">########################################### [100%]</span></div><div class="line"> 1:iproute <span class="comment">########################################### [100%]</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;给容器配置一个 IP ：pipework br0 yanyi 192.168.0.199/24@192.168.0.1</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># pipework br0 yanyi 192.168.0.199/24@192.168.0.1</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;进入容器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker exec -it yanyi bash</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;进去后ifconfig查看就可以看到新添加的ip</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Docker/16.png?raw=true" alt="16"></p>
+<h2 id="13-dockerfile-格式"><a href="#13-dockerfile-格式" class="headerlink" title="13. dockerfile 格式"></a>13. dockerfile 格式</h2><h3 id="Dockerfile创建镜像-–-Dockerfile格式"><a href="#Dockerfile创建镜像-–-Dockerfile格式" class="headerlink" title="Dockerfile创建镜像 – Dockerfile格式"></a>Dockerfile创建镜像 – Dockerfile格式</h3><ul>
+<li>FROM   #指定基于哪个基础镜像</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;格式 FROM <image> 或者  FROM <image>:<tag>，  比如</tag></image></image></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">FROM centos</div><div class="line">FROM centos:latest</div></pre></td></tr></table></figure>
+<ul>
+<li>MAINTAINER  #指定作者信息</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;格式  MAINTAIN <name> ，比如</name></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">MAINTAINER  yanyi  hcldir@qq.com</div></pre></td></tr></table></figure>
+<ul>
+<li>RUN   #镜像操作指令</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;格式为 RUN <command>  或者 RUN [“executable”, “param1”, “param2”]，比如</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">RUN  yum install  httpd</div><div class="line">RUN [<span class="string">"/bin/bash"</span>, <span class="string">"-c"</span>, <span class="string">"echo hello"</span>]</div></pre></td></tr></table></figure>
+<ul>
+<li>CMD  # 三种格式：<ul>
+<li>CMD [“executable”, “param1”, “param2”]</li>
+<li>CMD command param1 param2</li>
+<li>CMD [“param1”, “param2”]</li>
+</ul>
+</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;RUN和CMD看起来挺像，但是CMD用来指定容器启动时用到的命令，只能有一条。比如</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CMD [<span class="string">"/bin/bash"</span>, <span class="string">"/usr/local/nginx/sbin/nginx"</span>, <span class="string">"-c"</span>,  <span class="string">"/usr/local/nginx/conf/nginx.conf"</span>]</div></pre></td></tr></table></figure>
+<ul>
+<li>EXPOSE  </li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;格式为 EXPOSE <port> [<port>…] , 比如</port></port></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">EXPOSE 22 80 8443</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个用来指定要映射出去的端口，比如容器内部我们启动了sshd和nginx，所以我们需要把22和80端口暴漏出去。这个需要配合-P（大写）来工作，也就是说在启动容器时，需要加上-P，让它自动分配。如果想指定具体的端口，也可以使用-p（小写）来指定。</p>
+<ul>
+<li>ENV  </li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;格式 ENV  <key> <value>, 比如  </value></key></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ENV PATH /usr/<span class="built_in">local</span>/mysql/bin:<span class="variable">$PATH</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;它主要是为后续的RUN指令提供一个环境变量，我们也可以定义一些自定义的变量</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;ENV MYSQL_version 5.6</p>
+<ul>
+<li>ADD  格式 add <src> <dest></dest></src></li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;将本地的一个文件或目录拷贝到容器的某个目录里。 其中src为Dockerfile所在目录的相对路径，它也可以是一个url。比如</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ADD &lt;conf/vhosts&gt; &lt;/usr/<span class="built_in">local</span>/nginx/conf&gt;</div></pre></td></tr></table></figure>
+<ul>
+<li>COPY  </li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;格式同add</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用方法和add一样，不同的是，它不支持url</p>
+<ul>
+<li>ENTRYPOINT  格式类似CMD</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;容器启动时要执行的命令，它和CMD很像，也是只有一条生效，如果写多个只有最后一条有效。和CMD不同是：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;CMD 是可以被 docker run 指令覆盖的，而ENTRYPOINT不能覆盖。比如，容器名字为yanyi</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们在Dockerfile中指定如下CMD：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CMD [“/bin/<span class="built_in">echo</span>”, “<span class="built_in">test</span> ”]</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动容器的命令是  docker run yanyi 这样会输出 test</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;假如启动容器的命令是 docker run -it yanyi  /bin/bash  什么都不会输出</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;ENTRYPOINT不会被覆盖，而且会比CMD或者docker run指定的命令要靠前执行</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;ENTRYPOINT [“echo”, “test”]</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;docker run -it yanyi  123</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;则会输入 test  123 ，这相当于要执行命令  echo test  123 </p>
+<ul>
+<li>VOLUME</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;格式  VOLUME [“/data”]</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;创建一个可以从本地主机或其他容器挂载的挂载点。</p>
+<ul>
+<li>USER  </li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;格式 USER daemon</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;指定运行容器的用户</p>
+<ul>
+<li>WORKDIR  </li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;格式 WORKDIR  /path/to/workdir</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为后续的RUN、CMD或者ENTRYPOINT指定工作目录</p>
+<h2 id="14-dockerfile-示例-安装-nginx"><a href="#14-dockerfile-示例-安装-nginx" class="headerlink" title="14. dockerfile 示例-安装 nginx"></a>14. dockerfile 示例-安装 nginx</h2><h3 id="Dockerfile创建镜像-–-Dockerfile示例"><a href="#Dockerfile创建镜像-–-Dockerfile示例" class="headerlink" title="Dockerfile创建镜像 – Dockerfile示例"></a>Dockerfile创建镜像 – Dockerfile示例</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;先下载nginx的配置文件 wget <a href="http://www.apelearn.com/study_v2/.nginx_conf" target="_blank" rel="external">http://www.apelearn.com/study_v2/.nginx_conf</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># wget http://www.apelearn.com/study_v2/.nginx_conf</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;创建 Dockerfile</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># vim Dockerfile</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;内容如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment">############################################################</span></div><div class="line"><span class="comment"># Dockerfile to build Nginx Installed Containers</span></div><div class="line"><span class="comment"># Based on CentOS</span></div><div class="line"><span class="comment">############################################################</span></div><div class="line"><span class="comment"># Set the base image to CentOS</span></div><div class="line">FROM centos6</div><div class="line"><span class="comment"># File Author / Maintainer</span></div><div class="line">MAINTAINER yanyi hcldir@qq.com</div><div class="line"></div><div class="line"><span class="comment"># Install necessary tools</span></div><div class="line">RUN yum install -y pcre-devel wget net-tools gcc</div><div class="line">RUN yum install -y zlib zlib-devel make</div><div class="line">RUN yum install -y openssl-devel</div><div class="line"><span class="comment"># Install Nginx</span></div><div class="line">ADD http://nginx.org/download/nginx-1.8.0.tar.gz .</div><div class="line">RUN tar zxvf nginx-1.8.0.tar.gz</div><div class="line">RUN mkdir -p /usr/<span class="built_in">local</span>/nginx</div><div class="line">RUN <span class="built_in">cd</span> nginx-1.8.0 &amp;&amp; ./configure --prefix=/usr/<span class="built_in">local</span>/nginx &amp;&amp; make &amp;&amp; make install</div><div class="line">RUN rm -fv /usr/<span class="built_in">local</span>/nginx/conf/nginx.conf</div><div class="line">COPY .nginx_conf /usr/<span class="built_in">local</span>/nginx/conf/nginx.conf</div><div class="line"></div><div class="line"><span class="comment"># Expose ports</span></div><div class="line">EXPOSE 80</div><div class="line"><span class="comment"># Set the default command to execute</span></div><div class="line"><span class="comment"># when creating a new container</span></div><div class="line">ENTRYPOINT /usr/<span class="built_in">local</span>/nginx/sbin/nginx -c /usr/<span class="built_in">local</span>/nginx/conf/nginx.conf</div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Docker/17.png?raw=true" alt="17"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;创建镜像：docker build -t centos_nginx  .</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker build -t centos-nginx .</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;docker  images 可以看到我们新建的镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@docker ~]<span class="comment"># docker images</span></div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Docker/" rel="tag"># Docker</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/03/Hadoop/6. HDFS原理分析—— 基本概念/" rel="next" title="HDFS原理分析—— 基本概念">
+                <i class="fa fa-chevron-left"></i> HDFS原理分析—— 基本概念
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/03/FTP/2. vsftp部署和优化/" rel="prev" title="vsftp部署和优化">
+                vsftp部署和优化 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">599</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Docker简介"><span class="nav-number">1.</span> <span class="nav-text">1.Docker简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#容器虚拟化和传统虚拟化比较"><span class="nav-number">1.1.</span> <span class="nav-text">容器虚拟化和传统虚拟化比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker的优势"><span class="nav-number">1.2.</span> <span class="nav-text">Docker的优势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker核心概念"><span class="nav-number">1.3.</span> <span class="nav-text">Docker核心概念</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Docker安装"><span class="nav-number">2.</span> <span class="nav-text">2.Docker安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#centos6-上安装"><span class="nav-number">2.1.</span> <span class="nav-text">centos6 上安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#centos7-上安装"><span class="nav-number">2.2.</span> <span class="nav-text">centos7 上安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Docker-镜像管理"><span class="nav-number">3.</span> <span class="nav-text">3.Docker 镜像管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-docker-镜像使用容器生成新的镜像"><span class="nav-number">4.</span> <span class="nav-text">4.docker 镜像使用容器生成新的镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker-基于已有镜像的容器创建镜像"><span class="nav-number">4.1.</span> <span class="nav-text">Docker 基于已有镜像的容器创建镜像</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Docker-基于本地模板导入创建镜像"><span class="nav-number">5.</span> <span class="nav-text">5.Docker 基于本地模板导入创建镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-Docker-容器管理"><span class="nav-number">6.</span> <span class="nav-text">6.Docker 容器管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-Docker-仓库管理"><span class="nav-number">7.</span> <span class="nav-text">7.Docker 仓库管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载-registry-镜像"><span class="nav-number">7.1.</span> <span class="nav-text">下载 registry 镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动容器"><span class="nav-number">7.2.</span> <span class="nav-text">启动容器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-Docker-数据管理"><span class="nav-number">8.</span> <span class="nav-text">8.Docker 数据管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#挂载本地的目录到容器里"><span class="nav-number">8.1.</span> <span class="nav-text">挂载本地的目录到容器里</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#挂载数据卷"><span class="nav-number">8.2.</span> <span class="nav-text">挂载数据卷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义数据卷容器"><span class="nav-number">8.3.</span> <span class="nav-text">定义数据卷容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker-数据管理-数据卷的备份与恢复"><span class="nav-number">8.4.</span> <span class="nav-text">Docker 数据管理 - 数据卷的备份与恢复</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#备份"><span class="nav-number">8.4.1.</span> <span class="nav-text">备份</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#恢复"><span class="nav-number">8.4.2.</span> <span class="nav-text">恢复</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-Docker-网络管理-四种网络模式"><span class="nav-number">9.</span> <span class="nav-text">9.Docker 网络管理 - 四种网络模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#host模式"><span class="nav-number">9.1.</span> <span class="nav-text">host模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#container模式"><span class="nav-number">9.2.</span> <span class="nav-text">container模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#none模式"><span class="nav-number">9.3.</span> <span class="nav-text">none模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bridge模式"><span class="nav-number">9.4.</span> <span class="nav-text">bridge模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-Docker-网络管理-外部访问容器"><span class="nav-number">10.</span> <span class="nav-text">10.Docker 网络管理 - 外部访问容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-Docker-网络管理-–-容器互联"><span class="nav-number">11.</span> <span class="nav-text">11.Docker 网络管理 – 容器互联</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-Docker-网络管理"><span class="nav-number">12.</span> <span class="nav-text">12.Docker 网络管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置桥接网络-centos7"><span class="nav-number">12.1.</span> <span class="nav-text">配置桥接网络(centos7)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker-网络管理-–-配置桥接网络-centos6"><span class="nav-number">12.2.</span> <span class="nav-text">Docker 网络管理 – 配置桥接网络(centos6)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13-dockerfile-格式"><span class="nav-number">13.</span> <span class="nav-text">13. dockerfile 格式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Dockerfile创建镜像-–-Dockerfile格式"><span class="nav-number">13.1.</span> <span class="nav-text">Dockerfile创建镜像 – Dockerfile格式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-dockerfile-示例-安装-nginx"><span class="nav-number">14.</span> <span class="nav-text">14. dockerfile 示例-安装 nginx</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Dockerfile创建镜像-–-Dockerfile示例"><span class="nav-number">14.1.</span> <span class="nav-text">Dockerfile创建镜像 – Dockerfile示例</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

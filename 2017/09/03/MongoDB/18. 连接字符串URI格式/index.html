@@ -1,0 +1,991 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="MongoDB," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;本文档描述了用于在官方MongoDB 驱动程序中定义应用程序和MongoDB实例之间的连接的URI格式。 标准连接字符串格式&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;本节介绍用于连接到MongoDB数据库服务器的MongoDB连接URI的标准格式。所">
+<meta name="keywords" content="MongoDB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="连接字符串URI格式">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/09/03/MongoDB/18. 连接字符串URI格式/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;本文档描述了用于在官方MongoDB 驱动程序中定义应用程序和MongoDB实例之间的连接的URI格式。 标准连接字符串格式&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;本节介绍用于连接到MongoDB数据库服务器的MongoDB连接URI的标准格式。所">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-01T08:56:39.579Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="连接字符串URI格式">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;本文档描述了用于在官方MongoDB 驱动程序中定义应用程序和MongoDB实例之间的连接的URI格式。 标准连接字符串格式&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;本节介绍用于连接到MongoDB数据库服务器的MongoDB连接URI的标准格式。所">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/09/03/MongoDB/18. 连接字符串URI格式/"/>
+
+
+
+
+
+  <title>连接字符串URI格式 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/MongoDB/18. 连接字符串URI格式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">连接字符串URI格式</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:06:42+08:00">
+                2017-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;本文档描述了用于在官方MongoDB <a href="https://docs.mongodb.com/manual/applications/drivers/" target="_blank" rel="external">驱动程序</a>中定义应用程序和MongoDB实例之间的连接的URI格式。</p>
+<h2 id="标准连接字符串格式"><a href="#标准连接字符串格式" class="headerlink" title="标准连接字符串格式"></a>标准连接字符串格式</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;本节介绍用于连接到MongoDB数据库服务器的MongoDB连接URI的标准格式。所有官方MongoDB驱动程序的格式是一样的。有关驱动程序列表和驱动程序文档的链接，请参阅<a href="https://docs.mongodb.com/manual/applications/drivers/" target="_blank" rel="external">MongoDB驱动程序和客户端库</a>。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下是标准的URI连接方案：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mongodb：// [username：password @] host1 [：port1] [，host2 [：port2]，... [，hostN [：portN]</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;此字符串的组件是：</p>
+<table>
+<thead>
+<tr>
+<th>mongodb://</th>
+<th>用于标识这是标准连接格式的字符串的必需前缀。</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>username:password@</td>
+<td><a href="https://docs.mongodb.com/manual/reference/program/mongod/#bin.mongod" target="_blank" rel="external">可选的。如果指定，客户端将尝试在连接到mongod实例后使用这些凭据登录到特定数据库。</a></td>
+</tr>
+<tr>
+<td>host1</td>
+<td>需要。它标识要连接到的服务器地址。它标识主机名，IP地址或UNIX域套接字。对于副本集，请指定副本集配置mongod 中列出的实例的主机名。对于分片集群，请指定mongos实例的主机名 。</td>
+</tr>
+<tr>
+<td>:port1</td>
+<td>可选的。:27017如果未指定，则为默认值。</td>
+</tr>
+<tr>
+<td>hostN</td>
+<td>可选的。您可以根据需要指定任意数量的主机。您可以指定多个主机，例如，用于连接到副本集。对于副本集，请指定副本集配置mongod 中列出的实例的主机名。对于分片集群，请指定mongos实例的主机名 。</td>
+</tr>
+<tr>
+<td>:portX</td>
+<td>可选的。:27017如果未指定，则为默认值。/database可选的。要认证的数据库的名称，如果连接字符串包含的形式的认证凭证username:password@。如果/database未指定并且连接字符串包含凭据，则驱动程序将对admin数据库进行身份验证。</td>
+</tr>
+<tr>
+<td>?options</td>
+<td>连接特定选项。有关这些选项的完整描述，请参阅 连接字符串选项。如果连接字符串未指定数据库/，则必须/在最后一个hostN和开始于选项字符串的问号之间指定斜杠（即）。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="例"><a href="#例" class="headerlink" title="例"></a>例</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要<code>test</code>使用以下<a href="https://docs.mongodb.com/manual/reference/program/mongod/#bin.mongod" target="_blank" rel="external">mongod</a>主机描述与名为的副本集的连接：</p>
+<ul>
+<li>db1.example.net在港口27017和</li>
+<li>db2.example.net端口2500。</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;将使用类似于以下内容的连接字符串：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mongodb：//db1.example.net,db2.example.net：2500 /？replicaSet = <span class="built_in">test</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;对于副本集，请指定副本集配置mongod 中列出的实例的主机名。</p>
+<h3 id="例-1"><a href="#例-1" class="headerlink" title="例"></a>例</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要使用以下mongos主机描述与分片群集的连接：</p>
+<ul>
+<li>r1.example.net在港口27017和</li>
+<li>r2.example.net端口27017。</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;将使用类似于以下内容的连接字符串：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mongodb：//r1.example.net：27017，r2.example.net：27017 /</div></pre></td></tr></table></figure>
+<h2 id="连接字符串选项"><a href="#连接字符串选项" class="headerlink" title="连接字符串选项"></a>连接字符串选项</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;本节列出了在<a href="https://docs.mongodb.com/manual/reference/connection-string/#connections-standard-connection-string-format" target="_blank" rel="external">标准连接字符串格式中使用的所有连接选项</a> 。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;连接选项为以下形式的对：name=value。该 value永远是区分大小写的。使用＆号（即&amp;）字符分隔选项。在以下示例中，连接使用 replicaSet和connectTimeoutMS选项：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mongodb：//db1.example.net,db2.example.net：2500 /？replicaSet = <span class="built_in">test</span>＆connectTimeoutMS = 300000</div></pre></td></tr></table></figure>
+<h2 id="连接字符串参数的分号分隔符"><a href="#连接字符串参数的分号分隔符" class="headerlink" title="连接字符串参数的分号分隔符"></a>连接字符串参数的分号分隔符</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为了提供向后兼容性，驱动程序当前接受分号（即;）作为选项分隔符。</p>
+<h2 id="副本集选项"><a href="#副本集选项" class="headerlink" title="副本集选项"></a>副本集选项</h2><table>
+<thead>
+<tr>
+<th>连接选项</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>replicaSet</td>
+<td>指定副本集的名称（如果 mongod是副本集的成员）。当连接到副本集时，重要的是给出至少两个mongod实例的种子列表。如果只提供单个mongod实例的连接点，并省略replicaSet，客户端将创建一个独立连接。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="连接选项"><a href="#连接选项" class="headerlink" title="连接选项"></a>连接选项</h2><table>
+<thead>
+<tr>
+<th>连接选项</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ssl</td>
+<td>true：使用TLS / SSL启动连接。false：启动不使用TLS / SSL的连接。默认值为false。注意:ssl所有驱动程序不支持该选项。请参阅您的驱动程序文档和配置mongod和mongos的TLS / SSL文档。</td>
+</tr>
+<tr>
+<td>connectTimeoutMS</td>
+<td><a href="https://docs.mongodb.com/manual/applications/drivers/" target="_blank" rel="external">超时前尝试连接的时间（以毫秒为单位）。默认是从不超时，虽然不同的驱动程序可能会有所不同。请参阅驱动程序 文档</a>。</td>
+</tr>
+<tr>
+<td>socketTimeoutMS</td>
+<td><a href="https://docs.mongodb.com/manual/applications/drivers/" target="_blank" rel="external">在尝试超时之前尝试在套接字上发送或接收的时间（以毫秒为单位）。默认是从不超时，虽然不同的驱动程序可能会有所不同。请参阅 驱动程序文档</a>。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="连接池选项"><a href="#连接池选项" class="headerlink" title="连接池选项"></a>连接池选项</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;大多数驱动程序实现某种连接池处理。某些驱动程序不支持连接池。有关连接池实现的更多信息，请参见<a href="https://docs.mongodb.com/manual/applications/drivers/" target="_blank" rel="external">驱动程序</a>文档。这些选项允许应用程序在连接到MongoDB部署时配置连接池。</p>
+<table>
+<thead>
+<tr>
+<th>连接选项</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>maxPoolSize</td>
+<td>连接池中的最大连接数。默认值为100。</td>
+</tr>
+<tr>
+<td>minPoolSize</td>
+<td>连接池中的最小连接数。默认值为0。注意,minPoolSize所有驱动程序不支持该选项。有关您的驱动程序的信息，请参阅驱动程序文档。</td>
+</tr>
+<tr>
+<td>maxIdleTimeMS</td>
+<td>在删除和关闭之前，连接在池中保持空闲的最大毫秒数。此选项不受所有驱动程序支持。</td>
+</tr>
+<tr>
+<td>waitQueueMultipl</td>
+<td>e驱动程序将maxPoolSize 值乘以的数字，以提供允许等待连接从池中可用的最大线程数。有关默认值，请参阅MongoDB驱动程序和客户端库 文档。</td>
+</tr>
+<tr>
+<td>waitQueueTimeoutMS</td>
+<td>线程可以等待连接变为可用的最大时间（以毫秒为单位）。有关默认值，请参阅MongoDB驱动程序和客户端库文档。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="写关注选项"><a href="#写关注选项" class="headerlink" title="写关注选项"></a>写关注选项</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<a href="https://docs.mongodb.com/manual/reference/write-concern/#write-concern" target="_blank" rel="external">写关注</a>描述了<a href="https://docs.mongodb.com/manual/reference/program/mongod/#bin.mongod" target="_blank" rel="external">mongod</a>和驱动程序向应用程序提供的关于写操作的成功和持久性的保证类型。有关写入关注和写入操作的完整说明，请参阅 <a href="https://docs.mongodb.com/manual/reference/write-concern/" target="_blank" rel="external">写入注意事项</a>。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>注意</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>可以在连接字符串中指定写入注意事项，也可以将方法调用的参数指定为insert或update。如果在两个地方都指定了写入关注，方法参数将覆盖connection-string设置。</strong></p>
+<table>
+<thead>
+<tr>
+<th>连接选项</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>w</td>
+<td>对应写入关注w选项。该w选项请求确认写操作已传播到指定数量的mongod实例或mongod指定标签的实例。您可以指定a number，字符串majority或a 。tag set。有关详细信息，请参见w选项。</td>
+</tr>
+<tr>
+<td>wtimeoutMS</td>
+<td>对应于写入关键字wtimeout。wtimeoutMS指定写入关注的时间限制（以毫秒为单位）。当wtimeoutMS是0，写操作永远不会超时。有关更多信息，请参阅wtimeout。</td>
+</tr>
+<tr>
+<td>journal</td>
+<td>对应于写入关注j选项选项。该 journal选项请求MongoDB确认写操作已写入 日志。有关详细信息，请参阅j选项。如果设置journal为true，并指定w小于1 的 值，则journal优先。在2.6版更改：如果设置journal为true，并且 mongod没有启用日记功能，如storage.journal.enabled，然后MongoDB将会报错。在以前的版本中，MongoDB将提供基本接收确认（即w:1），忽略journal，并jnote在其返回文档中包含一个字段。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="readConcern选项"><a href="#readConcern选项" class="headerlink" title="readConcern选项"></a>readConcern选项</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;3.2版本中的新功能：对于WiredTiger存储引擎，MongoDB 3.2为副本集和副本集分片引入了readConcern选项。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<a href="https://docs.mongodb.com/manual/reference/read-concern/" target="_blank" rel="external">读取关注</a>允许客户端为其从副本集的读取选择隔离级别。</p>
+<table>
+<thead>
+<tr>
+<th>连接选项</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>readConcernLevel</td>
+<td>隔离的水平。接受”local”或 “majority”。有关详细信息，请参阅阅读关注。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="读取首选项"><a href="#读取首选项" class="headerlink" title="读取首选项"></a>读取首选项</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<a href="https://docs.mongodb.com/manual/core/read-preference/" target="_blank" rel="external">读取首选项</a>描述了关于<a href="https://docs.mongodb.com/manual/reference/glossary/#term-replica-set" target="_blank" rel="external">副本集</a>的读取操作的行为。这些参数允许您在连接字符串中基于每个连接指定读取首选项：</p>
+<table>
+<thead>
+<tr>
+<th>连接选项</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>readPreference</td>
+<td>指定此连接的副本集读取首选项。读取首选项值如下：primary、primaryPreferred、secondary、secondaryPreferred、nearest。有关每个值的说明，请参阅 阅读首选项模式。默认值为primary，将所有读取操作发送到副本集的主数据库。</td>
+</tr>
+<tr>
+<td>maxStalenessSeconds</td>
+<td>新版本3.4。指定辅助节点在客户端停止将其用于读取操作之前的陈旧时间（秒）。有关详细信息，请参阅：maxStalenessSeconds。默认情况下，没有最大过期，客户端在选择读取操作的位置时不会考虑次要的延迟。最小值maxStalenessSeconds为90秒。指定0和90秒之间的值将产生错误。MongoDB驱动程序将maxStalenessSeconds值-1视为“no max staleness”，与 maxStalenessSeconds省略时相同。重要。要使用maxStalenessSeconds，部署中的所有MongoDB实例必须使用MongoDB 3.4或更高版本。如果任何实例在早期版本的MongoDB上，驱动程序或mongos将引发错误。以下指定secondary读取首选项模式的maxStalenessSeconds值为120秒：mongodb：//host.example.com/？readPreference = secondary＆maxStalenessSeconds = 120</td>
+</tr>
+<tr>
+<td>readPreferenceTags</td>
+<td>指定标记集，以逗号分隔的冒号分隔的键值对列表。例如：dc：ny，rack：1 要指定标记集的列表，请使用多个 readPreferenceTags。以下指定两个标记集和一个空标记集：readPreferenceTags = dc：ny，rack：1＆readPreferenceTags = dc：ny＆readPreferenceTags = 使用多个时订单重要readPreferenceTags。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="验证选项"><a href="#验证选项" class="headerlink" title="验证选项"></a>验证选项</h2><p>连接选项|描述<br>authSource|指定与用户凭据关联的数据库名称。authSource默认为在连接字符串中指定的数据库。对于将凭证存储委托给其他服务的身份验证机制，该authSource值应 $external与PLAIN（LDAP）和GSSAPI （Kerberos）身份验证机制相同。authSource如果连接字符串指定没有用户名，MongoDB将忽略值。<br>authMechanism|改变在2.6版本：为新增支持PLAIN和MONGODB-X509 认证机制。在版本3.0中更改：添加对SCRAM-SHA-1身份验证机制的支持。指定MongoDB将用来认证连接的认证机制。可能的值包括：SCRAM-SHA-1、MONGODB-CR、MONGODB-X509、GSSAPI（Kerberos）、PLAIN（LDAP SASL）、只有MongoDB Enterprise mongod和mongos 实例提供GSSAPI（Kerberos）和PLAIN（LDAP）机制。要使用MONGODB-X509，您必须启用TLS / SSL。有关MongoDB中的身份验证系统的详细信息，请参阅身份验证。还要考虑 使用x.509证书来认证客户端以获取有关x509 身份验证的更多信息。<br>gssapiServiceName|连接到Kerberos MongoDB实例时设置Kerberos服务名称。此值必须与在MongoDB实例上设置的服务名称匹配。gssapiServiceName默认mongodb为所有客户端和MongoDB实例。如果更改saslServiceNameMongoDB实例上的设置，则需要设置gssapiServiceName为相同的值。</p>
+<h2 id="服务器选择和发现选项"><a href="#服务器选择和发现选项" class="headerlink" title="服务器选择和发现选项"></a>服务器选择和发现选项</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MongoDB提供以下选项来配置MongoDB驱动程序和实例如何mongos选择要将读取或写入操作定向到的服务器。</p>
+<table>
+<thead>
+<tr>
+<th>连接选项</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>localThresholdMS</td>
+<td>用于在多个合适的MongoDB实例之间进行选择的延迟窗口的大小（以毫秒为单位）。默认值：15毫秒。所有驱动程序使用localThresholdMS。localThreshold指定延迟窗口大小时使用 别名mongos。</td>
+</tr>
+<tr>
+<td>serverSelectionTimeoutMS</td>
+<td>指定在抛出异常之前阻止服务器选择的时间长度（以毫秒为单位）。默认值：30,000毫秒。</td>
+</tr>
+<tr>
+<td>serverSelectionTryOnce</td>
+<td>仅限单线程驱动程序。When true，指示驱动程序在服务器选择失败之后一次扫描MongoDB部署，然后选择服务器或引发错误。当时false，驱动程序阻止并搜索一个服务器，直到该serverSelectionTimeoutMS值。 默认值：true。多线程驱动程序和mongos不支持 serverSelectionTryOnce。</td>
+</tr>
+<tr>
+<td>heartbeatFrequencyMS</td>
+<td>heartbeatFrequencyMS控制驱动程序检查MongoDB部署的状态。指定检查之间的间隔（以毫秒为单位），从上一个检查结束开始计算，直到下一个检查结束。默认值：单线程驱动程序：60秒。多线程驱动程序：10秒。mongos 不支持更改心跳检查的频率。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="其他配置"><a href="#其他配置" class="headerlink" title="其他配置"></a>其他配置</h2><table>
+<thead>
+<tr>
+<th>连接选项</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>uuidRepresentation</td>
+<td>可能的值为：standard标准二进制表示。csharpLegacy。C＃驱动程序的默认表示。javaLegacy。Java驱动程序的默认表示。pythonLegacy。Python驱动程序的默认表示。有关默认值，请参阅驱动程序的驱动程序 文档。注意：并不是所有的驱动程序都支持该uuidRepresentation 选项。有关您的驱动程序的信息，请参阅驱动程序文档。</td>
+</tr>
+</tbody>
+</table>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;示例</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下提供了公共连接目标的示例URI字符串。</p>
+<h3 id="数据库服务器在本地运行"><a href="#数据库服务器在本地运行" class="headerlink" title="数据库服务器在本地运行"></a>数据库服务器在本地运行</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下连接到在默认端口上本地运行的数据库服务器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mongodb：// localhost</div></pre></td></tr></table></figure>
+<h3 id="admin数据库"><a href="#admin数据库" class="headerlink" title="admin数据库"></a>admin数据库</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下以具有密码的admin用户身份连接并登录到数据库 ：sysopmoon</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mongodb：// sysop：moon @ localhost</div></pre></td></tr></table></figure>
+<h3 id="records数据库"><a href="#records数据库" class="headerlink" title="records数据库"></a>records数据库</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下以具有密码的records用户身份连接并登录到数据库 ：sysopmoon</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mongodb：// sysop：moon @ localhost / records</div></pre></td></tr></table></figure>
+<h3 id="Unix域套接字"><a href="#Unix域套接字" class="headerlink" title="Unix域套接字"></a>Unix域套接字</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;连接到UNIX域套接字时，请使用URL编码的连接字符串。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下连接到具有文件路径的UNIX域套接字 /tmp/mongodb-27017.sock：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mongodb：//%2Ftmp%2Fmongodb-27017.sock</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>注意</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>并非所有驱动程序都支持UNIX域套接字。有关您的驱动程序的信息，请参阅驱动程序 文档。</code></p>
+<h3 id="不同机器上的成员的副本集"><a href="#不同机器上的成员的副本集" class="headerlink" title="不同机器上的成员的副本集"></a>不同机器上的成员的副本集</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下连接到具有两个成员的副本集，一个打开 db1.example.net，另一个打开db2.example.net：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>注意</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>对于副本集，请指定副本集配置mongod 中列出的实例的主机名。</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mongodb：//db1.example.net,db2.example.com/？replicaSet = <span class="built_in">test</span></div></pre></td></tr></table></figure>
+<h3 id="复制集与成员上localhost"><a href="#复制集与成员上localhost" class="headerlink" title="复制集与成员上localhost"></a>复制集与成员上localhost</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面连接到具有三个成员上运行副本集localhost上的端口27017，27018以及27019：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>注意</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;对于副本集，请指定副本集配置mongod 中列出的实例的主机名。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mongodb：// localhost，localhost：27018，localhost：27019 /？replicaSet = <span class="built_in">test</span></div></pre></td></tr></table></figure>
+<h3 id="读分配的副本集"><a href="#读分配的副本集" class="headerlink" title="读分配的副本集"></a>读分配的副本集</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下连接到具有三个成员的副本集，并将读取分发给辅助节点：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<em>*注意</em></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;对于副本集，请指定副本集配置mongod 中列出的实例的主机名。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mongodb：//example1.com,example2.com,example3.com/？replicaSet = <span class="built_in">test</span>＆readPreference = secondary</div></pre></td></tr></table></figure>
+<h3 id="具有高级写入关注的副本集"><a href="#具有高级写入关注的副本集" class="headerlink" title="具有高级写入关注的副本集"></a>具有高级写入关注的副本集</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下连接到具有写入关注的副本集，配置为等待复制在至少两个成员上成功，具有两秒超时。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>注意</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>对于副本集，请指定副本集配置mongod 中列出的实例的主机名。</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mongodb：//example1.com,example2.com,example3.com/？replicaSet = <span class="built_in">test</span>＆w = 2＆wtimeoutMS = 2000</div></pre></td></tr></table></figure>
+<h3 id="集群"><a href="#集群" class="headerlink" title="集群"></a>集群</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下连接到具有三个mongos实例的分片集群：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mongodb：//router1.example.com：27017，router2.example2.com：27017，router3.example3.com：27017 /</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MongoDB/" rel="tag"># MongoDB</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/03/MongoDB/17. 搭建高可用mongodb集群—— 分片/" rel="next" title="搭建高可用mongodb集群—— 分片">
+                <i class="fa fa-chevron-left"></i> 搭建高可用mongodb集群—— 分片
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/03/MongoDB/2. MongoDB 安装/" rel="prev" title="MongoDB 安装">
+                MongoDB 安装 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">599</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#标准连接字符串格式"><span class="nav-number">1.</span> <span class="nav-text">标准连接字符串格式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#例"><span class="nav-number">1.1.</span> <span class="nav-text">例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例-1"><span class="nav-number">1.2.</span> <span class="nav-text">例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连接字符串选项"><span class="nav-number">2.</span> <span class="nav-text">连接字符串选项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连接字符串参数的分号分隔符"><span class="nav-number">3.</span> <span class="nav-text">连接字符串参数的分号分隔符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#副本集选项"><span class="nav-number">4.</span> <span class="nav-text">副本集选项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连接选项"><span class="nav-number">5.</span> <span class="nav-text">连接选项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连接池选项"><span class="nav-number">6.</span> <span class="nav-text">连接池选项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写关注选项"><span class="nav-number">7.</span> <span class="nav-text">写关注选项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#readConcern选项"><span class="nav-number">8.</span> <span class="nav-text">readConcern选项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#读取首选项"><span class="nav-number">9.</span> <span class="nav-text">读取首选项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#验证选项"><span class="nav-number">10.</span> <span class="nav-text">验证选项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#服务器选择和发现选项"><span class="nav-number">11.</span> <span class="nav-text">服务器选择和发现选项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他配置"><span class="nav-number">12.</span> <span class="nav-text">其他配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库服务器在本地运行"><span class="nav-number">12.1.</span> <span class="nav-text">数据库服务器在本地运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#admin数据库"><span class="nav-number">12.2.</span> <span class="nav-text">admin数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#records数据库"><span class="nav-number">12.3.</span> <span class="nav-text">records数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Unix域套接字"><span class="nav-number">12.4.</span> <span class="nav-text">Unix域套接字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不同机器上的成员的副本集"><span class="nav-number">12.5.</span> <span class="nav-text">不同机器上的成员的副本集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复制集与成员上localhost"><span class="nav-number">12.6.</span> <span class="nav-text">复制集与成员上localhost</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#读分配的副本集"><span class="nav-number">12.7.</span> <span class="nav-text">读分配的副本集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#具有高级写入关注的副本集"><span class="nav-number">12.8.</span> <span class="nav-text">具有高级写入关注的副本集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集群"><span class="nav-number">12.9.</span> <span class="nav-text">集群</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

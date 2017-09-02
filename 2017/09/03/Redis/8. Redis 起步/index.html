@@ -1,0 +1,792 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Redis," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;dis和JQuery一样是纯粹为应用而产生的，这里记录的是在CentOS 5.7上学习入门文章： 1.Redis简介&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Redis是一个key-value存储系统。和Memcached类似，但是解决了断电后数据完">
+<meta name="keywords" content="Redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis 起步">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/09/03/Redis/8. Redis 起步/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;dis和JQuery一样是纯粹为应用而产生的，这里记录的是在CentOS 5.7上学习入门文章： 1.Redis简介&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Redis是一个key-value存储系统。和Memcached类似，但是解决了断电后数据完">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-02T17:31:10.779Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis 起步">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;dis和JQuery一样是纯粹为应用而产生的，这里记录的是在CentOS 5.7上学习入门文章： 1.Redis简介&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Redis是一个key-value存储系统。和Memcached类似，但是解决了断电后数据完">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/09/03/Redis/8. Redis 起步/"/>
+
+
+
+
+
+  <title>Redis 起步 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Redis/8. Redis 起步/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Redis 起步</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:09:22+08:00">
+                2017-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;dis和JQuery一样是纯粹为应用而产生的，这里记录的是在CentOS 5.7上学习入门文章：</p>
+<h2 id="1-Redis简介"><a href="#1-Redis简介" class="headerlink" title="1.Redis简介"></a>1.Redis简介</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis是一个key-value存储系统。和Memcached类似，但是解决了断电后数据完全丢失的情况，而且她支持更多无化的value类型，除了和string外，还支持lists（链表）、sets（集合）和zsets（有序集合）几种数据类型。这些数据类型都支持push/pop、add/remove及取交集并集和差集及更丰富的操作，而且这些操作都是原子性的。</p>
+<h2 id="2-Redis的性能"><a href="#2-Redis的性能" class="headerlink" title="2.Redis的性能"></a>2.Redis的性能</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面是官方的bench-mark数据：</p>
+<ul>
+<li>The test was done with 50 simultaneous clients performing 100000 requests.</li>
+<li>The value SET and GET is a 256 bytes string.</li>
+<li>The Linux box is running Linux 2.6, it’s Xeon X3320 2.5Ghz.</li>
+<li>Text executed using the loopback interface (127.0.0.1).</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Results: <strong>about 110000 SETs per second, about 81000 GETs per second.</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;更多详细数据请见官方bench-mark page（<a href="http://code.google.com/p/redis/wiki/Benchmarks）" target="_blank" rel="external">http://code.google.com/p/redis/wiki/Benchmarks）</a></p>
+<h2 id="3-安装Redis"><a href="#3-安装Redis" class="headerlink" title="3.安装Redis"></a>3.安装Redis</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis的代码遵循ANSI-C编写，可以在所有POSIX系统（如Linux, *BSD, Mac OS X, Solaris等）上安装运行。而且Redis并不依赖任何非标准库，也没有编译参数必需添加。redis的安装出奇的简单，这可能也是他风靡的一个原因，让人很容易上手，不像某些东西，编译阶段就能让人完全绝望。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;先去官网下载源码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget http://redis.googlecode.com/files/redis-2.4.6.tar.gz</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解压：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tar –zxvf redis-2.4.6.tar.gz</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编译</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需要说明的事，redis的安装非常简单，已经有现成的Makefile文件，直接运行make命令即可。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">make</div><div class="line">make install</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis 由四个可执行文件：<strong>redis-benchmark、redis-cli、redis-server、redis-stat</strong> 这四个文件，加上一个<strong>redis.conf</strong>就构成了整个redis的最终可用包。它们的作用如下：</p>
+<ul>
+<li>redis-server：Redis服务器的daemon启动程序</li>
+<li>redis-cli：Redis命令行操作工具。当然，你也可以用telnet根据其纯文本协议来操作</li>
+<li>redis-benchmark：Redis性能测试工具，测试Redis在你的系统及你的配置下的读写性能</li>
+<li>redis-stat：Redis状态检测工具，可以检测Redis当前状态参数及延迟状况</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;现在就可以启动redis了，redis只有一个启动参数，就是他的配置文件路径。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis-server /etc/redis.conf</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意，默认复制过去的<strong>redis.conf</strong>文件的<strong>daemonize</strong>参数为<strong>no</strong>，所以redis不会在后台运行，这时要测试，我们需要重新开一个终端。修改为<strong>yes</strong>则为后台运行redis。另外配置文件中规定了pid文件，log文件和数据文件的地址，如果有需要先修改，默认log信息定向到stdout.</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面是redis.conf的主要配置参数的意义：</p>
+<ul>
+<li>daemonize：是否以后台daemon方式运行</li>
+<li>pidfile：pid文件位置</li>
+<li>port：监听的端口号</li>
+<li>timeout：请求超时时间</li>
+<li>loglevel：log信息级别</li>
+<li>logfile：log文件位置</li>
+<li>databases：开启数据库的数量</li>
+<li>save <em> \</em>：保存快照的频率，第一个*表示多长时间，第三个*表示执行多少次写操作。在一定时间内执行一定数量的写操作时，自动保存快照。可设置多个条件。</li>
+<li>rdbcompression：是否使用压缩</li>
+<li>dbfilename：数据快照文件名（只是文件名，不包括目录）</li>
+<li>dir：数据快照的保存目录（这个是目录）</li>
+<li>appendonly：是否开启appendonlylog，开启的话每次写操作会记一条log，这会提高数据抗风险能力，但影响效率。</li>
+<li>appendfsync：appendonlylog如何同步到磁盘（三个选项，分别是每次写都强制调用fsync、每秒启用一次fsync、不调用fsync等待系统自己同步）</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这时你可以打开一个终端进行测试了，配置文件中默认的监听端口是6379</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们可以开启一个Redis客户端进行测试</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@SNDA-192-168-1-114 ~]<span class="comment"># redis-cli </span></div><div class="line">Could not connect to Redis at 127.0.0.1:6379: Connection refused </div><div class="line">not connected&gt; <span class="built_in">exit</span> </div><div class="line">[root@SNDA-192-168-1-114 ~]<span class="comment"># redis-server /etc/redis.conf </span></div><div class="line">[root@SNDA-192-168-1-114 ~]<span class="comment"># redis-cli </span></div><div class="line">redis 127.0.0.1:6379&gt; quit</div></pre></td></tr></table></figure>
+<h2 id="4-redis数据结构"><a href="#4-redis数据结构" class="headerlink" title="4.redis数据结构"></a>4.redis数据结构</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis 的作者antirez曾称其为一个数据结构服务器（<strong>data structures server</strong>），这是一个非常准确的表述，redis的所有功能就是将数据以其固有的几种结构保存，并提供给用户操作这几种结构的接口。我们可以想象我们在各种语言中的那些固有数据类型及其操作。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis目前提供四种数据类型：<strong>string</strong>,<strong>list</strong>,<strong>set</strong>及<strong>zset</strong>(sorted set)和<strong>Hash</strong>。</p>
+<ul>
+<li><strong>set</strong>是集合，和我们数<strong>string</strong>是最简单的类型，你可以理解成与Memcached一模一个的类型，一个key对应一个value，其上支持的操作与Memcached的操作类似。但它的功能更丰富。</li>
+<li><strong>list</strong>是一个链表结构，主要功能是push、pop、获取一个范围的所有值等等。操作中key理解为链表的名字。学中的集合概念相似，对集合的操作有添加删除元素，有对多个集合求交并差等操作。操作中key理解为集合的名字。</li>
+<li><strong>zset</strong>是set的一个升级版本，他在set的基础上增加了一个顺序属性，这一属性在添加修改元素的时候可以指定，每次指定后，zset会自动重新按新的值调整顺序。可以理解了有两列的mysql表，一列存value，一列存顺序。操作中key理解为zset的名字。</li>
+<li><strong>Hash</strong>数据类型允许用户用Redis存储对象类型,Hash数据类型的一个重要优点是,当你存储的数据对象只有很少几个key值时,数据存储的内存消耗会很小.更多关于Hash数据类型的说明请见: <a href="http://code.google.com/p/redis/wiki/Hashes" target="_blank" rel="external">http://code.google.com/p/redis/wiki/Hashes</a></li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在官网上给出了所有支持的接口列表，并副副附有详细的介绍，地址：<a href="http://code.google.com/p/redis/wiki/CommandReference" target="_blank" rel="external">http://code.google.com/p/redis/wiki/CommandReference</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另外，还提供了一个非常贴心的web命令行模拟页面，供初学者试用redis，地址：<a href="http://try.redis-db.com/" target="_blank" rel="external">http://try.redis-db.com/</a></p>
+<h2 id="5-redis数据存储"><a href="#5-redis数据存储" class="headerlink" title="5.redis数据存储"></a>5.redis数据存储</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis的存储分为内存存储、磁盘存储和log文件三部分，配置文件中有三个参数对其进行配置。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>save seconds updates，save</strong>配置，指出在多长时间内，有多少次更新操作，就将数据同步到数据文件。这个可以多个条件配合，比如默认配置文件中的设置，就设置了三个条件。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>appendonly yes/no ，appendonly</strong>配置，指出是否在每次更新操作后进行日志记录，如果不开启，可能会在断电时导致一段时间内的数据丢失。因为redis本身同步数据文件是按上面的save条件来同步的，所以有的数据会在一段时间内只存在于内存中。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>appendfsync no/always/everysec ，appendfsync</strong>配置，<strong>no</strong>表示等操作系统进行数据缓存同步到磁盘，<strong>always</strong>表示每次更新操作后手动调用<strong>fsync()</strong>将数据写到磁盘，<strong>everysec</strong>表示每秒同步一次。</p>
+<h2 id="6-redis主从配置"><a href="#6-redis主从配置" class="headerlink" title="6.redis主从配置"></a>6.redis主从配置</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis支持<strong>master-slave</strong>的主从配置，配置方法是在从机的配置文件中指定<strong>slaveof</strong>参数为主机的ip和port即可</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag"># Redis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/03/Redis/7. Redis list 之增删改查/" rel="next" title="Redis list 之增删改查">
+                <i class="fa fa-chevron-left"></i> Redis list 之增删改查
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/03/Redis/9. Redis基本操作——String/" rel="prev" title="Redis基本操作——String">
+                Redis基本操作——String <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">599</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Redis简介"><span class="nav-number">1.</span> <span class="nav-text">1.Redis简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Redis的性能"><span class="nav-number">2.</span> <span class="nav-text">2.Redis的性能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-安装Redis"><span class="nav-number">3.</span> <span class="nav-text">3.安装Redis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-redis数据结构"><span class="nav-number">4.</span> <span class="nav-text">4.redis数据结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-redis数据存储"><span class="nav-number">5.</span> <span class="nav-text">5.redis数据存储</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-redis主从配置"><span class="nav-number">6.</span> <span class="nav-text">6.redis主从配置</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

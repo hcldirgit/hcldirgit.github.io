@@ -1,0 +1,935 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hadoop," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="1.大数据介绍&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;大数据指的是所涉及的数据量规模巨大到无法通过人工，在合理时间内达到截取、管理、处理、并整理成为人类所能解读的形式的信息。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;大数据，可帮助我们察觉商业趋势、判定研究质量、避免疾病扩散、打击犯罪或测">
+<meta name="keywords" content="Hadoop">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hadoop 大数据">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/09/03/Hadoop/1. Hadoop 大数据/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="1.大数据介绍&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;大数据指的是所涉及的数据量规模巨大到无法通过人工，在合理时间内达到截取、管理、处理、并整理成为人类所能解读的形式的信息。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;大数据，可帮助我们察觉商业趋势、判定研究质量、避免疾病扩散、打击犯罪或测">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Hadoop%20%E5%A4%A7%E6%95%B0%E6%8D%AE/01.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Hadoop%20%E5%A4%A7%E6%95%B0%E6%8D%AE/02.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Hadoop%20%E5%A4%A7%E6%95%B0%E6%8D%AE/03.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Hadoop%20%E5%A4%A7%E6%95%B0%E6%8D%AE/04.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Hadoop%20%E5%A4%A7%E6%95%B0%E6%8D%AE/05.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Hadoop%20%E5%A4%A7%E6%95%B0%E6%8D%AE/06.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Hadoop%20%E5%A4%A7%E6%95%B0%E6%8D%AE/07.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Hadoop%20%E5%A4%A7%E6%95%B0%E6%8D%AE/08.png?raw=true">
+<meta property="og:updated_time" content="2017-09-01T08:50:14.885Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hadoop 大数据">
+<meta name="twitter:description" content="1.大数据介绍&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;大数据指的是所涉及的数据量规模巨大到无法通过人工，在合理时间内达到截取、管理、处理、并整理成为人类所能解读的形式的信息。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;大数据，可帮助我们察觉商业趋势、判定研究质量、避免疾病扩散、打击犯罪或测">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/Hadoop%20%E5%A4%A7%E6%95%B0%E6%8D%AE/01.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/09/03/Hadoop/1. Hadoop 大数据/"/>
+
+
+
+
+
+  <title>Hadoop 大数据 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Hadoop/1. Hadoop 大数据/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Hadoop 大数据</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:02:06+08:00">
+                2017-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1-大数据介绍"><a href="#1-大数据介绍" class="headerlink" title="1.大数据介绍"></a>1.大数据介绍</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;大数据指的是所涉及的数据量规模巨大到无法通过人工，在合理时间内达到截取、管理、处理、并整理成为人类所能解读的形式的信息。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;大数据，可帮助我们察觉商业趋势、判定研究质量、避免疾病扩散、打击犯罪或测定即时交通路况等。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;麦肯锡全球研究院（MGI）预测，到 2020年，全球数据使用量预计将达到 35ZB（1ZB=1000EB，1EB=1000PB，1PB=1000TB，1TB=1000GB）。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Google每天要处理的数据高达几百PB。百度每天处理数据几十PB。腾讯微信活跃用户数达7亿，每天产生的数据量上百TB，2016年除夕当日，微信红包的参与人数达到4.2亿人，收发总量达80.8亿个。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;多源异构：描述同一主题的数据由不同的用户、不同的网站产生。网络数据有多种不同的呈现形式，如音视频、图片、文本等，导致网络数据格式上的异构性。</p>
+<ul>
+<li><p>交互性：不同于测量和传感获取的大规模科学数据，微博等社交网络兴起导至大量网络数据具有很强的交互性。</p>
+</li>
+<li><p>时效性：在网络平台上，每时每刻都有大量新的网络数据发布，网络信息内容不断变化，导致了信息传播的时序相关性。</p>
+</li>
+<li><p>社会性：网络上用户根据自己的需要和喜好发布、回复或转发信息，因而网络数据成了对社会状态的直接反映。</p>
+</li>
+<li><p>突发性：有些信息在传播过程中会在短时间内引起大量新的网络数据与信息的产生，并使相关的网络用户形成网络群体，体现出网络大数据以及网络群体的突发特性。</p>
+</li>
+<li><p>高噪声：网络数据来自于众多不同的网络用户，具有很高的噪声。</p>
+</li>
+</ul>
+<h2 id="2-Hadoop-介绍"><a href="#2-Hadoop-介绍" class="headerlink" title="2.Hadoop 介绍"></a>2.Hadoop 介绍</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;hadoop是一个开源分布式计算平台框架，基于apache协议发布，由java语言开发。<a href="http://hadoop.apache.org/" target="_blank" rel="external">http://hadoop.apache.org/</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;hadoop两大核心组件：<strong>HDFS</strong>（分布式文件系统，为分布式计算提供了数据存储）和<strong>mapreduce</strong>（应用程序被分区成许多小部分，而每个部分都能在集群中的任意节点上运行，一句话就是任务的分解和结果的汇总）</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另外两个模块：<strong>Common、YARN</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其他和hadoop相关的项目：<strong>Ambari、Avro、Cassandra、Chukwa、Hbase、Hive、Mahout、Pig、Spark、Tez、Zookeeper</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;hadoop支持由廉价的计算机搭建集群，有强大的冗余机制。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;hadoop在各大互联网企业中应用广泛，百度使用hadoop进行搜索日志的分析和网页数据的挖掘工作；淘宝使用hadoop存储并处理电子商务交易相关数据；facebook使用hadoop进行数据分析和机器学习。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;还有哪些企业在使用hadoop <a href="http://wiki.apache.org/hadoop/PoweredBy" target="_blank" rel="external">http://wiki.apache.org/hadoop/PoweredBy</a></p>
+<h2 id="3-Hadoop组件以及相关项目介绍"><a href="#3-Hadoop组件以及相关项目介绍" class="headerlink" title="3.Hadoop组件以及相关项目介绍"></a>3.Hadoop组件以及相关项目介绍</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>Common</strong>：为其他组件提供常用工具支持。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>YARN</strong>：作业调度和集群管理的框架。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>Ambari</strong>: 是 Apache Software Foundation 中的一个项目。就 Ambari 的作用来说，就是创建、管理、监视 Hadoop 的集群，但是这里的 Hadoop 是广义，指的是 Hadoop 整个生态圈（例如 Hive，Hbase，Sqoop，Zookeeper 等）。用一句话来说，Ambari 就是为了让 Hadoop 以及相关的大数据软件更容易使用的一个工具。<a href="https://hcldirgit.github.io/2017/08/18/Hadoop/3.%20Ambari%E2%80%94%E2%80%94%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E7%9A%84%E6%90%AD%E5%BB%BA%E5%88%A9%E5%99%A8/">Ambari——大数据平台的搭建利器</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>Avro</strong>：Avro是Hadoop中的一个子项目，也是Apache中一个独立的项目，Avro是一个基于二进制数据传输高性能的中间件。在Hadoop的其他项目中例如HBase(Ref)和Hive(Ref)的Client端与服务端的数据传输也采用了这个工具。Avro是一个数据序列化的系统。Avro 可以将数据结构或对象转化成便于存储或传输的格式。Avro设计之初就用来支持数据密集型应用，适合于远程或本地大规模数据的存储和交换。<a href="https://hcldirgit.github.io/2017/08/18/Hadoop/4.%20Avro%E7%AE%80%E4%BB%8B/">Avro简介</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>Cassandra</strong>：可扩展的多主数据库，不存在单点故障。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>Chukwa</strong>：是数据收集系统，用于监控和分析大型分布式系统的数据。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>HBase</strong>：是一个分布式面向列的数据库。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>Hive</strong>：最早由facebook设计，是建立在hadoop基础之上的数据仓库，它提供了一些用于数据整理、特殊查询和分析在hadoop文件中数据集工具。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>Mahout</strong>：可扩展的机器学习和数据挖掘库。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>Pig</strong>：是一种高级语言和并行计算可执行框架，它是一个对大型数据集分析和评估的平台。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>Spark</strong>：一个快速和通用计算的Hadoop数据引擎。和mapreduce类似，但是要比mapreduce快。它提供了一个简单而丰富的编程模型，支持多种应用，包括ETL、机器学习、数据流处理、图形计算。 参考文档 <a href="https://hcldirgit.github.io/2017/08/18/Hadoop/2.%202%E5%88%86%E9%92%9F%E8%AF%BB%E6%87%82Hadoop%E5%92%8CSpark%E7%9A%84%E5%BC%82%E5%90%8C/">2分钟读懂Hadoop和Spark的异同</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>Tez</strong>：是Apache最新的支持DAG作业的开源计算框架，它可以将多个有依赖的作业转换为一个作业从而大幅提升DAG作业的性能。Tez并不直接面向最终用户，事实上它允许开发者为最终用户构建性能更快、扩展性更好的应用程序。Hadoop传统上是一个大量数据批处理平台。但是，有很多用例需要近乎实时的查询处理性能。还有一些工作则不太适合MapReduce，例如机器学习。Tez的目的就是帮助Hadoop处理这些用例场景。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>ZooKeeper</strong>：ZooKeeper是一组工具，用来配置和支持分布式调度。一个重要功能就是对所有节点进行配置的同步。它能处理分布式应用的“部分失败”问题。部分失败是分布式处理系统的固有特征，即发送者无法知道接收者是否收到消息，它的出现可能和网络传输问题、接收进程意外死掉等有关系。ZooKeeper是Hadoop生态系统的一部分，但又远不止如此，它能支持更多类似的分布式平台和系统，如Jubatus，Cassender等等。而且HBase明确指出至少需要一个ZooKeeper实例的支持。</p>
+<h2 id="4-HDFS-介绍"><a href="#4-HDFS-介绍" class="headerlink" title="4.HDFS 介绍"></a>4.HDFS 介绍</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;HDFS设计思想来源于Google的GFS，是GFS的开源实现。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;HDFS要解决的问题</p>
+<ol>
+<li>存储超大文件，比如TB级别</li>
+<li>防止文件丢失</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;HDFS的特点</p>
+<ol>
+<li>可以存储超大文件</li>
+<li>只允许对一个已经打开的文件顺序写入，还可以在现有文件的末尾追加。要想修改一个文件（追加内容除外），只能删除后再重写</li>
+<li>可以使用廉价的硬件平台搭建，通过容错策略来保证数据的高可用，默认存储3份数据，任何一份丢失可以自动恢复</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;HDFS的缺点</p>
+<ol>
+<li>数据访问延迟比较高，因为它的设计场景是用于大吞吐量数据，HDFS是单master，所有文件都要经过它，当请求数据量很大时，延迟就增加了</li>
+<li>文件数受限，和NameNode有关系</li>
+<li>不支持多用户写入，也不支持文件任意修改</li>
+</ol>
+<h3 id="HDFS-架构"><a href="#HDFS-架构" class="headerlink" title="HDFS 架构"></a>HDFS 架构</h3><p><img src="https://github.com/hcldirgit/image/blob/master/Hadoop%20%E5%A4%A7%E6%95%B0%E6%8D%AE/01.png?raw=true" alt=""></p>
+<h4 id="HDFS的几个核心概念"><a href="#HDFS的几个核心概念" class="headerlink" title="HDFS的几个核心概念"></a>HDFS的几个核心概念</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>数据块（block）</strong>：大文件会被分割成多个block进行存储，block大小默认为64MB。每一个block会在多个datanode上存储多份副本，默认是3份。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>namenode</strong>：namenode负责管理文件目录、文件和block的对应关系以及block和datanode的对应关系。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>SecondaryNameNode</strong>：分担namenode的工作量，是NameNode的冷备份，它的主要工作是合并fsimage（元数据镜像文件）和fsedits（元数据操作日志）然后再发给namenode。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>datanode</strong>：datanode就负责存储了，当然大部分容错机制都是在datanode上实现的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>rack</strong> 是指机柜的意思，一个block的三个副本通常会保存到两个或者两个以上的机柜中（当然是机柜中的服务器），这样做的目的是做防灾容错，因为发生一个机柜掉电或者一个机柜的交换机挂了的概率还是蛮高的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;几篇不错的文章</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<a href="https://hcldirgit.github.io/2017/08/18/Hadoop/7.%20%E3%80%90Hadoop%E3%80%91HDFS%E7%9A%84%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/">【Hadoop】HDFS的运行原理</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<a href="https://hcldirgit.github.io/2017/08/18/Hadoop/6.%20HDFS%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">HDFS原理分析—— 基本概念</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<a href="https://hcldirgit.github.io/2017/08/18/Hadoop/5.%20HDFS%20%E5%8E%9F%E7%90%86%E3%80%81%E6%9E%B6%E6%9E%84%E4%B8%8E%E7%89%B9%E6%80%A7%E4%BB%8B%E7%BB%8D/">HDFS 原理、架构与特性介绍</a></p>
+<h2 id="5-HSDS写数据流程"><a href="#5-HSDS写数据流程" class="headerlink" title="5.HSDS写数据流程"></a>5.HSDS写数据流程</h2><p><img src="https://github.com/hcldirgit/image/blob/master/Hadoop%20%E5%A4%A7%E6%95%B0%E6%8D%AE/02.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;HDFS写文件流程</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Client向远程的Namenode发起RPC请求；</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Namenode会检查要创建的文件是否已经存在，创建者是否有权限进行操作，成功则会为文件 创建一个记录，否则会让客户端抛出异常</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当客户端开始写入文件的时候，会将文件切分成多个packets，并向Namenode申请blocks，获取用来存储replicas的合适的datanodes列表，列表的大小根据在Namenode中对replication的设置而定。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;此时会形成一个pipline用来传输packet。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;packet以流的方式写入第一个datanode，该datanode把packet存储之后，再将其传递给下一个datanode，直到最后一个datanode。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;最后一个datanode成功存储之后会返回一个ack 传递至客户端，在客户端，客户端确认ack后继续写入下一个packet。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果传输过程中，有某个datanode出现了故障，那么当前的pipeline会被关闭，出现故障的datanode会从当前的pipeline中移除，剩余的block会继续剩下的datanode中继续以pipeline的形式传输，同时Namenode会分配一个新的datanode，保持replicas设定的数量</p>
+<h2 id="6-HDFS-读数据流程"><a href="#6-HDFS-读数据流程" class="headerlink" title="6.HDFS 读数据流程"></a>6.HDFS 读数据流程</h2><p><img src="https://github.com/hcldirgit/image/blob/master/Hadoop%20%E5%A4%A7%E6%95%B0%E6%8D%AE/03.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;HDFS读文件流程</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Client向远程的Namenode发起RPC请求</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Namenode会视情况返回文件的部分或者全部block列表，对于每个block，Namenode都会返回有该block拷贝的DataNode地址</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Client会选取离自己最接近的DataNode来读取block</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;读取完当前block的数据后，关闭与当前的DataNode连接，并为读取下一个block寻找最佳的DataNode</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当读完列表的block后，且文件读取还没有结束，client会继续向Namenode获取下一批的block列表</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;读取完block会进行checksum验证，如果读取datanode时出现错误，客户端会通知Namenode，然后再从下一个拥有该block拷贝的datanode继续读</p>
+<h2 id="7-mapreduce-详解"><a href="#7-mapreduce-详解" class="headerlink" title="7.mapreduce 详解"></a>7.mapreduce 详解</h2><h3 id="MapReduce模型"><a href="#MapReduce模型" class="headerlink" title="MapReduce模型"></a>MapReduce模型</h3><p><img src="https://github.com/hcldirgit/image/blob/master/Hadoop%20%E5%A4%A7%E6%95%B0%E6%8D%AE/04.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MapReduce 是大规模数据（TB 级）计算的利器，Map 和Reduce 是它的主要思想，来源于函数式编程语言。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Map负责将数据打散，Reduce负责对数据进行聚集，用户只需要实现map 和reduce 两个接口，即可完成TB级数据的计算。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;常见的应用包括：日志分析和数据挖掘等数据分析应用。另外，还可用于科学数据计算，如圆周率PI 的计算等。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当我们提交一个计算作业时，MapReduce会首先把计算作业拆分成若干个Map 任务，然后分配到不同的节点上去执行，每一个Map 任务处理输入数据中的一部分，当Map 任务完成后，它会生成一些中间文件，这些中间文件将会作为Reduce 任务的输入数据。Reduce 任务的主要目标就是把前面若干个Map 的输出汇总到一起并输出</p>
+<h3 id="MapReduce-执行过程"><a href="#MapReduce-执行过程" class="headerlink" title="MapReduce 执行过程"></a>MapReduce 执行过程</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;每个 Mapper 任务是一个 java 进程，它会读取 HDFS 中的文件，解析成很多的键值对，经过我们 map 方法处理后， 转换为很多的键值对再输出</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;把 Mapper 任务的运行过程分为六个阶段。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第一阶段是把输入文件按照一定的标准分片(InputSplit)，每个输入片的大小是固定的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第二阶段是对输入片中的记录按照一定的规则解析成键值对。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第三阶段是调用 Mapper 类中的 map 方法。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第四阶段是按照一定的规则对第三阶段输出的键值对进行分区。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第五阶段是对每个分区中的键值对进行排序。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第六阶段是对数据进行归纳处理，也就是 reduce 处理。键相等的键值对会调用一次reduce 方法。</p>
+<h3 id="Reducer任务的执行过程"><a href="#Reducer任务的执行过程" class="headerlink" title="Reducer任务的执行过程"></a>Reducer任务的执行过程</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;每个 Reducer 任务是一个 java 进程。Reducer 任务接收 Mapper 任务的输出，归约处理后写入到 HDFS 中。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以分为3个阶段</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第一阶段是 Reducer 任务会主动从 Mapper 任务复制其输出的键值对。 Mapper 任务可能会有很多，因此 Reducer 会复制多个 Mapper 的输出。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第二阶段是把复制到 Reducer 本地数据，全部进行合并，即把分散的数据合并成一个大的数据。再对合并后的数据排序。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第三阶段是对排序后的键值对调用 reduce 方法。 键相等的键值对调用一次 reduce 方法，每次调用会产生零个或者多个键值对。最后把这些输出的键值对写入到 HDFS 文件中。</p>
+<h2 id="8-安装-hadoop–准备工作"><a href="#8-安装-hadoop–准备工作" class="headerlink" title="8.安装 hadoop–准备工作"></a>8.安装 hadoop–准备工作</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;三台机器（内存大于2G） 分别写hosts、设定hostname。三台机器分别设置hostname 为master 、slave1、slave2。更改 hosts</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">vim /etc/hosts</div><div class="line">``` </div><div class="line"></div><div class="line">```bash</div><div class="line">192.168.0.87 master</div><div class="line">192.168.0.86 slave1</div><div class="line">192.168.0.85 slave2</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关闭selinux，关闭firewalld</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">[root@master ~]<span class="comment"># systemctl disable firewalld</span></div><div class="line">Removed symlink /etc/systemd/system/dbus-org.fedoraproject.FirewallD1.service.</div><div class="line">Removed symlink /etc/systemd/system/basic.target.wants/firewalld.service.</div><div class="line">[root@master ~]<span class="comment"># systemctl stop firewalld</span></div><div class="line">[root@master ~]<span class="comment"># yum install -y iptables-services</span></div><div class="line"> </div><div class="line">[root@master ~]<span class="comment"># systemctl enable iptables</span></div><div class="line">Created symlink from /etc/systemd/system/basic.target.wants/iptables.service to /usr/lib/systemd/system/iptables.service.</div><div class="line">[root@master ~]<span class="comment"># systemctl start iptables</span></div><div class="line">[root@master ~]<span class="comment"># iptables -F</span></div><div class="line">[root@master ~]<span class="comment"># service iptables save</span></div><div class="line">iptables: Saving firewall rules to /etc/sysconfig/iptables:[ 确定 ]</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以上操作三台机器都需执行。</p>
+<h2 id="9-安装-hadoop–密钥认证"><a href="#9-安装-hadoop–密钥认证" class="headerlink" title="9.安装 hadoop–密钥认证"></a>9.安装 hadoop–密钥认证</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;master可以通过密钥登陆本机和两台slave</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;master上生成密钥对：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;ssh-keygen 一直回车</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">[root@master ~]<span class="comment"># ssh-keygen</span></div><div class="line">Generating public/private rsa key pair.</div><div class="line">Enter file <span class="keyword">in</span> <span class="built_in">which</span> to save the key (/root/.ssh/id_rsa): </div><div class="line">Created directory <span class="string">'/root/.ssh'</span>.</div><div class="line">Enter passphrase (empty <span class="keyword">for</span> no passphrase): </div><div class="line">Enter same passphrase again: </div><div class="line">Your identification has been saved <span class="keyword">in</span> /root/.ssh/id_rsa.</div><div class="line">Your public key has been saved <span class="keyword">in</span> /root/.ssh/id_rsa.pub.</div><div class="line">The key fingerprint is:</div><div class="line">29:86:0f:70:28:2b:0a:9e:9c:98:39:dc:d2:c2:5b:d4 root@master</div><div class="line">The key<span class="string">'s randomart image is:</span></div><div class="line"><span class="string">+--[ RSA 2048]----+</span></div><div class="line"><span class="string">|                 |</span></div><div class="line"><span class="string">|   .             |</span></div><div class="line"><span class="string">|. o .            |</span></div><div class="line"><span class="string">| o o..    .      |</span></div><div class="line"><span class="string">|+  .oEo  S       |</span></div><div class="line"><span class="string">|Xo*  +  .        |</span></div><div class="line"><span class="string">|*X +  .          |</span></div><div class="line"><span class="string">| .=              |</span></div><div class="line"><span class="string">| .               |</span></div><div class="line"><span class="string">+-----------------+</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;复制~/.ssh/id_rsa.pub 内容到本机和两台slave的 ~/.ssh/authorized_keys</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@master ~]<span class="comment"># cat .ssh/id_rsa.pub</span></div><div class="line">ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDZfOQKxMrCOf95iZvdNkTg32nQeUp3rywF+d0SS+t5ccZ0YjbZUZVFOkh5Sg5gdsjLgJoduZDePtYYhbex1kKPs8E6cx073ZqpW37TBGObCv7Inz1Ks+TSplnw/AKH6uRTEswC5P2SD+mJ+iz+OTgsNJyrj+OGGH1gOhmzQuAznSChqkJaihNhcBOOuJf8rVqhmplN9YPuGBlGc3It6uFHZvw8C42bC7xyqobL3FRZwKw85WQ9ZjdPTKQzg5rcn76gCld9fRuWkL1ABbP6MRIawN5eonYMYVS05PUGVadHM+a9L5nwTAbA4YqGyQ0m37mHV+5BwaBHxQyY5RSIiiyH root@master</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@master ~]<span class="comment"># vim .ssh/authorized_keys</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;设置本机和两台slave机器上的~/.ssh/authorized_keys文件权限为600</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@master ~]<span class="comment"># chmod 600 ~/.ssh/authorized_keys</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在master上</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">[root@master ~]<span class="comment"># ssh master</span></div><div class="line">Last failed login: Tue Jan 10 16:58:22 CST 2017 from master on ssh:notty</div><div class="line">There were 8 failed login attempts since the last successful login.</div><div class="line">Last login: Tue Jan 10 16:53:03 2017 from 192.168.0.100</div><div class="line">[root@master ~]<span class="comment"># 登出</span></div><div class="line">Connection to master closed.</div><div class="line">[root@master ~]<span class="comment"># ssh slave1</span></div><div class="line">Last login: Tue Jan 10 16:52:18 2017 from master</div><div class="line">[root@slave1 ~]<span class="comment"># 登出</span></div><div class="line">Connection to slave1 closed.</div><div class="line">[root@master ~]<span class="comment"># ssh slave2</span></div><div class="line">Last login: Tue Jan 10 16:55:40 2017 from master</div><div class="line">[root@slave2 ~]<span class="comment"># 登出</span></div><div class="line">Connection to slave2 closed.</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以直接登陆</p>
+<h2 id="10-安装-hadoop-–安装-JDK"><a href="#10-安装-hadoop-–安装-JDK" class="headerlink" title="10.安装 hadoop –安装 JDK"></a>10.安装 hadoop –安装 JDK</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;hadoop2.7 需要安装jdk1.7版本</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下载地址<a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html" target="_blank" rel="external">http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解压压缩包 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@master ~]<span class="comment"># tar zxvf jdk-8u111-linux-x64.tar.gz</span></div><div class="line">[root@master ~]<span class="comment"># mv jdk1.8.0_111 /usr/local/</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编写环境变量配置 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@master ~]<span class="comment"># vim /etc/profile.d/java.sh</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;写入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> JAVA_HOME=/usr/<span class="built_in">local</span>/jdk1.7.0_79</div><div class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">$JAVA_HOME</span>/jre/lib/rt.jar:<span class="variable">$JAVA_HOME</span>/lib/dt.jar:<span class="variable">$JAVA_HOME</span>/li</div><div class="line">b/tools.jar</div><div class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>/bin</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@master ~]<span class="comment"># source /etc/profile.d/java.sh</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;java -version 查看是否生效</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@master ~]<span class="comment"># java -version</span></div><div class="line">java version <span class="string">"1.8.0_111"</span></div><div class="line">Java(TM) SE Runtime Environment (build 1.8.0_111-b14)</div><div class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.111-b14, mixed mode)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;slave1 和 slave2 重复上面的操作</p>
+<h2 id="11-安装hadooop-安装-hadoop-包"><a href="#11-安装hadooop-安装-hadoop-包" class="headerlink" title="11.安装hadooop-安装 hadoop 包"></a>11.安装hadooop-安装 hadoop 包</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下操作在master上执行</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下载地址 <a href="http://hadoop.apache.org/releases.html" target="_blank" rel="external">http://hadoop.apache.org/releases.html</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;镜像站 <a href="http://mirror.bit.edu.cn/apache/hadoop/common/hadoop-2.7.1/" target="_blank" rel="external">http://mirror.bit.edu.cn/apache/hadoop/common/hadoop-2.7.1/</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下载2.7.1 binary版本  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget http://mirror.bit.edu.cn/apache/hadoop/common/hadoop-2.7.1/hadoop-2.7.1.tar.gz</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解压 tar zxf hadoop-2.7.1.tar.gz</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@master ~]<span class="comment"># tar zxf hadoop-2.7.1.tar.gz</span></div><div class="line">[root@master ~]<span class="comment"># mv hadoop-2.7.1 /usr/local/hadoop</span></div><div class="line">[root@master ~]<span class="comment"># cd /usr/local/hadoop</span></div><div class="line">[root@master hadoop]<span class="comment"># mkdir tmp dfs dfs/data dfs/name</span></div><div class="line">[root@master hadoop]<span class="comment"># ls</span></div><div class="line">bin etc lib LICENSE.txt README.txt share</div><div class="line">dfs include libexec NOTICE.txt sbin tmp</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;把/usr/local/hadoop 目录分别拷贝至两个slave上</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@master hadoop]<span class="comment"># rsync -av /usr/local/hadoop slave1:/usr/local/</span></div><div class="line">[root@master hadoop]<span class="comment"># rsync -av /usr/local/hadoop slave2:/usr/local/</span></div></pre></td></tr></table></figure>
+<h2 id="12-安装-hadoop-配置-hadoop"><a href="#12-安装-hadoop-配置-hadoop" class="headerlink" title="12.安装 hadoop -配置 hadoop"></a>12.安装 hadoop -配置 hadoop</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;master上 vim /usr/local/hadoop/etc/hadoop/core-site.xml</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@master hadoop]<span class="comment"># vim /usr/local/hadoop/etc/hadoop/core-site.xml</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">&lt;configuration&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;fs.defaultFS&lt;/name&gt;</div><div class="line">        &lt;value&gt;hdfs://192.168.0.87:9000&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</div><div class="line">        &lt;value&gt;file:/usr/<span class="built_in">local</span>/hadoop/tmp&lt;/value&gt;</div><div class="line">        &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;io.file.buffer.size&lt;/name&gt;</div><div class="line">        &lt;value&gt;131702&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;master上 vim /usr/local/hadoop/etc/hadoop/hdfs-site.xml</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@master hadoop]<span class="comment"># vim /usr/local/hadoop/etc/hadoop/hdfs-site.xml</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">&lt;configuration&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;</div><div class="line">        &lt;value&gt;file:/usr/<span class="built_in">local</span>/hadoop/dfs/name&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;</div><div class="line">        &lt;value&gt;file:/usr/<span class="built_in">local</span>/hadoop/dfs/data&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;dfs.replication&lt;/name&gt;</div><div class="line">        &lt;value&gt;2&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;dfs.namenode.secondary.http-address&lt;/name&gt;</div><div class="line">        &lt;value&gt;192.168.0.87:9001&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;dfs.webhdfs.enabled&lt;/name&gt;</div><div class="line">        &lt;value&gt;<span class="literal">true</span>&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;master上 vim /usr/local/hadoop/etc/hadoop/mapred-site.xml</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@master hadoop]<span class="comment"># mv /usr/local/hadoop/etc/hadoop/mapred-site.xml.template /usr/local/hadoop/etc/hadoop/mapred-site.xml</span></div><div class="line">[root@master hadoop]<span class="comment"># vim /usr/local/hadoop/etc/hadoop/mapred-site.xml</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">&lt;configuration&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;mapreduce.framework.name&lt;/name&gt;</div><div class="line">        &lt;value&gt;yarn&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;mapreduce.jobhistory.address&lt;/name&gt;</div><div class="line">        &lt;value&gt;172.7.15.113:10020&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;mapreduce.jobhistory.webapp.address&lt;/name&gt;</div><div class="line">        &lt;value&gt;192.168.0.87:19888&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;master上 vim /usr/local/hadoop/etc/hadoop/yarn-site.xml</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@master hadoop]<span class="comment"># vim /usr/local/hadoop/etc/hadoop/yarn-site.xml</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">&lt;configuration&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;</div><div class="line">        &lt;value&gt;mapreduce_shuffle&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;yarn.nodemanager.auxservices.mapreduce.shuffle.class&lt;/name&gt;</div><div class="line">        &lt;value&gt;org.apache.hadoop.mapred.ShuffleHandler&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;yarn.resourcemanager.address&lt;/name&gt;</div><div class="line">        &lt;value&gt;192.168.0.87:8032&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;yarn.resourcemanager.scheduler.address&lt;/name&gt;</div><div class="line">        &lt;value&gt;192.168.0.87:8030&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;yarn.resourcemanager.resource-tracker.address&lt;/name&gt;</div><div class="line">        &lt;value&gt;192.168.0.87:8031&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;yarn.resourcemanager.admin.address&lt;/name&gt;</div><div class="line">        &lt;value&gt;192.168.0.87:8033&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;yarn.resourcemanager.webapp.address&lt;/name&gt;</div><div class="line">        &lt;value&gt;192.168.0.87:8088&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;yarn.nodemanager.resource.memory-mb&lt;/name&gt;</div><div class="line">        &lt;value&gt;2048&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下在master上操作</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;更改JAVA_HOME</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@master hadoop]<span class="comment"># cd /usr/local/hadoop/etc/hadoop</span></div><div class="line">[root@master hadoop]<span class="comment"># vim hadoop-env.sh</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Hadoop%20%E5%A4%A7%E6%95%B0%E6%8D%AE/05.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;改为</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> JAVA_HOME=/usr/<span class="built_in">local</span>/jdk1.8.0_111</div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Hadoop%20%E5%A4%A7%E6%95%B0%E6%8D%AE/06.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;更改JAVA_HOME</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@master hadoop]<span class="comment"># vim yarn-env.sh</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Hadoop%20%E5%A4%A7%E6%95%B0%E6%8D%AE/07.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;改为</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> JAVA_HOME=/usr/<span class="built_in">local</span>/jdk1.8.0_111</div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Hadoop%20%E5%A4%A7%E6%95%B0%E6%8D%AE/08.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;slaves 文件修改</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@master hadoop]<span class="comment"># vim slaves</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">192.168.0.86</div><div class="line">192.168.0.85</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;将master上的etc目录同步至两个slave</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">[root@master hadoop]<span class="comment"># rsync -av /usr/local/hadoop/etc/ slave1:/usr/local/hadoop/etc/</span></div><div class="line">sending incremental file list</div><div class="line">hadoop/</div><div class="line">hadoop/core-site.xml</div><div class="line">hadoop/hadoop-env.sh</div><div class="line">hadoop/hdfs-site.xml</div><div class="line">hadoop/mapred-site.xml</div><div class="line">hadoop/slaves</div><div class="line">hadoop/yarn-env.sh</div><div class="line">hadoop/yarn-site.xml</div><div class="line"> </div><div class="line">sent 6527 bytes received 269 bytes 13592.00 bytes/sec</div><div class="line">total size is 79165 speedup is 11.65</div><div class="line">[root@master hadoop]<span class="comment"># rsync -av /usr/local/hadoop/etc/ slave2:/usr/local/hadoop/etc/</span></div><div class="line">sending incremental file list</div><div class="line">hadoop/</div><div class="line">hadoop/core-site.xml</div><div class="line">hadoop/hadoop-env.sh</div><div class="line">hadoop/hdfs-site.xml</div><div class="line">hadoop/mapred-site.xml</div><div class="line">hadoop/slaves</div><div class="line">hadoop/yarn-env.sh</div><div class="line">hadoop/yarn-site.xml</div><div class="line"> </div><div class="line">sent 6527 bytes received 269 bytes 13592.00 bytes/sec</div><div class="line">total size is 79165 speedup is 11.65</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在master上操作即可，两个slave会自动启动</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;初始化</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@master hadoop]<span class="comment"># /usr/local/hadoop/bin/hdfs namenode -format</span></div><div class="line">[root@master hadoop]<span class="comment"># echo $?</span></div><div class="line">0</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动服务 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">[root@master hadoop]<span class="comment"># /usr/local/hadoop/sbin/start-all.sh</span></div><div class="line">This script is Deprecated. Instead use start-dfs.sh and start-yarn.sh</div><div class="line">Starting namenodes on [master]</div><div class="line">master: starting namenode, logging to /usr/<span class="built_in">local</span>/hadoop/logs/hadoop-root-namenode-master.out</div><div class="line">192.168.0.85: starting datanode, logging to /usr/<span class="built_in">local</span>/hadoop/logs/hadoop-root-datanode-slave2.out</div><div class="line">192.168.0.86: starting datanode, logging to /usr/<span class="built_in">local</span>/hadoop/logs/hadoop-root-datanode-slave1.out</div><div class="line">Starting secondary namenodes [master]</div><div class="line">master: starting secondarynamenode, logging to /usr/<span class="built_in">local</span>/hadoop/logs/hadoop-root-secondarynamenode-master.out</div><div class="line">starting yarn daemons</div><div class="line">starting resourcemanager, logging to /usr/<span class="built_in">local</span>/hadoop/logs/yarn-root-resourcemanager-master.out</div><div class="line">192.168.0.85: starting nodemanager, logging to /usr/<span class="built_in">local</span>/hadoop/logs/yarn-root-nodemanager-slave2.out</div><div class="line">192.168.0.86: starting nodemanager, logging to /usr/<span class="built_in">local</span>/hadoop/logs/yarn-root-nodemanager-slave1.out</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;停止服务 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">[root@master hadoop]<span class="comment"># /usr/local/hadoop/sbin/stop-all.sh</span></div><div class="line">This script is Deprecated. Instead use stop-dfs.sh and stop-yarn.sh</div><div class="line">Stopping namenodes on [master]</div><div class="line">master: stopping namenode</div><div class="line">192.168.0.85: stopping datanode</div><div class="line">192.168.0.86: stopping datanode</div><div class="line">Stopping secondary namenodes [master]</div><div class="line">master: stopping secondarynamenode</div><div class="line">stopping yarn daemons</div><div class="line">stopping resourcemanager</div><div class="line">192.168.0.85: no nodemanager to stop</div><div class="line">192.168.0.86: no nodemanager to stop</div><div class="line">no proxyserver to stop</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;访问</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;浏览器打开<a href="http://192.168.0.87:8088" target="_blank" rel="external">http://192.168.0.87:8088</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;浏览器打开<a href="http://192.168.0.87:50070" target="_blank" rel="external">http://192.168.0.87:50070</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;也可以在 master、slave1、slave2 上执行命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@master hadoop]<span class="comment"># ps aux |grep java</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[root@master hadoop]<span class="comment"># netstat -lnp |grep java</span></div><div class="line">tcp  0  0  0.0.0.0:50070      0.0.0.0:*  LISTEN  3626/java </div><div class="line">tcp  0  0  192.168.0.87:9000  0.0.0.0:*  LISTEN  3626/java </div><div class="line">tcp  0  0  192.168.0.87:9001  0.0.0.0:*  LISTEN  3820/java </div><div class="line">tcp6 0  0  192.168.0.87:8088  :::*       LISTEN  3985/java </div><div class="line">tcp6 0  0  192.168.0.87:8030  :::*       LISTEN  3985/java </div><div class="line">tcp6 0  0  192.168.0.87:8031  :::*       LISTEN  3985/java </div><div class="line">tcp6 0  0  192.168.0.87:8032  :::*       LISTEN  3985/java </div><div class="line">tcp6 0  0  192.168.0.87:8033  :::*       LISTEN  3985/java</div></pre></td></tr></table></figure>
+<h2 id="13-测试-hadoop"><a href="#13-测试-hadoop" class="headerlink" title="13.测试 hadoop"></a>13.测试 hadoop</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下操作在master上实现</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;建立测试目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@master hadoop]<span class="comment"># cd /usr/local/hadoop</span></div><div class="line">[root@master hadoop]<span class="comment"># bin/hdfs dfs -mkdir /123</span></div><div class="line">[root@master hadoop]<span class="comment"># bin/hdfs dfs -ls /</span></div><div class="line">Found 1 items</div><div class="line">drwxr-xr-x     - root supergroup       0 2017-01-11 17:22 /123</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果提示 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">copyFromLocal: Cannot create directory /123/. Name node is <span class="keyword">in</span> safe mode.</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这是因为开启了安全模式，解决办法</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@master hadoop]<span class="comment"># bin/hdfs dfsadmin -safemode leave</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;将当前目录下的LICENSE.txt复制到hadopp中，查看/123/下有哪些文件  bin/hdfs dfs -ls /123</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@master hadoop]<span class="comment"># bin/hdfs dfs -copyFromLocal ./LICENSE.txt /123 </span></div><div class="line">[root@master hadoop]<span class="comment"># bin/hdfs dfs -ls /123</span></div><div class="line">Found 1 items</div><div class="line">-rw-r--r-- 2 root supergroup 15429 2017-01-11 17:29 /123/LICENSE.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用wordcount分析LICENSE.txt</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@master hadoop]<span class="comment"># bin/hadoop jar ./share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.1.jar wordcount /123/LICENSE.txt /output/123</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;bin/hdfs dfs -ls /output/123  查看分析后的文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@master hadoop]<span class="comment"># bin/hdfs dfs -ls /output/123</span></div><div class="line">Found 2 items</div><div class="line">-rw-r--r-- 2 root supergroup 0 2017-01-11 17:47 /output/123/_SUCCESS</div><div class="line">-rw-r--r-- 2 root supergroup 8006 2017-01-11 17:47 /output/123/part-r-00000</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;bin/hdfs dfs -cat /output/123/part-r-00000  查看分析结果</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@master hadoop]<span class="comment"># bin/hdfs dfs -cat /output/123/part-r-00000</span></div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Hadoop/" rel="tag"># Hadoop</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/03/Hadoop/2. 2分钟读懂Hadoop和Spark的异同/" rel="next" title="2分钟读懂Hadoop和Spark的异同">
+                <i class="fa fa-chevron-left"></i> 2分钟读懂Hadoop和Spark的异同
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/03/Hadoop/3. Ambari——大数据平台的搭建利器/" rel="prev" title="Ambari——大数据平台的搭建利器">
+                Ambari——大数据平台的搭建利器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">599</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-大数据介绍"><span class="nav-number">1.</span> <span class="nav-text">1.大数据介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Hadoop-介绍"><span class="nav-number">2.</span> <span class="nav-text">2.Hadoop 介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Hadoop组件以及相关项目介绍"><span class="nav-number">3.</span> <span class="nav-text">3.Hadoop组件以及相关项目介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-HDFS-介绍"><span class="nav-number">4.</span> <span class="nav-text">4.HDFS 介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HDFS-架构"><span class="nav-number">4.1.</span> <span class="nav-text">HDFS 架构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HDFS的几个核心概念"><span class="nav-number">4.1.1.</span> <span class="nav-text">HDFS的几个核心概念</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-HSDS写数据流程"><span class="nav-number">5.</span> <span class="nav-text">5.HSDS写数据流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-HDFS-读数据流程"><span class="nav-number">6.</span> <span class="nav-text">6.HDFS 读数据流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-mapreduce-详解"><span class="nav-number">7.</span> <span class="nav-text">7.mapreduce 详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MapReduce模型"><span class="nav-number">7.1.</span> <span class="nav-text">MapReduce模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MapReduce-执行过程"><span class="nav-number">7.2.</span> <span class="nav-text">MapReduce 执行过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reducer任务的执行过程"><span class="nav-number">7.3.</span> <span class="nav-text">Reducer任务的执行过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-安装-hadoop–准备工作"><span class="nav-number">8.</span> <span class="nav-text">8.安装 hadoop–准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-安装-hadoop–密钥认证"><span class="nav-number">9.</span> <span class="nav-text">9.安装 hadoop–密钥认证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-安装-hadoop-–安装-JDK"><span class="nav-number">10.</span> <span class="nav-text">10.安装 hadoop –安装 JDK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-安装hadooop-安装-hadoop-包"><span class="nav-number">11.</span> <span class="nav-text">11.安装hadooop-安装 hadoop 包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-安装-hadoop-配置-hadoop"><span class="nav-number">12.</span> <span class="nav-text">12.安装 hadoop -配置 hadoop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13-测试-hadoop"><span class="nav-number">13.</span> <span class="nav-text">13.测试 hadoop</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

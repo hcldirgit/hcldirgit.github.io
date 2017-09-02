@@ -1,0 +1,844 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Linux命令," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Linux系统中的 iostat是I/O statistics（输入/输出统计）的缩写，iostat工具将对系统的磁盘操作活动进行监视。它的特点是汇报磁盘活动统计情况，同时也会汇报出CPU使用情况。同vmstat一样，iostat也有一个弱点，就是它不能对某个进程进行深入分析，仅对系统的整体情况进行分析">
+<meta name="keywords" content="Linux命令">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 命令- iostat">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/09/03/2. Linux 命令/49. Linux 命令- iostat/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Linux系统中的 iostat是I/O statistics（输入/输出统计）的缩写，iostat工具将对系统的磁盘操作活动进行监视。它的特点是汇报磁盘活动统计情况，同时也会汇报出CPU使用情况。同vmstat一样，iostat也有一个弱点，就是它不能对某个进程进行深入分析，仅对系统的整体情况进行分析">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-01T08:36:27.442Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux 命令- iostat">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Linux系统中的 iostat是I/O statistics（输入/输出统计）的缩写，iostat工具将对系统的磁盘操作活动进行监视。它的特点是汇报磁盘活动统计情况，同时也会汇报出CPU使用情况。同vmstat一样，iostat也有一个弱点，就是它不能对某个进程进行深入分析，仅对系统的整体情况进行分析">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/09/03/2. Linux 命令/49. Linux 命令- iostat/"/>
+
+
+
+
+
+  <title>Linux 命令- iostat | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/2. Linux 命令/49. Linux 命令- iostat/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux 命令- iostat</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T01:57:34+08:00">
+                2017-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Linux系统中的 iostat是I/O statistics（输入/输出统计）的缩写，iostat工具将对系统的磁盘操作活动进行监视。它的特点是汇报磁盘活动统计情况，同时也会汇报出CPU使用情况。同vmstat一样，iostat也有一个弱点，就是它不能对某个进程进行深入分析，仅对系统的整体情况进行分析。iostat属于sysstat软件包。可以用yum install sysstat 直接安装。</p>
+<h2 id="1．命令格式"><a href="#1．命令格式" class="headerlink" title="1．命令格式"></a>1．命令格式</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">iostat [参数] [时间] [次数]</div></pre></td></tr></table></figure>
+<h2 id="2．命令功能"><a href="#2．命令功能" class="headerlink" title="2．命令功能"></a>2．命令功能</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;通过iostat方便查看CPU、网卡、tty设备、磁盘、CD-ROM 等等设备的活动情况,    负载信息。</p>
+<h2 id="3．命令参数"><a href="#3．命令参数" class="headerlink" title="3．命令参数"></a>3．命令参数</h2><ul>
+<li>-c 显示CPU使用情况</li>
+<li>-d 显示磁盘使用情况</li>
+<li>-k 以 KB 为单位显示</li>
+<li>-m 以 M 为单位显示</li>
+<li>-N 显示磁盘阵列(LVM) 信息</li>
+<li>-n 显示NFS 使用情况</li>
+<li>-p[磁盘] 显示磁盘和分区的情况</li>
+<li>-t 显示终端和CPU的信息</li>
+<li>-x 显示详细信息</li>
+<li>-V 显示版本信息</li>
+</ul>
+<h2 id="4．使用实例"><a href="#4．使用实例" class="headerlink" title="4．使用实例"></a>4．使用实例</h2><h3 id="实例1：显示所有设备负载情况"><a href="#实例1：显示所有设备负载情况" class="headerlink" title="实例1：显示所有设备负载情况"></a>实例1：显示所有设备负载情况</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">iostat</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">[root@CT1186 ~]<span class="comment"># iostat</span></div><div class="line">Linux 2.6.18-128.el5 (CT1186)   2012年12月28日</div><div class="line"></div><div class="line">avg-cpu:  %user   %nice %system %iowait  %steal   %idle</div><div class="line">           8.30    0.02    5.07    0.17    0.00   86.44</div><div class="line"></div><div class="line">Device:            tps   Blk_read/s   Blk_wrtn/s   Blk_read   Blk_wrtn</div><div class="line">sda              22.73        43.70       487.42  674035705 7517941952</div><div class="line">sda1              0.00         0.00         0.00       2658        536</div><div class="line">sda2              0.11         3.74         3.51   57721595   54202216</div><div class="line">sda3              0.98         0.61        17.51    9454172  270023368</div><div class="line">sda4              0.00         0.00         0.00          6          0</div><div class="line">sda5              6.95         0.12       108.73    1924834 1677123536</div><div class="line">sda6              2.20         0.18        31.22    2837260  481488056</div><div class="line">sda7             12.48        39.04       326.45  602094508 5035104240</div></pre></td></tr></table></figure>
+<h4 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h4><h5 id="cpu属性值说明："><a href="#cpu属性值说明：" class="headerlink" title="cpu属性值说明："></a>cpu属性值说明：</h5><ul>
+<li>%user：CPU处在用户模式下的时间百分比。</li>
+<li>%nice：CPU处在带NICE值的用户模式下的时间百分比。</li>
+<li>%system：CPU处在系统模式下的时间百分比。</li>
+<li>%iowait：CPU等待输入输出完成时间的百分比。</li>
+<li>%steal：管理程序维护另一个虚拟处理器时，虚拟CPU的无意识等待时间百分比。</li>
+<li>%idle：CPU空闲时间百分比。</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>备注</strong>：如果%iowait的值过高，表示硬盘存在I/O瓶颈，%idle值高，表示CPU较空闲，如果%idle值高但系统响应慢时，有可能是CPU等待分配内存，此时应加大内存容量。%idle值如果持续低于10，那么系统的CPU处理能力相对较低，表明系统中最需要解决的资源是CPU。</p>
+<h5 id="disk属性值说明："><a href="#disk属性值说明：" class="headerlink" title="disk属性值说明："></a>disk属性值说明：</h5><ul>
+<li>rrqm/s:  每秒进行 merge 的读操作数目。即 rmerge/s</li>
+<li>wrqm/s:  每秒进行 merge 的写操作数目。即 wmerge/s</li>
+<li>r/s:  每秒完成的读 I/O 设备次数。即 rio/s</li>
+<li>w/s:  每秒完成的写 I/O 设备次数。即 wio/s</li>
+<li>rsec/s:  每秒读扇区数。即 rsect/s</li>
+<li>wsec/s:  每秒写扇区数。即 wsect/s</li>
+<li>rkB/s:  每秒读K字节数。是 rsect/s 的一半，因为每扇区大小为512字节。</li>
+<li>wkB/s:  每秒写K字节数。是 wsect/s 的一半。</li>
+<li>avgrq-sz:  平均每次设备I/O操作的数据大小 (扇区)。</li>
+<li>avgqu-sz:  平均I/O队列长度。</li>
+<li>await:  平均每次设备I/O操作的等待时间 (毫秒)。</li>
+<li>svctm: 平均每次设备I/O操作的服务时间 (毫秒)。</li>
+<li>%util:  一秒中有百分之多少的时间用于 I/O 操作，即被io消耗的cpu百分比</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>备注</strong>：如果 %util 接近 100%，说明产生的I/O请求太多，I/O系统已经满负荷，该磁盘可能存在瓶颈。如果 svctm 比较接近 await，说明 I/O 几乎没有等待时间；如果 await 远大于 svctm，说明I/O 队列太长，io响应太慢，则需要进行必要优化。如果avgqu-sz比较大，也表示有当量io在等待。</p>
+<h3 id="实例2：定时显示所有信息"><a href="#实例2：定时显示所有信息" class="headerlink" title="实例2：定时显示所有信息"></a>实例2：定时显示所有信息</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">iostat 2 3</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">[root@CT1186 ~]<span class="comment"># iostat 2 3</span></div><div class="line">Linux 2.6.18-128.el5 (CT1186)   2012年12月28日</div><div class="line"></div><div class="line">avg-cpu:  %user   %nice %system %iowait  %steal   %idle</div><div class="line">           8.30    0.02    5.07    0.17    0.00   86.44</div><div class="line"></div><div class="line">Device:            tps   Blk_read/s   Blk_wrtn/s   Blk_read   Blk_wrtn</div><div class="line">sda              22.73        43.70       487.42  674035705 7517947296</div><div class="line">sda1              0.00         0.00         0.00       2658        536</div><div class="line">sda2              0.11         3.74         3.51   57721595   54202216</div><div class="line">sda3              0.98         0.61        17.51    9454172  270023608</div><div class="line">sda4              0.00         0.00         0.00          6          0</div><div class="line">sda5              6.95         0.12       108.73    1924834 1677125640</div><div class="line">sda6              2.20         0.18        31.22    2837260  481488152</div><div class="line">sda7             12.48        39.04       326.44  602094508 5035107144</div><div class="line"></div><div class="line">avg-cpu:  %user   %nice %system %iowait  %steal   %idle</div><div class="line">           8.88    0.00    7.94    0.19    0.00   83.00</div><div class="line"></div><div class="line">Device:            tps   Blk_read/s   Blk_wrtn/s   Blk_read   Blk_wrtn</div><div class="line">sda               6.00         0.00       124.00          0        248</div><div class="line">sda1              0.00         0.00         0.00          0          0</div><div class="line">sda2              0.00         0.00         0.00          0          0</div><div class="line">sda3              0.00         0.00         0.00          0          0</div><div class="line">sda4              0.00         0.00         0.00          0          0</div><div class="line">sda5              0.00         0.00         0.00          0          0</div><div class="line">sda6              0.00         0.00         0.00          0          0</div><div class="line">sda7              6.00         0.00       124.00          0        248</div><div class="line"></div><div class="line">avg-cpu:  %user   %nice %system %iowait  %steal   %idle</div><div class="line">           9.12    0.00    7.81    0.00    0.00   83.07</div><div class="line"></div><div class="line">Device:            tps   Blk_read/s   Blk_wrtn/s   Blk_read   Blk_wrtn</div><div class="line">sda               4.00         0.00        84.00          0        168</div><div class="line">sda1              0.00         0.00         0.00          0          0</div><div class="line">sda2              0.00         0.00         0.00          0          0</div><div class="line">sda3              0.00         0.00         0.00          0          0</div><div class="line">sda4              0.00         0.00         0.00          0          0</div><div class="line">sda5              0.00         0.00         0.00          0          0</div><div class="line">sda6              4.00         0.00        84.00          0        168</div><div class="line">sda7              0.00         0.00         0.00          0          0</div></pre></td></tr></table></figure>
+<h4 id="说明：-1"><a href="#说明：-1" class="headerlink" title="说明："></a>说明：</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;每隔 2秒刷新显示，且显示3次</p>
+<h3 id="实例3：显示指定磁盘信息"><a href="#实例3：显示指定磁盘信息" class="headerlink" title="实例3：显示指定磁盘信息"></a>实例3：显示指定磁盘信息</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">iostat -d sda1</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@CT1186 ~]<span class="comment"># iostat -d sda1</span></div><div class="line">Linux 2.6.18-128.el5 (CT1186)   2012年12月28日</div><div class="line"></div><div class="line">Device:            tps   Blk_read/s   Blk_wrtn/s   Blk_read   Blk_wrtn</div><div class="line">sda1              0.00         0.00         0.00       2658        536</div></pre></td></tr></table></figure>
+<h3 id="实例4：显示tty和Cpu信息"><a href="#实例4：显示tty和Cpu信息" class="headerlink" title="实例4：显示tty和Cpu信息"></a>实例4：显示tty和Cpu信息</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">iostat -t</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">[root@CT1186 ~]<span class="comment"># iostat -t</span></div><div class="line">Linux 2.6.18-128.el5 (CT1186)   2012年12月28日</div><div class="line"></div><div class="line">Time: 14时58分35秒</div><div class="line">avg-cpu:  %user   %nice %system %iowait  %steal   %idle</div><div class="line">           8.30    0.02    5.07    0.17    0.00   86.44</div><div class="line"></div><div class="line">Device:            tps   Blk_read/s   Blk_wrtn/s   Blk_read   Blk_wrtn</div><div class="line">sda              22.73        43.70       487.41  674035705 7517957864</div><div class="line">sda1              0.00         0.00         0.00       2658        536</div><div class="line">sda2              0.11         3.74         3.51   57721595   54202216</div><div class="line">sda3              0.98         0.61        17.51    9454172  270024344</div><div class="line">sda4              0.00         0.00         0.00          6          0</div><div class="line">sda5              6.95         0.12       108.73    1924834 1677128808</div><div class="line">sda6              2.20         0.18        31.22    2837260  481488712</div><div class="line">sda7             12.48        39.04       326.44  602094508 5035113248</div></pre></td></tr></table></figure>
+<h3 id="实例5：以M为单位显示所有信息"><a href="#实例5：以M为单位显示所有信息" class="headerlink" title="实例5：以M为单位显示所有信息"></a>实例5：以M为单位显示所有信息</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">iostat -m</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">[root@CT1186 ~]<span class="comment"># iostat -m</span></div><div class="line">Linux 2.6.18-128.el5 (CT1186)   2012年12月28日</div><div class="line"></div><div class="line">avg-cpu:  %user   %nice %system %iowait  %steal   %idle</div><div class="line">           8.30    0.02    5.07    0.17    0.00   86.44</div><div class="line"></div><div class="line">Device:            tps    MB_read/s    MB_wrtn/s    MB_read    MB_wrtn</div><div class="line">sda              22.72         0.02         0.24     329119    3670881</div><div class="line">sda1              0.00         0.00         0.00          1          0</div><div class="line">sda2              0.11         0.00         0.00      28184      26465</div><div class="line">sda3              0.98         0.00         0.01       4616     131848</div><div class="line">sda4              0.00         0.00         0.00          0          0</div><div class="line">sda5              6.95         0.00         0.05        939     818911</div><div class="line">sda6              2.20         0.00         0.02       1385     235102</div><div class="line">sda7             12.48         0.02         0.16     293991    2458553</div></pre></td></tr></table></figure>
+<h3 id="实例6：查看TPS和吞吐量信息"><a href="#实例6：查看TPS和吞吐量信息" class="headerlink" title="实例6：查看TPS和吞吐量信息"></a>实例6：查看TPS和吞吐量信息</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">iostat -d -k 1 1</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">[root@CT1186 ~]<span class="comment"># iostat -d -k 1 1</span></div><div class="line">Linux 2.6.18-128.el5 (CT1186)   2012年12月28日</div><div class="line"></div><div class="line">Device:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn</div><div class="line">sda              22.72        21.85       243.71  337017916 3758984340</div><div class="line">sda1              0.00         0.00         0.00       1329        268</div><div class="line">sda2              0.11         1.87         1.76   28860797   27101108</div><div class="line">sda3              0.98         0.31         8.75    4727086  135012508</div><div class="line">sda4              0.00         0.00         0.00          3          0</div><div class="line">sda5              6.95         0.06        54.37     962481  838566148</div><div class="line">sda6              2.20         0.09        15.61    1418630  240744712</div><div class="line">sda7             12.48        19.52       163.22  301047254 2517559596</div></pre></td></tr></table></figure>
+<h4 id="说明：-2"><a href="#说明：-2" class="headerlink" title="说明："></a>说明：</h4><ul>
+<li>tps：该设备每秒的传输次数（Indicate the number of transfers per second that were issued to the device.）。“一次传输”意思是“一次I/O请求”。多个逻辑请求可能会被合并为“一次I/O请求”。“一次传输”请求的大小是未知的。</li>
+<li>kB_read/s：每秒从设备（drive expressed）读取的数据量；</li>
+<li>kB_wrtn/s：每秒向设备（drive expressed）写入的数据量；</li>
+<li>kB_read：读取的总数据量；kB_wrtn：写入的总数量数据量；</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这些单位都为Kilobytes。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上面的例子中，我们可以看到磁盘sda以及它的各个分区的统计数据，当时统计的磁盘总TPS是22.73，下面是各个分区的TPS。（因为是瞬间值，所以总TPS并不严格等于各个分区TPS的总和）</p>
+<h3 id="实例7：查看设备使用率（-util）、响应时间（await）"><a href="#实例7：查看设备使用率（-util）、响应时间（await）" class="headerlink" title="实例7：查看设备使用率（%util）、响应时间（await）"></a>实例7：查看设备使用率（%util）、响应时间（await）</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">iostat -d -x -k 1 1</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">[root@CT1186 ~]<span class="comment"># iostat -d -x -k 1 1</span></div><div class="line">Linux 2.6.18-128.el5 (CT1186)   2012年12月28日</div><div class="line"></div><div class="line">Device:         rrqm/s   wrqm/s   r/s   w/s    rkB/s    wkB/s avgrq-sz avgqu-sz   await  svctm  %util</div><div class="line">sda               0.44    38.59  0.40 22.32    21.85   243.71    23.37     0.04    1.78   4.20   9.54</div><div class="line">sda1              0.00     0.00  0.00  0.00     0.00     0.00    18.90     0.00    8.26   6.46   0.00</div><div class="line">sda2              0.36     0.43  0.11  0.01     1.87     1.76    63.57     0.01   63.75   1.94   0.02</div><div class="line">sda3              0.00     1.24  0.04  0.95     0.31     8.75    18.42     0.04   39.77   8.73   0.86</div><div class="line">sda4              0.00     0.00  0.00  0.00     0.00     0.00     2.00     0.00   19.67  19.67   0.00</div><div class="line">sda5              0.00     6.65  0.00  6.94     0.06    54.37    15.67     0.26   36.81   4.48   3.11</div><div class="line">sda6              0.00     1.71  0.01  2.19     0.09    15.61    14.29     0.03   12.40   5.84   1.28</div><div class="line">sda7              0.08    28.56  0.25 12.24    19.52   163.22    29.28     0.27   21.46   5.00   6.25</div></pre></td></tr></table></figure>
+<h4 id="说明：-3"><a href="#说明：-3" class="headerlink" title="说明："></a>说明：</h4><ul>
+<li>rrqm/s：  每秒进行 merge 的读操作数目.即 delta(rmerge)/s</li>
+<li>wrqm/s： 每秒进行 merge 的写操作数目.即 delta(wmerge)/s</li>
+<li>r/s：  每秒完成的读 I/O 设备次数.即 delta(rio)/s</li>
+<li>w/s：  每秒完成的写 I/O 设备次数.即 delta(wio)/s</li>
+<li>rsec/s：  每秒读扇区数.即 delta(rsect)/s</li>
+<li>wsec/s： 每秒写扇区数.即 delta(wsect)/s</li>
+<li>rkB/s：  每秒读K字节数.是 rsect/s 的一半,因为每扇区大小为512字节.(需要计算)</li>
+<li>wkB/s：  每秒写K字节数.是 wsect/s 的一半.(需要计算)</li>
+<li>avgrq-sz：平均每次设备I/O操作的数据大小 (扇区).delta(rsect+wsect)/delta(rio+wio)</li>
+<li>avgqu-sz：平均I/O队列长度.即 delta(aveq)/s/1000 (因为aveq的单位为毫秒).</li>
+<li>await：  平均每次设备I/O操作的等待时间 (毫秒).即 delta(ruse+wuse)/delta(rio+wio)</li>
+<li>svctm： 平均每次设备I/O操作的服务时间 (毫秒).即 delta(use)/delta(rio+wio)</li>
+<li>%util： 一秒中有百分之多少的时间用于 I/O 操作,或者说一秒中有多少时间 I/O 队列是非空的，即 delta(use)/s/1000 (因为use的单位为毫秒)</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果 %util 接近 100%，说明产生的I/O请求太多，I/O系统已经满负荷，该磁盘可能存在瓶颈。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;idle小于70% IO压力就较大了，一般读取速度有较多的wait。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;同时可以结合vmstat 查看查看b参数(等待资源的进程数)和wa参数(IO等待所占用的CPU时间的百分比，高过30%时IO压力高)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另外 await 的参数也要多和 svctm 来参考。差的过高就一定有 IO 的问题。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;avgqu-sz 也是个做 IO 调优时需要注意的地方，这个就是直接每次操作的数据的大小，如果次数多，但数据拿的小的话，其实 IO 也会很小。如果数据拿的大，才IO 的数据会高。也可以通过 avgqu-sz × ( r/s or w/s ) = rsec/s or wsec/s。也就是讲，读定速度是这个来决定的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;svctm 一般要小于 await (因为同时等待的请求的等待时间被重复计算了)，svctm 的大小一般和磁盘性能有关，CPU/内存的负荷也会对其有影响，请求过多也会间接导致 svctm 的增加。await 的大小一般取决于服务时间(svctm) 以及 I/O 队列的长度和 I/O 请求的发出模式。如果 svctm 比较接近 await，说明 I/O 几乎没有等待时间；如果 await 远大于 svctm，说明 I/O 队列太长，应用得到的响应时间变慢，如果响应时间超过了用户可以容许的范围，这时可以考虑更换更快的磁盘，调整内核 elevator 算法，优化应用，或者升级 CPU。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;队列长度(avgqu-sz)也可作为衡量系统 I/O 负荷的指标，但由于 avgqu-sz 是按照单位时间的平均值，所以不能反映瞬间的 I/O 洪水。</p>
+<h4 id="形象的比喻："><a href="#形象的比喻：" class="headerlink" title="形象的比喻："></a>形象的比喻：</h4><ul>
+<li>r/s+w/s 类似于交款人的总数</li>
+<li>平均队列长度(avgqu-sz)类似于单位时间里平均排队人的个数</li>
+<li>平均服务时间(svctm)类似于收银员的收款速度</li>
+<li>平均等待时间(await)类似于平均每人的等待时间</li>
+<li>平均I/O数据(avgrq-sz)类似于平均每人所买的东西多少</li>
+<li>I/O 操作率 (%util)类似于收款台前有人排队的时间比例</li>
+<li>设备IO操作:总IO(io)/s = r/s(读) +w/s(写) =1.46 + 25.28=26.74</li>
+<li>平均每次设备I/O操作只需要0.36毫秒完成,现在却需要10.57毫秒完成，因为发出的    请求太多(每秒26.74个)，假如请求时同时发出的，可以这样计算平均等待时间:</li>
+<li>平均等待时间=单个I/O服务器时间*(1+2+…+请求总数-1)/请求总数 </li>
+<li>每秒发出的I/0请求很多,但是平均队列就4,表示这些请求比较均匀,大部分处理还是比较及时。</li>
+</ul>
+<h3 id="实例8：查看cpu状态"><a href="#实例8：查看cpu状态" class="headerlink" title="实例8：查看cpu状态"></a>实例8：查看cpu状态</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">iostat -c 1 3</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[root@CT1186 ~]<span class="comment">#  iostat -c 1 3</span></div><div class="line">Linux 2.6.18-128.el5 (CT1186)   2012年12月28日</div><div class="line"></div><div class="line">avg-cpu:  %user   %nice %system %iowait  %steal   %idle</div><div class="line">           8.30    0.02    5.07    0.17    0.00   86.44</div><div class="line"></div><div class="line">avg-cpu:  %user   %nice %system %iowait  %steal   %idle</div><div class="line">           8.64    0.00    5.38    0.00    0.00   85.98</div><div class="line"></div><div class="line">avg-cpu:  %user   %nice %system %iowait  %steal   %idle</div><div class="line">           7.62    0.00    5.12    0.50    0.00   86.75</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux命令/" rel="tag"># Linux命令</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/03/2. Linux 命令/48. Linux 命令- vmstat/" rel="next" title="Linux 命令- vmstat">
+                <i class="fa fa-chevron-left"></i> Linux 命令- vmstat
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/03/Ansible/2. ansible判断 出现FATAL all hosts have already failed -- aborting 错误/" rel="prev" title="ansible判断 出现FATAL all hosts have already failed -- aborting 错误">
+                ansible判断 出现FATAL all hosts have already failed -- aborting 错误 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">599</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1．命令格式"><span class="nav-number">1.</span> <span class="nav-text">1．命令格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2．命令功能"><span class="nav-number">2.</span> <span class="nav-text">2．命令功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3．命令参数"><span class="nav-number">3.</span> <span class="nav-text">3．命令参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4．使用实例"><span class="nav-number">4.</span> <span class="nav-text">4．使用实例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例1：显示所有设备负载情况"><span class="nav-number">4.1.</span> <span class="nav-text">实例1：显示所有设备负载情况</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#说明："><span class="nav-number">4.1.1.</span> <span class="nav-text">说明：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#cpu属性值说明："><span class="nav-number">4.1.1.1.</span> <span class="nav-text">cpu属性值说明：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#disk属性值说明："><span class="nav-number">4.1.1.2.</span> <span class="nav-text">disk属性值说明：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例2：定时显示所有信息"><span class="nav-number">4.2.</span> <span class="nav-text">实例2：定时显示所有信息</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#说明：-1"><span class="nav-number">4.2.1.</span> <span class="nav-text">说明：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例3：显示指定磁盘信息"><span class="nav-number">4.3.</span> <span class="nav-text">实例3：显示指定磁盘信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例4：显示tty和Cpu信息"><span class="nav-number">4.4.</span> <span class="nav-text">实例4：显示tty和Cpu信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例5：以M为单位显示所有信息"><span class="nav-number">4.5.</span> <span class="nav-text">实例5：以M为单位显示所有信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例6：查看TPS和吞吐量信息"><span class="nav-number">4.6.</span> <span class="nav-text">实例6：查看TPS和吞吐量信息</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#说明：-2"><span class="nav-number">4.6.1.</span> <span class="nav-text">说明：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例7：查看设备使用率（-util）、响应时间（await）"><span class="nav-number">4.7.</span> <span class="nav-text">实例7：查看设备使用率（%util）、响应时间（await）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#说明：-3"><span class="nav-number">4.7.1.</span> <span class="nav-text">说明：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#形象的比喻："><span class="nav-number">4.7.2.</span> <span class="nav-text">形象的比喻：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例8：查看cpu状态"><span class="nav-number">4.8.</span> <span class="nav-text">实例8：查看cpu状态</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

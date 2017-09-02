@@ -1,0 +1,813 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="DNS," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="一、DNS服务器视图功能的实现&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;DNS服务器有一个高级的功能，能够实现不同的用户访问同一个域名，把域名解析成不同的IP地址，使用户能够访问离他最近的服务器上的数据，这就是DNS服务器的视图功能。使用DNS服务器的视图功能可以增加网站的响应速度。例如，当我们网站的数据同步在两台web服务器上时，一台是电信服">
+<meta name="keywords" content="DNS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DNS服务器(四)：DNS视图及bind中rndc的使用">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/09/03/Dns、Iredmaill/10. DNS服务器(四)：DNS视图及bind中rndc的使用/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="一、DNS服务器视图功能的实现&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;DNS服务器有一个高级的功能，能够实现不同的用户访问同一个域名，把域名解析成不同的IP地址，使用户能够访问离他最近的服务器上的数据，这就是DNS服务器的视图功能。使用DNS服务器的视图功能可以增加网站的响应速度。例如，当我们网站的数据同步在两台web服务器上时，一台是电信服">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/DNS%E6%9C%8D%E5%8A%A1%E5%99%A8(%E5%9B%9B">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/DNS%E6%9C%8D%E5%8A%A1%E5%99%A8(%E5%9B%9B">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/DNS%E6%9C%8D%E5%8A%A1%E5%99%A8(%E5%9B%9B">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/DNS%E6%9C%8D%E5%8A%A1%E5%99%A8(%E5%9B%9B">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/DNS%E6%9C%8D%E5%8A%A1%E5%99%A8(%E5%9B%9B">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/DNS%E6%9C%8D%E5%8A%A1%E5%99%A8(%E5%9B%9B">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/DNS%E6%9C%8D%E5%8A%A1%E5%99%A8(%E5%9B%9B">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/DNS%E6%9C%8D%E5%8A%A1%E5%99%A8(%E5%9B%9B">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/DNS%E6%9C%8D%E5%8A%A1%E5%99%A8(%E5%9B%9B">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/DNS%E6%9C%8D%E5%8A%A1%E5%99%A8(%E5%9B%9B">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/DNS%E6%9C%8D%E5%8A%A1%E5%99%A8(%E5%9B%9B">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/DNS%E6%9C%8D%E5%8A%A1%E5%99%A8(%E5%9B%9B">
+<meta property="og:updated_time" content="2017-09-01T08:46:51.494Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="DNS服务器(四)：DNS视图及bind中rndc的使用">
+<meta name="twitter:description" content="一、DNS服务器视图功能的实现&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;DNS服务器有一个高级的功能，能够实现不同的用户访问同一个域名，把域名解析成不同的IP地址，使用户能够访问离他最近的服务器上的数据，这就是DNS服务器的视图功能。使用DNS服务器的视图功能可以增加网站的响应速度。例如，当我们网站的数据同步在两台web服务器上时，一台是电信服">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/DNS%E6%9C%8D%E5%8A%A1%E5%99%A8(%E5%9B%9B">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/09/03/Dns、Iredmaill/10. DNS服务器(四)：DNS视图及bind中rndc的使用/"/>
+
+
+
+
+
+  <title>DNS服务器(四)：DNS视图及bind中rndc的使用 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Dns、Iredmaill/10. DNS服务器(四)：DNS视图及bind中rndc的使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">DNS服务器(四)：DNS视图及bind中rndc的使用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:00:30+08:00">
+                2017-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一、DNS服务器视图功能的实现"><a href="#一、DNS服务器视图功能的实现" class="headerlink" title="一、DNS服务器视图功能的实现"></a>一、DNS服务器视图功能的实现</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;DNS服务器有一个高级的功能，能够实现不同的用户访问同一个域名，把域名解析成不同的IP地址，使用户能够访问离他最近的服务器上的数据，这就是DNS服务器的视图功能。使用DNS服务器的视图功能可以增加网站的响应速度。例如，当我们网站的数据同步在两台web服务器上时，一台是电信服务器，一台是网通服务器，那么我们肯定希望全国访问我们网站的用户在打开网站的时候，能够自动实现，电信用户访问电信服务器，网通用户访问网通服务器。配置这种情况的前提是，web服务器必须要有一个电信的IP地址和一个网通的IP地址。DNS服务器的这种解析功能通常也被称之为智能解析。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;DNS服务器的视图通常在配置文件中是使用view实现的。把要使用某些IP地址作单独访问的zone区域，统一放在一个命名的view段落中，并且在view中定义请求的IP地址或IP地址段，把IP地址写入match-clients选项中。如果像上面说的，区分电信和网通路线的话，那么可以使用两个acl访问控制列表写上电信或网通IP地址，定义电信网通路线，把acl名字写入view段落match-clients选项中。如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">acl telecomip&#123; tele_IP; ... &#125;;</div><div class="line">acl netcomip&#123; net_IP; ... &#125;;</div><div class="line">view telecom &#123;</div><div class="line"> match-clients &#123; telecomip; &#125;;</div><div class="line"> zone <span class="string">"ZONE_NAME"</span> IN &#123;</div><div class="line"> <span class="built_in">type</span> master;</div><div class="line"> file <span class="string">"ZONE_NAME.telecom"</span>;</div><div class="line"> &#125;;</div><div class="line">&#125;;</div><div class="line">view netcom &#123;</div><div class="line"> match-clients &#123; netcomip; &#125;;</div><div class="line"> zone <span class="string">"ZONE_NAME"</span> IN &#123;</div><div class="line"> <span class="built_in">type</span> master;</div><div class="line"> file <span class="string">"ZONE_NAME.netcom"</span>;</div><div class="line"> &#125;;</div><div class="line">&#125;;</div><div class="line">view default &#123;</div><div class="line"> match-clients &#123; any; &#125;;</div><div class="line"> zone <span class="string">"ZONE_NAME"</span> IN &#123;</div><div class="line"> <span class="built_in">type</span> master;</div><div class="line"> file <span class="string">"ZONE_NAME.netcom"</span>;</div><div class="line"> &#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需要注意的是：</p>
+<ul>
+<li>如果使用了视图的功能，那么配置文件中的所有zone区域都要必须写在视图里面，如，配置文件里默认要配置的三个区域，根、127.0.0.1、1.0.0.127.in-addr.arpa都要写入视图。</li>
+<li>在acl中定义IP地址，IP地址的写法可以是单个IP地址也可以是一个IP地址段加掩码，如：192.168.0.0/24。</li>
+<li>视图是根据配置文件从上往下匹配的，所以希望优先访问的资源记录文件，区域应该尽量写前面。</li>
+<li>如果定义的若干个视图的IP地址不全的话，那么可以在最后定义一个默认视图，match-clients选项中的IP地址写上any，代表如果此次访问的IP地址上面没有一个能匹配到，则在此处归类。</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;实例：虚拟两台IP地址不同的主机，实现DNS服务器视图功能。</p>
+<ol>
+<li>本地电脑只有一个IP地址段，故使用两个IP地址分别代表两个不同的路线。首先，我们配置一个区域wubinary.com的DNS服务器，ip地址为,192.168.0.6。打开/etc/named.rfc1912.zones文件，编辑如下：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line">acl net &#123; 192.168.0.6; &#125;;</div><div class="line">acl <span class="built_in">local</span> &#123; 192.168.0.12; &#125;;</div><div class="line">view netcom &#123;</div><div class="line">match-clients &#123; net; &#125;;</div><div class="line">zone <span class="string">"."</span> IN &#123;</div><div class="line"><span class="built_in">type</span> hint;</div><div class="line">file <span class="string">"named.ca"</span>;</div><div class="line">&#125;;</div><div class="line">zone <span class="string">"localhost.localdomain"</span> IN &#123;</div><div class="line"><span class="built_in">type</span> master;</div><div class="line">file <span class="string">"named.localhost"</span>;</div><div class="line">allow-update &#123; none; &#125;;</div><div class="line">&#125;;</div><div class="line">zone <span class="string">"localhost"</span> IN &#123;</div><div class="line"><span class="built_in">type</span> master;</div><div class="line">file <span class="string">"named.localhost"</span>;</div><div class="line">allow-update &#123; none; &#125;;</div><div class="line">&#125;;</div><div class="line">zone <span class="string">"1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa"</span> IN &#123;</div><div class="line"><span class="built_in">type</span> master;</div><div class="line">file <span class="string">"named.loopback"</span>;</div><div class="line">allow-update &#123; none; &#125;;</div><div class="line">&#125;;</div><div class="line">zone <span class="string">"1.0.0.127.in-addr.arpa"</span> IN &#123;</div><div class="line"><span class="built_in">type</span> master;</div><div class="line">file <span class="string">"named.loopback"</span>;</div><div class="line">allow-update &#123; none; &#125;;</div><div class="line">&#125;;</div><div class="line">zone <span class="string">"0.in-addr.arpa"</span> IN &#123;</div><div class="line"><span class="built_in">type</span> master;</div><div class="line">file <span class="string">"named.empty"</span>;</div><div class="line">allow-update &#123; none; &#125;;</div><div class="line">&#125;;</div><div class="line">zone <span class="string">"wubinary.com"</span> IN &#123;</div><div class="line"><span class="built_in">type</span> master;</div><div class="line">file <span class="string">"wubinary.com.net"</span>;</div><div class="line">&#125;;</div><div class="line">&#125;;</div><div class="line">view localcom &#123;</div><div class="line">match-clients &#123; <span class="built_in">local</span>; &#125;;</div><div class="line">zone <span class="string">"wubinary.com"</span> IN &#123;</div><div class="line"><span class="built_in">type</span> master;</div><div class="line">file <span class="string">"wubinary.com.local"</span>;</div><div class="line">&#125;;</div><div class="line">&#125;;</div><div class="line">view default &#123;</div><div class="line">match-clients &#123; any; &#125;;</div><div class="line">zone <span class="string">"wubinary.com"</span> IN &#123;</div><div class="line"><span class="built_in">type</span> master;</div><div class="line">file <span class="string">"wubinary.com.local"</span>;</div><div class="line">&#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：我们分别定义两个acl，用于代表两个不同路线，IP地址为192.168.0.6的机器访问的资源记录文件是 wubinary.com.net文件，IP地址为192.168.0.12和其它的机器则访问wubinary.com.local这个文件的资源记录文件。</p>
+<ol>
+<li>分别编辑这两个文件</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编辑文件/var/named/wubinary.com.net</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/DNS%E6%9C%8D%E5%8A%A1%E5%99%A8(%E5%9B%9B" alt="">%EF%BC%9ADNS%E8%A7%86%E5%9B%BE%E5%8F%8Abind%E4%B8%ADrndc%E7%9A%84%E4%BD%BF%E7%94%A8/01.jpeg?raw=true)</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编辑文件/var/named/wubinary.com.local</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/DNS%E6%9C%8D%E5%8A%A1%E5%99%A8(%E5%9B%9B" alt="">%EF%BC%9ADNS%E8%A7%86%E5%9B%BE%E5%8F%8Abind%E4%B8%ADrndc%E7%9A%84%E4%BD%BF%E7%94%A8/02.jpeg?raw=true)</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里IP地址分别改了，192.168.0.6的机器请求时对应解析的IP是192.168开头的，192.168.0.12请求时对应解析的IP是172.16开头的。配置完成后，记得修改文件所属组及文件权限。</p>
+<ol>
+<li>测试一下配置文件语法。</li>
+</ol>
+<p><img src="https://github.com/hcldirgit/image/blob/master/DNS%E6%9C%8D%E5%8A%A1%E5%99%A8(%E5%9B%9B" alt="">%EF%BC%9ADNS%E8%A7%86%E5%9B%BE%E5%8F%8Abind%E4%B8%ADrndc%E7%9A%84%E4%BD%BF%E7%94%A8/03.jpeg?raw=true)</p>
+<ol>
+<li>好的，重新载入配置文件，在分别在两台机器上测试一下吧。</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;重载配置文件：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/DNS%E6%9C%8D%E5%8A%A1%E5%99%A8(%E5%9B%9B" alt="">%EF%BC%9ADNS%E8%A7%86%E5%9B%BE%E5%8F%8Abind%E4%B8%ADrndc%E7%9A%84%E4%BD%BF%E7%94%A8/04.jpeg?raw=true)</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;192.168.0.6的机器，也就是我们DNS所属的这台机器，结果如下：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/DNS%E6%9C%8D%E5%8A%A1%E5%99%A8(%E5%9B%9B" alt="">%EF%BC%9ADNS%E8%A7%86%E5%9B%BE%E5%8F%8Abind%E4%B8%ADrndc%E7%9A%84%E4%BD%BF%E7%94%A8/05.jpeg?raw=true)</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;192.168.0.12的机器，结果如下：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/DNS%E6%9C%8D%E5%8A%A1%E5%99%A8(%E5%9B%9B" alt="">%EF%BC%9ADNS%E8%A7%86%E5%9B%BE%E5%8F%8Abind%E4%B8%ADrndc%E7%9A%84%E4%BD%BF%E7%94%A8/06.jpeg?raw=true)</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;两台机器请求DNS服务器时域名解析达到了预期的效果，测试成功。</p>
+<h2 id="二、bind中rndc的使用"><a href="#二、bind中rndc的使用" class="headerlink" title="二、bind中rndc的使用"></a>二、bind中rndc的使用</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;rndc是Remote Name Domain Controllerr的简写，它是一个远程管理bind的工具。在使用rndc管理bind前需要使用rndc生成一对密钥文件，一半保存于rndc的配置文件中，另一半保存于bind主配置文件中。rndc的配置文件为/etc/rndc.conf，在CentOS或者RHEL中，rndc的密钥保存在/etc/rndc.key文件中。rndc默认监听在953号端口，其实在bind9中rndc默认就是可以使用可，不需要配置密钥文件。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;rndc常用命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">status <span class="comment">#查看DNS状态</span></div><div class="line">reload <span class="comment">#重新加载配置文件</span></div><div class="line">reload zone_name <span class="comment">#重新加载指定区域</span></div><div class="line">reconfig <span class="comment">#重读配置文件并加载新增的区域</span></div><div class="line">querylog <span class="comment">#关闭或开启查询日志</span></div><div class="line">flush <span class="comment">#清空服务器的缓存</span></div><div class="line">flushname name <span class="comment">#清空指定名称相关的缓存</span></div><div class="line">trace  <span class="comment">#打开debug, debug有级别的概念，每执行一次提升一次级别</span></div><div class="line">trace LEVEL <span class="comment">#指定 debug 的级别, trace 0 表示关闭debug</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用rndc：</p>
+<ol>
+<li>生成密钥文件</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rndc-confgen &gt; /etc/rndc.conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;或者</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rndc-confgen -r /dev/urandom &gt; /etc/rndc.conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;生成的配置文件如下：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/DNS%E6%9C%8D%E5%8A%A1%E5%99%A8(%E5%9B%9B" alt="">%EF%BC%9ADNS%E8%A7%86%E5%9B%BE%E5%8F%8Abind%E4%B8%ADrndc%E7%9A%84%E4%BD%BF%E7%94%A8/07.jpeg?raw=true)</p>
+<ol>
+<li>复制上面配置文件中下面一块被注释的区域至/etc/named.conf文件中，并把注释关闭。</li>
+</ol>
+<p><img src="https://github.com/hcldirgit/image/blob/master/DNS%E6%9C%8D%E5%8A%A1%E5%99%A8(%E5%9B%9B" alt="">%EF%BC%9ADNS%E8%A7%86%E5%9B%BE%E5%8F%8Abind%E4%B8%ADrndc%E7%9A%84%E4%BD%BF%E7%94%A8/08.jpeg?raw=true)</p>
+<ol>
+<li>重新加载bind后就可以使用rndc管理bind了。</li>
+</ol>
+<p><img src="https://github.com/hcldirgit/image/blob/master/DNS%E6%9C%8D%E5%8A%A1%E5%99%A8(%E5%9B%9B" alt="">%EF%BC%9ADNS%E8%A7%86%E5%9B%BE%E5%8F%8Abind%E4%B8%ADrndc%E7%9A%84%E4%BD%BF%E7%94%A8/09.jpeg?raw=true)</p>
+<ol>
+<li>使用rndc重新加载bind的配置文件。</li>
+</ol>
+<p><img src="https://github.com/hcldirgit/image/blob/master/DNS%E6%9C%8D%E5%8A%A1%E5%99%A8(%E5%9B%9B" alt="">%EF%BC%9ADNS%E8%A7%86%E5%9B%BE%E5%8F%8Abind%E4%B8%ADrndc%E7%9A%84%E4%BD%BF%E7%94%A8/10.jpeg?raw=true)</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意：如果在使用rndc时，出现如上警告时，可以删除/etc/rndc.key文件，或者重命名该文件。</p>
+<ol>
+<li>DNS服务器的debug功能默认是关闭的，使用rndc trace可以开启该功能，执行一次该命令 debug 级别加一级，也可以在命令后面加一个数字作为参数，指定debug级别，当数字为0时，表示关闭debug功能。</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;开启debug:</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/DNS%E6%9C%8D%E5%8A%A1%E5%99%A8(%E5%9B%9B" alt="">%EF%BC%9ADNS%E8%A7%86%E5%9B%BE%E5%8F%8Abind%E4%B8%ADrndc%E7%9A%84%E4%BD%BF%E7%94%A8/11.jpeg?raw=true)</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关闭debug:</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/DNS%E6%9C%8D%E5%8A%A1%E5%99%A8(%E5%9B%9B" alt="">%EF%BC%9ADNS%E8%A7%86%E5%9B%BE%E5%8F%8Abind%E4%B8%ADrndc%E7%9A%84%E4%BD%BF%E7%94%A8/12.jpeg?raw=true)</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/DNS/" rel="tag"># DNS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/03/Dns、Iredmaill/1. dns、iredmail邮件服务/" rel="next" title="DNS、iredmaill 邮件服务">
+                <i class="fa fa-chevron-left"></i> DNS、iredmaill 邮件服务
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/03/Dns、Iredmaill/11. DNS服务器(五)：使用queryperf对DNS服务器作压力测试/" rel="prev" title="DNS服务器(五)：使用queryperf对DNS服务器作压力测试">
+                DNS服务器(五)：使用queryperf对DNS服务器作压力测试 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">599</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、DNS服务器视图功能的实现"><span class="nav-number">1.</span> <span class="nav-text">一、DNS服务器视图功能的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、bind中rndc的使用"><span class="nav-number">2.</span> <span class="nav-text">二、bind中rndc的使用</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

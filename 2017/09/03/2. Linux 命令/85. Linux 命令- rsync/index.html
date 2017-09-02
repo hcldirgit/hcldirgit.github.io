@@ -1,0 +1,934 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Linux命令," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;rsync从字面上的意思可以理解为remote sync （远程同步）这样可以理解的更深刻一些。Rsync不仅可以远程同步数据（类似于scp），当然还可以本地同步数据（类似于cp），但不同于cp或scp的一点是，rsync不像cp/scp一样会覆盖以前的数据（如果数据已经存在），它会先判断已经存在的数据">
+<meta name="keywords" content="Linux命令">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 命令- rsync">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/09/03/2. Linux 命令/85. Linux 命令- rsync/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;rsync从字面上的意思可以理解为remote sync （远程同步）这样可以理解的更深刻一些。Rsync不仅可以远程同步数据（类似于scp），当然还可以本地同步数据（类似于cp），但不同于cp或scp的一点是，rsync不像cp/scp一样会覆盖以前的数据（如果数据已经存在），它会先判断已经存在的数据">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-01T08:39:41.339Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux 命令- rsync">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;rsync从字面上的意思可以理解为remote sync （远程同步）这样可以理解的更深刻一些。Rsync不仅可以远程同步数据（类似于scp），当然还可以本地同步数据（类似于cp），但不同于cp或scp的一点是，rsync不像cp/scp一样会覆盖以前的数据（如果数据已经存在），它会先判断已经存在的数据">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/09/03/2. Linux 命令/85. Linux 命令- rsync/"/>
+
+
+
+
+
+  <title>Linux 命令- rsync | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/2. Linux 命令/85. Linux 命令- rsync/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux 命令- rsync</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T01:57:34+08:00">
+                2017-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;rsync从字面上的意思可以理解为remote sync （远程同步）这样可以理解的更深刻一些。Rsync不仅可以远程同步数据（类似于scp），当然还可以本地同步数据（类似于cp），但不同于cp或scp的一点是，rsync不像cp/scp一样会覆盖以前的数据（如果数据已经存在），它会先判断已经存在的数据和新数据有什么不同，只有不同时才会把不同的部分覆盖掉。如果Linux没有rsync命令使用yum安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install -y rsync</div></pre></td></tr></table></figure>
+<h2 id="命令语法"><a href="#命令语法" class="headerlink" title="命令语法"></a>命令语法</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">rsync [OPTION]... SRC DEST </div><div class="line">rsync [OPTION]... SRC [USER@]host:DEST </div><div class="line">rsync [OPTION]... [USER@]HOST:SRC DEST </div><div class="line">rsync [OPTION]... [USER@]HOST::SRC DEST </div><div class="line">rsync [OPTION]... SRC [USER@]HOST::DEST </div><div class="line">rsync [OPTION]... rsync://[USER@]HOST[:PORT]/SRC [DEST]</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;对应以上六种命令格式，rsync有六种不同的工作模式：</p>
+<ol>
+<li>拷贝本地文件。当SRC和DES路径信息都不包含有单个冒号 <code>:</code> 分隔符时就启动这种工作模式。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rsync -a /data/backup</div></pre></td></tr></table></figure>
+<ol>
+<li>使用一个远程shell程序（如rsh、ssh）来实现将本地机器的内容拷贝到远程机器。当DST路径地址包含单个冒号 <code>:</code> 分隔符时启动该模式。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rsync -avz *.c foo:src</div></pre></td></tr></table></figure>
+<ol>
+<li>使用一个远程shell程序（如rsh、ssh）来实现将远程机器的内容拷贝到本地机器。当SRC地址路径包含单个冒号 <code>:</code>  分隔符时启动该模式。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rsync -avz foo:src/bar /data</div></pre></td></tr></table></figure>
+<ol>
+<li>从远程rsync服务器中拷贝文件到本地。当SRC路径信息包含“::”分隔符时启动该模式。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rsync -av root@192.168.78.192::www /databack</div></pre></td></tr></table></figure>
+<ol>
+<li>从本地机器拷贝文件到远程rsync服务器中。当DST路径信息包含“::”分隔符十启动该模式。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rsync -av /databack root@192.168.78.192::www</div></pre></td></tr></table></figure>
+<ol>
+<li>列远程机的文件列表。类似于rsync传输，不过主要在命令中省略掉本机信息即可</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rsync -v rsync://192.168.78.192/www</div></pre></td></tr></table></figure>
+<h2 id="命令参数"><a href="#命令参数" class="headerlink" title="命令参数"></a>命令参数</h2><ul>
+<li>-v, –verbose 详细模式输出。 </li>
+<li>-q, –quiet 精简输出模式。 </li>
+<li>-c, –checksum 打开校验开关，强制对文件传输进行校验。 </li>
+<li>-a, –archive 归档模式，表示以递归方式传输文件，并保持所有文件属性，等于-rlptgoD。 </li>
+<li>-r, –recursive 对子目录以递归模式处理。 </li>
+<li>-R, –relative 使用相对路径信息。 </li>
+<li>-b, –backup 创建备份，也就是对于目的已经存在有同样的文件名时，将老的文件重新命名为~filename。可以使用–suffix选项来指定不同的备份文件前缀。 </li>
+<li>–backup-dir 将备份文件(如~filename)存放在在目录下。 </li>
+<li>-suffix=SUFFIX 定义备份文件前缀。 </li>
+<li>-u, –update 仅仅进行更新，也就是跳过所有已经存在于DST，并且文件时间晚于要备份的文件，不覆盖更新的文件。 </li>
+<li>-l, –links 保留软链结。 </li>
+<li>-L, –copy-links 想对待常规文件一样处理软链结。 </li>
+<li>–copy-unsafe-links 仅仅拷贝指向SRC路径目录树以外的链结。 </li>
+<li>–safe-links 忽略指向SRC路径目录树以外的链结。 </li>
+<li>-H, –hard-links 保留硬链结。 </li>
+<li>-p, –perms 保持文件权限。 </li>
+<li>-o, –owner 保持文件属主信息。 </li>
+<li>-g, –group 保持文件属组信息。 </li>
+<li>-D, –devices 保持设备文件信息。 </li>
+<li>-t, –times 保持文件时间信息。 </li>
+<li>-S, –sparse 对稀疏文件进行特殊处理以节省DST的空间。 </li>
+<li>-n, –dry-run现实哪些文件将被传输。 </li>
+<li>-w, –whole-file 拷贝文件，不进行增量检测。 </li>
+<li>-x, –one-file-system 不要跨越文件系统边界。 </li>
+<li>-B, –block-size=SIZE 检验算法使用的块尺寸，默认是700字节。 </li>
+<li>-e, –rsh=command 指定使用rsh、ssh方式进行数据同步。 </li>
+<li>–rsync-path=PATH 指定远程服务器上的rsync命令所在路径信息。 </li>
+<li>-C, –cvs-exclude 使用和CVS一样的方法自动忽略文件，用来排除那些不希望传输的文件。 </li>
+<li>–existing 仅仅更新那些已经存在于DST的文件，而不备份那些新创建的文件。 </li>
+<li>–delete 删除那些DST中SRC没有的文件。 </li>
+<li>–delete-excluded 同样删除接收端那些被该选项指定排除的文件。 </li>
+<li>–delete-after 传输结束以后再删除。 </li>
+<li>–ignore-errors 及时出现IO错误也进行删除。 </li>
+<li>–max-delete=NUM 最多删除NUM个文件。 -</li>
+<li>-partial 保留那些因故没有完全传输的文件，以是加快随后的再次传输。 </li>
+<li>–force 强制删除目录，即使不为空。 </li>
+<li>–numeric-ids 不将数字的用户和组id匹配为用户名和组名。 </li>
+<li>–timeout=time ip超时时间，单位为秒。 </li>
+<li>-I, –ignore-times 不跳过那些有同样的时间和长度的文件。 </li>
+<li>–size-only 当决定是否要备份文件时，仅仅察看文件大小而不考虑文件时间。 </li>
+<li>–modify-window=NUM 决定文件是否时间相同时使用的时间戳窗口，默认为0。 </li>
+<li>-T –temp-dir=DIR 在DIR中创建临时文件。 </li>
+<li>–compare-dest=DIR 同样比较DIR中的文件来决定是否需要备份。 </li>
+<li>-P 等同于 –partial。 </li>
+<li>–progress 显示备份过程。 </li>
+<li>-z, –compress 对备份的文件在传输时进行压缩处理。 </li>
+<li>–exclude=PATTERN 指定排除不需要传输的文件模式。 </li>
+<li>–include=PATTERN 指定不排除而需要传输的文件模式。 </li>
+<li>–exclude-from=FILE 排除FILE中指定模式的文件。 </li>
+<li>–include-from=FILE 不排除FILE指定模式匹配的文件。 </li>
+<li>–version 打印版本信息。 </li>
+<li>–address 绑定到特定的地址。 </li>
+<li>–config=FILE 指定其他的配置文件，不使用默认的rsyncd.conf文件。 </li>
+<li>–port=PORT 指定其他的rsync服务端口。 </li>
+<li>–blocking-io 对远程shell使用阻塞IO。 </li>
+<li>-stats 给出某些文件的传输状态。 </li>
+<li>–progress 在传输时现实传输过程。 </li>
+<li>–log-format=formAT 指定日志文件格式。 </li>
+<li>–password-file=FILE 从FILE中得到密码。 </li>
+<li>–bwlimit=KBPS 限制I/O带宽，KBytes per second。 </li>
+<li>-h, –help 显示帮助信息。</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;常用选项：-a、-v、–delete、–exclude</p>
+<h2 id="使用实例"><a href="#使用实例" class="headerlink" title="使用实例"></a>使用实例</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;试验准备</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># mkdir rsync</span></div><div class="line">[root@localhost ~]<span class="comment"># cd rsync</span></div><div class="line">[root@localhost rsync]<span class="comment"># mkdir test1</span></div><div class="line">[root@localhost rsync]<span class="comment"># cd test1</span></div><div class="line">[root@localhost test1]<span class="comment"># touch 1 2 3</span></div><div class="line">[root@localhost test1]<span class="comment"># ln -s /root/123.txt ./123.txt</span></div><div class="line">[root@localhost test1]<span class="comment"># ls -l</span></div><div class="line">总用量 0</div><div class="line">-rw-r--r-- 1 root root 0 6月 10 12:58 1</div><div class="line">lrwxrwxrwx 1 root root 13 6月 10 12:59 123.txt -&gt; /root/123.txt</div><div class="line">-rw-r--r-- 1 root root 0 6月 10 12:58 2</div><div class="line">-rw-r--r-- 1 root root 0 6月 10 12:58 3</div><div class="line">[root@localhost test1]<span class="comment"># cd ..</span></div></pre></td></tr></table></figure>
+<h3 id="实例1：使用-a选项"><a href="#实例1：使用-a选项" class="headerlink" title="实例1：使用-a选项"></a>实例1：使用-a选项</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@localhost rsync]<span class="comment"># rsync -a test1 test2</span></div><div class="line">[root@localhost rsync]<span class="comment"># ls test2</span></div><div class="line">test1</div><div class="line">[root@localhost rsync]<span class="comment"># ls test2/test1/</span></div><div class="line">1 123.txt 2 3</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里有一个问题，就是本来想把test1目录直接拷贝成test2目录，可结果rsync却新建了test2目录，然后把test1目录放到了test2目录中。为了避免这样的情况，可以这样做：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[root@localhost rsync]<span class="comment"># rm -rf test2</span></div><div class="line">[root@localhost rsync]<span class="comment"># rsync -a test1/ test2/</span></div><div class="line">[root@localhost rsync]<span class="comment"># ls -l test2/</span></div><div class="line">总用量 0</div><div class="line">-rw-r--r-- 1 root root 0 6月 10 12:58 1</div><div class="line">lrwxrwxrwx 1 root root 13 6月 10 12:59 123.txt -&gt; /root/123.txt</div><div class="line">-rw-r--r-- 1 root root 0 6月 10 12:58 2</div><div class="line">-rw-r--r-- 1 root root 0 6月 10 12:58 3</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加个斜杠就可以了，所以建议在使用rsync备份目录时要养成加斜杠的习惯。-a选项表示以递归方式传输文件，并保持所有属性，等同于-rlptgoD。-a选项后面可以跟一个 <code>--no-OPTION</code> 这个表示关闭 -rlptgoD中的某一个，例如，<code>-a--no-l</code> 等同于 -rptgoD。下面看一看-l选项的作用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[root@localhost rsync]<span class="comment"># rsync -av --no-l test1/ test2/</span></div><div class="line">sending incremental file list</div><div class="line">created directory test2</div><div class="line">./</div><div class="line">1</div><div class="line">skipping non-regular file <span class="string">"123.txt"</span></div><div class="line">2</div><div class="line">3</div><div class="line"></div><div class="line">sent 200 bytes received 72 bytes 544.00 bytes/sec</div><div class="line">total size is 13 speedup is 0.05</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用-v选项看起来方便，上例跳过了非普通文件123.txt，其实123.txt是一个软连接文件，如果不使用-l选项则不理会软连接文件的。虽然加上-l选项会把软连接文件给拷贝过去，但是软连接的目标文件却没有拷贝过去。</p>
+<h3 id="实例2：使用-L选项"><a href="#实例2：使用-L选项" class="headerlink" title="实例2：使用-L选项"></a>实例2：使用-L选项</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">[root@localhost rsync]<span class="comment"># rsync -avL test1/ test2/</span></div><div class="line">sending incremental file list</div><div class="line">created directory test2</div><div class="line">./</div><div class="line">1</div><div class="line">123.txt</div><div class="line">2</div><div class="line">3</div><div class="line"></div><div class="line">sent 231 bytes received 91 bytes 644.00 bytes/sec</div><div class="line">total size is 0 speedup is 0.00</div><div class="line">[root@localhost rsync]<span class="comment"># ls -l test2/</span></div><div class="line">总用量 0</div><div class="line">-rw-r--r-- 1 root root 0 6月 10 12:58 1</div><div class="line">-rw-r--r-- 1 root root 0 6月 10 12:39 123.txt</div><div class="line">-rw-r--r-- 1 root root 0 6月 10 12:58 2</div><div class="line">-rw-r--r-- 1 root root 0 6月 10 12:58 3</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加上-L选项就可以把SRC中软连接的目标文件给拷贝到DST。</p>
+<h3 id="实例3：使用-u选项"><a href="#实例3：使用-u选项" class="headerlink" title="实例3：使用-u选项"></a>实例3：使用-u选项</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先查看一下test1/1和test2/1的创建时间（肯定是一样的），然后使用touch修改一下test2/1的创建时间（此时test2/1要比test1/1的创建时间晚了一些），如果不加-u选项的话，会把test2/1的创建时间编程和test1/1的创建时间一样。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[root@localhost rsync]<span class="comment"># ll test1/1 test2/1</span></div><div class="line">-rw-r--r-- 1 root root 0 6月 10 12:58 test1/1</div><div class="line">-rw-r--r-- 1 root root 0 6月 10 12:58 test2/1</div><div class="line">root@localhost rsync]<span class="comment"># touch test2/1</span></div><div class="line">[root@localhost rsync]<span class="comment"># ll test2/1</span></div><div class="line">-rw-r--r-- 1 root root 0 6月 10 13:20 test2/1</div><div class="line">[root@localhost rsync]<span class="comment"># rsync -a test1/1 test2/</span></div><div class="line">[root@localhost rsync]<span class="comment"># ll test2/1</span></div><div class="line">-rw-r--r-- 1 root root 0 6月 10 12:58 test2/1</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加上-u选项后，不会再把test1/1同步为test2/1了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">[root@localhost rsync]<span class="comment"># touch test2/1</span></div><div class="line">[root@localhost rsync]<span class="comment"># ll test2/1</span></div><div class="line">-rw-r--r-- 1 root root 0 6月 10 13:31 test2/1</div><div class="line">[root@localhost rsync]<span class="comment"># rsync -avu test1/ test2/</span></div><div class="line">sending incremental file list</div><div class="line">./</div><div class="line">123.txt -&gt; /root/123.txt</div><div class="line"></div><div class="line">sent 100 bytes received 18 bytes 236.00 bytes/sec</div><div class="line">total size is 13 speedup is 0.11</div><div class="line">[root@localhost rsync]<span class="comment"># ll test2/1</span></div><div class="line">-rw-r--r-- 1 root root 0 6月 10 13:31 test2/1</div><div class="line">[root@localhost rsync]<span class="comment"># ll test1/1</span></div><div class="line">-rw-r--r-- 1 root root 0 6月 10 12:58 test1/1</div></pre></td></tr></table></figure>
+<h3 id="实例4：使用-–delete选项"><a href="#实例4：使用-–delete选项" class="headerlink" title="实例4：使用 –delete选项"></a>实例4：使用 –delete选项</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先删除test1/123.txt</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost rsync]<span class="comment"># rm -f test1/123.txt</span></div><div class="line">[root@localhost rsync]<span class="comment"># ls test1/</span></div><div class="line">1 2 3</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后把test1/目录同步到test2/目录下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[root@localhost rsync]<span class="comment"># rsync -av test1/ test2/</span></div><div class="line">sending incremental file list</div><div class="line">./</div><div class="line">1</div><div class="line"></div><div class="line">sent 94 bytes received 34 bytes 256.00 bytes/sec</div><div class="line">total size is 0 speedup is 0.00</div><div class="line">[root@localhost rsync]<span class="comment"># ls test2/</span></div><div class="line">1 123.txt 2 3</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;test2/目录并没有删除掉123.txt，下面加上 <code>--delete</code> 选项：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[root@localhost rsync]<span class="comment"># rsync -av --delete test1/ test2/</span></div><div class="line">sending incremental file list</div><div class="line">deleting 123.txt</div><div class="line"></div><div class="line">sent 52 bytes received 12 bytes 128.00 bytes/sec</div><div class="line">total size is 0 speedup is 0.00</div><div class="line">[root@localhost rsync]<span class="comment"># ls test2/</span></div><div class="line">1 2 3</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;test2/目录里的123.txt也被删除了，这就是 <code>--delete</code> 选项的用处。还有一种情况就是如果在DST增加了文件了，而SRC当中没有这些文件，同步时加上 <code>--delete</code> 选项后同样会删除新增的文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[root@localhost rsync]<span class="comment"># touch test2/4</span></div><div class="line">[root@localhost rsync]<span class="comment"># ls test1/</span></div><div class="line">1 2 3</div><div class="line">[root@localhost rsync]<span class="comment"># ls test2/</span></div><div class="line">1 2 3 4</div><div class="line">[root@localhost rsync]<span class="comment"># rsync -a --delete test1/ test2/</span></div><div class="line">[root@localhost rsync]<span class="comment"># ls test1/</span></div><div class="line">1 2 3</div><div class="line">[root@localhost rsync]<span class="comment"># ls test2/</span></div><div class="line">1 2 3</div></pre></td></tr></table></figure>
+<h3 id="实例5：使用-–exclude选项"><a href="#实例5：使用-–exclude选项" class="headerlink" title="实例5：使用 –exclude选项"></a>实例5：使用 –exclude选项</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[[root@localhost rsync]<span class="comment"># touch test1/4</span></div><div class="line">[root@localhost rsync]<span class="comment"># rsync -a --exclude="4" test1/ test2/</span></div><div class="line">[root@localhost rsync]<span class="comment"># ls test1/</span></div><div class="line">1 2 3 4</div><div class="line">[root@localhost rsync]<span class="comment"># ls test2/</span></div><div class="line">1 2 3</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另外还可以使用匹配字符 *</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">[root@localhost rsync]<span class="comment"># touch test1/1.txt test1/2.txt</span></div><div class="line">[root@localhost rsync]<span class="comment"># ls test1/</span></div><div class="line">1 1.txt 2 2.txt 3 4</div><div class="line">[root@localhost rsync]<span class="comment"># rsync -a --progress --exclude="*.txt" test1/ test2/</span></div><div class="line">sending incremental file list</div><div class="line">./</div><div class="line">4</div><div class="line">0 100% 0.00kB/s 0:00:00 (xfer<span class="comment">#1, to-check=0/5)</span></div><div class="line"></div><div class="line">sent 104 bytes received 34 bytes 276.00 bytes/sec</div><div class="line">total size is 0 speedup is 0.00</div><div class="line">[root@localhost rsync]<span class="comment"># ls test2/</span></div><div class="line">1 2 3 4</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上例中，连带着使用了 <code>--progress</code> 选项，这个主要是用来观察rsync同步过程的状态的。简单总结一下，平时使用rsync同步数据的时候，使用-a选项基本上就可以达到想要的效果了，只是有时候会有个别的需求，会用到 <code>-a --no-OPTION</code> , <code>-u</code> , <code>-L</code> , <code>--delete</code> , <code>--exclude</code> 以及 <code>--progress</code> 这些选项。</p>
+<h3 id="实例6：ssh隧道方式"><a href="#实例6：ssh隧道方式" class="headerlink" title="实例6：ssh隧道方式"></a>实例6：ssh隧道方式</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">root@localhost rsync]<span class="comment"># rsync -avL test1/ www@192.168.0.101:/tmp/test2/</span></div><div class="line">www@192.168.0.101<span class="string">'s password:</span></div><div class="line"><span class="string">sending incremental file list</span></div><div class="line"><span class="string">created directory /tmp/test2</span></div><div class="line"><span class="string">./</span></div><div class="line"><span class="string">1</span></div><div class="line"><span class="string">1.txt</span></div><div class="line"><span class="string">2</span></div><div class="line"><span class="string">2.txt</span></div><div class="line"><span class="string">3</span></div><div class="line"><span class="string">4</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">sent 327 bytes received 129 bytes 182.40 bytes/sec</span></div><div class="line"><span class="string">total size is 0 speedup is 0.00</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这种方式是通过ssh拷贝数据，需要输入192.168.0.101那台机器www账户的密码。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">[root@localhost rsync]<span class="comment"># rsync -avL www@192.168.0.101:/tmp/test2/ ./test3/</span></div><div class="line">www@192.168.0.101<span class="string">'s password:</span></div><div class="line"><span class="string">receiving incremental file list</span></div><div class="line"><span class="string">created directory ./test3</span></div><div class="line"><span class="string">./</span></div><div class="line"><span class="string">1</span></div><div class="line"><span class="string">1.txt</span></div><div class="line"><span class="string">2</span></div><div class="line"><span class="string">2.txt</span></div><div class="line"><span class="string">3</span></div><div class="line"><span class="string">4</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">sent 128 bytes received 351 bytes 38.32 bytes/sec</span></div><div class="line"><span class="string">total size is 0 speedup is 0.00</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以上两种凡是如果写到脚背里，备份起来就有麻烦了，因为要输入密码，脚本本来就是自动的，不可能做到。但是不代表没有解决办法。那微是统计过密钥验证，密钥不设立密码就ok了。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在操作以前先设置主机信息：192.168.0.10（主机名yanyi-1）和192.168.0.101（主机名yanyi），需要从yanyi-1拷贝数据到yanyi上。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先确认一下yanyi-1上是否有这个文件 <code>/root/.ssh/id_rsa.pub</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@yanyi-1 ~]<span class="comment"># ssh-keygen</span></div><div class="line">Generating public/private rsa key pair.</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果Linux不存在这个文件，按如下方法生成：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[root@yanyi-1 ~]<span class="comment"># ssh-keygen</span></div><div class="line">Generating public/private rsa key pair.</div><div class="line">Enter file <span class="keyword">in</span> <span class="built_in">which</span> to save the key (/root/.ssh/id_rsa):</div><div class="line">Enter passphrase (empty <span class="keyword">for</span> no passphrase):</div><div class="line">Enter same passphrase again:</div><div class="line">Your identification has been saved <span class="keyword">in</span> /root/.ssh/id_rsa.</div><div class="line">Your public key has been saved <span class="keyword">in</span> /root/.ssh/id_rsa.pub.</div><div class="line">The key fingerprint is:</div><div class="line">3b:74:af:e8:08:ac:99:30:3f:ef:84:7a:a0:a6:3d:89 root@Aming-1</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在这个过程中会有一些交互的过程，它首先提示要输入这个密钥的密码，出于安全考虑应该定义个密码，但是目的就是为了自动化同步数据，所以这里不输入任何密码，直接按回车，即密码为空。最后则生成了私钥 <code>/root/.ssh/id_rsa</code> 和公钥文件 <code>/root/.ssh/id_rsa.pub</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;把公钥文件的内容拷贝到目标机器上：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root@yanyi-1 ~]<span class="comment"># cat .ssh/id_rsa.pub</span></div><div class="line">ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA5SPyJ/kliGTAMUan/GCN325VS8jMxvOn4uQoLU/NqBpCI3MrmvSucv6EAzxx1J2uOssW08el06LG+cUwXmm5mkqDRBV6C9qNnR/bVV5vr3QsUwbKPr7fdyJvruQWWR7cSL+mjP0SYmG2Qy2JcM3hl1IZArzC6yeUnq2Gwbax8LgbZE3XfRfOYdimwyh5Tfft7yLYipWc37k+oRUWkI3mW7PalsOlfQhxrLD/lS891y6RdSbGxMJWPoV0KMFbVh+uJgyAXpeuWl+F+/iuQPzb6w3h4pWI31bvbsE9BU82jSzHYEjpq3SN2MJN2vaLs5a0mVpm9zka/h4ITFB8Uy1iSQ== root@yanyi-1</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;复制主机yanyi-1的 <code>/root/.ssh/id_rsa.pub</code> 文件内容，并粘贴到主机yanyi的 <code>/home/www/.ssh/authorized_keys</code> 中:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@yanyi ~]<span class="comment"># vim /home/www/.ssh/authorized_keys</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这一步也许会遇到/home/www/.ssh目录不存在的问题，可以手动创建，并修改目录权限为700，也可以执行 <code>ssh-krygen</code> 命令生成这个目录。保存/home/www/.ssh/authorized_keys文件后，再到主机yanyi-1上执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@yanyi-1 ~]<span class="comment"># ssh www@192.168.0.101</span></div><div class="line">Last login: Wed Jun 12 12:24:34 2013 from 192.168.0.10</div><div class="line">[www@yanyi ~]$</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;现在不用输入密码也可以登录主机yanyi了。下面先用yanyi主机退出来，再从主机yanyi-1上执行rsync命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">[root@yanyi-1 ~]<span class="comment"># rsync -av rsync/test1/ www@192.168.0.101:/tmp/test4/</span></div><div class="line">sending incremental file list</div><div class="line">created directory /tmp/test4</div><div class="line">./</div><div class="line">1</div><div class="line">1.txt</div><div class="line">2</div><div class="line">2.txt</div><div class="line">3</div><div class="line">4</div><div class="line"></div><div class="line">sent 327 bytes received 129 bytes 912.00 bytes/sec</div><div class="line">total size is 0 speedup is 0.00</div></pre></td></tr></table></figure>
+<h3 id="实例7：后台服务方式"><a href="#实例7：后台服务方式" class="headerlink" title="实例7：后台服务方式"></a>实例7：后台服务方式</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这种方式可以理解成，在远程主机上建立一个rsync的服务器，在服务器上匹配好rsync的各种应用，然后本机作为rsync的一个客户端去连接远程的rsync服务器。</p>
+<h4 id="1、建立并配置rsync的配置文件-etc-rsyncd-conf"><a href="#1、建立并配置rsync的配置文件-etc-rsyncd-conf" class="headerlink" title="1、建立并配置rsync的配置文件 /etc/rsyncd.conf"></a>1、建立并配置rsync的配置文件 /etc/rsyncd.conf</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">[root@yanyi-1 ~]# vim /etc/rsyncd.conf</div><div class="line"><span class="meta">#</span><span class="bash">port=873</span></div><div class="line">log file=/var/log/rsync.log</div><div class="line">pid file=/var/run/rsyncd.pid</div><div class="line"><span class="meta">#</span><span class="bash">address=192.168.0.10</span></div><div class="line"></div><div class="line">[test]</div><div class="line">path=/root/rsync</div><div class="line">use chroot=true</div><div class="line">max connections=4</div><div class="line">read only=no</div><div class="line">list=true</div><div class="line">uid=root</div><div class="line">gid=root</div><div class="line">auth users=test</div><div class="line">secrets file=/etc/rsyncd.passwd</div><div class="line">hosts allow=192.168.0.101</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其中配置文件分为两部分：全局置部分和模块配置部分。全局部分就是几个参数而已，就像rsyncd.conf中port、log file、pid file、address这些都属于全局配置。而 [test]以下部分就是模块配置部分了。一个配置文件中可以有多个模块，模块名自定义，格式就像rsyncd.conf中的这样。其实模块中的一些参数例如，use chroot、max connections、uid、gid、auth users、secrets file以及hosts allow都恶意可配置成全局的参数。当然给出的参数并不是所有的，可以通过 <code>man rsyncd.conf</code> 获得更多信息。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面简单解释一下这些参数的意义 ：</p>
+<ul>
+<li>port 指定在哪个端口启动rsyncd服务，默认是873</li>
+<li>log file 指定日志文件</li>
+<li>pid file 指定pid文件，这个文件的作用涉及到服务的启动以及停止等进程管理操作</li>
+<li>address 指定启动rsyncd服务的IP，假如你的机器有多个IP，就可以指定其中一个启动rsyncd服务，默认是在全部IP上启动</li>
+<li>[test] 指定模块名，自定义</li>
+<li>path 指定数据存放的路径</li>
+<li>use chroot true|false 默认是true，意思是在传输文件以前首先chroot到path参数所指  定的目录下。这样做的原因是实现额外的安全防护，但是缺点是需要以roots权限，并且不能备份指向外部的符号连接所指向的目录文件。默认情况下chroot值为true，如果数据当中有软连接文件的话建议设置成false。</li>
+<li>max connections 指定最大的连接数，默认是0即没有限制</li>
+<li>read only ture|false 如果为true则不能上传到该模块指定的路径下</li>
+<li>list 指定当用户查询该服务器上的可用模块时，该模块是否被列出，设定为true则列出，false则隐藏</li>
+<li>uid/gid 指定传输文件时，以哪个用户/组的身份传输</li>
+<li>auth users 指定传输时要使用的用户名</li>
+<li>secrets file 指定密码文件，该参数连同上面的参数如果不指定则不使用密码验证，注  意该密码文件的权限一定要是600</li>
+<li>hosts allow 指定被允许连接该模块的主机，可以是IP或者网段，如果是多个，之间用空格隔开</li>
+</ul>
+<h4 id="2、编辑secrets-file，保存后要赋予600权限，如果权限不对，不能完成同步"><a href="#2、编辑secrets-file，保存后要赋予600权限，如果权限不对，不能完成同步" class="headerlink" title="2、编辑secrets file，保存后要赋予600权限，如果权限不对，不能完成同步"></a>2、编辑secrets file，保存后要赋予600权限，如果权限不对，不能完成同步</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@yanyi-1 ~]<span class="comment"># cat /etc/rsyncd.passwd</span></div><div class="line"><span class="built_in">test</span>:test123</div><div class="line">[root@yanyi-1 ~]<span class="comment"># chmod 600 /etc/rsyncd.passwd</span></div></pre></td></tr></table></figure>
+<h4 id="3、启动rsync服务"><a href="#3、启动rsync服务" class="headerlink" title="3、启动rsync服务"></a>3、启动rsync服务</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@yanyi-1 ~]<span class="comment"># rsync --daemon --config=/etc/rsyncd.conf</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动后，可以查看一下日志，并查看端口是否启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@yanyi-1 ~]<span class="comment"># cat /var/log/rsync.log</span></div><div class="line">[root@yanyi-1 ~]<span class="comment"># netstat -lnp |grep 873</span></div><div class="line">tcp 0 0 0.0.0.0:873 0.0.0.0:* LISTEN 12066/rsync</div><div class="line">tcp 0 0 :::873 :::* LISTEN 12066/rsync</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果想开机启动，把 <code>rsync --daemon --config=/etc/rsyncd.conf</code> 写入到 <code>/etc/rc.d/rc.local</code> 文件中。</p>
+<h4 id="4、到另一台机器上测试"><a href="#4、到另一台机器上测试" class="headerlink" title="4、到另一台机器上测试"></a>4、到另一台机器上测试</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">[root@yanyi ~]<span class="comment"># rsync -avL test@192.168.0.10::test/test1/ /tmp/test5/</span></div><div class="line">Password:</div><div class="line">receiving incremental file list</div><div class="line">created directory /tmp/test5</div><div class="line">./</div><div class="line">1</div><div class="line">1.txt</div><div class="line">2</div><div class="line">2.txt</div><div class="line">3</div><div class="line">4</div><div class="line"></div><div class="line">sent 143 bytes received 354 bytes 994.00 bytes/sec</div><div class="line">total size is 0 speedup is 0.00</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;刚提到有一个选项叫做 <code>use chroot</code> 默认为true，如果为true，同步的文件中有软连接，则会有问题。首先在主机yanyi-1的/root/rsync/test1/目录下创建一个软连接文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@yanyi-1 ~]<span class="comment"># ln -s /root/test.txt rsync/test1/test.txt</span></div><div class="line">[root@yanyi-1 ~]<span class="comment"># ls -l rsync/test1/test.txt</span></div><div class="line">lrwxrwxrwx 1 root root 14 6月 12 13:24 rsync/test1/test.txt -&gt; /root/test.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后再到主机yanyi上同步：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">[root@yanyi ~]<span class="comment"># rsync -avL test@192.168.0.10::test/test1/ /tmp/test6/</span></div><div class="line">Password:</div><div class="line">receiving incremental file list</div><div class="line">symlink has no referent: <span class="string">"/test1/test.txt"</span> (<span class="keyword">in</span> <span class="built_in">test</span>)</div><div class="line">created directory /tmp/test6</div><div class="line">./</div><div class="line">1</div><div class="line">1.txt</div><div class="line">2</div><div class="line">2.txt</div><div class="line">3</div><div class="line">4</div><div class="line"></div><div class="line">sent 143 bytes received 419 bytes 1124.00 bytes/sec</div><div class="line">total size is 0 speedup is 0.00</div><div class="line">rsync error: some files/attrs were not transferred (see previous errors) (code</div><div class="line">23) at main.c(1532) [generator=3.0.6]</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以看到，如果设置 <code>use chroot</code> 为true则同步软连接文件会有问题，把主机yanyi-1的rsync配置文件修改一下，把true改为false：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@yanyi-1 ~]<span class="comment"># sed -i 's/use chroot=true/use chroot=false/' /etc/rsyncd.conf</span></div><div class="line">[root@yanyi-1 ~]<span class="comment"># grep 'use chroot' /etc/rsyncd.conf</span></div><div class="line">use chroot=<span class="literal">false</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后再到主机yanyi上再次执行同步：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">[root@yanyi ~]<span class="comment"># rsync -avL test@192.168.0.10::test/test1/ /tmp/test7/</span></div><div class="line">Password:</div><div class="line">receiving incremental file list</div><div class="line">created directory /tmp/test7</div><div class="line">./</div><div class="line">1</div><div class="line">1.txt</div><div class="line">2</div><div class="line">2.txt</div><div class="line">3</div><div class="line">4</div><div class="line">test.txt</div><div class="line"></div><div class="line">sent 162 bytes received 410 bytes 1144.00 bytes/sec</div><div class="line">total size is 0 speedup is 0.00</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样就没有任何问题了。为什么修改完rsyncd.conf配置文件后，没有重启rsyncd服务？其实这是rsync的一个特定机制，配置文件即实时生效的，不用重启服务。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上面的例子中，都有输入密码，这样同样不能写入脚本中自动执行，其实这种方式也是可以不用手动输入密码的，有两种实现方式：</p>
+<h5 id="1、指定密码文件"><a href="#1、指定密码文件" class="headerlink" title="1、指定密码文件"></a>1、指定密码文件</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在客户端上，也就是主机yanyi上，编辑一个密码文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@yanyi ~]<span class="comment"># vim /etc/pass</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加入test用户的密码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@yanyi ~]<span class="comment"># cat /etc/pass</span></div><div class="line">test123</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改密码文件的权限：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@yanyi ~]<span class="comment"># chmod 600 /etc/pass</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在同步的时候，指定一下密码文件，就可以省去输入密码的步骤了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">[root@yanyi ~]<span class="comment"># rsync -avL test@192.168.0.10::test/test1/ /tmp/test8/ --password-file=/etc/pass</span></div><div class="line">receiving incremental file list</div><div class="line">created directory /tmp/test8</div><div class="line">./</div><div class="line">1</div><div class="line">1.txt</div><div class="line">2</div><div class="line">2.txt</div><div class="line">3</div><div class="line">4</div><div class="line">test.txt</div><div class="line"></div><div class="line">sent 190 bytes received 451 bytes 1282.00 bytes/sec</div><div class="line">total size is 0 speedup is 0.00</div></pre></td></tr></table></figure>
+<h5 id="2、在rsync服务器端不指定用户"><a href="#2、在rsync服务器端不指定用户" class="headerlink" title="2、在rsync服务器端不指定用户"></a>2、在rsync服务器端不指定用户</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在服务端也就是主机yanyi-1上修改配置文件rsyncd.conf，去掉关于认证账户的配置项(auth user和secrets file这两行)：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed -i <span class="string">'s/auth users/#auth users/;s/secrets file/#secrets file/'</span> /etc/rsyncd.conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上面的命令是把“auth users”和“secrets file”两行的最前面加一个“#”，这样就把这两行注释掉了，使其失去意义。sed的这种用法，只是用分号把两个替换的子命令块给替换了。然后到客户端主机yanyi上测试：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">rsync -avL 192.168.0.10::<span class="built_in">test</span>/test1/ /tmp/test9/</div><div class="line">receiving incremental file list</div><div class="line">created directory /tmp/test9</div><div class="line">./</div><div class="line">1</div><div class="line">1.txt</div><div class="line">2</div><div class="line">2.txt</div><div class="line">3</div><div class="line">4</div><div class="line">test.txt</div><div class="line">sent 162 bytes  received 410 bytes  1144.00 bytes/sec</div><div class="line">total size is 0  speedup is 0.00</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意，这里不用再加test这个用户了，默认是以root的身份拷贝的，现在已经不需要输入密码了。</p>
+<h3 id="实例8：根据一个文件列表文档来同步"><a href="#实例8：根据一个文件列表文档来同步" class="headerlink" title="实例8：根据一个文件列表文档来同步"></a>实例8：根据一个文件列表文档来同步</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有时候，需要根据一个文档中的文件列表来同步文件。例，1.txt是文件列表，内容为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cat 1.txt</div><div class="line">/data/a/a.txt</div><div class="line">/data/b.txt</div><div class="line">/data/c/b/c.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;同步命令是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rsync -av --files-from=1.txt / ip::module/</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需要注意的是，1.txt中如果写全局路径，那么source目录需要写/</p>
+<h3 id="实例9：在远程自动创建目录"><a href="#实例9：在远程自动创建目录" class="headerlink" title="实例9：在远程自动创建目录"></a>实例9：在远程自动创建目录</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认情况下，使用rsync的时候，不能自动创建级联目录。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rsync -a /data/1/2/3/1.txt 1.1.1.1:/data/1/2/3/1.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样会报错的。改一改上边的命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rsync -a /data/1/2/3/1.txt 1.1.1.1:/data/</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样同样也达不到想要的效果。虽然不在报错，但是只是把1.txt放到了1.1.1.1:/data/目录下。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;rsync有个选项就是-R，会帮助我们自动创建级联目录。所以上边的命令应该改成</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rsync -aR /data/1/2/3/1.txt 1.1.1.1:/data/</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样就会在1.1.1.1:/data/目录下创建1/2/3/这样的级联目录，类似mkdir -p</p>
+<h3 id="实例10：只同步指定类型的文件"><a href="#实例10：只同步指定类型的文件" class="headerlink" title="实例10：只同步指定类型的文件"></a>实例10：只同步指定类型的文件</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需求：同步某个目录下所有的图片（*.jpg），该目录下有很多其他的文件，但只想同步*.jpg的文件。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;rsync有一个 <code>--exclude</code> 可以排除指定文件，还有一个 <code>--include</code> 选项的作用正好和  <code>--exclude</code> 相反。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;直接使用 <code>--include=&quot;*.jpg&quot;</code> 可否实现？</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rsync -av --include=<span class="string">"*.jpg"</span> /src/ /des/</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;实验证明，这是不对的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;正确的答案是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rsync -av --include=<span class="string">"*.jpg"</span> --exclude=* /src/ /des/</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux命令/" rel="tag"># Linux命令</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/03/2. Linux 命令/68. Linux 命令- tr/" rel="next" title="Linux 命令- tr">
+                <i class="fa fa-chevron-left"></i> Linux 命令- tr
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/03/2. Linux 命令/43. Linux 命令- ps/" rel="prev" title="Linux 命令- ps">
+                Linux 命令- ps <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">599</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#命令语法"><span class="nav-number">1.</span> <span class="nav-text">命令语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令参数"><span class="nav-number">2.</span> <span class="nav-text">命令参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用实例"><span class="nav-number">3.</span> <span class="nav-text">使用实例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例1：使用-a选项"><span class="nav-number">3.1.</span> <span class="nav-text">实例1：使用-a选项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例2：使用-L选项"><span class="nav-number">3.2.</span> <span class="nav-text">实例2：使用-L选项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例3：使用-u选项"><span class="nav-number">3.3.</span> <span class="nav-text">实例3：使用-u选项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例4：使用-–delete选项"><span class="nav-number">3.4.</span> <span class="nav-text">实例4：使用 –delete选项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例5：使用-–exclude选项"><span class="nav-number">3.5.</span> <span class="nav-text">实例5：使用 –exclude选项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例6：ssh隧道方式"><span class="nav-number">3.6.</span> <span class="nav-text">实例6：ssh隧道方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例7：后台服务方式"><span class="nav-number">3.7.</span> <span class="nav-text">实例7：后台服务方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、建立并配置rsync的配置文件-etc-rsyncd-conf"><span class="nav-number">3.7.1.</span> <span class="nav-text">1、建立并配置rsync的配置文件 /etc/rsyncd.conf</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、编辑secrets-file，保存后要赋予600权限，如果权限不对，不能完成同步"><span class="nav-number">3.7.2.</span> <span class="nav-text">2、编辑secrets file，保存后要赋予600权限，如果权限不对，不能完成同步</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、启动rsync服务"><span class="nav-number">3.7.3.</span> <span class="nav-text">3、启动rsync服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、到另一台机器上测试"><span class="nav-number">3.7.4.</span> <span class="nav-text">4、到另一台机器上测试</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、指定密码文件"><span class="nav-number">3.7.4.1.</span> <span class="nav-text">1、指定密码文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、在rsync服务器端不指定用户"><span class="nav-number">3.7.4.2.</span> <span class="nav-text">2、在rsync服务器端不指定用户</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例8：根据一个文件列表文档来同步"><span class="nav-number">3.8.</span> <span class="nav-text">实例8：根据一个文件列表文档来同步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例9：在远程自动创建目录"><span class="nav-number">3.9.</span> <span class="nav-text">实例9：在远程自动创建目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例10：只同步指定类型的文件"><span class="nav-number">3.10.</span> <span class="nav-text">实例10：只同步指定类型的文件</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
+<html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -110,7 +110,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Mist',
+    scheme: 'Pisces',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
     fancybox: true,
     motion: true,
@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/1. Linux 基础/71. 郁闷，又断开了！！！/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Shell/16. shell 函数/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -306,7 +306,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/1. Linux 基础/71. 郁闷，又断开了！！！/" itemprop="url">郁闷，又断开了！！！</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Shell/16. shell 函数/" itemprop="url">shell函数</a></h1>
         
 
         <div class="post-meta">
@@ -318,7 +318,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T01:55:11+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:23:14+08:00">
                 2017-09-03
               </time>
             
@@ -355,12 +355,14 @@
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有时，我们想在一个会话窗口中运行一个较长时间的任务，比如压缩一个比较大的目录，或者编译安装mysql，时间会很久，但是我们不能保证中途过程这个会话一直保持连接。万一断开，你岂不是又要重新开始？
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果使用scr
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;函数就是把一段代码整理到了一个小单元中，并给这个小单元起一个名字，当用到这段代码时，直接调用这个小单元的名字即可。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;格式：
+123function funame() &#123;    command｝
+&#
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/1. Linux 基础/71. 郁闷，又断开了！！！/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Shell/16. shell 函数/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -406,7 +408,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/1. Linux 基础/28.建立一个swap文件增加虚拟内存/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Shell/5. shell 备份 mysql/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -425,7 +427,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/1. Linux 基础/28.建立一个swap文件增加虚拟内存/" itemprop="url">建立一个swap文件增加虚拟内存</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Shell/5. shell 备份 mysql/" itemprop="url">shell 备份 mysql</a></h1>
         
 
         <div class="post-meta">
@@ -437,7 +439,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T01:55:11+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:19:24+08:00">
                 2017-09-03
               </time>
             
@@ -474,11 +476,20 @@
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从装系统时就接触过这个swap了，它类似与windows的虚拟内存，分区的时候一般大小为内存的2倍，如果内存超过8G，那么你分16G似乎是没有必要了。分16G足够日常交换了。然而，还会有虚拟内存不够用的情况发生。如果真遇到了，莫非还要重新给磁盘分区？当然不能，那我们就增加一个虚拟的磁盘出来。基本的思路就
+          
+创建备份目录和文件
+
+123mkdir/srv/bakmysqlmkdir/srv/bakmysql/dailytouch/srv/bakmysql/mysqlbak.log
+
+启用二进制日志
+
+12cd /etc/vi my.cnf
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在[mysqld]添加
+1log-bin=/var/lib/mys
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/1. Linux 基础/28.建立一个swap文件增加虚拟内存/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Shell/5. shell 备份 mysql/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -524,7 +535,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/1. Linux 基础/57. 用netstat查看网络状态详解/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Shell/4. shell 结构以及执行/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -543,7 +554,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/1. Linux 基础/57. 用netstat查看网络状态详解/" itemprop="url">用netstat查看网络状态详解</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Shell/4. shell 结构以及执行/" itemprop="url">shell 结构以及执行</a></h1>
         
 
         <div class="post-meta">
@@ -555,7 +566,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T01:55:11+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:19:24+08:00">
                 2017-09-03
               </time>
             
@@ -592,20 +603,14 @@
       
         
           
-          
-
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;通常情况下:一个正常的TCP连接，都会有三个阶段:
-
-TCP三次握手;
-数据传送;
-TCP四次挥手
-
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注:以下说明最好能结合”图:TCP的状态机”来理解。
-&#160;&#160;&#160;&#160;
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;写第一个 shell 脚本
+12[root@192 ~]# cd /usr/local/sbin[root@192 sbin]# vim first.sh
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加入内容
+12345#!/bin/bash#this
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/1. Linux 基础/57. 用netstat查看网络状态详解/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Shell/4. shell 结构以及执行/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -651,7 +656,7 @@ TCP四次挥手
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/1. Linux 基础/60. iptables中DNAT、SNAT、和MASQUERADE的理解/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Shell/3. shell 中的特殊符号/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -670,7 +675,7 @@ TCP四次挥手
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/1. Linux 基础/60. iptables中DNAT、SNAT、和MASQUERADE的理解/" itemprop="url">iptables中DNAT、SNAT、和MASQUERADE的理解</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Shell/3. shell 中的特殊符号/" itemprop="url">shell 中的特殊符号</a></h1>
         
 
         <div class="post-meta">
@@ -682,7 +687,7 @@ TCP四次挥手
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T01:55:11+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:19:24+08:00">
                 2017-09-03
               </time>
             
@@ -719,13 +724,15 @@ TCP四次挥手
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;IPtables中可以灵活的做各种网络地址转换（NAT），网络地址转换主要有两种：SNAT和DNAT
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SNAT是source network address translation的缩写，即源地址目标转换。
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;shell中常用到的特殊字符。
 
+* 代表零个或多个任意字符
+
+1234[root@localhost 111]# ls1 11.txt 1.txt 22.txt 2.txt 33.txt 3.txt 44.zip 55.zip[root@localhost 111]# ls *.txt11.txt 1
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/1. Linux 基础/60. iptables中DNAT、SNAT、和MASQUERADE的理解/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Shell/3. shell 中的特殊符号/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -771,7 +778,7 @@ TCP四次挥手
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/1. Linux 基础/17. 系统和用户的环境变量配置文件/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Shell/2. shell 特性/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -790,7 +797,7 @@ TCP四次挥手
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/1. Linux 基础/17. 系统和用户的环境变量配置文件/" itemprop="url">系统和用户的环境变量配置文件</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Shell/2. shell 特性/" itemprop="url">shell 特性</a></h1>
         
 
         <div class="post-meta">
@@ -802,7 +809,7 @@ TCP四次挥手
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T01:55:11+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:19:24+08:00">
                 2017-09-03
               </time>
             
@@ -839,15 +846,13 @@ TCP四次挥手
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;linux系统中，有很多系统的变量，这些变量被存在
-
-/etc/profile: 这个文件预设了几个重要的变量，例如 PATH , USER , LOGNAME , MAIL , INPUTRC , HOSTNAME , HISTSIZE , umake等等。
-
-/etc/bashrc: 这个文件主要预
+          命令历史&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;敲过的命令，Linux 是会有记录的，预设可以记录1000条历史命令。这些命令保存在用户的家目录中的 .bash-history 文件中。只有当用户正常退出当前的 shell 时，在当前 shell 中运行的命令才会保存至 .bash_history 文件中。
+环境变量
+HISTSIZE：命令历
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/1. Linux 基础/17. 系统和用户的环境变量配置文件/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Shell/2. shell 特性/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -893,7 +898,7 @@ TCP四次挥手
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/1. Linux 基础/55. Linux查看网卡速度调整工作模式/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Shell/1. shell 脚本介绍/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -912,7 +917,7 @@ TCP四次挥手
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/1. Linux 基础/55. Linux查看网卡速度调整工作模式/" itemprop="url">Linux查看网卡速度调整工作模式</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Shell/1. shell 脚本介绍/" itemprop="url">shell 脚本介绍</a></h1>
         
 
         <div class="post-meta">
@@ -924,7 +929,7 @@ TCP四次挥手
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T01:55:11+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:19:24+08:00">
                 2017-09-03
               </time>
             
@@ -961,13 +966,15 @@ TCP四次挥手
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看网卡速度有两个命令都可以查看：
-12mii-tooleth0: negotiated 1000baseT-FD flow-control, link ok
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这表示，eth0网卡的速度为1000M，并且是全
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Shell 脚本在 linux 系统管理员的运维工作中非常重要。它是一个脚本，并不能作为正式的编程语言。因为是跑在 linux 的shell 中，所以叫 shell 脚本。说白了， shell 脚本就是一些命令的合集。例如
+
+进入到 /tmp/ 目录；
+列出当前目录中所有的文件名；
+把所有当前的文件拷贝
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/1. Linux 基础/55. Linux查看网卡速度调整工作模式/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Shell/1. shell 脚本介绍/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1013,7 +1020,7 @@ TCP四次挥手
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/1. Linux 基础/8. Linux 增加和删除用户组/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/9. zabbix 配置邮件告警/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1032,7 +1039,7 @@ TCP四次挥手
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/1. Linux 基础/8. Linux 增加和删除用户组/" itemprop="url">Linux 增加和删除用户组</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Zabbix/9. zabbix 配置邮件告警/" itemprop="url">zabbix 配置邮件告警</a></h1>
         
 
         <div class="post-meta">
@@ -1044,7 +1051,7 @@ TCP四次挥手
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T01:55:11+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:13:44+08:00">
                 2017-09-03
               </time>
             
@@ -1081,13 +1088,13 @@ TCP四次挥手
       
         
           
-          1.新增一个组&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;命令：groupadd&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;语法：
-1groupadd [-g GID] groupname
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;不加“-g
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;设置触发器的目的是为了让监控的服务实现告警，下面来配置一下邮件告警。发邮件是服务器通过子机的 sendmail 服务发出的，有时候如果配置不合适或者服务没有启动，是发不出邮件的。所以，要先测试一下。
+1[root@zabbix ~]# yum install -y sendmail
+&#160;&#16
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/1. Linux 基础/8. Linux 增加和删除用户组/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Zabbix/9. zabbix 配置邮件告警/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1133,7 +1140,7 @@ TCP四次挥手
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/1. Linux 基础/4. Linux 环境变量/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/7. Zabbix脚本报警介质自定义/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1152,7 +1159,7 @@ TCP四次挥手
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/1. Linux 基础/4. Linux 环境变量/" itemprop="url">Linux 环境变量</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Zabbix/7. Zabbix脚本报警介质自定义/" itemprop="url">Zabbix脚本报警介质自定义</a></h1>
         
 
         <div class="post-meta">
@@ -1164,7 +1171,7 @@ TCP四次挥手
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T01:55:11+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:13:44+08:00">
                 2017-09-03
               </time>
             
@@ -1201,15 +1208,17 @@ TCP四次挥手
       
         
           
-          显示环境变量1echo $[变量名]
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;示例：
-12echo $HOME/root
-设置一个新的环境变量123$ export HELLO="Hello!"$ echo $HELLOHello!
-查看全局环境变量命令：env&#160;&#160;&#160;&#160;&#160;&#160;&#160
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;zabbix支持mail报警，sms报警，以及自定义报警，用到最多的还是脚本报警，当事件通知到脚本，会传递给脚本三个参数。
+
+$1：发送给谁
+$2：标题
+$3：报警内容
+
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;添加媒介类型：Adminstrato
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/1. Linux 基础/4. Linux 环境变量/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Zabbix/7. Zabbix脚本报警介质自定义/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1255,7 +1264,7 @@ TCP四次挥手
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/1. Linux 基础/36. Linux解压大于4G的压缩包/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/8. Zabbix事件通知/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1274,7 +1283,7 @@ TCP四次挥手
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/1. Linux 基础/36. Linux解压大于4G的压缩包/" itemprop="url">Linux解压大于4G的压缩包</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Zabbix/8. Zabbix事件通知/" itemprop="url">Zabbix事件通知</a></h1>
         
 
         <div class="post-meta">
@@ -1286,7 +1295,7 @@ TCP四次挥手
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T01:55:11+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:13:44+08:00">
                 2017-09-03
               </time>
             
@@ -1323,12 +1332,12 @@ TCP四次挥手
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Linux下不支持解压大于4G的zip压缩包。解决办法如下：
-12wget -c http://packages.sw.be/p7zip/p7zip-9.13-1.el5.rf.i386.rpmwget -c http://packages.sw.be/p7zip/p7zip-plugins-9.13-
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;监控项也扯了，触发器也做了，也确实收到告警了，但是你得一直坐屏幕前面盯着啊，你总得休息吧。总得回家吧。那么对应的我触发器触发了我就得做点什么了，比如发报警邮件或者短信等等。运维工程师又不是服务器保安，没必要天天坐在监控机旁边守着。。
+通知事件&#160;&#160;&#160;&#160;&#160;&
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/1. Linux 基础/36. Linux解压大于4G的压缩包/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Zabbix/8. Zabbix事件通知/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1374,7 +1383,7 @@ TCP四次挥手
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/1. Linux 基础/66. Linux日志文件总管-logrotate/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/6. zabbix使用自动发现功能监控服务器各JVM进程状态/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1393,7 +1402,7 @@ TCP四次挥手
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/1. Linux 基础/66. Linux日志文件总管-logrotate/" itemprop="url">Linux日志总管-logrotate</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Zabbix/6. zabbix使用自动发现功能监控服务器各JVM进程状态/" itemprop="url">zabbix使用自动发现功能监控服务器各JVM进程状态</a></h1>
         
 
         <div class="post-meta">
@@ -1405,7 +1414,7 @@ TCP四次挥手
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T01:55:11+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:13:44+08:00">
                 2017-09-03
               </time>
             
@@ -1442,12 +1451,16 @@ TCP四次挥手
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;日志文件包含了关于系统中发生的事件的有用信息，在排障过程中或者系统性能分析时经常被用到。对于忙碌的服务器，日志文件大小会增长极快，服务器会很快消耗磁盘空间，这成了个问题。除此之外，处理一个单个的庞大日志文件也常常是件十分棘手的事。
-&#160;&#160;&#160;&#160;&#160;&#160;
+          前言&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为什么需要做服务器jvm自动发现的监控呢？这个事情主要有两点原因：
+
+zabbix默认监控jvm状态是使用jmx中转进行监控的，监控效率比较低下
+zabbix使用jmx监控jvm的时候由于一个主机上的键值不能重复，也就导致了一台主机上只能监控一个jvm实例
+
+&#160;&#160;&#160;&#
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/1. Linux 基础/66. Linux日志文件总管-logrotate/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Zabbix/6. zabbix使用自动发现功能监控服务器各JVM进程状态/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1488,7 +1501,7 @@ TCP四次挥手
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/60/">60</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1533,7 +1546,7 @@ TCP四次挥手
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">136</span>
+                <span class="site-state-item-count">599</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1546,7 +1559,7 @@ TCP四次挥手
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">37</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1614,7 +1627,7 @@ TCP四次挥手
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
+    NexT.Pisces
   </a>
 </div>
 
@@ -1693,6 +1706,13 @@ TCP四次挥手
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
 
   
     <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>

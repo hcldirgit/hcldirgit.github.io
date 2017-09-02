@@ -1,0 +1,791 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Apache,LAMP," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="三种MPM介绍&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Apache 2.X  支持插入式并行处理模块，称为多路处理模块（MPM）。在编译apache时必须选择也只能选择一个MPM，对类UNIX系统，有几个不同的MPM可供选择，它们会影响到apache的速度和可伸缩性。  &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;">
+<meta name="keywords" content="Apache,LAMP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Apache Prefork、Worker和Event三种MPM分析">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/09/03/Apache/9. Apache Prefork、Worker和Event三种MPM分析/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="三种MPM介绍&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Apache 2.X  支持插入式并行处理模块，称为多路处理模块（MPM）。在编译apache时必须选择也只能选择一个MPM，对类UNIX系统，有几个不同的MPM可供选择，它们会影响到apache的速度和可伸缩性。  &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-01T08:40:41.152Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Apache Prefork、Worker和Event三种MPM分析">
+<meta name="twitter:description" content="三种MPM介绍&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Apache 2.X  支持插入式并行处理模块，称为多路处理模块（MPM）。在编译apache时必须选择也只能选择一个MPM，对类UNIX系统，有几个不同的MPM可供选择，它们会影响到apache的速度和可伸缩性。  &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/09/03/Apache/9. Apache Prefork、Worker和Event三种MPM分析/"/>
+
+
+
+
+
+  <title>Apache Prefork、Worker和Event三种MPM分析 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Apache/9. Apache Prefork、Worker和Event三种MPM分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Apache Prefork、Worker和Event三种MPM分析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:00:30+08:00">
+                2017-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="三种MPM介绍"><a href="#三种MPM介绍" class="headerlink" title="三种MPM介绍"></a>三种MPM介绍</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Apache 2.X  支持插入式并行处理模块，称为多路处理模块（MPM）。在编译apache时必须选择也只能选择一个MPM，对类UNIX系统，有几个不同的MPM可供选择，它们会影响到apache的速度和可伸缩性。 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>Prefork MPM</strong> : 这个多路处理模块(MPM)实现了一个非线程型的、预派生的web服务器，它的工作方式类似于Apache 1.3。它适合于没有线程安全库，需要避免线程兼容性问题的系统。它是要求将每个请求相互独立的情况下最好的MPM，这样若一个请求出现问题就不会影响到其他请求。<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个MPM具有很强的自我调节能力，只需要很少的配置指令调整。最重要的是将<code>MaxClients</code>设置为一个足够大的数值以处理潜在的请求高峰，同时又不能太大，以致需要使用的内存超出物理内存的大小。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>Worker MPM</strong> : 此多路处理模块(MPM)使网络服务器支持混合的多线程多进程。由于使用线程来处理请求，所以可以处理海量请求，而系统资源的开销小于基于进程的MPM。但是，它也使用了多进程，每个进程又有多个线程，以获得基于进程的MPM的稳定性。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;每个进程可以拥有的线程数量是固定的。服务器会根据负载情况增加或减少进程数量。一个单独的控制进程(父进程)负责子进程的建立。每个子进程可以建立ThreadsPerChild数量的服务线程和一个监听线程，该监听线程监听接入请求并将其传递给服务线程处理和应答。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>不管是Worker模式或是Prefork 模式，Apache总是试图保持一些备用的(spare)或者是空闲的子进程（空闲的服务线程池）用于迎接即将到来的请求。这样客户端就不需要在得到服务前等候子进程的产生。</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>Event MPM</strong> ：以上两种稳定的MPM方式在非常繁忙的服务器应用下都有些不足。尽管HTTP的Keepalive方式能减少TCP连接数量和网络负载，但是 Keepalive需要和服务进程或者线程绑定，这就导致一个繁忙的服务器会耗光所有的线程。 Event MPM是解决这个问题的一种新模型，它把服务进程从连接中分离出来。在服务器处理速度很快，同时具有非常高的点击率时，可用的线程数量就是关键的资源限 制，此时Event MPM方式是最有效的。一个以Worker MPM方式工作的繁忙服务器能够承受每秒好几万次的访问量（例如在大型新闻服务站点的高峰时），而Event MPM可以用来处理更高负载。值得注意的是，Event MPM不能在安全HTTP（HTTPS）访问下工作。 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;对于Event 模式，apache给出了以下警告：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">This MPM is experimental, so it may or may not work as expected .</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这种MPM目前处于试验状态，他可能不能按照预期的那样工作。</p>
+<h2 id="如何配置三种MPM"><a href="#如何配置三种MPM" class="headerlink" title="如何配置三种MPM"></a>如何配置三种MPM</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Prefork 是UNIX平台上默认的MPM，它所采用的预派生子进程方式也是apache 1.3中采用的模式。prefork 本身并没有使用到线程，2.0 版本使用它是为了与1.3版保持兼容性；另一方面，perfork用单独的子进程来处理不同的请示，之程之间是彼此独立的，这也使其成为最稳定的MPM之一 。</p>
+<h3 id="如何查看当前安装的Apache-的三种MPM。"><a href="#如何查看当前安装的Apache-的三种MPM。" class="headerlink" title="如何查看当前安装的Apache 的三种MPM。"></a>如何查看当前安装的Apache 的三种MPM。</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@localhost apache]<span class="comment"># httpd -l</span></div><div class="line">Compiled <span class="keyword">in</span> modules:</div><div class="line">  core.c</div><div class="line">  prefork.c</div><div class="line">  http_core.c</div><div class="line">  mod_so.c</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果你看到perfork.c 则表示当前为perfork MPM模式。worker.c 则表示为 worker MPM模式。</p>
+<h3 id="那么如何设置apache的MPM呢？"><a href="#那么如何设置apache的MPM呢？" class="headerlink" title="那么如何设置apache的MPM呢？"></a>那么如何设置apache的MPM呢？</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需要的apache 配置安装的时候需要指定模式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost httpd-2.4.1]<span class="comment"># ./configure --prefix=/usr/local/apache2worker --enable-so --with-mpm=worker </span></div><div class="line">[root@localhost httpd-2.4.1]<span class="comment"># make</span></div><div class="line">[root@localhost httpd-2.4.1]<span class="comment"># make install</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;指定–with-mpm=NAME 选项指定MPM，NAME就是你想使用的MPM的名称。不指定模式的话，默认为Prefork MPM。 </p>
+<h3 id="那么如何配置成Event-MPM？"><a href="#那么如何配置成Event-MPM？" class="headerlink" title="那么如何配置成Event MPM？"></a>那么如何配置成Event MPM？</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;同我上面的方法一样，只需要在安装的时候加上以下参数： <code>--enable-nonportable-atomics=yes</code> </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需要注意的是Event MPM对于老的CPU可能是不支持的。</p>
+<h2 id="三种MPM参数分析"><a href="#三种MPM参数分析" class="headerlink" title="三种MPM参数分析"></a>三种MPM参数分析</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;不管你安装的是apache哪种MPM</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在安装完成之后打开…/apache/conf/extra/httpd-mpm.conf文件，找到如下配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># perfork MPM</span></div><div class="line">&lt;IfModule mpm_prefork_module&gt;</div><div class="line">StartServers 5</div><div class="line">MinSpareServers 5</div><div class="line">MaxSpareServers 10</div><div class="line">MaxRequestWorkers 250</div><div class="line">MaxConnectionsPerChild 0</div><div class="line">&lt;/IfModule&gt;</div></pre></td></tr></table></figure>
+<ul>
+<li>StartServers:　　数量的服务器进程开始</li>
+<li>MinSpareServers:　　最小数量的服务器进程,保存备用</li>
+<li>MaxSpareServers:　　最大数量的服务器进程,保存备用</li>
+<li>MaxRequestWorkers:　　最大数量的服务器进程允许开始</li>
+<li>MaxConnectionsPerChild:　　最大连接数的一个服务器进程服务</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;prefork 控制进程在最初建立“StartServers”个子进程后，为了满足MinSpareServers设置的需要创建一个进程，等待一秒钟，继续创建两 个，再等待一秒钟，继续创建四个……如此按指数级增加创建的进程数，最多达到每秒32个，直到满足MinSpareServers设置的值为止。这种模式 可以不必在请求到来时再产生新的进程，从而减小了系统开销以增加性能。MaxSpareServers设置了最大的空闲进程数，如果空闲进程数大于这个 值，Apache会自动kill掉一些多余进程。这个值不要设得过大，但如果设的值比MinSpareServers小，Apache会自动把其调整为 MinSpareServers+1。如果站点负载较大，可考虑同时加大MinSpareServers和MaxSpareServers。  </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MaxRequestsPerChild设置的是每个子进程可处理的请求数。每个子进程在处理了“MaxRequestsPerChild”个请求后将自 动销毁。0意味着无限，即子进程永不销毁。虽然缺省设为0可以使每个子进程处理更多的请求，但如果设成非零值也有两点重要的好处：</p>
+<ol>
+<li>可防止意外的内存泄漏。</li>
+<li>在服务器负载下降的时侯会自动减少子进程数。</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;因此，可根据服务器的负载来调整这个值。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>MaxRequestWorkers指令集同时将服务请求的数量上的限制。任何连接尝试在MaxRequestWorkerslimit将通常被排队，最多若干基于上ListenBacklog指令。</strong> </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>在apache2.3.13以前的版本MaxRequestWorkers被称为MaxClients 。</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;（MaxClients是这些指令中最为重要的一个，设定的是 Apache可以同时处理的请求，是对Apache性能影响最大的参数。其缺省值150是远远不够的，如果请求总数已达到这个值（可通过ps -ef|grep http|wc -l来确认），那么后面的请求就要排队，直到某个已处理请求完毕。这就是系统资源还剩下很多而HTTP访问却很慢的主要原因。虽然理论上这个值越大，可以 处理的请求就越多，但Apache默认的限制不能大于256。）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># worker MPM </span></div><div class="line">&lt;IfModule mpm_worker_module&gt;</div><div class="line">StartServers 3</div><div class="line">MinSpareThreads 75</div><div class="line">MaxSpareThreads 250 </div><div class="line">ThreadsPerChild 25</div><div class="line">MaxRequestWorkers 400</div><div class="line">MaxConnectionsPerChild 0</div><div class="line">&lt;/IfModule&gt;</div></pre></td></tr></table></figure>
+<ul>
+<li>StartServers:　　初始数量的服务器进程开始</li>
+<li>MinSpareThreads:　　最小数量的工作线程,保存备用</li>
+<li>MaxSpareThreads:　　最大数量的工作线程,保存备用</li>
+<li>ThreadsPerChild:　　固定数量的工作线程在每个服务器进程</li>
+<li>MaxRequestWorkers:　　最大数量的工作线程</li>
+<li>MaxConnectionsPerChild:　　最大连接数的一个服务器进程服务</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Worker 由主控制进程生成“StartServers”个子进程，每个子进程中包含固定的ThreadsPerChild线程数，各个线程独立地处理请求。同样， 为了不在请求到来时再生成线程，MinSpareThreads和MaxSpareThreads设置了最少和最多的空闲线程数；</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;而MaxRequestWorkers 设置了同时连入的clients最大总数。如果现有子进程中的线程总数不能满足负载，控制进程将派生新的子进程 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MinSpareThreads和 MaxSpareThreads的最大缺省值分别是75和250。这两个参数对Apache的性能影响并不大，可以按照实际情况相应调节 。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;ThreadsPerChild是worker MPM中与性能相关最密切的指令。ThreadsPerChild的最大缺省值是64，如果负载较大，64也是不够的。这时要显式使用 ThreadLimit指令，它的最大缺省值是20000。 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Worker模式下所能同时处理的请求总数是由子进程总数乘以ThreadsPerChild 值决定的，应该大于等于MaxRequestWorkers。如果负载很大，现有的子进程数不能满足时，控制进程会派生新的子进程。默认最大的子进程总数是16，加大时 也需要显式声明ServerLimit（最大值是20000）。需要注意的是，如果显式声明了ServerLimit，那么它乘以 ThreadsPerChild的值必须大于等于MaxRequestWorkers，而且MaxRequestWorkers必须是ThreadsPerChild的整数倍，否则 Apache将会自动调节到一个相应值。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># event MPM</span></div><div class="line">&lt;IfModule mpm_event_module&gt;</div><div class="line">StartServers 3</div><div class="line">MinSpareThreads 75</div><div class="line">MaxSpareThreads 250</div><div class="line">ThreadsPerChild 25</div><div class="line">MaxRequestWorkers 400</div><div class="line">MaxConnectionsPerChild 0</div><div class="line">&lt;/IfModule&gt;</div></pre></td></tr></table></figure>
+<ul>
+<li>StartServers:初始数量的服务器进程开始</li>
+<li>MinSpareThreads:　　最小数量的工作线程,保存备用</li>
+<li>MaxSpareThreads:　　最大数量的工作线程,保存备用</li>
+<li>ThreadsPerChild:　　固定数量的工作线程在每个服务器进程</li>
+<li>MaxRequestWorkers:　　最大数量的工作线程</li>
+<li>MaxConnectionsPerChild:　　最大连接数的一个服务器进程服务</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Apache/" rel="tag"># Apache</a>
+          
+            <a href="/tags/LAMP/" rel="tag"># LAMP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/03/Apache/8. Apache 的 mpm 工作模式/" rel="next" title="Apache 的 mpm 工作模式">
+                <i class="fa fa-chevron-left"></i> Apache 的 mpm 工作模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/03/Cacti/1. cacti 安装/" rel="prev" title="cacti 安装">
+                cacti 安装 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">599</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#三种MPM介绍"><span class="nav-number">1.</span> <span class="nav-text">三种MPM介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何配置三种MPM"><span class="nav-number">2.</span> <span class="nav-text">如何配置三种MPM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何查看当前安装的Apache-的三种MPM。"><span class="nav-number">2.1.</span> <span class="nav-text">如何查看当前安装的Apache 的三种MPM。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#那么如何设置apache的MPM呢？"><span class="nav-number">2.2.</span> <span class="nav-text">那么如何设置apache的MPM呢？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#那么如何配置成Event-MPM？"><span class="nav-number">2.3.</span> <span class="nav-text">那么如何配置成Event MPM？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三种MPM参数分析"><span class="nav-number">3.</span> <span class="nav-text">三种MPM参数分析</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

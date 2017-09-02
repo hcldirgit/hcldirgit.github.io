@@ -1,0 +1,752 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="LVS,keepalived," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;摘要： 包括阿里云在内的很多云环境，因为不支持浮动IP广受诟病。目前阿里云在VPC网络下发布了HAVIP，能够实现arp宣告IP。这样也就让自己搭建HA成为了可能，有幸拿到了内测权限体验了一下。(classical网络依然不支持) 测试环境： 1 2 3 4 5 6 VPC：192. &amp;#160;&amp;#1">
+<meta name="keywords" content="LVS,keepalived">
+<meta property="og:type" content="article">
+<meta property="og:title" content="阿里云下配置keepalive，利用HAVIP实现HA">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/09/03/LVS/23. 阿里云下配置keepalive，利用HAVIP实现HA/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;摘要： 包括阿里云在内的很多云环境，因为不支持浮动IP广受诟病。目前阿里云在VPC网络下发布了HAVIP，能够实现arp宣告IP。这样也就让自己搭建HA成为了可能，有幸拿到了内测权限体验了一下。(classical网络依然不支持) 测试环境： 1 2 3 4 5 6 VPC：192. &amp;#160;&amp;#1">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E9%98%BF%E9%87%8C%E4%BA%91%E4%B8%8B%E9%85%8D%E7%BD%AEkeepalive%EF%BC%8C%E5%88%A9%E7%94%A8HAVIP%E5%AE%9E%E7%8E%B0HA/01.jpeg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E9%98%BF%E9%87%8C%E4%BA%91%E4%B8%8B%E9%85%8D%E7%BD%AEkeepalive%EF%BC%8C%E5%88%A9%E7%94%A8HAVIP%E5%AE%9E%E7%8E%B0HA/02.jpeg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E9%98%BF%E9%87%8C%E4%BA%91%E4%B8%8B%E9%85%8D%E7%BD%AEkeepalive%EF%BC%8C%E5%88%A9%E7%94%A8HAVIP%E5%AE%9E%E7%8E%B0HA/03.jpeg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E9%98%BF%E9%87%8C%E4%BA%91%E4%B8%8B%E9%85%8D%E7%BD%AEkeepalive%EF%BC%8C%E5%88%A9%E7%94%A8HAVIP%E5%AE%9E%E7%8E%B0HA/04.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E9%98%BF%E9%87%8C%E4%BA%91%E4%B8%8B%E9%85%8D%E7%BD%AEkeepalive%EF%BC%8C%E5%88%A9%E7%94%A8HAVIP%E5%AE%9E%E7%8E%B0HA/05.jpeg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E9%98%BF%E9%87%8C%E4%BA%91%E4%B8%8B%E9%85%8D%E7%BD%AEkeepalive%EF%BC%8C%E5%88%A9%E7%94%A8HAVIP%E5%AE%9E%E7%8E%B0HA/06.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E9%98%BF%E9%87%8C%E4%BA%91%E4%B8%8B%E9%85%8D%E7%BD%AEkeepalive%EF%BC%8C%E5%88%A9%E7%94%A8HAVIP%E5%AE%9E%E7%8E%B0HA/07.png?raw=true">
+<meta property="og:updated_time" content="2017-09-01T08:53:37.781Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="阿里云下配置keepalive，利用HAVIP实现HA">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;摘要： 包括阿里云在内的很多云环境，因为不支持浮动IP广受诟病。目前阿里云在VPC网络下发布了HAVIP，能够实现arp宣告IP。这样也就让自己搭建HA成为了可能，有幸拿到了内测权限体验了一下。(classical网络依然不支持) 测试环境： 1 2 3 4 5 6 VPC：192. &amp;#160;&amp;#1">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/%E9%98%BF%E9%87%8C%E4%BA%91%E4%B8%8B%E9%85%8D%E7%BD%AEkeepalive%EF%BC%8C%E5%88%A9%E7%94%A8HAVIP%E5%AE%9E%E7%8E%B0HA/01.jpeg?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/09/03/LVS/23. 阿里云下配置keepalive，利用HAVIP实现HA/"/>
+
+
+
+
+
+  <title>阿里云下配置keepalive，利用HAVIP实现HA | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/LVS/23. 阿里云下配置keepalive，利用HAVIP实现HA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">阿里云下配置keepalive，利用HAVIP实现HA</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:04:46+08:00">
+                2017-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;摘要： 包括阿里云在内的很多云环境，因为不支持浮动IP广受诟病。目前阿里云在VPC网络下发布了HAVIP，能够实现arp宣告IP。这样也就让自己搭建HA成为了可能，有幸拿到了内测权限体验了一下。(classical网络依然不支持) 测试环境： 1 2 3 4 5 6 VPC：192.</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;包括阿里云在内的很多云环境，因为不支持浮动IP广受诟病。目前阿里云在VPC网络下发布了HAVIP，能够实现arp宣告IP。这样也就让自己搭建HA成为了可能，有幸拿到了内测权限体验了一下。(classical网络依然不支持)<br>测试环境：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E9%98%BF%E9%87%8C%E4%BA%91%E4%B8%8B%E9%85%8D%E7%BD%AEkeepalive%EF%BC%8C%E5%88%A9%E7%94%A8HAVIP%E5%AE%9E%E7%8E%B0HA/01.jpeg?raw=true" alt=""></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"> VPC：192.168.1.0/24 </div><div class="line"> ECS: </div><div class="line"> nginx1：192.168.1.1 </div><div class="line"> nginx2:192.168.1.2 </div><div class="line"> HAVIP:192.168.1.3 </div><div class="line">绑定到havip的公网EIP：121.43.187.37</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置完毕后的拓扑如下：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E9%98%BF%E9%87%8C%E4%BA%91%E4%B8%8B%E9%85%8D%E7%BD%AEkeepalive%EF%BC%8C%E5%88%A9%E7%94%A8HAVIP%E5%AE%9E%E7%8E%B0HA/02.jpeg?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;环境搭建完毕后，登陆主备ECS服务器，分别配置nginx+keepalived</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@Nginx1 ~]<span class="comment"># yum install nginx keepalived -y</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MASTER服务器（nginx1）配置文件/etc/keepalived/keepalived.conf内容以及解释如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line">! Configuration File <span class="keyword">for</span> keepalived </div><div class="line"> <span class="comment">#配置global_defs，主要用于标示机器，以及故障时通知</span></div><div class="line">  global_defs &#123;  </div><div class="line">   router_id Nginx1 </div><div class="line"> &#125;</div><div class="line"> <span class="comment">#配置vrrp_script，主要用于健康检查，以及检查失败后执行的动作。</span></div><div class="line">  vrrp_script chk_nginx &#123; </div><div class="line"> <span class="comment">#健康检查脚本，当脚本返回值不为0时认为失败</span></div><div class="line">   script <span class="string">"/etc/keepalived/ck_ng.sh"</span> </div><div class="line"> <span class="comment">#检查频率，以下配置每2秒检查1次</span></div><div class="line">   interval 2 </div><div class="line"> <span class="comment">#当检查失败后，将vrrp_instance的priority减小5</span></div><div class="line">   weight -5 </div><div class="line"> <span class="comment">#连续监测失败3次，才认为真的健康检查失败。并调整优先级</span></div><div class="line">   fall 3 </div><div class="line"> <span class="comment">#连续监测2次成功，就认为成功。但不调整优先级</span></div><div class="line">   rise 2 </div><div class="line"> &#125;</div><div class="line">  </div><div class="line"> <span class="comment">#定义对外提供服务的VIP vrrp_instance配置</span></div><div class="line">  vrrp_instance VI_1 &#123; </div><div class="line"> <span class="comment">#指定vrrp_instance的初始状态，是MASTER还是BackUP主要还是看优先级。</span></div><div class="line">   state MASTER </div><div class="line"> <span class="comment">#指定vrrp_instance绑定的网卡，最终会通过指定的网卡宣告VIP</span></div><div class="line">   interface eth0 </div><div class="line"> <span class="comment">#发送心跳包的源IP，可使用绑定的网卡IP，也可以使用本服务器上的其他IP</span></div><div class="line">   mcast_src_ip 192.168.1.1 </div><div class="line"> <span class="comment">#相当于VRID，用于在一个网内区分组播，需要组播域内内唯一。</span></div><div class="line">   virtual_router_id 55 </div><div class="line"> <span class="comment">#本机的优先级，VRID相同的机器中，优先级最高的会被选举为MASTER</span></div><div class="line">   priority 101 </div><div class="line"> <span class="comment">#心跳间隔，下面配置，MASTER会每隔1秒发送一个报文高职组内其他机器，自己还活着。</span></div><div class="line">   advert_int 1 </div><div class="line"> <span class="comment">#定义主从的验证方式以及密码，一般使用PASS(最长8位，超过了只会识别前8位作为密码)</span></div><div class="line">   authentication &#123; </div><div class="line">   auth_type PASS </div><div class="line">   auth_pass aliyun </div><div class="line">   &#125; </div><div class="line"> <span class="comment">#VIP,在阿里云下就是刚才创建的HAVIP</span></div><div class="line">   virtual_ipaddress &#123; </div><div class="line">   192.168.1.4 </div><div class="line">   &#125; </div><div class="line"> <span class="comment">#本vrrp_instance所引用的脚本配置，名称就是vrrp_script 定义的容器名</span></div><div class="line">   track_script &#123; </div><div class="line">   chk_nginx</div><div class="line">   &#125; </div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;BACKUP服务器（nginx2）的配置需要修改：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">state MASTER改为 state BACKUP </div><div class="line">mcast_src_ip 192.168.1.1改为backup服务器实际的IP mcast_src_ip 192.168.1.2 </div><div class="line">priority 101改小一些，比如 priority 100</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其它保持一致即可</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为了实现nginx服务异常的时候能够自动切换，需要自己写一个脚本，脚本没有硬性的要求，能够实现目标即可，这里 监控nginx进程数为例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">vim /etc/keepalived/ck_ng.sh</div><div class="line"></div><div class="line"> <span class="comment">#!/bin/bash</span></div><div class="line"> <span class="comment">#检查nginx进程是否存在</span></div><div class="line">  count=$(ps -C nginx --no-heading|wc -l) </div><div class="line"> <span class="comment">#进程数等于0的时候</span></div><div class="line">  <span class="keyword">if</span> [ <span class="string">"<span class="variable">$&#123;count&#125;</span>"</span> = <span class="string">"0"</span> ]; <span class="keyword">then</span> </div><div class="line"> <span class="comment">#尝试启动一次nginx，停止2秒后再次检测</span></div><div class="line">   service nginx start </div><div class="line">   sleep 2 </div><div class="line">   count=$(ps -C nginx --no-heading|wc -l) </div><div class="line">   <span class="keyword">if</span> [ <span class="string">"<span class="variable">$&#123;count&#125;</span>"</span> = <span class="string">"0"</span> ]; <span class="keyword">then</span> </div><div class="line"> <span class="comment">#如果启动没成功，就杀掉keepalive触发主备切换</span></div><div class="line">   /etc/init.d/keepalived stop </div><div class="line">   <span class="keyword">fi</span> </div><div class="line"> <span class="keyword">fi</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;增加脚本的执行权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chmod +x vim /etc/keepalived/ck_ng.sh</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;分别启动nginx1和nginx2的nginx&amp;keepalived服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@Nginx1 ~]<span class="comment"># /etc/init.d/nginx start;/etc/init.d/keepalived start </span></div><div class="line">Starting nginx: [ OK ] </div><div class="line">Starting keepalived: [ OK ]</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;测试：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;NGINX1/192.168.1.1的priority 为101，NGINX2/192.168.1.2的priority为100，这时候访问HAVIP绑定的EIP：<a href="http://121.43.187.37/可以看到访问到了服务器NGINX1,如下：" target="_blank" rel="external">http://121.43.187.37/可以看到访问到了服务器NGINX1,如下：</a></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E9%98%BF%E9%87%8C%E4%BA%91%E4%B8%8B%E9%85%8D%E7%BD%AEkeepalive%EF%BC%8C%E5%88%A9%E7%94%A8HAVIP%E5%AE%9E%E7%8E%B0HA/03.jpeg?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;到HAVIP控制台查看，192.168.1.1的服务器为主服务器</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E9%98%BF%E9%87%8C%E4%BA%91%E4%B8%8B%E9%85%8D%E7%BD%AEkeepalive%EF%BC%8C%E5%88%A9%E7%94%A8HAVIP%E5%AE%9E%E7%8E%B0HA/04.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这时候我们KILL掉nginx1服务器的nginx服务</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看日志，发送了移除VIP的报文：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Oct 23 17:20:01 iZ239aqzdi7Z Keepalived_vrrp[25019]: VRRP_Instance(VI_1) sending 0 priority </div><div class="line">Oct 23 17:20:01 iZ239aqzdi7Z Keepalived_vrrp[25019]: VRRP_Instance(VI_1) removing protocol VIPs. </div><div class="line">Oct 23 17:20:01 iZ239aqzdi7Z Keepalived_healthcheckers[25018]: Netlink reflector reports IP 192.168.1.3 removed</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这时候访问<a href="http://121.43.187.37/，可以看到访问自动切换到了NGINX2" target="_blank" rel="external">http://121.43.187.37/，可以看到访问自动切换到了NGINX2</a></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E9%98%BF%E9%87%8C%E4%BA%91%E4%B8%8B%E9%85%8D%E7%BD%AEkeepalive%EF%BC%8C%E5%88%A9%E7%94%A8HAVIP%E5%AE%9E%E7%8E%B0HA/05.jpeg?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;到HAVIP控制台查看，192.168.1.2的服务器为主服务器</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E9%98%BF%E9%87%8C%E4%BA%91%E4%B8%8B%E9%85%8D%E7%BD%AEkeepalive%EF%BC%8C%E5%88%A9%E7%94%A8HAVIP%E5%AE%9E%E7%8E%B0HA/06.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;重新启动nginx1的nginx和keepalive服务</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看日志可以看到keepalive重新发送了IP宣告的报文</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Oct 23 17:22:14 iZ239aqzdi7Z Keepalived_vrrp[25610]: VRRP_Instance(VI_1) Entering MASTER STATE </div><div class="line">Oct 23 17:22:14 iZ239aqzdi7Z Keepalived_vrrp[25610]: VRRP_Instance(VI_1) setting protocol VIPs. </div><div class="line">Oct 23 17:22:14 iZ239aqzdi7Z Keepalived_vrrp[25610]: VRRP_Instance(VI_1) Sending gratuitous ARPs on eth0 <span class="keyword">for</span> 192.168.1.3 </div><div class="line">Oct 23 17:22:14 iZ239aqzdi7Z Keepalived_healthcheckers[25609]: Netlink reflector reports IP 192.168.1.3 added </div><div class="line">Oct 23 17:22:19 iZ239aqzdi7Z Keepalived_vrrp[25610]: VRRP_Instance(VI_1) Sending gratuitous ARPs on eth0 <span class="keyword">for</span> 192.168.1.3</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;重新访问<a href="http://121.43.187.37/测试，重新访问到了服务器NGINX1，到HAVIP控制台查看，192.168.1.1的服务器重新夺回了控制权，成为了为主服务器" target="_blank" rel="external">http://121.43.187.37/测试，重新访问到了服务器NGINX1，到HAVIP控制台查看，192.168.1.1的服务器重新夺回了控制权，成为了为主服务器</a></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E9%98%BF%E9%87%8C%E4%BA%91%E4%B8%8B%E9%85%8D%E7%BD%AEkeepalive%EF%BC%8C%E5%88%A9%E7%94%A8HAVIP%E5%AE%9E%E7%8E%B0HA/07.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样就实现了阿里云环境下的HA切换。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;实际测试，阿里云的多个HAVIP可以绑定到同样的两台机器，可以配置多组        vrrp_instance来实现双主。或者两台服务器同时为两个业务服务，避免资源浪费。同时能够做到主备</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/LVS/" rel="tag"># LVS</a>
+          
+            <a href="/tags/keepalived/" rel="tag"># keepalived</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/03/LVS/3. LVS 负载均衡 fullnat 模式和 nat 模式的区别/" rel="next" title="LVS 负载均衡 fullnat 模式和 nat 模式的区别">
+                <i class="fa fa-chevron-left"></i> LVS 负载均衡 fullnat 模式和 nat 模式的区别
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/03/LVS/4. keepalived 单独配置文件/" rel="prev" title="keepalived 单独配置文件">
+                keepalived 单独配置文件 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">599</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

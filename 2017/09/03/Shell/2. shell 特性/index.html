@@ -1,0 +1,795 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="shell," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="命令历史&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;敲过的命令，Linux 是会有记录的，预设可以记录1000条历史命令。这些命令保存在用户的家目录中的 .bash-history 文件中。只有当用户正常退出当前的 shell 时，在当前 shell 中运行的命令才会保存至 .bash_history 文件中。 环境变量 HISTSIZE：命令历">
+<meta name="keywords" content="shell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shell 特性">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/09/03/Shell/2. shell 特性/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="命令历史&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;敲过的命令，Linux 是会有记录的，预设可以记录1000条历史命令。这些命令保存在用户的家目录中的 .bash-history 文件中。只有当用户正常退出当前的 shell 时，在当前 shell 中运行的命令才会保存至 .bash_history 文件中。 环境变量 HISTSIZE：命令历">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-02T17:33:48.738Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="shell 特性">
+<meta name="twitter:description" content="命令历史&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;敲过的命令，Linux 是会有记录的，预设可以记录1000条历史命令。这些命令保存在用户的家目录中的 .bash-history 文件中。只有当用户正常退出当前的 shell 时，在当前 shell 中运行的命令才会保存至 .bash_history 文件中。 环境变量 HISTSIZE：命令历">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/09/03/Shell/2. shell 特性/"/>
+
+
+
+
+
+  <title>shell 特性 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Shell/2. shell 特性/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">shell 特性</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:19:24+08:00">
+                2017-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="命令历史"><a href="#命令历史" class="headerlink" title="命令历史"></a>命令历史</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;敲过的命令，Linux 是会有记录的，预设可以记录1000条历史命令。这些命令保存在用户的家目录中的 <code>.bash-history</code> 文件中。只有当用户正常退出当前的 shell 时，在当前 shell 中运行的命令才会保存至 .bash_history 文件中。</p>
+<h3 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h3><ul>
+<li><strong>HISTSIZE</strong>：命令历史记录的条数；</li>
+<li><strong>HISTFILE</strong>：~/.bash_history</li>
+<li><strong>HISTFILESIZE</strong>：命令历史文件记录历史的条数</li>
+<li><strong>HISTTIMEFORMAT</strong>：命令的时间戳。这个环境变量需设置，这个功能只能在这个变量被设置之后，那些新执行的 bash 命令才会被打上正确的时间戳。在此之前的所有命令，都将会显示成设置 HISTTIMEFORMAT 变量的时间。</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;设置 <code>HISTTIMEFORMAT</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> HISTTIMEFORMAT=<span class="string">'%F %T'</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看历史命令的时间戳</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">history</span> | more</div><div class="line">1 2008-08-05 19:02:39 service network restart</div><div class="line">2 2008-08-05 19:02:39 <span class="built_in">exit</span></div><div class="line">3 2008-08-05 19:02:39 id</div><div class="line">4 2008-08-05 19:02:39 cat /etc/redhat-release</div></pre></td></tr></table></figure>
+<h3 id="history-参数"><a href="#history-参数" class="headerlink" title="history 参数"></a>history 参数</h3><ul>
+<li>history [n]  n为数字，列出最近的n条命令</li>
+<li>-c  将目前shell中的所有history命令消除</li>
+<li>history [-raw] histfiles<ul>
+<li>-a 将目前新增的命令写入histfiles, 默认写入~/.bash_history</li>
+<li>-r  将histfiles内容读入到目前shell的history记忆中</li>
+<li>-w 将目前history记忆的内容写入到histfiles</li>
+</ul>
+</li>
+</ul>
+<h3 id="调用历史中的命令"><a href="#调用历史中的命令" class="headerlink" title="调用历史中的命令"></a>调用历史中的命令</h3><h4 id="命令："><a href="#命令：" class="headerlink" title="命令：!!"></a>命令：!!</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;两个连续的 “!”，表示执行上一条命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># pwd</span></div><div class="line">/root</div><div class="line">[root@localhost ~]<span class="comment"># !!</span></div><div class="line"><span class="built_in">pwd</span></div><div class="line">/root</div></pre></td></tr></table></figure>
+<h4 id="命令：-n"><a href="#命令：-n" class="headerlink" title="命令：!n"></a>命令：!n</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;”!n”，这里的 n 是数字，表示执行命令历史中第 n 条指令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># history</span></div><div class="line"></div><div class="line">.......</div><div class="line"></div><div class="line">1058 vim .bashrc</div><div class="line">1059 <span class="built_in">pwd</span></div><div class="line">1060 <span class="built_in">history</span></div><div class="line"></div><div class="line">[root@localhost ~]<span class="comment"># !1059</span></div><div class="line"><span class="built_in">pwd</span></div><div class="line">/root</div></pre></td></tr></table></figure>
+<h4 id="命令：”-字符串”"><a href="#命令：”-字符串”" class="headerlink" title="命令：”!字符串”"></a>命令：”!字符串”</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;”!字符串”（字符串大于等于1），以 p 为例，执行命令历史中最近一次 p 开头的命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># !p</span></div><div class="line"><span class="built_in">pwd</span></div><div class="line">/root</div></pre></td></tr></table></figure>
+<h2 id="别名-alias"><a href="#别名-alias" class="headerlink" title="别名 alias"></a>别名 alias</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;别名 alias 也是 bash 所特有的功能之一。可以通过 alias 把一个常用的并且很长的指令别名成简介易记的指令。不想用了还可以用 unalias 解除别名功能。直接敲 alias 会看到目前系统预设的 alias</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># alias</span></div><div class="line"><span class="built_in">alias</span> cp=<span class="string">'cp -i'</span></div><div class="line"><span class="built_in">alias</span> egrep=<span class="string">'egrep --color=auto'</span></div><div class="line"><span class="built_in">alias</span> fgrep=<span class="string">'fgrep --color=auto'</span></div><div class="line"><span class="built_in">alias</span> grep=<span class="string">'grep --color=auto'</span></div><div class="line"><span class="built_in">alias</span> l.=<span class="string">'ls -d .* --color=auto'</span></div><div class="line"><span class="built_in">alias</span> ll=<span class="string">'ls -l --color=auto'</span></div><div class="line"><span class="built_in">alias</span> ls=<span class="string">'ls --color=auto'</span></div><div class="line"><span class="built_in">alias</span> mv=<span class="string">'mv -i'</span></div><div class="line"><span class="built_in">alias</span> rm=<span class="string">'rm -i'</span></div><div class="line"><span class="built_in">alias</span> <span class="built_in">which</span>=<span class="string">'alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'</span></div></pre></td></tr></table></figure>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">alias</span> [命令别名]=[<span class="string">'具体的命令'</span>]</div></pre></td></tr></table></figure>
+<h3 id="命令格式"><a href="#命令格式" class="headerlink" title="命令格式"></a>命令格式</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;给命令自定义一个名字，当前 shell 有效</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># alias denny='pwd'</span></div><div class="line">[root@localhost ~]<span class="comment"># denny</span></div><div class="line">/root</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;取消命令别名</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># unalias denny</span></div><div class="line">[root@localhost ~]<span class="comment"># denny</span></div><div class="line">-bash: denny: <span class="built_in">command</span> not found</div></pre></td></tr></table></figure>
+<h2 id="通配符"><a href="#通配符" class="headerlink" title="通配符"></a>通配符</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;“*” 匹配零个或多个字符</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost 111]<span class="comment"># ls</span></div><div class="line">1 11.txt 1.txt 22.txt 2.txt 33.txt 3.txt 44.zip 55.zip</div><div class="line">[root@localhost 111]<span class="comment"># ls *.txt</span></div><div class="line">11.txt 1.txt 22.txt 2.txt 33.txt 3.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;“？”匹配一个字符</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost 111]<span class="comment"># ls</span></div><div class="line">1 11.txt 1.txt 22.txt 2.txt 33.txt 3.txt 44.zip 55.zip</div><div class="line">[root@localhost 111]<span class="comment"># ls ?.txt</span></div><div class="line">1.txt 2.txt 3.txt</div></pre></td></tr></table></figure>
+<h2 id="输入输出重定向（-gt-gt-gt-lt-2-gt-2-gt-gt-）"><a href="#输入输出重定向（-gt-gt-gt-lt-2-gt-2-gt-gt-）" class="headerlink" title="输入输出重定向（&gt;,&gt;&gt;,&lt;,2&gt;,2&gt;&gt;）"></a>输入输出重定向（&gt;,&gt;&gt;,&lt;,2&gt;,2&gt;&gt;）</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输入重定向用于改变命令的输入，输出重定向用于改变命令的输出。输出重定向更为常用，经常用于将命令的结果输入到文件中，而不是屏幕上。输入重定向的命令是 &lt;，输出重定向是命令是 &gt;，另外还有追加重定向&gt;&gt;，以及错误重定向2&gt;。</p>
+<h3 id="命令：-gt"><a href="#命令：-gt" class="headerlink" title="命令：&gt;"></a>命令：&gt;</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出重定向，把文件里的内容删掉，写入新的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@localhost 111]<span class="comment"># cat 1.txt</span></div><div class="line">1111</div><div class="line">[root@localhost 111]<span class="comment"># echo '222'&gt;1.txt</span></div><div class="line">[root@localhost 111]<span class="comment"># cat 1.txt</span></div><div class="line">222</div></pre></td></tr></table></figure>
+<h3 id="命令：-gt-gt"><a href="#命令：-gt-gt" class="headerlink" title="命令：&gt;&gt;"></a>命令：&gt;&gt;</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;追加重定向，在文件原来的基础上在下面继续写入。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost 111]<span class="comment"># echo '333'&gt;&gt;1.txt</span></div><div class="line">[root@localhost 111]<span class="comment"># cat 1.txt</span></div><div class="line">222</div><div class="line">333</div></pre></td></tr></table></figure>
+<h3 id="命令：-lt"><a href="#命令：-lt" class="headerlink" title="命令：&lt;"></a>命令：&lt;</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输入重定向，把文件的内容输入到前面</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost 111]<span class="comment"># wc -l&lt;1.txt</span></div><div class="line">2</div></pre></td></tr></table></figure>
+<h3 id="命令：2-gt-2-gt-gt"><a href="#命令：2-gt-2-gt-gt" class="headerlink" title="命令：2&gt;,2&gt;&gt;"></a>命令：2&gt;,2&gt;&gt;</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;错误重定向；追加错误重定向。把错误的内容重定向或追加重定向到文件中去</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[root@localhost 111]<span class="comment"># ls 5 2&gt; 1.txt</span></div><div class="line">[root@localhost 111]<span class="comment"># cat 1.txt</span></div><div class="line">ls: 无法访问5: 没有那个文件或目录</div><div class="line"></div><div class="line">[root@localhost 111]<span class="comment"># ls 5 2&gt;&gt; 1.txt</span></div><div class="line">[root@localhost 111]<span class="comment"># cat 1.txt</span></div><div class="line">ls: 无法访问5: 没有那个文件或目录</div><div class="line">ls: 无法访问5: 没有那个文件或目录</div></pre></td></tr></table></figure>
+<h2 id="管道符“-”"><a href="#管道符“-”" class="headerlink" title="管道符“|”"></a>管道符“|”</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;管道符“|”，就是把前面的命令运行的结果丢给后面的命令去处理</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># cat 1.py|wc -l</span></div><div class="line">6</div><div class="line">[root@localhost ~]<span class="comment"># cat /etc/passwd|wc -l</span></div><div class="line">21</div></pre></td></tr></table></figure>
+<h2 id="作业控制"><a href="#作业控制" class="headerlink" title="作业控制"></a>作业控制</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当运行一个进程时，可以使它暂停（ctrl+z），然后使用fg命令恢复它，利用bg命令使它到后台运行，也可以终止它（ctrl+c）。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用 vim 编辑 test1.txt 。随便输入一些内容，按“ESC”后，使用“ctrl+z”使任务暂停</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># vim test1.txt</span></div><div class="line"></div><div class="line">[1]+  已停止               vim test1.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以看到提示“vim test1.txt”已停止了，然后使用 fg 命令恢复它，此时就进入刚才的 vim 窗口了。使用“ctrl+c”直接终止 vim 任务。</p>
+<h2 id="命令：jobs"><a href="#命令：jobs" class="headerlink" title="命令：jobs"></a>命令：jobs</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看暂停的进程</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># sleep 100</span></div><div class="line">^Z</div><div class="line">[2]+  已停止               sleep 100</div><div class="line">[root@localhost ~]<span class="comment"># jobs</span></div><div class="line">[1]-  已停止               vim test1.txt</div><div class="line">[2]+  已停止               sleep 100</div></pre></td></tr></table></figure>
+<h2 id="命令-fg；fg-编号"><a href="#命令-fg；fg-编号" class="headerlink" title="命令 fg；fg [编号]"></a>命令 fg；fg [编号]</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;恢复暂停进程，标号后面带加号的优先恢复，减号其次，也可以恢复指定暂停中的进程</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># jobs</span></div><div class="line">[1]-  已停止               vim test1.txt</div><div class="line">[2]+  已停止               sleep 100</div><div class="line">[root@localhost ~]<span class="comment"># fg 1</span></div><div class="line">[1]+  已停止               vim test1.txt</div><div class="line">[root@localhost ~]<span class="comment"># jobs</span></div><div class="line">[1]+  已停止               vim test1.txt</div><div class="line">[2]-  已停止               sleep 100</div></pre></td></tr></table></figure>
+<h2 id="命令：bg；bg-编号"><a href="#命令：bg；bg-编号" class="headerlink" title="命令：bg；bg [编号]"></a>命令：bg；bg [编号]</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;后台运行暂停的进程，编号后面带加号的有限后台运行，减号其次，也可以指定后台运行暂停中的某个进程，&amp; 表示后台运行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># jobs</span></div><div class="line">[1]+  已停止               vim test1.txt</div><div class="line">[2]-  已停止               sleep 100</div><div class="line">[root@localhost ~]<span class="comment"># bg 2</span></div><div class="line">[2]- sleep 100 &amp;</div><div class="line">[root@localhost ~]<span class="comment"># jobs</span></div><div class="line">[1]+  已停止               vim test1.txt</div><div class="line">[2]-  完成                  sleep 100</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;丢到后台的任务如何关掉？如果没有退出刚才的 shell 那么先使用 “fg 编号”把任务调到前台，然后使用“ctrl+c”结束任务</p>
+<h2 id="命令：ps"><a href="#命令：ps" class="headerlink" title="命令：ps"></a>命令：ps</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用 &amp; 把任务丢如后台运行，可以使用 <code>ps aux</code> 命令找到那个进程，结束该进程需要使用 kill 命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># ps aux|grep vim</span></div><div class="line">root       2307  0.0  0.2 151464  4996 pts/0    T    11:35   0:00 vim test1.txt</div><div class="line">root       2349  0.0  0.0 112664   972 pts/0    S+   12:34   0:00 grep --color=auto vim</div></pre></td></tr></table></figure>
+<h2 id="命令：kill"><a href="#命令：kill" class="headerlink" title="命令：kill"></a>命令：kill</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果关闭当前的 shell ，再次打开另一个 shell 时，使用 jobs 命令并不能显示后台运行或者被暂停的任务，要想停掉它们，则需要先知道起PID，然后使用 kill 命令杀死那个进程</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用 &amp; 把任务丢到后台运行，会显示 pid 信息。忘记这个 pid 使用 ps aux 命令查找</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># vmstat 1 &gt; /tmp/1.log &amp;</span></div><div class="line">[2] 2351</div><div class="line">[root@localhost ~]<span class="comment"># ps aux | grep vmstat</span></div><div class="line">root       2351  0.0  0.0 148308  1348 pts/0    S    12:38   0:00 vmstat 1</div><div class="line">root       2353  0.0  0.0 112664   972 pts/0    S+   12:38   0:00 grep --color=auto vmstat</div></pre></td></tr></table></figure>
+<h3 id="kill-命令语法"><a href="#kill-命令语法" class="headerlink" title="kill 命令语法"></a>kill 命令语法</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;kill 命令语法很简单，直接在后面加上 pid 即可，如果遇到杀不死的进程可以在 kill 后面加一个选项</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">kill</span> -9 [pid]</div></pre></td></tr></table></figure>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/shell/" rel="tag"># shell</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/03/Shell/1. shell 脚本介绍/" rel="next" title="shell 脚本介绍">
+                <i class="fa fa-chevron-left"></i> shell 脚本介绍
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/03/Shell/3. shell 中的特殊符号/" rel="prev" title="shell 中的特殊符号">
+                shell 中的特殊符号 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">599</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#命令历史"><span class="nav-number">1.</span> <span class="nav-text">命令历史</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境变量"><span class="nav-number">1.1.</span> <span class="nav-text">环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#history-参数"><span class="nav-number">1.2.</span> <span class="nav-text">history 参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调用历史中的命令"><span class="nav-number">1.3.</span> <span class="nav-text">调用历史中的命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#命令："><span class="nav-number">1.3.1.</span> <span class="nav-text">命令：!!</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#命令：-n"><span class="nav-number">1.3.2.</span> <span class="nav-text">命令：!n</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#命令：”-字符串”"><span class="nav-number">1.3.3.</span> <span class="nav-text">命令：”!字符串”</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#别名-alias"><span class="nav-number">2.</span> <span class="nav-text">别名 alias</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#语法"><span class="nav-number">2.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#命令格式"><span class="nav-number">2.2.</span> <span class="nav-text">命令格式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通配符"><span class="nav-number">3.</span> <span class="nav-text">通配符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输入输出重定向（-gt-gt-gt-lt-2-gt-2-gt-gt-）"><span class="nav-number">4.</span> <span class="nav-text">输入输出重定向（>,>>,<,2>,2>>）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#命令：-gt"><span class="nav-number">4.1.</span> <span class="nav-text">命令：></span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#命令：-gt-gt"><span class="nav-number">4.2.</span> <span class="nav-text">命令：>></span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#命令：-lt"><span class="nav-number">4.3.</span> <span class="nav-text">命令：<</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#命令：2-gt-2-gt-gt"><span class="nav-number">4.4.</span> <span class="nav-text">命令：2>,2>></span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#管道符“-”"><span class="nav-number">5.</span> <span class="nav-text">管道符“|”</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#作业控制"><span class="nav-number">6.</span> <span class="nav-text">作业控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令：jobs"><span class="nav-number">7.</span> <span class="nav-text">命令：jobs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令-fg；fg-编号"><span class="nav-number">8.</span> <span class="nav-text">命令 fg；fg [编号]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令：bg；bg-编号"><span class="nav-number">9.</span> <span class="nav-text">命令：bg；bg [编号]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令：ps"><span class="nav-number">10.</span> <span class="nav-text">命令：ps</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令：kill"><span class="nav-number">11.</span> <span class="nav-text">命令：kill</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#kill-命令语法"><span class="nav-number">11.1.</span> <span class="nav-text">kill 命令语法</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

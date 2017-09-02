@@ -1,0 +1,749 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Nginx,LNMP," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="编写 nginx 启动脚本，并加入系统服务  1vim /etc/init.d/nginx &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;写入内容： 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354">
+<meta name="keywords" content="Nginx,LNMP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nginx启动脚本和配置文件">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/09/03/Nginx/7. nginx启动脚本和配置文件/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="编写 nginx 启动脚本，并加入系统服务  1vim /etc/init.d/nginx &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;写入内容： 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-01T09:08:05.548Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="nginx启动脚本和配置文件">
+<meta name="twitter:description" content="编写 nginx 启动脚本，并加入系统服务  1vim /etc/init.d/nginx &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;写入内容： 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/09/03/Nginx/7. nginx启动脚本和配置文件/"/>
+
+
+
+
+
+  <title>nginx启动脚本和配置文件 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Nginx/7. nginx启动脚本和配置文件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">nginx启动脚本和配置文件</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:06:42+08:00">
+                2017-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ol>
+<li>编写 nginx 启动脚本，并加入系统服务</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim /etc/init.d/nginx</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;写入内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="comment"># chkconfig: - 30 21</span></div><div class="line"><span class="comment"># description: http service.</span></div><div class="line"><span class="comment"># Source Function Library</span></div><div class="line">. /etc/init.d/<span class="built_in">functions</span></div><div class="line"><span class="comment"># Nginx Settings</span></div><div class="line"></div><div class="line">NGINX_SBIN=<span class="string">"/usr/local/nginx/sbin/nginx"</span></div><div class="line">NGINX_CONF=<span class="string">"/usr/local/nginx/conf/nginx.conf"</span></div><div class="line">NGINX_PID=<span class="string">"/usr/local/nginx/logs/nginx.pid"</span></div><div class="line">RETVAL=0</div><div class="line">prog=<span class="string">"Nginx"</span></div><div class="line"></div><div class="line"><span class="function"><span class="title">start</span></span>() &#123;</div><div class="line">        <span class="built_in">echo</span> -n $<span class="string">"Starting <span class="variable">$prog</span>: "</span></div><div class="line">        mkdir -p /dev/shm/nginx_temp</div><div class="line">        daemon <span class="variable">$NGINX_SBIN</span> -c <span class="variable">$NGINX_CONF</span></div><div class="line">        RETVAL=$?</div><div class="line">        <span class="built_in">echo</span></div><div class="line">        <span class="built_in">return</span> <span class="variable">$RETVAL</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="title">stop</span></span>() &#123;</div><div class="line">        <span class="built_in">echo</span> -n $<span class="string">"Stopping <span class="variable">$prog</span>: "</span></div><div class="line">        killproc -p <span class="variable">$NGINX_PID</span> <span class="variable">$NGINX_SBIN</span> -TERM</div><div class="line">        rm -rf /dev/shm/nginx_temp</div><div class="line">        RETVAL=$?</div><div class="line">        <span class="built_in">echo</span></div><div class="line">        <span class="built_in">return</span> <span class="variable">$RETVAL</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="title">reload</span></span>()&#123;</div><div class="line">        <span class="built_in">echo</span> -n $<span class="string">"Reloading <span class="variable">$prog</span>: "</span></div><div class="line">        killproc -p <span class="variable">$NGINX_PID</span> <span class="variable">$NGINX_SBIN</span> -HUP</div><div class="line">        RETVAL=$?</div><div class="line">        <span class="built_in">echo</span></div><div class="line">        <span class="built_in">return</span> <span class="variable">$RETVAL</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="title">restart</span></span>()&#123;</div><div class="line">        stop</div><div class="line">        start</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="title">configtest</span></span>()&#123;</div><div class="line">    <span class="variable">$NGINX_SBIN</span> -c <span class="variable">$NGINX_CONF</span> -t</div><div class="line">    <span class="built_in">return</span> 0</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">case</span> <span class="string">"<span class="variable">$1</span>"</span> <span class="keyword">in</span></div><div class="line">  start)</div><div class="line">        start</div><div class="line">        ;;</div><div class="line">  stop)</div><div class="line">        stop</div><div class="line">        ;;</div><div class="line">  reload)</div><div class="line">        reload</div><div class="line">        ;;</div><div class="line">  restart)</div><div class="line">        restart</div><div class="line">        ;;</div><div class="line">  configtest)</div><div class="line">        configtest</div><div class="line">        ;;</div><div class="line">  *)</div><div class="line">        <span class="built_in">echo</span> $<span class="string">"Usage: <span class="variable">$0</span> &#123;start|stop|reload|restart|configtest&#125;"</span></div><div class="line">        RETVAL=1</div><div class="line"><span class="keyword">esac</span></div><div class="line"></div><div class="line"><span class="built_in">exit</span> <span class="variable">$RETVAL</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：该启动脚本来自互联网。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;保存后，更改权限：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">chmod 755 /etc/init.d/nginx</div><div class="line">chkconfig --add nginx</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果需要开机启动，执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chkconfig nginx on</div></pre></td></tr></table></figure>
+<ol>
+<li>更改 nginx 配置</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先把原来的配置文件清空</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&gt; /usr/<span class="built_in">local</span>/nginx/conf/nginx.conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;“&gt;”这个符号为重定向的意思，单独用它，可以把一个文本文档快速清空。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim /usr/<span class="built_in">local</span>/nginx/conf/nginx.conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;添加如下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div></pre></td><td class="code"><pre><div class="line">user nobody nobody;</div><div class="line">worker_processes 2;</div><div class="line">error_log /usr/<span class="built_in">local</span>/nginx/logs/nginx_error.log crit;</div><div class="line">pid /usr/<span class="built_in">local</span>/nginx/logs/nginx.pid;</div><div class="line">worker_rlimit_nofile 51200;</div><div class="line"></div><div class="line">events</div><div class="line">&#123;</div><div class="line">    use epoll;</div><div class="line">    worker_connections 6000;</div><div class="line">&#125;</div><div class="line"></div><div class="line">http</div><div class="line">&#123;</div><div class="line">    include mime.types;</div><div class="line">    default_type application/octet-stream;</div><div class="line">    server_names_hash_bucket_size 3526;</div><div class="line">    server_names_hash_max_size 4096;</div><div class="line">    log_format combined_realip <span class="string">'$remote_addr $http_x_forwarded_for [$time_local]'</span></div><div class="line">    <span class="string">'$host "$request_uri" $status'</span></div><div class="line">    <span class="string">'"$http_referer" "$http_user_agent"'</span>;</div><div class="line">    sendfile on;</div><div class="line">    tcp_nopush on;</div><div class="line">    keepalive_timeout 30;</div><div class="line">    client_header_timeout 3m;</div><div class="line">    client_body_timeout 3m;</div><div class="line">    send_timeout 3m;</div><div class="line">    connection_pool_size 256;</div><div class="line">    client_header_buffer_size 1k;</div><div class="line">    large_client_header_buffers 8 4k;</div><div class="line">    request_pool_size 4k;</div><div class="line">    output_buffers 4 32k;</div><div class="line">    postpone_output 1460;</div><div class="line">    client_max_body_size 10m;</div><div class="line">    client_body_buffer_size 256k;</div><div class="line">    client_body_temp_path /usr/<span class="built_in">local</span>/nginx/client_body_temp;</div><div class="line">    proxy_temp_path /usr/<span class="built_in">local</span>/nginx/proxy_temp;</div><div class="line">    fastcgi_temp_path /usr/<span class="built_in">local</span>/nginx/fastcgi_temp;</div><div class="line">    fastcgi_intercept_errors on;</div><div class="line">    tcp_nodelay on;</div><div class="line">    gzip on;</div><div class="line">    gzip_min_length 1k;</div><div class="line">    gzip_buffers 4 8k;</div><div class="line">    gzip_comp_level 5;</div><div class="line">    gzip_http_version 1.1;</div><div class="line">    gzip_types text/plain application/x-javascript text/css text/htm application/xml;</div><div class="line"></div><div class="line">server</div><div class="line">&#123;</div><div class="line">    listen 80;</div><div class="line">    server_name localhost;</div><div class="line">    index index.html index.htm index.php;</div><div class="line">    root /usr/<span class="built_in">local</span>/nginx/html;</div><div class="line"></div><div class="line">    location ~ \.php$ &#123;</div><div class="line">        include fastcgi_params;</div><div class="line">        fastcgi_pass unix:/tmp/php-fcgi.sock;</div><div class="line">        fastcgi_index index.php;</div><div class="line">        fastcgi_param SCRIPT_FILENAME /usr/<span class="built_in">local</span>/nginx/html<span class="variable">$fastcgi_script_name</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line">include /usr/<span class="built_in">local</span>/nginx/conf/vhosts/*.conf;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：该配置文件可以作为一个模版，可以用虚拟机服务器上，工作中也可以参考</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;nginx 的虚拟主机配置文件放在 <code>/usr/local/nginx/conf/vhosts</code> 下边，该部分配置改为<code>include /usr/local/nginx/conf/vhosts/*.conf</code>;</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;保存配置后，先检验一下配置文件是否有错误存在：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/<span class="built_in">local</span>/nginx/sbin/nginx -t</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果显示内容如下，则配置正确，否则需要根据错误提示修改配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">nginx: the configuration file /usr/<span class="built_in">local</span>/nginx/conf/nginx.conf syntax is ok</div><div class="line">nginx: configuration file /usr/<span class="built_in">local</span>/nginx/conf/nginx.conf <span class="built_in">test</span> is successful</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;重启 nginx 服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service nginx restart</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;apache 有一个默认虚拟主机，也就是说无论什么域名只要指向到这台机器都会访问到这个虚拟主机。其实，在 nginx 里面也有一个这样的默认虚拟主机，但它有一个配置可以用来标记哪个虚拟主机是默认的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mkdir /usr/<span class="built_in">local</span>/nginx/conf/vhost</div><div class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/nginx/conf/vhost</div><div class="line">vim defaule.conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加入配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">server</div><div class="line">&#123;</div><div class="line">    listen 80 default_server;</div><div class="line">    server_name localhost;</div><div class="line">    index index.html index.htm index.php;</div><div class="line">    root /tmp/tmp;</div><div class="line">    deny all;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：在之前的 nginx.conf 中就已经定义了 include 语句，意思是它会包含一些配置，在这里它会把 /usr/local/nginx/conf/vhosts/ 目录下的所有 *.conf 文件加载。所以，在这个目录下定义了一个 default.conf 文件，在这里会发现 listen 80 后面还有一个关键词叫做 “default_server”，这个就是用来标记它是默认虚拟主机的。使用 deny all 限制了该虚拟主机禁止被任何人访问。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;创建默认主机下定义的文件夹，不然会报错</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkdir /tmp/tmp</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果有新的虚拟主机如 123.com 则编辑配置文件 123.conf</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim 123.conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加入内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">server</div><div class="line">&#123;</div><div class="line">    listen 80;</div><div class="line">    server_name 123.com;</div><div class="line">    index index.html index.htm index.php;</div><div class="line">    root /data/www;</div><div class="line"></div><div class="line">    location ~ \.php$ &#123;</div><div class="line">        include fastcgi_params;</div><div class="line">        fastcgi_pass unix:/tmp/php-fcgi.sock;</div><div class="line">        fastcgi_index index.php;</div><div class="line">        fastcgi_param SCRIPT_FILENAME /data/www<span class="variable">$fastcgi_script_name</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看监听端口</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">netstat -lnp</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;监听的是 ip+prot 的形式，所以配置文件需要更改为</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">server</div><div class="line">&#123;</div><div class="line">    listen 80;</div><div class="line">    server_name 123.com;</div><div class="line">    index index.html index.htm index.php;</div><div class="line">    root /data/www;</div><div class="line"></div><div class="line">    location ~ \.php$ &#123;</div><div class="line">        include fastcgi_params;</div><div class="line">        <span class="comment">#fastcgi_pass unix:/tmp/php-fcgi.sock;</span></div><div class="line">        fastcgi_pass 127.0.0.1:9000;</div><div class="line">        fastcgi_index index.php;</div><div class="line">        fastcgi_param SCRIPT_FILENAME /data/www<span class="variable">$fastcgi_script_name</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Nginx/" rel="tag"># Nginx</a>
+          
+            <a href="/tags/LNMP/" rel="tag"># LNMP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/03/Nginx/6. 概念了解：CGI，FastCGI，PHP-CGI与PHP-FPM/" rel="next" title="概念了解：CGI，FastCGI，PHP-CGI与PHP-FPM">
+                <i class="fa fa-chevron-left"></i> 概念了解：CGI，FastCGI，PHP-CGI与PHP-FPM
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/03/Nginx/8. Nginx配置文件nginx.conf中文详解/" rel="prev" title="Nginx配置文件nginx.conf中文详解">
+                Nginx配置文件nginx.conf中文详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">599</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

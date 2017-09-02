@@ -1,0 +1,832 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="HA集群," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="一、DRBD简介&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;DRBD的全称为：Distributed ReplicatedBlock Device(DRBD)分布式块设备复制,DRBD是由内核模块和相关脚本而构成，用以构建高可用性的集群。其实现方式是通过网络来镜像整个设备。你可以把它看作是一种网络RAID。它允许用户在远程机器上建立一个本地块设备">
+<meta name="keywords" content="HA集群">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DRBD安装配置、工作原理及故障恢复">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/09/03/HA集群/4. DRBD安装配置、工作原理及故障恢复/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="一、DRBD简介&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;DRBD的全称为：Distributed ReplicatedBlock Device(DRBD)分布式块设备复制,DRBD是由内核模块和相关脚本而构成，用以构建高可用性的集群。其实现方式是通过网络来镜像整个设备。你可以把它看作是一种网络RAID。它允许用户在远程机器上建立一个本地块设备">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/DRBD%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E3%80%81%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E6%95%85%E9%9A%9C%E6%81%A2%E5%A4%8D/01.gif?raw=true">
+<meta property="og:updated_time" content="2017-09-01T08:50:01.447Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="DRBD安装配置、工作原理及故障恢复">
+<meta name="twitter:description" content="一、DRBD简介&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;DRBD的全称为：Distributed ReplicatedBlock Device(DRBD)分布式块设备复制,DRBD是由内核模块和相关脚本而构成，用以构建高可用性的集群。其实现方式是通过网络来镜像整个设备。你可以把它看作是一种网络RAID。它允许用户在远程机器上建立一个本地块设备">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/DRBD%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E3%80%81%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E6%95%85%E9%9A%9C%E6%81%A2%E5%A4%8D/01.gif?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/09/03/HA集群/4. DRBD安装配置、工作原理及故障恢复/"/>
+
+
+
+
+
+  <title>DRBD安装配置、工作原理及故障恢复 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/HA集群/4. DRBD安装配置、工作原理及故障恢复/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">DRBD安装配置、工作原理及故障恢复</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:04:46+08:00">
+                2017-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一、DRBD简介"><a href="#一、DRBD简介" class="headerlink" title="一、DRBD简介"></a>一、DRBD简介</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;DRBD的全称为：Distributed ReplicatedBlock Device(DRBD)分布式块设备复制,DRBD是由内核模块和相关脚本而构成，用以构建高可用性的集群。其实现方式是通过网络来镜像整个设备。你可以把它看作是一种网络RAID。它允许用户在远程机器上建立一个本地块设备的实时镜像。</p>
+<h2 id="二、DRBD是如何工作的呢"><a href="#二、DRBD是如何工作的呢" class="headerlink" title="二、DRBD是如何工作的呢?"></a>二、DRBD是如何工作的呢?</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(DRBD Primary)负责接收数据，把数据写到本地磁盘并发送给另一台主机(DRBD Secondary)。另一个主机再将数据存到自己的磁盘中。目前，DRBD每次只允许对一个节点进行读写访问，但这对于通常的故障切换高可用集群来说已经足够用了。有可能以后的版本支持两个节点进行读写存取。</p>
+<h2 id="三、DRBD与HA的关系"><a href="#三、DRBD与HA的关系" class="headerlink" title="三、DRBD与HA的关系"></a>三、DRBD与HA的关系</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一个DRBD系统由两个节点构成，与HA集群类似，也有主节点和备用节点之分，在带有主要设备的节点上，应用程序和操作系统可以运行和访问DRBD设备（/dev/drbd*）。在主节点写入的数据通过DRBD设备存储到主节点的磁盘设备中，同时，这个数据也会自动发送到备用节点对应的DRBD设备，最终写入备用节点的磁盘设备上，在备用节点上，DRBD只是将数据从DRBD设备写入到备用节点的磁盘中。现在大部分的高可用性集群都会使用共享存储，而DRBD也可以作为一个共享存储设备，使用DRBD不需要太多的硬件的投资。因为它在TCP/IP网络中运行，所以，利用DRBD作为共享存储设备，要节约很多成本，因为价格要比专用的存储网络便宜很多；其性能与稳定性方面也不错</p>
+<h2 id="四、DRBD复制模式"><a href="#四、DRBD复制模式" class="headerlink" title="四、DRBD复制模式"></a>四、DRBD复制模式</h2><h3 id="协议A："><a href="#协议A：" class="headerlink" title="协议A："></a>协议A：</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;异步复制协议。一旦本地磁盘写入已经完成，数据包已在发送队列中，则写被认为是完成的。在一个节点发生故障时，可能发生数据丢失，因为被写入到远程节点上的数据可能仍在发送队列。尽管，在故障转移节点上的数据是一致的，但没有及时更新。这通常是用于地理上分开的节点</p>
+<h3 id="协议B："><a href="#协议B：" class="headerlink" title="协议B："></a>协议B：</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;内存同步（半同步）复制协议。一旦本地磁盘写入已完成且复制数据包达到了对等节点则认为写在主节点上被认为是完成的。数据丢失可能发生在参加的两个节点同时故障的情况下，因为在传输中的数据可能不会被提交到磁盘</p>
+<h3 id="协议C："><a href="#协议C：" class="headerlink" title="协议C："></a>协议C：</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;同步复制协议。只有在本地和远程节点的磁盘已经确认了写操作完成，写才被认为完成。没有任何数据丢失，所以这是一个群集节点的流行模式，但I / O吞吐量依赖于网络带宽</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一般使用协议C，但选择C协议将影响流量，从而影响网络时延。为了数据可靠性，我们在生产环境使用时须慎重选项使用哪一种协议</p>
+<h2 id="160-160-160-160-160-160-160-160-四、-DRBD工作原理图"><a href="#160-160-160-160-160-160-160-160-四、-DRBD工作原理图" class="headerlink" title="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;四、 DRBD工作原理图"></a>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;四、 DRBD工作原理图</h2><p>DRBD是linux的内核的存储层中的一个分布式存储系统，可用使用DRBD在两台Linux服务器之间共享块设备，共享文件系统和数据。类似于一个网络RAID-1的功能，如图所示：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/DRBD%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E3%80%81%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E6%95%85%E9%9A%9C%E6%81%A2%E5%A4%8D/01.gif?raw=true" alt=""></p>
+<h2 id="五、环境介绍及安装前准备"><a href="#五、环境介绍及安装前准备" class="headerlink" title="五、环境介绍及安装前准备"></a>五、环境介绍及安装前准备</h2><h3 id="环境介绍："><a href="#环境介绍：" class="headerlink" title="环境介绍："></a>环境介绍：</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;系统版本：CentOS 6.4_x86_64</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;DRBD软件：drbd-8.4.3-33.el6.x86_64 drbd-kmdl-2.6.32-358.el6-8.4.3-33.el6.x86_64 <a href="http://rpmfind.net" target="_blank" rel="external">下载地址</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意：这里两个软件的版本必须使用一致，而drbd-kmdl的版本要与当前系统的版本相对应，当然在实际应用中需要根据自己的系统平台下载符合需要的软件版本;查看系统版本 “uname -r”</p>
+<h3 id="安装前准备："><a href="#安装前准备：" class="headerlink" title="安装前准备："></a>安装前准备：</h3><h4 id="1-每个节点的主机名称须跟”uname-n”命令的执行结果一样"><a href="#1-每个节点的主机名称须跟”uname-n”命令的执行结果一样" class="headerlink" title="1.每个节点的主机名称须跟”uname -n”命令的执行结果一样"></a>1.每个节点的主机名称须跟”uname -n”命令的执行结果一样</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">######NOD1节点执行</span></div><div class="line">sed -i <span class="string">'s@\(HOSTNAME=\).*@\1nod1.allen.com@g'</span> /etc/sysconfig/network</div><div class="line">hostname nod1.allen.com</div><div class="line"><span class="comment">######NOD2节点执行</span></div><div class="line">sed -i <span class="string">'s@\(HOSTNAME=\).*@\1nod2.allen.com@g'</span> /etc/sysconfig/network</div><div class="line">hostname nod2.allen.com</div><div class="line">注释：修改文件须重启系统生效，这里先修改文件然后执行命令修改主机名称可以不用重启</div></pre></td></tr></table></figure>
+<h4 id="2-两个节点的主机名称和对应的IP地址可以正常解析"><a href="#2-两个节点的主机名称和对应的IP地址可以正常解析" class="headerlink" title="2.两个节点的主机名称和对应的IP地址可以正常解析"></a>2.两个节点的主机名称和对应的IP地址可以正常解析</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">######在NOD1与NOD2节点执行</span></div><div class="line">cat &gt; /etc/hosts &lt;&lt; EOF</div><div class="line">192.168.137.225 nod1.allen.com nod1</div><div class="line">192.168.137.222 nod2.allen.com nod2</div><div class="line">EOF</div></pre></td></tr></table></figure>
+<h4 id="3-配置epel的yum源-下载并安装"><a href="#3-配置epel的yum源-下载并安装" class="headerlink" title="3.配置epel的yum源 下载并安装"></a>3.配置epel的yum源 <a href="http://mirrors.yun-idc.com/epel/6/x86_64/epel-release-6-8.noarch.rpm" target="_blank" rel="external">下载并安装</a></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">######在NOD1与NOD2节点安装</span></div><div class="line">rpm -ivh epel-release-6-8.noarch.rpm</div></pre></td></tr></table></figure>
+<h4 id="4-需要为两个节点分别提供大小相同的分区"><a href="#4-需要为两个节点分别提供大小相同的分区" class="headerlink" title="4.需要为两个节点分别提供大小相同的分区"></a>4.需要为两个节点分别提供大小相同的分区</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment">######在NOD1节点上创建分区，分区大小必须与NOD2节点保持一样</span></div><div class="line">[root@nod1 ~]<span class="comment"># fdisk /dev/sda</span></div><div class="line">Command (m <span class="keyword">for</span> <span class="built_in">help</span>): n</div><div class="line">Command action</div><div class="line"> e extended</div><div class="line"> p primary partition (1-4)</div><div class="line">p</div><div class="line">Partition number (1-4): 3</div><div class="line">First cylinder (7859-15665, default 7859):</div><div class="line">Using default value 7859</div><div class="line">Last cylinder, +cylinders or +size&#123;K,M,G&#125; (7859-15665, default 15665): +2G</div><div class="line">Command (m <span class="keyword">for</span> <span class="built_in">help</span>): w</div><div class="line">[root@nod1 ~]<span class="comment"># partx /dev/sda #让内核重新读取分区</span></div><div class="line"><span class="comment">######查看内核有没有识别分区，如果没有需要重新启动，这里没有识别需要重启系统</span></div><div class="line">[root@nod1 ~]<span class="comment"># cat /proc/partitions</span></div><div class="line">major minor  <span class="comment">#blocks name</span></div><div class="line"> 8 0 125829120 sda</div><div class="line"> 8 1 204800 sda1</div><div class="line"> 8 2 62914560 sda2</div><div class="line"> 253 0 20971520 dm-0</div><div class="line"> 253 1 2097152 dm-1</div><div class="line"> 253 2 10485760 dm-2</div><div class="line"> 253 3 20971520 dm-3</div><div class="line">[root@nod1 ~]<span class="comment"># reboot</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment">######在NOD2节点上创建分区，分区大小必须与NOD1节点保持一样</span></div><div class="line">[root@nod2 ~]<span class="comment"># fdisk /dev/sda</span></div><div class="line">Command (m <span class="keyword">for</span> <span class="built_in">help</span>): n</div><div class="line">Command action</div><div class="line"> e extended</div><div class="line"> p primary partition (1-4)</div><div class="line">p</div><div class="line">Partition number (1-4): 3</div><div class="line">First cylinder (7859-15665, default 7859):</div><div class="line">Using default value 7859</div><div class="line">Last cylinder, +cylinders or +size&#123;K,M,G&#125; (7859-15665, default 15665): +2G</div><div class="line">Command (m <span class="keyword">for</span> <span class="built_in">help</span>): w</div><div class="line">[root@nod2 ~]<span class="comment"># partx /dev/sda #让内核重新读取分区</span></div><div class="line"><span class="comment">######查看内核有没有识别分区，如果没有需要重新启动，这里没有识别需要重启系统</span></div><div class="line">[root@nod2 ~]<span class="comment"># cat /proc/partitions</span></div><div class="line">major minor  <span class="comment">#blocks name</span></div><div class="line"> 8 0 125829120 sda</div><div class="line"> 8 1 204800 sda1</div><div class="line"> 8 2 62914560 sda2</div><div class="line"> 253 0 20971520 dm-0</div><div class="line"> 253 1 2097152 dm-1</div><div class="line"> 253 2 10485760 dm-2</div><div class="line"> 253 3 20971520 dm-3</div><div class="line">[root@nod2 ~]<span class="comment"># reboot</span></div></pre></td></tr></table></figure>
+<h2 id="六、安装并配置DRBD"><a href="#六、安装并配置DRBD" class="headerlink" title="六、安装并配置DRBD"></a>六、安装并配置DRBD</h2><h3 id="1-在NOD1与NOD2节点上安装DRBD软件包"><a href="#1-在NOD1与NOD2节点上安装DRBD软件包" class="headerlink" title="1.在NOD1与NOD2节点上安装DRBD软件包"></a>1.在NOD1与NOD2节点上安装DRBD软件包</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">######NOD1</span></div><div class="line">[root@nod1 ~]<span class="comment"># ls drbd-*</span></div><div class="line">drbd-8.4.3-33.el6.x86_64.rpm drbd-kmdl-2.6.32-358.el6-8.4.3-33.el6.x86_64.rpm</div><div class="line">[root@nod1 ~]<span class="comment"># yum -y install drbd-*.rpm</span></div><div class="line"><span class="comment">######NOD2</span></div><div class="line">[root@nod2 ~]<span class="comment"># ls drbd-*</span></div><div class="line">drbd-8.4.3-33.el6.x86_64.rpm drbd-kmdl-2.6.32-358.el6-8.4.3-33.el6.x86_64.rpm</div><div class="line">[root@nod2 ~]<span class="comment"># yum -y install drbd-*.rpm</span></div></pre></td></tr></table></figure>
+<h3 id="2-查看DRBD配置文件"><a href="#2-查看DRBD配置文件" class="headerlink" title="2.查看DRBD配置文件"></a>2.查看DRBD配置文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">ll /etc/drbd.conf;ll /etc/drbd.d/</div><div class="line">-rw-r--r-- 1 root root 133 May 14 21:12 /etc/drbd.conf <span class="comment">#主配置文件</span></div><div class="line">total 4</div><div class="line">-rw-r--r-- 1 root root 1836 May 14 21:12 global_common.conf <span class="comment">#全局配置文件</span></div><div class="line"><span class="comment">######查看主配置文件内容</span></div><div class="line">cat /etc/drbd.conf</div><div class="line"><span class="comment">######主配置文件中包含了全局配置文件及"drbd.d/"目录下以.res结尾的文件</span></div><div class="line"><span class="comment"># You can find an example in /usr/share/doc/drbd.../drbd.conf.example</span></div><div class="line">include <span class="string">"drbd.d/global_common.conf"</span>;</div><div class="line">include <span class="string">"drbd.d/*.res"</span>;</div></pre></td></tr></table></figure>
+<h3 id="3-修改配置文件如下："><a href="#3-修改配置文件如下：" class="headerlink" title="3.修改配置文件如下："></a>3.修改配置文件如下：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line">[root@nod1 ~]<span class="comment">#vim /etc/drbd.d/global_common.conf</span></div><div class="line">global &#123;</div><div class="line">usage-count no; <span class="comment">#是否参加DRBD使用统计，默认为yes</span></div><div class="line"><span class="comment"># minor-count dialog-refresh disable-ip-verification</span></div><div class="line">&#125;</div><div class="line">common &#123;</div><div class="line">protocol C; <span class="comment">#使用DRBD的同步协议</span></div><div class="line">handlers &#123;</div><div class="line"><span class="comment"># These are EXAMPLE handlers only.</span></div><div class="line"><span class="comment"># They may have severe implications,</span></div><div class="line"><span class="comment"># like hard resetting the node under certain circumstances.</span></div><div class="line"><span class="comment"># Be careful when chosing your poison.</span></div><div class="line">pri-on-incon-degr <span class="string">"/usr/lib/drbd/notify-pri-on-incon-degr.sh; /usr/lib/drbd/notify-emergency-reboot.sh; echo b &gt; /proc/sysrq-trigger ; reboot -f"</span>;</div><div class="line">pri-lost-after-sb <span class="string">"/usr/lib/drbd/notify-pri-lost-after-sb.sh; /usr/lib/drbd/notify-emergency-reboot.sh; echo b &gt; /proc/sysrq-trigger ; reboot -f"</span>;</div><div class="line"><span class="built_in">local</span>-io-error <span class="string">"/usr/lib/drbd/notify-io-error.sh; /usr/lib/drbd/notify-emergency-shutdown.sh; echo o &gt; /proc/sysrq-trigger ; halt -f"</span>;</div><div class="line"><span class="comment"># fence-peer "/usr/lib/drbd/crm-fence-peer.sh";</span></div><div class="line"><span class="comment"># split-brain "/usr/lib/drbd/notify-split-brain.sh root";</span></div><div class="line"><span class="comment"># out-of-sync "/usr/lib/drbd/notify-out-of-sync.sh root";</span></div><div class="line"><span class="comment"># before-resync-target "/usr/lib/drbd/snapshot-resync-target-lvm.sh -p 15 -- -c 16k";</span></div><div class="line"><span class="comment"># after-resync-target /usr/lib/drbd/unsnapshot-resync-target-lvm.sh;</span></div><div class="line">&#125;</div><div class="line">startup &#123;</div><div class="line"><span class="comment"># wfc-timeout degr-wfc-timeout outdated-wfc-timeout wait-after-sb</span></div><div class="line">&#125;</div><div class="line">options &#123;</div><div class="line"><span class="comment"># cpu-mask on-no-data-accessible</span></div><div class="line">&#125;</div><div class="line">disk &#123;</div><div class="line">on-io-error detach; <span class="comment">#配置I/O错误处理策略为分离</span></div><div class="line"><span class="comment"># size max-bio-bvecs on-io-error fencing disk-barrier disk-flushes</span></div><div class="line"><span class="comment"># disk-drain md-flushes resync-rate resync-after al-extents</span></div><div class="line"><span class="comment"># c-plan-ahead c-delay-target c-fill-target c-max-rate</span></div><div class="line"><span class="comment"># c-min-rate disk-timeout</span></div><div class="line">&#125;</div><div class="line">net &#123;</div><div class="line">cram-hmac-alg <span class="string">"sha1"</span>; <span class="comment">#设置加密算法</span></div><div class="line">shared-secret <span class="string">"allendrbd"</span>; <span class="comment">#设置加密密钥</span></div><div class="line"><span class="comment"># protocol timeout max-epoch-size max-buffers unplug-watermark</span></div><div class="line"><span class="comment"># connect-int ping-int sndbuf-size rcvbuf-size ko-count</span></div><div class="line"><span class="comment"># allow-two-primaries cram-hmac-alg shared-secret after-sb-0pri</span></div><div class="line"><span class="comment"># after-sb-1pri after-sb-2pri always-asbp rr-conflict</span></div><div class="line"><span class="comment"># ping-timeout data-integrity-alg tcp-cork on-congestion</span></div><div class="line"><span class="comment"># congestion-fill congestion-extents csums-alg verify-alg</span></div><div class="line"><span class="comment"># use-rle</span></div><div class="line">&#125;</div><div class="line">syncer &#123;</div><div class="line">rate 1024M; <span class="comment">#设置主备节点同步时的网络速率</span></div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注释： on-io-error <strategy>策略可能为以下选项之一</strategy></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;detach 分离：这是默认和推荐的选项，如果在节点上发生底层的硬盘I/O错误，它会将设备运行在Diskless无盘模式下</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;pass_on：DRBD会将I/O错误报告到上层，在主节点上，它会将其报告给挂载的文件系统，但是在此节点上就往往忽略（因此此节点上没有可以报告的上层）</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;-local-in-error：调用本地磁盘I/O处理程序定义的命令；这需要有相应的local-io-error调用的资源处理程序处理错误的命令；这就给管理员有足够自由的权力命令命令或是脚本调用local-io-error处理I/O错误</p>
+<h3 id="4-添加资源文件"><a href="#4-添加资源文件" class="headerlink" title="4.添加资源文件:"></a>4.添加资源文件:</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">[root@nod1 ~]<span class="comment"># vim /etc/drbd.d/drbd.res</span></div><div class="line">resource drbd &#123;</div><div class="line"> on nod1.allen.com &#123;  <span class="comment">#第个主机说明以on开头，后面是主机名称</span></div><div class="line"> device  /dev/drbd0;<span class="comment">#DRBD设备名称</span></div><div class="line"> disk  /dev/sda3; <span class="comment">#drbd0使用的磁盘分区为"sda3"</span></div><div class="line"> address 192.168.137.225:7789; <span class="comment">#设置DRBD监听地址与端口</span></div><div class="line"> meta-disk internal;</div><div class="line"> &#125;</div><div class="line"> on nod2.allen.com &#123;</div><div class="line"> device  /dev/drbd0;</div><div class="line"> disk  /dev/sda3;</div><div class="line"> address 192.168.137.222:7789;</div><div class="line"> meta-disk internal;</div><div class="line"> &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="5-将配置文件为NOD2提供一份"><a href="#5-将配置文件为NOD2提供一份" class="headerlink" title="5.将配置文件为NOD2提供一份"></a>5.将配置文件为NOD2提供一份</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[root@nod1 ~]<span class="comment"># scp /etc/drbd.d/&#123;global_common.conf,drbd.res&#125; nod2:/etc/drbd.d/</span></div><div class="line">The authenticity of host <span class="string">'nod2 (192.168.137.222)'</span> can<span class="string">'t be established.</span></div><div class="line"><span class="string">RSA key fingerprint is 29:d3:28:85:20:a1:1f:2a:11:e5:88:cd:25:d0:95:c7.</span></div><div class="line"><span class="string">Are you sure you want to continue connecting (yes/no)? yes</span></div><div class="line"><span class="string">Warning: Permanently added '</span>nod2<span class="string">' (RSA) to the list of known hosts.</span></div><div class="line"><span class="string">root@nod2'</span>s password:</div><div class="line">global_common.conf 100% 1943 1.9KB/s  00:00 </div><div class="line">drbd.res 100% 318 0.3KB/s  00:00</div></pre></td></tr></table></figure>
+<h3 id="6-初始化资源并启动服务"><a href="#6-初始化资源并启动服务" class="headerlink" title="6.初始化资源并启动服务"></a>6.初始化资源并启动服务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="comment">######在NOD1节点上初始化资源并启动服务</span></div><div class="line">[root@nod1 ~]<span class="comment"># drbdadm create-md drbd</span></div><div class="line">Writing meta data...</div><div class="line">initializing activity <span class="built_in">log</span></div><div class="line">NOT initializing bitmap</div><div class="line">lk_bdev_save(/var/lib/drbd/drbd-minor-0.lkbd) failed: No such file or directory</div><div class="line">New drbd meta data block successfully created.  <span class="comment">#提示已经创建成功</span></div><div class="line">lk_bdev_save(/var/lib/drbd/drbd-minor-0.lkbd) failed: No such file or directory</div><div class="line"><span class="comment">######启动服务</span></div><div class="line">[root@nod1 ~]<span class="comment"># service drbd start</span></div><div class="line">Starting DRBD resources: [</div><div class="line"> create res: drbd</div><div class="line"> prepare disk: drbd</div><div class="line"> adjust disk: drbd</div><div class="line"> adjust net: drbd</div><div class="line">]</div><div class="line">..........</div><div class="line">***************************************************************</div><div class="line"> DRBD<span class="string">'s startup script waits for the peer node(s) to appear.</span></div><div class="line"><span class="string"> - In case this node was already a degraded cluster before the</span></div><div class="line"><span class="string"> reboot the timeout is 0 seconds. [degr-wfc-timeout]</span></div><div class="line"><span class="string"> - If the peer was available before the reboot the timeout will</span></div><div class="line"><span class="string"> expire after 0 seconds. [wfc-timeout]</span></div><div class="line"><span class="string"> (These values are for resource '</span>drbd<span class="string">'; 0 sec -&gt; wait forever)</span></div><div class="line"><span class="string"> To abort waiting enter '</span>yes<span class="string">' [ 12]: yes</span></div><div class="line"><span class="string">######查看监听端口</span></div><div class="line"><span class="string">[root@nod1 ~]# ss -tanl |grep 7789</span></div><div class="line"><span class="string">LISTEN 0 5 192.168.137.225:7789 *:*</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">######在NOD2节点上初始化资源并启动服务</span></div><div class="line">[root@nod2 ~]<span class="comment"># drbdadm create-md drbd</span></div><div class="line">Writing meta data...</div><div class="line">initializing activity <span class="built_in">log</span></div><div class="line">NOT initializing bitmap</div><div class="line">lk_bdev_save(/var/lib/drbd/drbd-minor-0.lkbd) failed: No such file or directory</div><div class="line">New drbd meta data block successfully created.</div><div class="line">lk_bdev_save(/var/lib/drbd/drbd-minor-0.lkbd) failed: No such file or directory</div><div class="line"><span class="comment">######启动服务</span></div><div class="line">[root@nod2 ~]<span class="comment"># service drbd start</span></div><div class="line">Starting DRBD resources: [</div><div class="line"> create res: drbd</div><div class="line"> prepare disk: drbd</div><div class="line"> adjust disk: drbd</div><div class="line"> adjust net: drbd</div><div class="line">]</div><div class="line"><span class="comment">######查看监听地址与端口</span></div><div class="line">[root@nod2 ~]<span class="comment"># netstat -anput|grep 7789</span></div><div class="line">tcp 0 0 192.168.137.222:42345 192.168.137.225:7789 ESTABLISHED - </div><div class="line">tcp 0 0 192.168.137.222:7789 192.168.137.225:42325 ESTABLISHED -</div><div class="line"><span class="comment">######查看DRBD启动状态</span></div><div class="line">[root@nod2 ~]<span class="comment"># drbd-overview</span></div><div class="line"> 0:drbd/0  Connected Secondary/Secondary Inconsistent/Inconsistent C r-----</div></pre></td></tr></table></figure>
+<h3 id="7-资源的连接状态详细介绍"><a href="#7-资源的连接状态详细介绍" class="headerlink" title="7.资源的连接状态详细介绍"></a>7.资源的连接状态详细介绍</h3><h4 id="如何查看资源连接状态？"><a href="#如何查看资源连接状态？" class="headerlink" title="如何查看资源连接状态？"></a>如何查看资源连接状态？</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@nod1 ~]<span class="comment"># drbdadm cstate drbd #drbd为资源名称</span></div><div class="line">Connected</div></pre></td></tr></table></figure>
+<h4 id="资源的连接状态；一个资源可能有以下连接状态中的一种"><a href="#资源的连接状态；一个资源可能有以下连接状态中的一种" class="headerlink" title="资源的连接状态；一个资源可能有以下连接状态中的一种"></a>资源的连接状态；一个资源可能有以下连接状态中的一种</h4><ul>
+<li>StandAlone 独立的：网络配置不可用；资源还没有被连接或是被管理断开（使用 drbdadm disconnect 命令），或是由于出现认证失败或是脑裂的情况</li>
+<li>Disconnecting 断开：断开只是临时状态，下一个状态是StandAlone独立的</li>
+<li>Unconnected 悬空：是尝试连接前的临时状态，可能下一个状态为WFconnection和WFReportParams</li>
+<li>Timeout 超时：与对等节点连接超时，也是临时状态，下一个状态为Unconected悬空</li>
+<li>BrokerPipe：与对等节点连接丢失，也是临时状态，下一个状态为Unconected悬空</li>
+<li>NetworkFailure：与对等节点推动连接后的临时状态，下一个状态为Unconected悬空</li>
+<li>ProtocolError：与对等节点推动连接后的临时状态，下一个状态为Unconected悬空</li>
+<li>TearDown 拆解：临时状态，对等节点关闭，下一个状态为Unconected悬空</li>
+<li>WFConnection：等待和对等节点建立网络连接</li>
+<li>WFReportParams：已经建立TCP连接，本节点等待从对等节点传来的第一个网络包</li>
+<li>Connected 连接：DRBD已经建立连接，数据镜像现在可用，节点处于正常状态</li>
+<li>StartingSyncS：完全同步，有管理员发起的刚刚开始同步，未来可能的状态为SyncSource或PausedSyncS</li>
+<li>StartingSyncT：完全同步，有管理员发起的刚刚开始同步，下一状态为WFSyncUUID</li>
+<li>WFBitMapS：部分同步刚刚开始，下一步可能的状态为SyncSource或PausedSyncS</li>
+<li>WFBitMapT：部分同步刚刚开始，下一步可能的状态为WFSyncUUID</li>
+<li>WFSyncUUID：同步即将开始，下一步可能的状态为SyncTarget或PausedSyncT</li>
+<li>SyncSource：以本节点为同步源的同步正在进行</li>
+<li>SyncTarget：以本节点为同步目标的同步正在进行</li>
+<li>PausedSyncS：以本地节点是一个持续同步的源，但是目前同步已经暂停，可能是因为另外一个同步正在进行或是使用命令(drbdadm pause-sync)暂停了同步</li>
+<li>PausedSyncT：以本地节点为持续同步的目标，但是目前同步已经暂停，这可以是因为另外一个同步正在进行或是使用命令(drbdadm pause-sync)暂停了同步</li>
+<li>VerifyS：以本地节点为验证源的线上设备验证正在执行</li>
+<li>VerifyT：以本地节点为验证目标的线上设备验证正在执行</li>
+</ul>
+<h4 id="资源角色"><a href="#资源角色" class="headerlink" title="资源角色"></a>资源角色</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看资源角色命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@nod1 ~]<span class="comment"># drbdadm role drbd</span></div><div class="line">Secondary/Secondary</div><div class="line">[root@nod1 ~]<span class="comment"># cat /proc/drbd</span></div><div class="line">version: 8.4.3 (api:1/proto:86-101)</div><div class="line">GIT-hash: 89a294209144b68adb3ee85a73221f964d3ee515 build by gardner@, 2013-05-27 04:30:21</div><div class="line"> 0: cs:Connected ro:Secondary/Secondary ds:Inconsistent/Inconsistent C r-----</div><div class="line"> ns:0 nr:0 dw:0 dr:0 al:0 bm:0 lo:0 pe:0 ua:0 ap:0 ep:1 wo:f oos:2103412</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注释：</p>
+<ul>
+<li>Parimary 主：资源目前为主，并且可能正在被读取或写入，如果不是双主只会出现在两个节点中的其中一个节点上</li>
+<li>Secondary 次：资源目前为次，正常接收对等节点的更新</li>
+<li>Unknown 未知：资源角色目前未知，本地的资源不会出现这种状态</li>
+</ul>
+<h4 id="硬盘状态"><a href="#硬盘状态" class="headerlink" title="硬盘状态"></a>硬盘状态</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看硬盘状态命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@nod1 ~]<span class="comment"># drbdadm dstate drbd</span></div><div class="line">Inconsistent/Inconsistent</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;本地和对等节点的硬盘有可能为下列状态之一：</p>
+<ul>
+<li>Diskless 无盘：本地没有块设备分配给DRBD使用，这表示没有可用的设备，或者使用drbdadm命令手工分离或是底层的I/O错误导致自动分离</li>
+<li>Attaching：读取无数据时候的瞬间状态</li>
+<li>Failed 失败：本地块设备报告I/O错误的下一个状态，其下一个状态为Diskless无盘</li>
+<li>Negotiating：在已经连接的DRBD设置进行Attach读取无数据前的瞬间状态</li>
+<li>Inconsistent：数据是不一致的，在两个节点上（初始的完全同步前）这种状态出现后立即创建一个新的资源。此外，在同步期间（同步目标）在一个节点上出现这种状态</li>
+<li>Outdated：数据资源是一致的，但是已经过时</li>
+<li>DUnknown：当对等节点网络连接不可用时出现这种状态</li>
+<li>Consistent：一个没有连接的节点数据一致，当建立连接时，它决定数据是UpToDate或是Outdated</li>
+<li>UpToDate：一致的最新的数据状态，这个状态为正常状态</li>
+</ul>
+<h4 id="启用和禁用资源"><a href="#启用和禁用资源" class="headerlink" title="启用和禁用资源"></a>启用和禁用资源</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">######手动启用资源</span></div><div class="line">drbdadm up &lt;resource&gt;</div><div class="line"><span class="comment">######手动禁用资源</span></div><div class="line">drbdadm down &lt;resource&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注释：</p>
+<ul>
+<li>resource：为资源名称；当然也可以使用all表示[停用|启用]所有资源</li>
+</ul>
+<h4 id="升级和降级资源"><a href="#升级和降级资源" class="headerlink" title="升级和降级资源"></a>升级和降级资源</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">######升级资源</span></div><div class="line">drbdadm primary &lt;resource&gt;</div><div class="line"><span class="comment">######降级资源</span></div><div class="line">drbdadm secondary &lt;resource&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注释：在单主模式下的DRBD，两个节点同时处于连接状态，任何一个节点都可以在特定的时间内变成主；但两个节点中只能一为主，如果已经有一个主，需先降级才可能升级；在双主模式下没有这个限制</p>
+<h3 id="8-初始化设备同步"><a href="#8-初始化设备同步" class="headerlink" title="8.初始化设备同步"></a>8.初始化设备同步</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;选择一个初始同步源；如果是新初始化的或是空盘，这个选择可以是任意的，但是如果其中的一个节点已经在使用并包含有用的数据，那么选择同步源是至关重要的；如果选错了初始化同步方向，就会造成数据丢失，因此需要十分小心</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动初始化完全同步，这一步只能在初始化资源配置的一个节点上进行，并作为同步源选择的节点上；命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">[root@nod1 ~]<span class="comment"># drbdadm -- --overwrite-data-of-peer primary drbd</span></div><div class="line">[root@nod1 ~]<span class="comment"># cat /proc/drbd #查看同步进度</span></div><div class="line">version: 8.4.3 (api:1/proto:86-101)</div><div class="line">GIT-hash: 89a294209144b68adb3ee85a73221f964d3ee515 build by gardner@, 2013-05-27 04:30:21</div><div class="line"> 0: cs:SyncSource ro:Primary/Secondary ds:UpToDate/Inconsistent C r---n-</div><div class="line"> ns:1897624 nr:0 dw:0 dr:1901216 al:0 bm:115 lo:0 pe:3 ua:3 ap:0 ep:1 wo:f oos:207988</div><div class="line"> [=================&gt;..] sync<span class="string">'ed: 90.3% (207988/2103412)K</span></div><div class="line"><span class="string"> finish: 0:00:07 speed: 26,792 (27,076) K/sec</span></div><div class="line"><span class="string">######当同步完成时如以下状态</span></div><div class="line"><span class="string">version: 8.4.3 (api:1/proto:86-101)</span></div><div class="line"><span class="string">GIT-hash: 89a294209144b68adb3ee85a73221f964d3ee515 build by gardner@, 2013-05-27 04:30:21</span></div><div class="line"><span class="string"> 0: cs:Connected ro:Primary/Secondary ds:UpToDate/UpToDate C r-----</span></div><div class="line"><span class="string"> ns:2103412 nr:0 dw:0 dr:2104084 al:0 bm:129 lo:0 pe:0 ua:0 ap:0 ep:1 wo:f oos:0</span></div><div class="line"><span class="string">注释： drbd：为资源名称</span></div><div class="line"><span class="string">######查看同步进度也可使用以下命令</span></div><div class="line"><span class="string">drbd-overview</span></div></pre></td></tr></table></figure>
+<h3 id="9-创建文件系统"><a href="#9-创建文件系统" class="headerlink" title="9.创建文件系统"></a>9.创建文件系统</h3><h4 id="文件系统只能挂载在主-Primary-节点上，因此在设置好主节点后才可以对DRBD设备进行格式化操作"><a href="#文件系统只能挂载在主-Primary-节点上，因此在设置好主节点后才可以对DRBD设备进行格式化操作" class="headerlink" title="文件系统只能挂载在主(Primary)节点上，因此在设置好主节点后才可以对DRBD设备进行格式化操作"></a>文件系统只能挂载在主(Primary)节点上，因此在设置好主节点后才可以对DRBD设备进行格式化操作</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">######格式化文件系统</span></div><div class="line">[root@nod1 ~]<span class="comment"># mkfs.ext4 /dev/drbd0</span></div><div class="line"><span class="comment">######挂载文件系统</span></div><div class="line">[root@nod1 ~]<span class="comment"># mount /dev/drbd0 /mnt/</span></div><div class="line"><span class="comment">######查看挂载</span></div><div class="line">[root@nod1 ~]<span class="comment"># mount |grep drbd0</span></div><div class="line">/dev/drbd0 on /mnt <span class="built_in">type</span> ext4 (rw)</div><div class="line">注释：</div><div class="line"><span class="string">"/dev/drbd0"</span>为资源中定义已定义的资源名称</div><div class="line"><span class="comment">######查看DRBD状态</span></div><div class="line">[root@nod1 ~]<span class="comment"># drbd-overview</span></div><div class="line"> 0:drbd/0  Connected Primary/Secondary UpToDate/UpToDate C r-----</div><div class="line">注释：</div><div class="line">Primary：当前节点为主；在前面为当前节点</div><div class="line">Secondary：备用节点为次</div></pre></td></tr></table></figure>
+<h4 id="在挂载目录中创建一个测试文件并卸载；然后"><a href="#在挂载目录中创建一个测试文件并卸载；然后" class="headerlink" title="在挂载目录中创建一个测试文件并卸载；然后"></a>在挂载目录中创建一个测试文件并卸载；然后</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@nod1 ~]<span class="comment"># mkdir /mnt/test</span></div><div class="line">[root@nod1 ~]<span class="comment"># ls /mnt/</span></div><div class="line">lost+found  <span class="built_in">test</span></div><div class="line"><span class="comment">######在切换主节点时必须保证资源不在使用</span></div><div class="line">[root@nod1 ~]<span class="comment"># umount /mnt/</span></div></pre></td></tr></table></figure>
+<h4 id="切换主备节点"><a href="#切换主备节点" class="headerlink" title="切换主备节点"></a>切换主备节点</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">######先把当前主节点降级为次</span></div><div class="line">[root@nod1 ~]<span class="comment"># drbdadm secondary drbd</span></div><div class="line"><span class="comment">######查看DRBD状态</span></div><div class="line">[root@nod1 ~]<span class="comment"># drbd-overview</span></div><div class="line"> 0:drbd/0  Connected Secondary/Secondary UpToDate/UpToDate C r-----</div><div class="line"><span class="comment">######在NOD2节点升级</span></div><div class="line">[root@nod2 ~]<span class="comment"># drbdadm primary drbd</span></div><div class="line"><span class="comment">######查看DRBD状态</span></div><div class="line">[root@nod2 ~]<span class="comment"># drbd-overview</span></div><div class="line"> 0:drbd/0  Connected Primary/Secondary UpToDate/UpToDate C r-----</div></pre></td></tr></table></figure>
+<h4 id="挂载设备并验证文件是否存在"><a href="#挂载设备并验证文件是否存在" class="headerlink" title="挂载设备并验证文件是否存在"></a>挂载设备并验证文件是否存在</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@nod2 ~]<span class="comment"># mount /dev/drbd0 /mnt/</span></div><div class="line">[root@nod2 ~]<span class="comment"># ls /mnt/</span></div><div class="line">lost+found  <span class="built_in">test</span></div></pre></td></tr></table></figure>
+<h2 id="七、DRBD脑裂的模拟及修复"><a href="#七、DRBD脑裂的模拟及修复" class="headerlink" title="七、DRBD脑裂的模拟及修复"></a>七、DRBD脑裂的模拟及修复</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注释：我们还接着上面的实验继续进行，现在NOD2为主节点而NOD1为备节点</p>
+<h3 id="1。断开主-parmary-节点"><a href="#1。断开主-parmary-节点" class="headerlink" title="1。断开主(parmary)节点"></a>1。断开主(parmary)节点</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关机、断开网络或重新配置其他的IP都可以；这里选择的是断开网络</p>
+<h3 id="2-查看两节点状态"><a href="#2-查看两节点状态" class="headerlink" title="2.查看两节点状态"></a>2.查看两节点状态</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@nod2 ~]<span class="comment"># drbd-overview</span></div><div class="line"> 0:drbd/0  WFConnection Primary/Unknown UpToDate/DUnknown C r----- /mnt ext4 2.0G 68M 1.9G 4%</div><div class="line">[root@nod1 ~]<span class="comment"># drbd-overview</span></div><div class="line"> 0:drbd/0  StandAlone Secondary/Unknown UpToDate/DUnknown r-----</div><div class="line"><span class="comment">######由上可以看到两个节点已经无法通信；NOD2为主节点，NOD1为备节点</span></div></pre></td></tr></table></figure>
+<h3 id="3-将NOD1节点升级为主-primary-节点并挂载资源"><a href="#3-将NOD1节点升级为主-primary-节点并挂载资源" class="headerlink" title="3.将NOD1节点升级为主(primary)节点并挂载资源"></a>3.将NOD1节点升级为主(primary)节点并挂载资源</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@nod1 ~]<span class="comment"># drbdadm primary drbd</span></div><div class="line">[root@nod1 ~]<span class="comment"># drbd-overview</span></div><div class="line"> 0:drbd/0  StandAlone Primary/Unknown UpToDate/DUnknown r-----</div><div class="line">[root@nod1 ~]<span class="comment"># mount /dev/drbd0 /mnt/</span></div><div class="line">[root@nod1 ~]<span class="comment"># mount | grep drbd0</span></div><div class="line">/dev/drbd0 on /mnt <span class="built_in">type</span> ext4 (rw)</div></pre></td></tr></table></figure>
+<h3 id="4-假如原来的主-primary-节点修复好重新上线了，这时出现了脑裂情况"><a href="#4-假如原来的主-primary-节点修复好重新上线了，这时出现了脑裂情况" class="headerlink" title="4.假如原来的主(primary)节点修复好重新上线了，这时出现了脑裂情况"></a>4.假如原来的主(primary)节点修复好重新上线了，这时出现了脑裂情况</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">[root@nod2 ~]<span class="comment"># tail -f /var/log/messages</span></div><div class="line">Sep 19 01:56:06 nod2 kernel: d-con drbd: Terminating drbd_a_drbd</div><div class="line">Sep 19 01:56:06 nod2 kernel: block drbd0: helper <span class="built_in">command</span>: /sbin/drbdadm initial-split-brain minor-0 <span class="built_in">exit</span> code 0 (0x0)</div><div class="line">Sep 19 01:56:06 nod2 kernel: block drbd0: Split-Brain detected but unresolved, dropping connection!</div><div class="line">Sep 19 01:56:06 nod2 kernel: block drbd0: helper <span class="built_in">command</span>: /sbin/drbdadm split-brain minor-0</div><div class="line">Sep 19 01:56:06 nod2 kernel: block drbd0: helper <span class="built_in">command</span>: /sbin/drbdadm split-brain minor-0 <span class="built_in">exit</span> code 0 (0x0)</div><div class="line">Sep 19 01:56:06 nod2 kernel: d-con drbd: conn( NetworkFailure -&gt; Disconnecting )</div><div class="line">Sep 19 01:56:06 nod2 kernel: d-con drbd: error receiving ReportState, e: -5 l: 0!</div><div class="line">Sep 19 01:56:06 nod2 kernel: d-con drbd: Connection closed</div><div class="line">Sep 19 01:56:06 nod2 kernel: d-con drbd: conn( Disconnecting -&gt; StandAlone )</div><div class="line">Sep 19 01:56:06 nod2 kernel: d-con drbd: receiver terminated</div><div class="line">Sep 19 01:56:06 nod2 kernel: d-con drbd: Terminating drbd_r_drbd</div><div class="line">Sep 19 01:56:18 nod2 kernel: block drbd0: role( Primary -&gt; Secondary )</div></pre></td></tr></table></figure>
+<h3 id="5-再次查看两节点的状态"><a href="#5-再次查看两节点的状态" class="headerlink" title="5.再次查看两节点的状态"></a>5.再次查看两节点的状态</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@nod1 ~]<span class="comment"># drbdadm role drbd</span></div><div class="line">Primary/Unknown</div><div class="line">[root@nod2 ~]<span class="comment"># drbdadm role drbd</span></div><div class="line">Primary/Unknown</div></pre></td></tr></table></figure>
+<h3 id="6-查看NOD1与NOD2连接状态"><a href="#6-查看NOD1与NOD2连接状态" class="headerlink" title="6.查看NOD1与NOD2连接状态"></a>6.查看NOD1与NOD2连接状态</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@nod1 ~]<span class="comment"># drbd-overview</span></div><div class="line"> 0:drbd/0  StandAlone Primary/Unknown UpToDate/DUnknown r----- /mnt ext4 2.0G 68M 1.9G 4%</div><div class="line">[root@nod2 ~]<span class="comment"># drbd-overview</span></div><div class="line"> 0:drbd/0  WFConnection Primary/Unknown UpToDate/DUnknown C r----- /mnt ext4 2.0G 68M 1.9G 4%</div><div class="line"><span class="comment">######由上可见，状态为StandAlone时，主备节点是不会通信的</span></div></pre></td></tr></table></figure>
+<h3 id="7-查看DRBD的服务状态"><a href="#7-查看DRBD的服务状态" class="headerlink" title="7.查看DRBD的服务状态"></a>7.查看DRBD的服务状态</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">[root@nod1 ~]<span class="comment"># service drbd status</span></div><div class="line">drbd driver loaded OK; device status:</div><div class="line">version: 8.4.3 (api:1/proto:86-101)</div><div class="line">GIT-hash: 89a294209144b68adb3ee85a73221f964d3ee515 build by gardner@, 2013-05-27 04:30:21</div><div class="line">m:res cs ro ds p mounted fstype</div><div class="line">0:drbd StandAlone Primary/Unknown  UpToDate/DUnknown  r----- ext4</div><div class="line">[root@nod2 ~]<span class="comment"># service drbd status</span></div><div class="line">drbd driver loaded OK; device status:</div><div class="line">version: 8.4.3 (api:1/proto:86-101)</div><div class="line">GIT-hash: 89a294209144b68adb3ee85a73221f964d3ee515 build by gardner@, 2013-05-27 04:30:21</div><div class="line">m:res cs ro ds p mounted fstype</div><div class="line">0:drbd WFConnection Primary/Unknown  UpToDate/DUnknown  C  /mnt  ext4</div></pre></td></tr></table></figure>
+<h3 id="8-在NOD1备用节点处理办法"><a href="#8-在NOD1备用节点处理办法" class="headerlink" title="8.在NOD1备用节点处理办法"></a>8.在NOD1备用节点处理办法</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">[root@nod1 ~]<span class="comment"># umount /mnt/</span></div><div class="line">[root@nod1 ~]<span class="comment"># drbdadm disconnect drbd</span></div><div class="line">drbd: Failure: (162) Invalid configuration request</div><div class="line">additional info from kernel:</div><div class="line">unknown connection</div><div class="line">Command <span class="string">'drbdsetup disconnect ipv4:192.168.137.225:7789 ipv4:192.168.137.222:7789'</span> terminated with <span class="built_in">exit</span> code 10</div><div class="line">[root@nod1 ~]<span class="comment"># drbdadm secondary drbd</span></div><div class="line">[root@nod1 ~]<span class="comment"># drbd-overview</span></div><div class="line"> 0:drbd/0  StandAlone Secondary/Unknown UpToDate/DUnknown r-----</div><div class="line">[root@nod1 ~]<span class="comment"># drbdadm connect --discard-my-data drbd</span></div><div class="line"><span class="comment">######执行完以上三步后，你查看会发现还是不可用</span></div><div class="line">[root@nod1 ~]<span class="comment"># drbd-overview</span></div><div class="line"> 0:drbd/0  WFConnection Secondary/Unknown UpToDate/DUnknown C r-----</div></pre></td></tr></table></figure>
+<h3 id="9-需要在NOD2节点上重新建立连接资源"><a href="#9-需要在NOD2节点上重新建立连接资源" class="headerlink" title="9.需要在NOD2节点上重新建立连接资源"></a>9.需要在NOD2节点上重新建立连接资源</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@nod2 ~]<span class="comment"># drbdadm connect drbd</span></div><div class="line"><span class="comment">######查看节点连接状态</span></div><div class="line">[root@nod2 ~]<span class="comment"># drbd-overview</span></div><div class="line"> 0:drbd/0  Connected Primary/Secondary UpToDate/UpToDate C r----- /mnt ext4 2.0G 68M 1.9G 4%</div><div class="line">[root@nod1 ~]<span class="comment"># drbd-overview</span></div><div class="line"> 0:drbd/0  Connected Secondary/Primary UpToDate/UpToDate C r-----</div><div class="line"><span class="comment">######由上可见已经恢复到正常运行状态</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>注意</strong>：特别提醒，如果是单主模式，资源只能在主(Primary)节点上挂载使用，而且不建议手动切换主备节点</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>到此DRBD的安装配置及故障修复已结束，DRBD的双主模式一般情况不会用到，这里也不再介绍双主模式的配置</strong></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/HA集群/" rel="tag"># HA集群</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/03/HA集群/3. heartbeat和keepalived的区别/" rel="next" title="heartbeat和keepalived的区别">
+                <i class="fa fa-chevron-left"></i> heartbeat和keepalived的区别
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/03/HA集群/5. Mysql-5.5+Heartbeat-3.0.5+DRBD/" rel="prev" title="Mysql-5.5+Heartbeat-3.0.5+DRBD">
+                Mysql-5.5+Heartbeat-3.0.5+DRBD <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">599</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、DRBD简介"><span class="nav-number">1.</span> <span class="nav-text">一、DRBD简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、DRBD是如何工作的呢"><span class="nav-number">2.</span> <span class="nav-text">二、DRBD是如何工作的呢?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、DRBD与HA的关系"><span class="nav-number">3.</span> <span class="nav-text">三、DRBD与HA的关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、DRBD复制模式"><span class="nav-number">4.</span> <span class="nav-text">四、DRBD复制模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#协议A："><span class="nav-number">4.1.</span> <span class="nav-text">协议A：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#协议B："><span class="nav-number">4.2.</span> <span class="nav-text">协议B：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#协议C："><span class="nav-number">4.3.</span> <span class="nav-text">协议C：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#160-160-160-160-160-160-160-160-四、-DRBD工作原理图"><span class="nav-number">5.</span> <span class="nav-text">        四、 DRBD工作原理图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、环境介绍及安装前准备"><span class="nav-number">6.</span> <span class="nav-text">五、环境介绍及安装前准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境介绍："><span class="nav-number">6.1.</span> <span class="nav-text">环境介绍：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装前准备："><span class="nav-number">6.2.</span> <span class="nav-text">安装前准备：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-每个节点的主机名称须跟”uname-n”命令的执行结果一样"><span class="nav-number">6.2.1.</span> <span class="nav-text">1.每个节点的主机名称须跟”uname -n”命令的执行结果一样</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-两个节点的主机名称和对应的IP地址可以正常解析"><span class="nav-number">6.2.2.</span> <span class="nav-text">2.两个节点的主机名称和对应的IP地址可以正常解析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-配置epel的yum源-下载并安装"><span class="nav-number">6.2.3.</span> <span class="nav-text">3.配置epel的yum源 下载并安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-需要为两个节点分别提供大小相同的分区"><span class="nav-number">6.2.4.</span> <span class="nav-text">4.需要为两个节点分别提供大小相同的分区</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、安装并配置DRBD"><span class="nav-number">7.</span> <span class="nav-text">六、安装并配置DRBD</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-在NOD1与NOD2节点上安装DRBD软件包"><span class="nav-number">7.1.</span> <span class="nav-text">1.在NOD1与NOD2节点上安装DRBD软件包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-查看DRBD配置文件"><span class="nav-number">7.2.</span> <span class="nav-text">2.查看DRBD配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-修改配置文件如下："><span class="nav-number">7.3.</span> <span class="nav-text">3.修改配置文件如下：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-添加资源文件"><span class="nav-number">7.4.</span> <span class="nav-text">4.添加资源文件:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-将配置文件为NOD2提供一份"><span class="nav-number">7.5.</span> <span class="nav-text">5.将配置文件为NOD2提供一份</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-初始化资源并启动服务"><span class="nav-number">7.6.</span> <span class="nav-text">6.初始化资源并启动服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-资源的连接状态详细介绍"><span class="nav-number">7.7.</span> <span class="nav-text">7.资源的连接状态详细介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#如何查看资源连接状态？"><span class="nav-number">7.7.1.</span> <span class="nav-text">如何查看资源连接状态？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#资源的连接状态；一个资源可能有以下连接状态中的一种"><span class="nav-number">7.7.2.</span> <span class="nav-text">资源的连接状态；一个资源可能有以下连接状态中的一种</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#资源角色"><span class="nav-number">7.7.3.</span> <span class="nav-text">资源角色</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#硬盘状态"><span class="nav-number">7.7.4.</span> <span class="nav-text">硬盘状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启用和禁用资源"><span class="nav-number">7.7.5.</span> <span class="nav-text">启用和禁用资源</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#升级和降级资源"><span class="nav-number">7.7.6.</span> <span class="nav-text">升级和降级资源</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-初始化设备同步"><span class="nav-number">7.8.</span> <span class="nav-text">8.初始化设备同步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-创建文件系统"><span class="nav-number">7.9.</span> <span class="nav-text">9.创建文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#文件系统只能挂载在主-Primary-节点上，因此在设置好主节点后才可以对DRBD设备进行格式化操作"><span class="nav-number">7.9.1.</span> <span class="nav-text">文件系统只能挂载在主(Primary)节点上，因此在设置好主节点后才可以对DRBD设备进行格式化操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在挂载目录中创建一个测试文件并卸载；然后"><span class="nav-number">7.9.2.</span> <span class="nav-text">在挂载目录中创建一个测试文件并卸载；然后</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#切换主备节点"><span class="nav-number">7.9.3.</span> <span class="nav-text">切换主备节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#挂载设备并验证文件是否存在"><span class="nav-number">7.9.4.</span> <span class="nav-text">挂载设备并验证文件是否存在</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#七、DRBD脑裂的模拟及修复"><span class="nav-number">8.</span> <span class="nav-text">七、DRBD脑裂的模拟及修复</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1。断开主-parmary-节点"><span class="nav-number">8.1.</span> <span class="nav-text">1。断开主(parmary)节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-查看两节点状态"><span class="nav-number">8.2.</span> <span class="nav-text">2.查看两节点状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-将NOD1节点升级为主-primary-节点并挂载资源"><span class="nav-number">8.3.</span> <span class="nav-text">3.将NOD1节点升级为主(primary)节点并挂载资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-假如原来的主-primary-节点修复好重新上线了，这时出现了脑裂情况"><span class="nav-number">8.4.</span> <span class="nav-text">4.假如原来的主(primary)节点修复好重新上线了，这时出现了脑裂情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-再次查看两节点的状态"><span class="nav-number">8.5.</span> <span class="nav-text">5.再次查看两节点的状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-查看NOD1与NOD2连接状态"><span class="nav-number">8.6.</span> <span class="nav-text">6.查看NOD1与NOD2连接状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-查看DRBD的服务状态"><span class="nav-number">8.7.</span> <span class="nav-text">7.查看DRBD的服务状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-在NOD1备用节点处理办法"><span class="nav-number">8.8.</span> <span class="nav-text">8.在NOD1备用节点处理办法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-需要在NOD2节点上重新建立连接资源"><span class="nav-number">8.9.</span> <span class="nav-text">9.需要在NOD2节点上重新建立连接资源</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

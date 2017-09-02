@@ -1,0 +1,758 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Zabbix," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;因为大量使用tomcat作为应用服务，所以，这两天催生了一个想法，通过zabbix监控tomcat的运行状态，从而能够更快的发现tomcat服务出现的问题以及判断问题出现在哪块。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;首先，zabbix监控tom">
+<meta name="keywords" content="Zabbix">
+<meta property="og:type" content="article">
+<meta property="og:title" content="zabbix通过JMX监控tomcat状态">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/09/03/Zabbix/24. zabbix通过JMX监控tomcat状态/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;因为大量使用tomcat作为应用服务，所以，这两天催生了一个想法，通过zabbix监控tomcat的运行状态，从而能够更快的发现tomcat服务出现的问题以及判断问题出现在哪块。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;首先，zabbix监控tom">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E9%80%9A%E8%BF%87JMX%E7%9B%91%E6%8E%A7tomcat%E7%8A%B6%E6%80%81/01.jpeg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E9%80%9A%E8%BF%87JMX%E7%9B%91%E6%8E%A7tomcat%E7%8A%B6%E6%80%81/02.jpeg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E9%80%9A%E8%BF%87JMX%E7%9B%91%E6%8E%A7tomcat%E7%8A%B6%E6%80%81/03.jpeg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E9%80%9A%E8%BF%87JMX%E7%9B%91%E6%8E%A7tomcat%E7%8A%B6%E6%80%81/04.jpeg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E9%80%9A%E8%BF%87JMX%E7%9B%91%E6%8E%A7tomcat%E7%8A%B6%E6%80%81/05.jpeg?raw=true">
+<meta property="og:updated_time" content="2017-09-02T17:39:44.055Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="zabbix通过JMX监控tomcat状态">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;因为大量使用tomcat作为应用服务，所以，这两天催生了一个想法，通过zabbix监控tomcat的运行状态，从而能够更快的发现tomcat服务出现的问题以及判断问题出现在哪块。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;首先，zabbix监控tom">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E9%80%9A%E8%BF%87JMX%E7%9B%91%E6%8E%A7tomcat%E7%8A%B6%E6%80%81/01.jpeg?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/09/03/Zabbix/24. zabbix通过JMX监控tomcat状态/"/>
+
+
+
+
+
+  <title>zabbix通过JMX监控tomcat状态 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/24. zabbix通过JMX监控tomcat状态/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">zabbix通过JMX监控tomcat状态</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:13:44+08:00">
+                2017-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;因为大量使用tomcat作为应用服务，所以，这两天催生了一个想法，通过zabbix监控tomcat的运行状态，从而能够更快的发现tomcat服务出现的问题以及判断问题出现在哪块。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先，zabbix监控tomcat等这一类java平台的应用不是直接通过agentd来实现的，而是使用jmx来获取到tomcat这类应用的状态，然后再将数据交给server端，生成监控图。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果需要用到jmx监控的话需要在客户端和服务端都安装java环境，至于java环境可以通过源码安装，不过我这里为了省事，直接通过yum安装java和java-devel这两个包：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y install java java-devel</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后是服务端的配置：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;服务端需要重新安装zabbix服务端，需要将–enable-java添加到编译参数中去，参数如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./configure --prefix=/usr/<span class="built_in">local</span>/zabbix/ --<span class="built_in">enable</span>-server --<span class="built_in">enable</span>-agent --with-mysql --with-net-snmp --with-libcurl --with-libxml2 --<span class="built_in">enable</span>-java</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安装好服务端之后可以在软件安装目录找到如下这个目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@test1 zabbix_java]<span class="comment"># pwd</span></div><div class="line">/usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_java</div><div class="line">[root@test1 zabbix_java]<span class="comment"># ls</span></div><div class="line">bin lib settings.sh shutdown.sh startup.sh</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改settings.sh中得参数，其中大部分都是以#开头的，修改的参数如下面所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@test1 zabbix_java]<span class="comment"># egrep -v "^#|^$" settings.sh </span></div><div class="line">LISTEN_IP=<span class="string">"0.0.0.0"</span></div><div class="line">LISTEN_PORT=10052</div><div class="line">PID_FILE=<span class="string">"/tmp/zabbix_java.pid"</span></div><div class="line">START_POLLERS=5</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后修改zabbix_server.conf的配置，修改的参数如下面所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[root@test1 zabbix_java]<span class="comment"># egrep -v "^#|^$" /usr/local/zabbix/etc/zabbix_server.conf</span></div><div class="line">LogFile=/tmp/zabbix_server.log</div><div class="line">DBName=zabbix</div><div class="line">DBUser=zabbix</div><div class="line">DBPassword=xxxxxx</div><div class="line">DBSocket=/tmp/mysql.sock</div><div class="line">JavaGateway=127.0.0.1</div><div class="line">JavaGatewayPort=10052</div><div class="line">StartJavaPollers=5</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其中上面的5行和以前配置一样，下面的三行是需要将前面的#删掉，并进行修改的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改完以后，重启zabbixserver并且启动zabbix_java_Gateway启动    zabbix_java_Gateway的方法为</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sh /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_java/startup.sh</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动之后，在服务端会多出一个侦听端口10052来，效果如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@test1 zabbix_java]<span class="comment"># netstat -antlp|grep 10052</span></div><div class="line">tcp6 0 0 :::10052 :::* LISTEN 15371/java </div><div class="line">tcp6 0 0 127.0.0.1:10052 127.0.0.1:38661 TIME_WAIT</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;看到上面这些信息，证明服务端已经配置好了，接下来需要配置tomcat客户端了。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;tomcat客户端的配置为如下：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先安装java环境</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;也和上面一样使用yum安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y install java java-devel</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后下载tomcat的源码包，解压后放在相应的目录，我这里放在/usrlocal/tomcat-    8.0.26/目录下。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后需要下载对应tomcat的jmx版本，这里安装的是最新的tomcat,版本是8.0.26，于是下载路径为如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget http://archive.apache.org/dist/tomcat/tomcat-	8/v8.0.26/bin/extras/catalina-jmx-remote.jar</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用其他版本的可以自行选择相对应的jmx版本下载。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下载后将该文件放在tomcat的lib目录下，然后修改catalina.sh文件，catalina.sh文件在tomcat的bin目录下。在#!bin/sh下方添加一行参数，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/sh</span></div><div class="line">CATALINA_OPTS=<span class="string">"-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=10.6.0.176"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其中的10.6.0.176是该tomcat客户端的IP。然后需要修改服务器的配置文件server.xml：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@test3 tomcat-8.0.26]<span class="comment"># tail -6 ./conf/server.xml</span></div><div class="line">&lt;Listener className=<span class="string">"org.apache.catalina.mbeans.JmxRemoteLifecycleListener"</span> rmiRegistryPortPlatform=<span class="string">"8090"</span> rmiServerPortPlatform=<span class="string">"8090"</span> /&gt;</div><div class="line"> &lt;/Host&gt;</div><div class="line"> &lt;/Engine&gt;</div><div class="line"> &lt;/Service&gt;</div><div class="line">&lt;/Server&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如上面所示，第一行就是我们添加进去的配置，其中的8090就是zabbix server端监控tomcat需要使用的端口。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;保存之后退出，然后启动tomcat和zabbix的agentd。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动完成之后通过ps命令和netstat命令查看是否正常的侦听了相应的端口，zabbix_agentd默认侦听10050端口，tomcat默认侦听8080端口，8090端口是开给jmx使用    的，应该也是开启的，效果如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[root@test3 tomcat-8.0.26]<span class="comment"># netstat -antlp|grep LISTEN </span></div><div class="line">tcp 0 0 0.0.0.0:10050 0.0.0.0:* LISTEN 19592/./sbin/zabbix </div><div class="line">tcp 0 0 0.0.0.0:22 0.0.0.0:* LISTEN 836/sshd </div><div class="line">tcp6 0 0 ::1:25 :::* LISTEN 1503/master </div><div class="line">tcp6 0 0 :::8090 :::* LISTEN 21026/java </div><div class="line">tcp6 0 0 127.0.0.1:8005 :::* LISTEN 21026/java </div><div class="line">tcp6 0 0 :::8009 :::* LISTEN 21026/java </div><div class="line">tcp6 0 0 :::8080 :::* LISTEN 21026/java </div><div class="line">tcp6 0 0 :::40438 :::* LISTEN 21026/java </div><div class="line">tcp6 0 0 :::22 :::* LISTEN 836/sshd</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这时候可以在zabbix_server端尝试获取tomcat的相关数据了。这时候需要使用到一个工具cmdline-jmxclient-0.10.3.jar</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个工具可以自己到网上下载，我的附件中也会有这个工具，使用方法为如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@test1 zabbix_java]<span class="comment"># java -jar /root/cmdline-jmxclient-0.10.3.jar - 10.6.0.176:8090 java.lang:type=Memory NonHeapMemoryUsage</span></div><div class="line">09/09/2015 17:56:49 +0800 org.archive.jmx.Client NonHeapMemoryUsage: </div><div class="line">committed: 24313856</div><div class="line">init: 24313856</div><div class="line">max: 224395264</div><div class="line">used: 20066808</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上面已经获取到了相应的tomcat数据，好了，到这里配置就差不多要大功告成了，但是还需要在web端配置相应的模版，刚开始我使用系统自带的模板，发现出不来数据，于是我去网上找到了某个网友自己做的模板，终于可以获取到tomcat的数据了，模板我也将一并打包放在附件中。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;好了，在web端开始配置了，配置如下图所示：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E9%80%9A%E8%BF%87JMX%E7%9B%91%E6%8E%A7tomcat%E7%8A%B6%E6%80%81/01.jpeg?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其中的端口需要填写两个，第一个是agentd的侦听端口，第二个是jmx的侦听端口，这个端口8090是我们在tomcat客户端的server.xml文件中定义的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;将该主机关联到相应的模板上去：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E9%80%9A%E8%BF%87JMX%E7%9B%91%E6%8E%A7tomcat%E7%8A%B6%E6%80%81/02.jpeg?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;之后就等待出数据了，该模板中的某些键值在tomcat中不支持，我目前还不知道是什么情况，可能和tomcat中得配置参数有关系吧。下面展示一下出图的效果，这个模板各位也可以拿回去自己进行修改：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E9%80%9A%E8%BF%87JMX%E7%9B%91%E6%8E%A7tomcat%E7%8A%B6%E6%80%81/03.jpeg?raw=true" alt=""></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E9%80%9A%E8%BF%87JMX%E7%9B%91%E6%8E%A7tomcat%E7%8A%B6%E6%80%81/04.jpeg?raw=true" alt=""></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E9%80%9A%E8%BF%87JMX%E7%9B%91%E6%8E%A7tomcat%E7%8A%B6%E6%80%81/05.jpeg?raw=true" alt=""></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Zabbix/" rel="tag"># Zabbix</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/03/Zabbix/23. zabbix使用pyora监控oracle数据库/" rel="next" title="zabbix使用pyora监控oracle数据库">
+                <i class="fa fa-chevron-left"></i> zabbix使用pyora监控oracle数据库
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/03/Zabbix/25. zabbix通过自定义脚本监控nginx，php-fpm和mysql占用内存数和进程的个数/" rel="prev" title="zabbix通过自定义脚本监控nginx，php-fpm和mysql占用内存数和进程的个数">
+                zabbix通过自定义脚本监控nginx，php-fpm和mysql占用内存数和进程的个数 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">599</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

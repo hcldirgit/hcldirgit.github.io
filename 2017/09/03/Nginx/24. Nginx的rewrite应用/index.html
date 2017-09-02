@@ -1,0 +1,805 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Nginx,LNMP," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Rewrite主要的功能是实现URL重写，Nginx 的 Rewrite 规则采用 PCRE Perl 兼容正则表达式的语法进行规则匹配，如相使用 Nginx 的 Rewrite 功能，在编译 Nginx 前要编译安装 PCRE 库。 一、Nginx使用if进行条件匹配&amp;#160;&amp;#160;&amp;#160">
+<meta name="keywords" content="Nginx,LNMP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx的rewrite应用">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/09/03/Nginx/24. Nginx的rewrite应用/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Rewrite主要的功能是实现URL重写，Nginx 的 Rewrite 规则采用 PCRE Perl 兼容正则表达式的语法进行规则匹配，如相使用 Nginx 的 Rewrite 功能，在编译 Nginx 前要编译安装 PCRE 库。 一、Nginx使用if进行条件匹配&amp;#160;&amp;#160;&amp;#160">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-01T09:09:45.372Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nginx的rewrite应用">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Rewrite主要的功能是实现URL重写，Nginx 的 Rewrite 规则采用 PCRE Perl 兼容正则表达式的语法进行规则匹配，如相使用 Nginx 的 Rewrite 功能，在编译 Nginx 前要编译安装 PCRE 库。 一、Nginx使用if进行条件匹配&amp;#160;&amp;#160;&amp;#160">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/09/03/Nginx/24. Nginx的rewrite应用/"/>
+
+
+
+
+
+  <title>Nginx的rewrite应用 | 失落的乐章</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '85*****1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">失落的乐章</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术面前，永远都是学生。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-message">
+          <a href="/message" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Nginx/24. Nginx的rewrite应用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失落的乐章">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="失落的乐章">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Nginx的rewrite应用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:06:42+08:00">
+                2017-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Rewrite主要的功能是实现URL重写，Nginx 的 Rewrite 规则采用 PCRE Perl 兼容正则表达式的语法进行规则匹配，如相使用 Nginx 的 Rewrite 功能，在编译 Nginx 前要编译安装 PCRE 库。</p>
+<h2 id="一、Nginx使用if进行条件匹配"><a href="#一、Nginx使用if进行条件匹配" class="headerlink" title="一、Nginx使用if进行条件匹配"></a>一、Nginx使用if进行条件匹配</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Nginx可以用if进行条件匹配，语法规则类似C</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> （条件）&#123;...&#125; ( 可用于： server,location )</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;检查一个条件是否符合，如果条件符合，则执行大括号内的语句。不支持嵌套，不支持多条件 &amp;&amp; || </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例如：if ($http_user_agent ~ MSIE) {rewrite  ^(.*)$  /msie/$1  break;}</p>
+<ol>
+<li>正则表达式匹配，其中：</li>
+</ol>
+<ul>
+<li>~  为区分大小写匹配 </li>
+<li>~* 为不区分大小写匹配 </li>
+<li>!~和!~*分别为区分大小写不匹配及不区分大小写不匹配</li>
+</ul>
+<ol>
+<li>文件及目录匹配，其中：</li>
+</ol>
+<ul>
+<li>-f和!-f用来判断是否存在文件 </li>
+<li>-d和!-d用来判断是否存在目录 </li>
+<li>-e和!-e用来判断是否存在文件或目录 </li>
+<li>-x和!-x用来判断文件是否可执行</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例如：if (!-f $request_filename) {proxy_pass  <a href="http://127.0.0.1;}" target="_blank" rel="external">http://127.0.0.1;}</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Wordpress的重定向规则：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (!-e <span class="variable">$request_filename</span>) &#123;rewrite ^/(index|atom|rsd)\.xml$ http://feed.shunz.net last;rewrite ^([_0-9a-zA-Z-]+)?(/wp-.*) <span class="variable">$2</span> last;rewrite ^([_0-9a-zA-Z-]+)?(/.*\.php)$ <span class="variable">$2</span> last;rewrite ^ /index.php last;&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;return ( 可用于： server,location,if )  ## 用于结束规则的执行并反回状态码给客户端。  状态码可以是 ：204/400/402~406/408/410/411/413/416/500~504  </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">location ~ .*\.(sh|bash)?$ &#123;  </div><div class="line">      <span class="built_in">return</span> 403;  </div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;访问的 URL 以 .sh .bash 结尾的，则返回 403 。</p>
+<ul>
+<li>204  No Content  </li>
+<li>400  Bad Request  </li>
+<li>402  Payment Required  </li>
+<li>403  Forbidden  </li>
+<li>404  Not Found  </li>
+<li>405  Method Not Allowed  </li>
+<li>406  Not Acceptable  </li>
+<li>408  Request Timeout  </li>
+<li>410  Gone  </li>
+<li>411  Length Required  </li>
+<li>413  Request Entity Too Large  </li>
+<li>416  Requested Range Not Satisfiable  </li>
+<li>500  Internal Server Error  </li>
+<li>501  Not Implemented  </li>
+<li>502  Bad Gateway  </li>
+<li>503  Service Unavailable  </li>
+<li>504  Gateway Timeout </li>
+</ul>
+<h2 id="二、Nginx使用rewrite"><a href="#二、Nginx使用rewrite" class="headerlink" title="二、Nginx使用rewrite"></a>二、Nginx使用rewrite</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;rewrite ( 可用于： server,location,if ) ## 重写 URL ，或修改字符串。重写 URL 只对相对路径有效，如想对主机名，要使用 if 语句。 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例1：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (<span class="variable">$host</span> ~* www\.(.*)) &#123;  </div><div class="line">      <span class="built_in">set</span> <span class="variable">$host_without_www</span> <span class="variable">$1</span>;  </div><div class="line">      rewrite ^(.*)$ http://<span class="variable">$host_without_www</span><span class="variable">$1</span> permanent;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果替换串以 http:// 开头，将会采用 301 或 302 跳转进行 URL 重定向。 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例2：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rewrite ^/feed/$ http://feed.shunz.net last;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Nginx的Rewrite规则与Apache几乎完全一致，所不同的是最后的flag标记，Nginx的rewrite指令后支持的标记有last，break，redirect，permanent</p>
+<ul>
+<li>last 相当于Apache里的[L]标记，表示完成rewrite，不再匹配后面的规则 </li>
+<li>break ( 可用于： server,location,if ) ## 本条规则匹配完成后，终止匹配，不再匹配后面的规则<br>如：rewrite ^/b/(.*).html /play.php?video=$1 break; </li>
+<li>redirect 返回302临时重定向,浏览器会显示跳转后的URL地址</li>
+<li>permanent 返回301永久重定向，浏览器会显示跳转后的URL地址</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;last/break用来实现URL重写，浏览器地址栏的URL不变，但在服务器端访问的路径发生了变化。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redirect/permanent实现URL跳转，浏览器地址栏URL会显示跳转后的URL。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用 alias 指令时必须用 last 标记 ，使用 proxy_pass 指令时要用 break 表示。 last 标记在本条 rewrite 规则执行完毕后，会对其所在 server{….}标签重新发起请 求，而 break 标记则在本条规则匹配完成后，终止匹配。  </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">location /cms/ &#123;  </div><div class="line">      proxy_pass http://test.abc.com;  </div><div class="line">      rewrite <span class="string">"^/cms/(.*)\.html$"</span> /cms/index.html <span class="built_in">break</span>;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这条规则如果使用 last 会导致死循环。  </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一般在根 location 中（即 location / {….}）或直接在 server 标签编写 rewrite 规则，推荐使用 last 标记，  </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在非根 location 中 (即 location /cms/ {…}),则使用 break 标记。 </p>
+<h2 id="Nginx-document-uri参数的使用"><a href="#Nginx-document-uri参数的使用" class="headerlink" title="Nginx $document_uri参数的使用"></a>Nginx $document_uri参数的使用</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;$document_uri  表示访问的url 现在我的需求是，访问 www.abc.com  请求到 www.abc.com/abc/</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在nginx配置文件中加入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (<span class="variable">$document_uri</span> !~ <span class="string">'abc'</span>)</div><div class="line">    &#123;</div><div class="line">            rewrite ^/(.*)$ http://www.abc.com/abc/<span class="variable">$1</span> permanent;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;而不是单独加一句  rewrite ^/(.*)$ <a href="http://www.abc.com/abc/$1" target="_blank" rel="external">http://www.abc.com/abc/$1</a> permanent;</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果只加rewrite 规则，而不限定条件，那么会造成死循环。  会访问到   <a href="http://www.abc.com/abc/abc/abc/abc/" target="_blank" rel="external">http://www.abc.com/abc/abc/abc/abc/</a>….</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Nginx/" rel="tag"># Nginx</a>
+          
+            <a href="/tags/LNMP/" rel="tag"># LNMP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/03/Nginx/23. nginx代理/" rel="next" title="nginx代理">
+                <i class="fa fa-chevron-left"></i> nginx代理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/03/Nginx/25. nginx代理--根据访问的目录来区分后端的web/" rel="prev" title="nginx代理--根据访问的目录来区分后端的web">
+                nginx代理--根据访问的目录来区分后端的web <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/0.png"
+               alt="失落的乐章" />
+          <p class="site-author-name" itemprop="name">失落的乐章</p>
+           
+              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">599</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Nginx使用if进行条件匹配"><span class="nav-number">1.</span> <span class="nav-text">一、Nginx使用if进行条件匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Nginx使用rewrite"><span class="nav-number">2.</span> <span class="nav-text">二、Nginx使用rewrite</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx-document-uri参数的使用"><span class="nav-number">3.</span> <span class="nav-text">Nginx $document_uri参数的使用</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
