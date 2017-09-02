@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/24. shell 练习-监控磁盘使用率/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/1. Linux 基础/19. tmpfs 是什么/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -306,7 +306,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/24. shell 练习-监控磁盘使用率/" itemprop="url">shell 练习-监控磁盘使用率</a></h1>
+                <a class="post-title-link" href="/2017/09/03/1. Linux 基础/19. tmpfs 是什么/" itemprop="url">tmpfs 是什么</a></h1>
         
 
         <div class="post-meta">
@@ -318,8 +318,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-31T00:07:07+08:00">
-                2017-08-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T01:55:11+08:00">
+                2017-09-03
               </time>
             
 
@@ -355,13 +355,12 @@
       
         
           
-          写一个shell脚本，检测所有磁盘分区使用率和inode使用率并记录到以当天日期为命名的日志文件里，当发现某个分区容量或者inode使用量大于85%时，发邮件通知你自己。
-思路：就是先df -h 然后过滤出已使用的那一列，然后再想办法过滤出百分比的整数部分，然后和85去比较，同理，inode也是一样的思路。
-123456789101112131415161718192021222324252627
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们df 的时候会看到一行 
+12345[root@localhost ~]# dfFilesystem                   1K-blocks    Used Available Use% Mounted on/dev/mapper/VolGroup-lv_root  18102140
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/24. shell 练习-监控磁盘使用率/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/1. Linux 基础/19. tmpfs 是什么/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -407,7 +406,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/23. shell 练习-统计普通用户/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/1. Linux 基础/5. Linux 文件权限/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -426,7 +425,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/23. shell 练习-统计普通用户/" itemprop="url">shell 练习-统计普通用户</a></h1>
+                <a class="post-title-link" href="/2017/09/03/1. Linux 基础/5. Linux 文件权限/" itemprop="url">Linux 文件权限</a></h1>
         
 
         <div class="post-meta">
@@ -438,8 +437,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-31T00:07:07+08:00">
-                2017-08-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T01:55:11+08:00">
+                2017-09-03
               </time>
             
 
@@ -475,13 +474,12 @@
       
         
           
-          写个shell，看看你的Linux系统中是否有自定义用户（普通用户），若是有，一共有几个？
-假设所有普通用户都是uid大于1000的
-12345678#!/bin/bashn=`awk -F ':' '$3&gt;1000' /etc/passwd|wc -l`if [ $n -gt 0 ]then    echo "There are $n common users."else    echo 
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一个文件都有一个所有者, 表示该文件是谁创建的. 同时, 该文件还有一个组编号, 表示该文件所属的组, 一般为文件所有者所属的组. 如果是一个可执行文件, 那么在执行时, 一般该文件只拥有调用该文件的用户具有的权限. 而setuid, setgid 可以来改变这种设置.
+setuid、setgid、st
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/23. shell 练习-统计普通用户/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/1. Linux 基础/5. Linux 文件权限/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -527,7 +525,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/22. shell 练习-找出活动ip/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/1. Linux 基础/11. Linux usermod 修改用户属性/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -546,7 +544,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/22. shell 练习-找出活动ip/" itemprop="url">shell 练习-找出活动ip</a></h1>
+                <a class="post-title-link" href="/2017/09/03/1. Linux 基础/11. Linux usermod 修改用户属性/" itemprop="url">Linux 修改用户属性</a></h1>
         
 
         <div class="post-meta">
@@ -558,8 +556,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-31T00:07:07+08:00">
-                2017-08-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T01:55:11+08:00">
+                2017-09-03
               </time>
             
 
@@ -595,13 +593,12 @@
       
         
           
-          写一个脚本，实现判断192.168.0.0网络里，当前在线的IP有哪些
-思路： for循环， 0.1 –  0.254  依次去ping，能通说明在线。
-123456789101112#!/bin/baships="192.168.0."for i in `seq 1 254`doping -c 2 $ips$i &gt;/dev/null 2&gt;/dev/nullif [ $? == 0 ]
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;usermod 命令修改系统帐户文件来反映通过命令行指定的变化    
+选项&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;-a|–append&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/22. shell 练习-找出活动ip/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/1. Linux 基础/11. Linux usermod 修改用户属性/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -647,7 +644,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/21. shell 练习-实现一个小型计算器/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/1. Linux 基础/72. 进程与线程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -666,7 +663,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/21. shell 练习-实现一个小型计算器/" itemprop="url">shell 练习-实现一个小型计算器</a></h1>
+                <a class="post-title-link" href="/2017/09/03/1. Linux 基础/72. 进程与线程/" itemprop="url">进程与线程</a></h1>
         
 
         <div class="post-meta">
@@ -678,8 +675,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-31T00:07:07+08:00">
-                2017-08-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T01:55:11+08:00">
+                2017-09-03
               </time>
             
 
@@ -715,11 +712,12 @@
       
         
           
-          12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849[root@nfs01 scripts]# cat bc.sh #!/bin/sh# First we should save the number which was inserted by userread -p "P
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;计算机上运行的程序都会有进程，你可以打开windows的进程管理器来查看系统所有的进程信息，而linux可以使用top或者ps来查看所有的进程信息。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;线程是比进程还要细分的一个单元，它在进程里面，一个进程下面
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/21. shell 练习-实现一个小型计算器/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/1. Linux 基础/72. 进程与线程/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -765,7 +763,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/20. shell 练习-乘法口诀表/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/1. Linux 基础/29. vim百科/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -784,7 +782,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/20. shell 练习-乘法口诀表/" itemprop="url">shell 练习-乘法口诀表</a></h1>
+                <a class="post-title-link" href="/2017/09/03/1. Linux 基础/29. vim百科/" itemprop="url">vim百科</a></h1>
         
 
         <div class="post-meta">
@@ -796,8 +794,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-31T00:07:07+08:00">
-                2017-08-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T01:55:11+08:00">
+                2017-09-03
               </time>
             
 
@@ -833,14 +831,12 @@
       
         
           
-          需要两层循环
-1234567891011#!/bin/bashfor i in `seq 1 9`do    for j in `seq 1 $i`    do        echo -n $i*$j=$((i*j))        echo -ne '\t'    doneechodone
-输出结果
-12345678910[root@localhost ~]# sh 1.sh 1*1=12*1
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Vim是从vi发展出来的一个文本编辑器。代码补完、编译及错误跳转等方便编程的功能特别丰富，在程序员中被广泛使用。和Emacs并列成为类Unix系统用户最喜欢的编辑器。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Vim的第一个版本由布莱姆·米勒在199
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/20. shell 练习-乘法口诀表/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/1. Linux 基础/29. vim百科/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -886,7 +882,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/19. shell 练习-找规律打印数字/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/1. Linux 基础/48.Linux下比较两个时间的时间差/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -905,7 +901,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/19. shell 练习-找规律打印数字/" itemprop="url">shell 练习-找规律打印数字</a></h1>
+                <a class="post-title-link" href="/2017/09/03/1. Linux 基础/48.Linux下比较两个时间的时间差/" itemprop="url">Linux下比较两个时间的时间差</a></h1>
         
 
         <div class="post-meta">
@@ -917,8 +913,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-31T00:07:07+08:00">
-                2017-08-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T01:55:11+08:00">
+                2017-09-03
               </time>
             
 
@@ -954,15 +950,13 @@
       
         
           
-          请详细查看如下几个数字的规律，并使用shell脚本输出后面的十个数字。
-10 31 53 77  105 141 …….
-试题解析：
-我想大多数人都会去比较这些数字的差值：
-10&#160;&#160;31&#160;&#160;53&#160;&#160;77&#160;&#160;105&#160;&#160;141&#160;&#160;21&#160;&#160;&#160;22&#160
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有一个特殊的需求，知道两个文件的最后修改时间，现在要比较这两个时间的时间差是不是在一个阀值内？这就需要求出连个时间的时间差。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在Linux下，有一个方法可以将基础时间转为时间戳
+&#160;&#160;&#1
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/19. shell 练习-找规律打印数字/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/1. Linux 基础/48.Linux下比较两个时间的时间差/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1008,7 +1002,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/18. shell 练习-解决某个分区快满的问题/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/1. Linux 基础/31. vim的设置详解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1027,7 +1021,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/18. shell 练习-解决某个分区快满的问题/" itemprop="url">shell 练习-解决某个分区快满的问题</a></h1>
+                <a class="post-title-link" href="/2017/09/03/1. Linux 基础/31. vim的设置详解/" itemprop="url">vim的设置详解</a></h1>
         
 
         <div class="post-meta">
@@ -1039,8 +1033,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-31T00:07:07+08:00">
-                2017-08-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T01:55:11+08:00">
+                2017-09-03
               </time>
             
 
@@ -1076,19 +1070,13 @@
       
         
           
-          有一天，你发现你所管理的服务器磁盘某个分区马上要满了，那你如何做呢？
-提示：
-
-查看和统计各个分区使用情况，把占用空间大的目录以及文件找出来，看看是不是有一些老的没有用的文件占用了空间，比如有日志，那你可以考虑写一个任务计划每天定点删除一个月之前的；
-
-如果不能删除，那么就要想办法添加磁盘，假如你已经成功添加磁盘，请问，你如何分区，然后 如何解决某个分区快满的问题？
-
-
-1234567891011
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;vim通过一个叫vimrc的文件来进行设置
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;vimrc 配置文件存放位置：
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;系统vimrc在 /etc/vimr
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/18. shell 练习-解决某个分区快满的问题/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/1. Linux 基础/31. vim的设置详解/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1134,7 +1122,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/17. shell 练习-封ip/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/1. Linux 基础/22. parted 分区 GPT格式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1153,7 +1141,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/17. shell 练习-封ip/" itemprop="url">shell 练习-封ip</a></h1>
+                <a class="post-title-link" href="/2017/09/03/1. Linux 基础/22. parted 分区 GPT格式/" itemprop="url">parted 分区 GPT 格式</a></h1>
         
 
         <div class="post-meta">
@@ -1165,8 +1153,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-31T00:07:07+08:00">
-                2017-08-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T01:55:11+08:00">
+                2017-09-03
               </time>
             
 
@@ -1202,13 +1190,11 @@
       
         
           
-          需求： 根据web服务器上的访问日志，把一些请求量非常高的ip给拒绝掉！ 
-分析： 我们要做的，不仅是要找到哪些ip请求量不合法，并且还要每隔一段时间把之前封掉的ip（若不再继续请求了）给解封。 所以该脚本的关键点在于定一个合适的时间段和阈值。 
-比如， 我们可以每一分钟去查看一下日志，把上一分钟的日志给过滤出来分析，并且只要请求的ip数量超过100次那么就直接封掉。 而解封的时间又规定为每半小时
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们讲的fdisk分区工具，它的分区格式为MBR，特点是，最多分4个主分区，磁盘大小不能超过2T。而GPT分区格式，突破了这些限制，它没有主分区、扩展分区、逻辑分区之分，在一块磁盘上最多可以分128个分区出来，支持大于2T的分区，最大卷可达18EB。 相信，随着存储级别的升级，将来的分区格式逐渐会淘汰M
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/17. shell 练习-封ip/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/1. Linux 基础/22. parted 分区 GPT格式/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1254,7 +1240,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/16. shell 练习-监控httpd进程/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/1. Linux 基础/43.bash_profile和bashrc区别/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1273,7 +1259,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/16. shell 练习-监控httpd进程/" itemprop="url">shell 练习-监控httpd进程</a></h1>
+                <a class="post-title-link" href="/2017/09/03/1. Linux 基础/43.bash_profile和bashrc区别/" itemprop="url">bash_profile和bashrc区别</a></h1>
         
 
         <div class="post-meta">
@@ -1285,8 +1271,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-31T00:07:07+08:00">
-                2017-08-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T01:55:11+08:00">
+                2017-09-03
               </time>
             
 
@@ -1322,17 +1308,12 @@
       
         
           
-          在服务器上，写一个监控脚本。
-
-每隔10s去检测一次服务器上的httpd进程数，如果大于等于500的时候，就需要自动重启一下apache服务，并检测启动是否成功？
-
-若没有正常启动还需再一次启动，最大不成功数超过5次则需要理解发邮件通知管理员，并且以后不需要再检测！ 
-
-如果启动成功后，1分钟后再次检测httpd进程数，若正常则重复之前操作（每隔10s检测一次），若还是大于等于500，那放弃重启并
+          .bash_profile 与 .bashrc 的区别&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.bash_profile is executed for login shells, while .bashrc is executed for interactive non-login shells.
+login shell 与 non-log
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/16. shell 练习-监控httpd进程/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/1. Linux 基础/43.bash_profile和bashrc区别/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1378,7 +1359,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/15. shell 练习-创建用户并设置密码/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/1. Linux 基础/6. Linux 用户名文件/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1397,7 +1378,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/15. shell 练习-创建用户并设置密码/" itemprop="url">shell 练习-创建用户并设置密码</a></h1>
+                <a class="post-title-link" href="/2017/09/03/1. Linux 基础/6. Linux 用户名文件/" itemprop="url">Linux 用户名文件</a></h1>
         
 
         <div class="post-meta">
@@ -1409,8 +1390,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-31T00:07:07+08:00">
-                2017-08-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T01:55:11+08:00">
+                2017-09-03
               </time>
             
 
@@ -1446,17 +1427,12 @@
       
         
           
-          用shell脚本实现如下需求：添加user_00 - user_09 10个用户，并且给他们设置一个随机密码，密码要求10位包含大小写字母以及数字，注意需要把每个用户的密码记录到一个日志文件里。
-提示： 
-
-随机密码使用命令 mkpasswd
-在脚本中给用户设置密码，可以使用echo 然后管道passwd命令
-
-12345678#!/bin/bashfor i in `seq -w 00 09`d
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Linux 用户名文件是 /etc/passwd 可以说是 Linux 系统中最重要的文件之一。如果这个文件出了问题，则无法正常登录 Linux 系统。
+1234567891011[root@localhost ~]# cat /etc/passwd | headroot:x:0:0:root:/roo
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/15. shell 练习-创建用户并设置密码/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/1. Linux 基础/6. Linux 用户名文件/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1497,7 +1473,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/76/">76</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1542,7 +1518,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">751</span>
+                <span class="site-state-item-count">136</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1555,7 +1531,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
