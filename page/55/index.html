@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/43. shell 练习-打印只有一个数字的行/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/44. shell 练习-日志归档/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -306,7 +306,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/43. shell 练习-打印只有一个数字的行/" itemprop="url">shell 练习-打印只有一个数字的行</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/44. shell 练习-日志归档/" itemprop="url">shell 练习-日志归档</a></h1>
         
 
         <div class="post-meta">
@@ -355,12 +355,13 @@
       
         
           
-          如题，把一个文本文档中只有一个数字的行给打印出来。
-123456789#!/bin/bashf=/etc/passwdline=`wc -l $f|awk '&#123;print $1&#125;'`for l in `seq 1 $line`; do     n=`sed -n "$l"p $f|grep -o '[0-9]'|wc -l`;     if [ $n -eq 1 ]; then
+          类似于日志切割，系统有个logrotate程序，可以完成归档。但现在我们要自己写一个shell脚本实现归档。 
+举例： 假如服务的输出日志是1.log，我要求每天归档一个，1.log第二天就变成1.log.1，第三天1.log.2, 第四天 1.log.3  一直到1.log.5
+123456789101112131415161718#!/bin/bashfunction e_df()&#123;
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/43. shell 练习-打印只有一个数字的行/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/44. shell 练习-日志归档/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>

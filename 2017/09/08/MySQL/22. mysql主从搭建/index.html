@@ -97,7 +97,7 @@
 <meta name="keywords" content="MySQL">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mysql 主从搭建">
-<meta property="og:url" content="https://hcldirgit.github.io/2017/09/03/MySQL/22. mysql主从搭建/index.html">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/09/08/MySQL/22. mysql主从搭建/index.html">
 <meta property="og:site_name" content="失落的乐章">
 <meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;mysql 主从 （mysql replication），主要用于 mysql 的实时备份或者读写分离。在配置之前做准备工作，配置两台 mysql 服务器；或者在同一个机器上跑两个 mysql 服务。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;mys">
 <meta property="og:locale" content="zh-Hans">
@@ -133,7 +133,7 @@
 <meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/mysql%20%E4%B8%BB%E4%BB%8E%E6%90%AD%E5%BB%BA/29.png?raw=true">
 <meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/mysql%20%E4%B8%BB%E4%BB%8E%E6%90%AD%E5%BB%BA/30.png?raw=true">
 <meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/mysql%20%E4%B8%BB%E4%BB%8E%E6%90%AD%E5%BB%BA/31.png?raw=true">
-<meta property="og:updated_time" content="2017-09-01T09:02:09.663Z">
+<meta property="og:updated_time" content="2017-09-07T18:09:28.066Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql 主从搭建">
 <meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;mysql 主从 （mysql replication），主要用于 mysql 的实时备份或者读写分离。在配置之前做准备工作，配置两台 mysql 服务器；或者在同一个机器上跑两个 mysql 服务。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;mys">
@@ -165,7 +165,7 @@
 
 
 
-  <link rel="canonical" href="https://hcldirgit.github.io/2017/09/03/MySQL/22. mysql主从搭建/"/>
+  <link rel="canonical" href="https://hcldirgit.github.io/2017/09/08/MySQL/22. mysql主从搭建/"/>
 
 
 
@@ -320,7 +320,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/MySQL/22. mysql主从搭建/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/08/MySQL/22. mysql主从搭建/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -349,8 +349,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:06:42+08:00">
-                2017-09-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-08T02:10:00+08:00">
+                2017-09-08
               </time>
             
 
@@ -402,7 +402,7 @@
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以应用在读写分离的场景中，用以降低单台 mysql 服务器的 I/O </p>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以实现 mysql 服务的 HA 集群。</p>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以是一主多从，也可以是相互主从（主主）。</p>
-<h2 id="在统一台机器上配置-MySQL-主从"><a href="#在统一台机器上配置-MySQL-主从" class="headerlink" title="在统一台机器上配置 MySQL 主从"></a>在统一台机器上配置 MySQL 主从</h2><h3 id="安装、配置-mysql（mysql版本5-1-40）"><a href="#安装、配置-mysql（mysql版本5-1-40）" class="headerlink" title="安装、配置 mysql（mysql版本5.1.40）"></a>安装、配置 mysql（mysql版本5.1.40）</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先在同一台机器上配置两个 MySQL 服务（跑两个端口）</p>
+<h2 id="在同一台机器上配置-MySQL-主从"><a href="#在同一台机器上配置-MySQL-主从" class="headerlink" title="在同一台机器上配置 MySQL 主从"></a>在同一台机器上配置 MySQL 主从</h2><h3 id="安装、配置-mysql（mysql版本5-1-40）"><a href="#安装、配置-mysql（mysql版本5-1-40）" class="headerlink" title="安装、配置 mysql（mysql版本5.1.40）"></a>安装、配置 mysql（mysql版本5.1.40）</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先在同一台机器上配置两个 MySQL 服务（跑两个端口）</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># cd /usr/local</span></div><div class="line">[root@192 <span class="built_in">local</span>]<span class="comment"># cp -r mysql mysql_slave</span></div></pre></td></tr></table></figure>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;拷贝配置文件</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@192 <span class="built_in">local</span>]<span class="comment"># cd mysql_slave/</span></div><div class="line">[root@192 mysql_slave]<span class="comment"># cp /etc/my.cnf ./my.cnf</span></div></pre></td></tr></table></figure>
@@ -617,8 +617,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/09/03/MySQL/21. 同一台MySQL服务器启动多个端口/" rel="next" title="同一台MySQL服务器启动多个端口">
-                <i class="fa fa-chevron-left"></i> 同一台MySQL服务器启动多个端口
+              <a href="/2017/09/03/Shell/15. shell 中断继续退出/" rel="next" title="shell 中断继续退出">
+                <i class="fa fa-chevron-left"></i> shell 中断继续退出
               </a>
             
           </div>
@@ -627,8 +627,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/09/03/MySQL/23. mysql主从复制/" rel="prev" title="mysql 主从复制">
-                mysql 主从复制 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/09/08/Squid/1. squid服务介绍/" rel="prev" title="squid服务介绍">
+                squid服务介绍 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -760,7 +760,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#在统一台机器上配置-MySQL-主从"><span class="nav-number">1.</span> <span class="nav-text">在统一台机器上配置 MySQL 主从</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装、配置-mysql（mysql版本5-1-40）"><span class="nav-number">1.1.</span> <span class="nav-text">安装、配置 mysql（mysql版本5.1.40）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置主从准备工作"><span class="nav-number">1.2.</span> <span class="nav-text">配置主从准备工作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置主（master）"><span class="nav-number">1.3.</span> <span class="nav-text">配置主（master）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置从"><span class="nav-number">1.4.</span> <span class="nav-text">设置从</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试主从"><span class="nav-number">1.5.</span> <span class="nav-text">测试主从</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在两台机器上配置-MySQL-主从"><span class="nav-number">2.</span> <span class="nav-text">在两台机器上配置 MySQL 主从</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置主从准备工作-1"><span class="nav-number">2.1.</span> <span class="nav-text">配置主从准备工作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置主（master）-1"><span class="nav-number">2.2.</span> <span class="nav-text">配置主（master）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置从（slave）"><span class="nav-number">2.3.</span> <span class="nav-text">设置从（slave）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试主从-1"><span class="nav-number">2.4.</span> <span class="nav-text">测试主从</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#在同一台机器上配置-MySQL-主从"><span class="nav-number">1.</span> <span class="nav-text">在同一台机器上配置 MySQL 主从</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装、配置-mysql（mysql版本5-1-40）"><span class="nav-number">1.1.</span> <span class="nav-text">安装、配置 mysql（mysql版本5.1.40）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置主从准备工作"><span class="nav-number">1.2.</span> <span class="nav-text">配置主从准备工作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置主（master）"><span class="nav-number">1.3.</span> <span class="nav-text">配置主（master）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置从"><span class="nav-number">1.4.</span> <span class="nav-text">设置从</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试主从"><span class="nav-number">1.5.</span> <span class="nav-text">测试主从</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在两台机器上配置-MySQL-主从"><span class="nav-number">2.</span> <span class="nav-text">在两台机器上配置 MySQL 主从</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置主从准备工作-1"><span class="nav-number">2.1.</span> <span class="nav-text">配置主从准备工作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置主（master）-1"><span class="nav-number">2.2.</span> <span class="nav-text">配置主（master）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置从（slave）"><span class="nav-number">2.3.</span> <span class="nav-text">设置从（slave）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试主从-1"><span class="nav-number">2.4.</span> <span class="nav-text">测试主从</span></a></li></ol></li></ol></div>
             
 
           </div>
