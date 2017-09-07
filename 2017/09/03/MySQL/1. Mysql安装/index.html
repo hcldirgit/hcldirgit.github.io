@@ -101,7 +101,7 @@
 <meta property="og:site_name" content="失落的乐章">
 <meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;平时安装mysql都是源码包安装的，但是由于它的编译需要很长的时间，所以建议使用二进制免编译包安装。可以到MySQL官方网站去下载，具体版本根据平台和需求而定，目前比较常用的为mysql-5.0/mysql-5.1，5.5和5.7版本虽然已经发布有段日子了，但是在线上跑服务器的还是少数。所以本文安装5.">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-09-01T08:56:46.096Z">
+<meta property="og:updated_time" content="2017-09-07T14:35:31.307Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL安装">
 <meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;平时安装mysql都是源码包安装的，但是由于它的编译需要很长的时间，所以建议使用二进制免编译包安装。可以到MySQL官方网站去下载，具体版本根据平台和需求而定，目前比较常用的为mysql-5.0/mysql-5.1，5.5和5.7版本虽然已经发布有段日子了，但是在线上跑服务器的还是少数。所以本文安装5.">
@@ -365,7 +365,7 @@
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解决办法</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install -y compat-libstdc++-33</div></pre></td></tr></table></figure>
 <h3 id="遇到错误2"><a href="#遇到错误2" class="headerlink" title="遇到错误2"></a>遇到错误2</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./scripts/mysql_install_db: ./bin/my_print_defaults: /lib/ld-linux.so.2:bad ELF interpreter: NO such file or directory</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这是因为，系统版本和mysql版本不一致。比如Linux系统是32位，mysql安装包是64位。所以解决办法是重新虾子合适的安装包。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这是因为，系统版本和mysql版本不一致。比如Linux系统是32位，mysql安装包是64位。所以解决办法是重新下载合适的安装包。</p>
 <h3 id="依赖包的安装"><a href="#依赖包的安装" class="headerlink" title="依赖包的安装"></a>依赖包的安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y install make gcc-c++ cmake bison-devel ncurses-devel libaio libaio-devel perl-Data-Dumper net-tools</div></pre></td></tr></table></figure>
 <h2 id="6、拷贝配置文件"><a href="#6、拷贝配置文件" class="headerlink" title="6、拷贝配置文件"></a>6、拷贝配置文件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost mysql]<span class="comment"># cp support-files/my-large.cnf /etc/my.cnf</span></div></pre></td></tr></table></figure>
 <h2 id="7、拷贝启动脚本文件并修改其属性"><a href="#7、拷贝启动脚本文件并修改其属性" class="headerlink" title="7、拷贝启动脚本文件并修改其属性"></a>7、拷贝启动脚本文件并修改其属性</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost mysql]<span class="comment"># cp support-files/mysql.server /etc/init.d/mysqld</span></div><div class="line">[root@localhost mysql]<span class="comment"># chmod 755 /etc/init.d/mysqld</span></div></pre></td></tr></table></figure>
