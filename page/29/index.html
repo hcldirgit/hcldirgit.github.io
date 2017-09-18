@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next pisces use-motion" lang="zh-Hans">
+<html class="theme-next mist use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -110,7 +110,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Pisces',
+    scheme: 'Mist',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
     fancybox: true,
     motion: true,
@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Memcached/4. Memcached数据被踢(evictions0)现象分析/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Linux安全/2. Linux可插拔认证模块（PAM）的配置文件、工作原理与流程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -306,7 +306,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Memcached/4. Memcached数据被踢(evictions0)现象分析/" itemprop="url">Memcached数据被踢(evictions0)现象分析</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Linux安全/2. Linux可插拔认证模块（PAM）的配置文件、工作原理与流程/" itemprop="url">Linux可插拔认证模块（PAM）的配置文件、工作原理与流程</a></h1>
         
 
         <div class="post-meta">
@@ -318,7 +318,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:04:45+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:04:46+08:00">
                 2017-09-03
               </time>
             
@@ -355,13 +355,12 @@
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;很多同学可能熟知Memcached的LRU淘汰算法，它是在slab内部进行的，如果所有空间都被slabs分配，即使另外一个slab里面有空位，仍然存在踢数据可能。你可以把slab理解为教室，如果你的教室满了，即使别的教室有空位你的教室也只能踢人才能进人。
-
-&#160;&#160;&#160;&#160
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PAM的配置文件：
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们注意到，配置文件也放在了在应用接口层中，他与PAM API配合使用，从而达到了在应用中灵活插入所需鉴别模块的目的。他的作用主要是为应用选定具体的鉴别模块，模块间的组合以及规定模块的行为
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Memcached/4. Memcached数据被踢(evictions0)现象分析/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Linux安全/2. Linux可插拔认证模块（PAM）的配置文件、工作原理与流程/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -407,7 +406,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Memcached/3. Memcache 查看列出所有key方法/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Linux安全/15. 针对访问 uri 限制 ip/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -426,7 +425,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Memcached/3. Memcache 查看列出所有key方法/" itemprop="url">Memcache 查看列出所有key方法</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Linux安全/15. 针对访问 uri 限制 ip/" itemprop="url">针对访问 uri 限制 ip</a></h1>
         
 
         <div class="post-meta">
@@ -438,7 +437,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:04:45+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:04:46+08:00">
                 2017-09-03
               </time>
             
@@ -475,12 +474,13 @@
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;今天在做一个Memcache的session测试，但是在测试的过程中，发现Memcache没有一个比较简单的方法可以直接象redis那样keys *列出所有的Session key，并根据key get对应 的session内容
-&#160;&#160;&#160;&#160;&#160;&#160;&
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在虚拟主机配置文件中加入如下字段：
+1234Order deny,allowDeny from allAllow from 127.0.0.1Allow from 2.2.2.2
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;假如该虚拟机的域名为 dom
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Memcached/3. Memcache 查看列出所有key方法/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Linux安全/15. 针对访问 uri 限制 ip/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -526,7 +526,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Memcached/2. memcached安装/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Linux安全/14. 文件系统安全/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -545,7 +545,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Memcached/2. memcached安装/" itemprop="url">memcached安装</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Linux安全/14. 文件系统安全/" itemprop="url">文件系统安全</a></h1>
         
 
         <div class="post-meta">
@@ -557,7 +557,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:04:45+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:04:46+08:00">
                 2017-09-03
               </time>
             
@@ -594,13 +594,11 @@
       
         
           
-          1.memcached安装1[root@memcached ~]# yum install -y epel-release
-1[root@memcached ~]# yum install -y libevent memcached libmemcached
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动 /etc/init.d/memcach
+          一、锁定系统重要文件&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;系统运维人员有时候可能会遇到通过root用户都不能修改或者删除某个文件的情况，产生这种情况的大部分原因可能是这个文件被锁定了。在Linux下锁定文件的命令是chattr，通过这个命令可以修改ext2、ext3、ext4文件系统下文件属性，但是这个命令必须有超级用户root来执行。和这
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Memcached/2. memcached安装/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Linux安全/14. 文件系统安全/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -646,7 +644,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Memcached/1. Memcached/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Linux安全/13. 浅谈CSRF攻击方式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -665,7 +663,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Memcached/1. Memcached/" itemprop="url">Memcached</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Linux安全/13. 浅谈CSRF攻击方式/" itemprop="url">浅谈CSRF攻击方式</a></h1>
         
 
         <div class="post-meta">
@@ -677,7 +675,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:04:45+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:04:46+08:00">
                 2017-09-03
               </time>
             
@@ -714,13 +712,12 @@
       
         
           
-          1.memcached介绍&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是国外社区网站LiveJournal团队开发，通过缓存数据库查询结果，减少数据库访问次数，从而提高动态web站点性能。官方站点
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;基于c/s架构，协议简单
-&#160;&#160;&#
+          一.CSRF是什么？&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;CSRF（Cross-site request forgery），中文名称：跨站请求伪造，也被称为：one click attack/session riding，缩写为：CSRF/XSRF。
+二.CSRF可以做什么？&#160;&#160;&#160;&#160;&#160;&#1
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Memcached/1. Memcached/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Linux安全/13. 浅谈CSRF攻击方式/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -766,7 +763,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Git/2.  github常见操作和常见错误  错误提示  fatal   remote origin already exists./">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Linux安全/12. 防止SQL注入/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -785,7 +782,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Git/2.  github常见操作和常见错误  错误提示  fatal   remote origin already exists./" itemprop="url">github常见操作和常见错误  错误提示  fatal   remote origin already exists.</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Linux安全/12. 防止SQL注入/" itemprop="url">防止SQL注入</a></h1>
         
 
         <div class="post-meta">
@@ -797,7 +794,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:02:06+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:04:46+08:00">
                 2017-09-03
               </time>
             
@@ -834,14 +831,13 @@
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果输入
-1Git remote add origin git@github.com:djqiang（github帐号名）/gitdemo（项目名）.git
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;提示出错信息：
-1fatal: remote or
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一个恐怖的例子：
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注入式攻击的详细解释SQL下面我们将以一个简单的用户登陆为例，结合代码详细解释一下SQL注入式攻击，与及他的防范措施。对于一个简单的用户登陆可能的代码如下：
+1234567891011121
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Git/2.  github常见操作和常见错误  错误提示  fatal   remote origin already exists./#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Linux安全/12. 防止SQL注入/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -887,7 +883,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Git/1. Git安装使用/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Linux安全/11. xss攻击入门/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -906,7 +902,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Git/1. Git安装使用/" itemprop="url">Git安装使用</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Linux安全/11. xss攻击入门/" itemprop="url">xss攻击入门</a></h1>
         
 
         <div class="post-meta">
@@ -918,7 +914,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:02:06+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:04:46+08:00">
                 2017-09-03
               </time>
             
@@ -955,14 +951,12 @@
       
         
           
-          1.安装git&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;centos上  
-1[root@localhost ~]# yum install -y epel-release
-1[root@localhost ~]# yum install -y git
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#16
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;xss表示Cross Site Scripting(跨站脚本攻击)，它与SQL注入攻击类似，SQL注入攻击中以SQL语句作为用户输入，从而达到查询/修改/删除数据的目的，而在xss攻击中，通过插入恶意脚本，实现对用户游览器的控制。
+&#160;&#160;&#160;&#160;&#160;&#160;
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Git/1. Git安装使用/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Linux安全/11. xss攻击入门/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1008,7 +1002,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/FTP/4. vsftp 利用mysql 验证虚拟账户/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Linux安全/10. root账户不允许远程登陆/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1027,7 +1021,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/FTP/4. vsftp 利用mysql 验证虚拟账户/" itemprop="url">vsftp 利用mysql 验证虚拟账户</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Linux安全/10. root账户不允许远程登陆/" itemprop="url">root账户不允许远程登陆</a></h1>
         
 
         <div class="post-meta">
@@ -1039,7 +1033,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:02:06+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:04:46+08:00">
                 2017-09-03
               </time>
             
@@ -1076,14 +1070,13 @@
       
         
           
-          安装vsftpd1yum install -y  vsftpd
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编辑vsftpd.conf
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;内容如下
-1234567891011121314listen=YESconnect_from_port_20=YES
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有时为了特殊需求，只允许普通账户登陆Linux，而不允许root账户登陆，而普通账户登陆后，然后再su 到root下是可以的。打开sshd的配置文件 
+1vim /etc/ssh/sshd_config
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加入
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/FTP/4. vsftp 利用mysql 验证虚拟账户/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Linux安全/10. root账户不允许远程登陆/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1129,7 +1122,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/FTP/3. ftp的主动模式与被动模式的区别是什么？/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Linux安全/1. CSRF攻击防范/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1148,7 +1141,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/FTP/3. ftp的主动模式与被动模式的区别是什么？/" itemprop="url">ftp的主动模式与被动模式的区别是什么？</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Linux安全/1. CSRF攻击防范/" itemprop="url">CSRF攻击防范</a></h1>
         
 
         <div class="post-meta">
@@ -1160,7 +1153,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:02:06+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:04:46+08:00">
                 2017-09-03
               </time>
             
@@ -1197,12 +1190,16 @@
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;FTP协议有两种工作方式：PORT方式和PASV方式，中文意思为主动模式和被动模式
-一、什么是主动FTP&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;主动模式的FTP工作原理：客户端从一个任意的非特权端口N连接到FTP服务器的命令端口，也就是21端口。然
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;CSRF攻击必须依次完成以下两个条件： 
+
+登录受信任网站A，并在本地生成Cookie。 
+在不登出A的情况下，访问危险网站B。
+
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关闭浏览器不能结束一个会话，但大多数人都会错误的认为关闭浏览器就等于退出登录
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/FTP/3. ftp的主动模式与被动模式的区别是什么？/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Linux安全/1. CSRF攻击防范/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1248,7 +1245,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/FTP/1. pureftp部署和优化/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/HA集群/5. Mysql-5.5+Heartbeat-3.0.5+DRBD/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1267,7 +1264,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/FTP/1. pureftp部署和优化/" itemprop="url">pureftp部署和优化</a></h1>
+                <a class="post-title-link" href="/2017/09/03/HA集群/5. Mysql-5.5+Heartbeat-3.0.5+DRBD/" itemprop="url">Mysql-5.5+Heartbeat-3.0.5+DRBD</a></h1>
         
 
         <div class="post-meta">
@@ -1279,7 +1276,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:02:06+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:04:46+08:00">
                 2017-09-03
               </time>
             
@@ -1316,11 +1313,14 @@
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;FTP 是 File Transfer Protocol （文件传输协议）的英文简称，而中文简称为“文传协议”用于 Internet 上的控制文件的双向传输。同时，它也是一个应用程序（Applocation）用户可以通过它把自己的 PC 机与世界各地所有运行 FTP 协议的服务器相连，访问服务器上的大量
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;环境：
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;CentOS 6.5
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MySQL_Master  
+&#160;&#160;&#160;&#160;&#
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/FTP/1. pureftp部署和优化/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/HA集群/5. Mysql-5.5+Heartbeat-3.0.5+DRBD/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1366,7 +1366,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/FTP/2. vsftp部署和优化/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/HA集群/4. DRBD安装配置、工作原理及故障恢复/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1385,7 +1385,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/FTP/2. vsftp部署和优化/" itemprop="url">vsftp部署和优化</a></h1>
+                <a class="post-title-link" href="/2017/09/03/HA集群/4. DRBD安装配置、工作原理及故障恢复/" itemprop="url">DRBD安装配置、工作原理及故障恢复</a></h1>
         
 
         <div class="post-meta">
@@ -1397,7 +1397,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:02:06+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:04:46+08:00">
                 2017-09-03
               </time>
             
@@ -1434,13 +1434,11 @@
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;作为系统默认自带的 ftp 服务软件，vsftp 也是比较常用的。
-1.安装 vsftp1[root@192 ~]# yum install -y vsftpd db4-utils
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里安装两个软件包，同时会
+          一、DRBD简介&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;DRBD的全称为：Distributed ReplicatedBlock Device(DRBD)分布式块设备复制,DRBD是由内核模块和相关脚本而构成，用以构建高可用性的集群。其实现方式是通过网络来镜像整个设备。你可以把它看作是一种网络RAID。它允许用户在远程机器上建立一个本地块设备
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/FTP/2. vsftp部署和优化/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/HA集群/4. DRBD安装配置、工作原理及故障恢复/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1481,7 +1479,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/28/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/28/">28</a><span class="page-number current">29</span><a class="page-number" href="/page/30/">30</a><span class="space">&hellip;</span><a class="page-number" href="/page/60/">60</a><a class="extend next" rel="next" href="/page/30/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/28/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/28/">28</a><span class="page-number current">29</span><a class="page-number" href="/page/30/">30</a><span class="space">&hellip;</span><a class="page-number" href="/page/62/">62</a><a class="extend next" rel="next" href="/page/30/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1526,7 +1524,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">599</span>
+                <span class="site-state-item-count">618</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1539,7 +1537,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-count">38</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1607,7 +1605,7 @@
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
+    NexT.Mist
   </a>
 </div>
 
@@ -1686,13 +1684,6 @@
 
   
   
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
-
-
 
   
     <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>

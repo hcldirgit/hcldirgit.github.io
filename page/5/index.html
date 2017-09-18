@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next pisces use-motion" lang="zh-Hans">
+<html class="theme-next mist use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -110,7 +110,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Pisces',
+    scheme: 'Mist',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
     fancybox: true,
     motion: true,
@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/12. zabbix2.2图形中有乱码（方框）的问题/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/6. zabbix使用自动发现功能监控服务器各JVM进程状态/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -306,7 +306,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Zabbix/12. zabbix2.2图形中有乱码（方框）的问题/" itemprop="url">zabbix2.2图形中有乱码（方框）的问题</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Zabbix/6. zabbix使用自动发现功能监控服务器各JVM进程状态/" itemprop="url">zabbix使用自动发现功能监控服务器各JVM进程状态</a></h1>
         
 
         <div class="post-meta">
@@ -355,12 +355,16 @@
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个是字体的问题，解决办法如下：
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;yum 安装的zabbix 字体并不是在   /usr/share/zabbix/fonts下而是在/usr/share/zabbix/fonts/dejavu 下，具体配置
+          前言&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为什么需要做服务器jvm自动发现的监控呢？这个事情主要有两点原因：
+
+zabbix默认监控jvm状态是使用jmx中转进行监控的，监控效率比较低下
+zabbix使用jmx监控jvm的时候由于一个主机上的键值不能重复，也就导致了一台主机上只能监控一个jvm实例
+
+&#160;&#160;&#160;&#
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Zabbix/12. zabbix2.2图形中有乱码（方框）的问题/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Zabbix/6. zabbix使用自动发现功能监控服务器各JVM进程状态/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -406,7 +410,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/11. zabbix agent 类型所有key/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/5. zabbix2.2 使用自定义脚本监控网卡流量/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -425,7 +429,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Zabbix/11. zabbix agent 类型所有key/" itemprop="url">zabbix agent 类型所有key</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Zabbix/5. zabbix2.2 使用自定义脚本监控网卡流量/" itemprop="url">zabbix2.2 使用自定义脚本监控网卡流量</a></h1>
         
 
         <div class="post-meta">
@@ -474,12 +478,19 @@
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;zabbix服务器端通过与zabbix agent通信来获取客户端服务器的数据，agent分为两个版本，在配置主机我们可以看到一个是agent，另一个是agent（active）。
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;agent：zabbix 
+          
+在客户端修改配置文件  /etc/zabbix/zabbix_agentd.conf
+
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需要改动两个地方：
+
+UnsafeUserParameters=1
+UserParameter=my.net.if
+
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Zabbix/11. zabbix agent 类型所有key/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Zabbix/5. zabbix2.2 使用自定义脚本监控网卡流量/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -525,7 +536,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/10. Zabbix监控字符集问题/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/4. Zabbix自定义监控脚本配置/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -544,7 +555,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Zabbix/10. Zabbix监控字符集问题/" itemprop="url">Zabbix监控字符集问题</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Zabbix/4. Zabbix自定义监控脚本配置/" itemprop="url">Zabbix自定义监控脚本配置</a></h1>
         
 
         <div class="post-meta">
@@ -593,17 +604,16 @@
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;zabbix监控中常碰到的字符集问题有三个：
-一、图形中显示中文乱码
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解决方法：
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注：要添加自定义脚本监控，必须升级zabbix agent版本至2.0.0以上，这里以2.0.8为例
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置方式：
 
-从window主机路径C:\Windows\Fonts下选择一种自己喜欢的字体，如mysh.ttf(雅黑)；
+完成自定义监控脚本的编写（windows或linux脚本）
 
-将拷贝出来的
+&#160;&#160;&#1
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Zabbix/10. Zabbix监控字符集问题/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Zabbix/4. Zabbix自定义监控脚本配置/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -649,7 +659,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/1. 分布式系统监视 zabbix/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/3. zabbix 增加客户端监控/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -668,7 +678,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Zabbix/1. 分布式系统监视 zabbix/" itemprop="url">分布式系统监视 zabbix</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Zabbix/3. zabbix 增加客户端监控/" itemprop="url">zabbix 增加客户端监控</a></h1>
         
 
         <div class="post-meta">
@@ -717,13 +727,13 @@
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;zabbix是一个基于WEB界面的提供分布式系统监视以及网络监视功能的企业级的开源解决方案。
-
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;zabbix能监视各种网络参数，保证服务器系统的安全运营；并提供柔软的通知机制以让系统管理员快速定位/解决存在的
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;zabbix 比 nagios 好的地方就是， zabbix 不需要命令行去配置，只需要在浏览器里面点点按钮就可以了，这样就直观和方便很多。在配置客户端之前，也需要在客户端上安装 zabbix。
+1yum install -y zabbix20-agent
+&#160;&#160;&#160;&#160
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Zabbix/1. 分布式系统监视 zabbix/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Zabbix/3. zabbix 增加客户端监控/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -769,7 +779,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Tomcat/8. tomcat 的优化配置/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/26. zabbix自动发现实现批量监控docker状态/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -788,7 +798,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Tomcat/8. tomcat 的优化配置/" itemprop="url">tomcat 的优化配置</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Zabbix/26. zabbix自动发现实现批量监控docker状态/" itemprop="url">zabbix自动发现实现批量监控docker状态</a></h1>
         
 
         <div class="post-meta">
@@ -837,21 +847,11 @@
       
         
           
-          一、精简Tomcat和配置文件1．删除不需要的管理应用和帮助应用，提高tomcat安全性。
-
-删除webapps下所有文件
-
-1rm –fr $CATALINA_HOME/webapps/*
-
-删除server/wenapps下所有文件
-
-1rm –fr $CATALINA_HOME/server/webapps/*
-2．精简sever.xml配置文件
-&#160;&#160;&#160;&#16
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;最近在搞zabbix监控docker以及docker内部应用状态信息，网上找的资料好少，只找到了一个大神的一篇文章，用的是python实现监控docker容器的基本状态，在他给的脚本基础上进行修改，另外，增加了docker内部常用应用的状态监控，目前在测试环境上部署成功了，具体还需要在线上环境部署后才能
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Tomcat/8. tomcat 的优化配置/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Zabbix/26. zabbix自动发现实现批量监控docker状态/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -897,7 +897,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Tomcat/9. tomcat 性能优化/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/25. zabbix通过自定义脚本监控nginx，php-fpm和mysql占用内存数和进程的个数/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -916,7 +916,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Tomcat/9. tomcat 性能优化/" itemprop="url">tomcat 性能优化</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Zabbix/25. zabbix通过自定义脚本监控nginx，php-fpm和mysql占用内存数和进程的个数/" itemprop="url">zabbix通过自定义脚本监控nginx，php-fpm和mysql占用内存数和进程的个数</a></h1>
         
 
         <div class="post-meta">
@@ -965,12 +965,13 @@
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;tomcat默认参数是为开发环境制定，而非适合生产环境，尤其是内存和线程的配置，默认都很低，容易成为性能瓶颈。
-tomcat内存优化&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;linux修改TOMCAT_HOME/bin/catalina.sh，在前面
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;zabbix通过自定义脚本监控nginx，php-fpm和mysql占用内存数和进程的个数
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先，在zabbix脚本目录下添加一个脚本，写入如下代码
+12345678910111213141516171819
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Tomcat/9. tomcat 性能优化/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Zabbix/25. zabbix通过自定义脚本监控nginx，php-fpm和mysql占用内存数和进程的个数/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1016,7 +1017,7 @@ tomcat内存优化&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;linux修改TOM
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Tomcat/7. Nginx + Tomcat 配置负载均衡集群/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/24. zabbix通过JMX监控tomcat状态/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1035,7 +1036,7 @@ tomcat内存优化&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;linux修改TOM
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Tomcat/7. Nginx + Tomcat 配置负载均衡集群/" itemprop="url">Nginx + Tomcat 配置负载均衡集群</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Zabbix/24. zabbix通过JMX监控tomcat状态/" itemprop="url">zabbix通过JMX监控tomcat状态</a></h1>
         
 
         <div class="post-meta">
@@ -1084,25 +1085,12 @@ tomcat内存优化&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;linux修改TOM
       
         
           
-          一、Hello world前期环境准备
-准备两个解压版tomcat，如何同时启动两个tomcat，请看我的另一篇文章《一台机器同时启动多个tomcat》。
-
-nginx官网下载解压版nginx。
-
-创建一个简单的web项目。为了直观的区分访问的哪个tomcat，在页面写上标记8081、8082。
-
-
-
-
-分别部署到对应的tomcat下。如图：
-
-
-
-配置nginx&#160;&#160;&#160
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;因为大量使用tomcat作为应用服务，所以，这两天催生了一个想法，通过zabbix监控tomcat的运行状态，从而能够更快的发现tomcat服务出现的问题以及判断问题出现在哪块。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先，zabbix监控tom
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Tomcat/7. Nginx + Tomcat 配置负载均衡集群/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Zabbix/24. zabbix通过JMX监控tomcat状态/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1148,7 +1136,7 @@ nginx官网下载解压版nginx。
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Tomcat/6.  tomcat配置文件server.xml详解/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/23. zabbix使用pyora监控oracle数据库/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1167,7 +1155,7 @@ nginx官网下载解压版nginx。
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Tomcat/6.  tomcat配置文件server.xml详解/" itemprop="url">tomcat配置文件server.xml详解</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Zabbix/23. zabbix使用pyora监控oracle数据库/" itemprop="url">zabbix使用pyora监控oracle数据库</a></h1>
         
 
         <div class="post-meta">
@@ -1216,15 +1204,11 @@ nginx官网下载解压版nginx。
       
         
           
-          
-元素&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;它代表整个容器,是Tomcat实例的顶层元素.由org.apache.catalina.Server接口来定义.它包含一个元素.并且它不能做为任何元素的子元素.
-1&lt; Server port ="8005" shutdown ="SHUTDOWN" debug ="0" &gt;
-
-clas
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用Orabbix监控oracle数据库，发现可以实现对oracel数据库实行监控，但是    最近部署Orabbix监控oracle数据库，发现始终无法获取到数据库的内容。。。。。。由于Orabbix是基于java实现的，使用的是jdbc连接oracle数据库，获取到的值传递给zabbix捕捉器来捕捉
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Tomcat/6.  tomcat配置文件server.xml详解/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Zabbix/23. zabbix使用pyora监控oracle数据库/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1270,7 +1254,7 @@ clas
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Tomcat/4. j2ee、j2se、ejb、javabean、serverlet、jsp之间关系/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/21. zabbix使用SNMP V3监控路由器接口流量/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1289,7 +1273,7 @@ clas
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Tomcat/4. j2ee、j2se、ejb、javabean、serverlet、jsp之间关系/" itemprop="url">j2ee、j2se、ejb、javabean、serverlet、jsp之间关系</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Zabbix/21. zabbix使用SNMP V3监控路由器接口流量/" itemprop="url">zabbix使用SNMP V3监控路由器接口流量</a></h1>
         
 
         <div class="post-meta">
@@ -1338,12 +1322,12 @@ clas
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;j2ee：这个东西代表两个不同的东西，一种是sun的一种服务器软件，注意是一种具体的软件，不是技术。另一种是泛指sun的java技术，包括jsp,servlet,javabean,ejb等。
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;j2se:我所知
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;由于有需要监控网络流量， 于是，部署了zabbix监控路由器流量的应用，下面是通过查找资料，自行实验并成功监控路由器接口流量的过程。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先，在路由器上面配置好SNMP协议，我这边配置的是SNMP V3版本协议
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Tomcat/4. j2ee、j2se、ejb、javabean、serverlet、jsp之间关系/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Zabbix/21. zabbix使用SNMP V3监控路由器接口流量/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1389,7 +1373,7 @@ clas
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Tomcat/5. 四大Java EE容器(Tomcat、JBoss、Resin、Glassfish)之简单比较/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/22. zabbix使用percona zabbix mysql-plugin监控mysql数据库/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1408,7 +1392,7 @@ clas
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Tomcat/5. 四大Java EE容器(Tomcat、JBoss、Resin、Glassfish)之简单比较/" itemprop="url">四大Java EE容器(Tomcat、JBoss、Resin、Glassfish)之简单比较</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Zabbix/22. zabbix使用percona zabbix mysql-plugin监控mysql数据库/" itemprop="url">zabbix使用percona zabbix mysql-plugin监控mysql数据库</a></h1>
         
 
         <div class="post-meta">
@@ -1457,12 +1441,12 @@ clas
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;现在流行的Java EE容器有很多：Tomcat、JBoss、Resin、Glassfish等等。下面对这四种Java EE容器进行了一番简单的比对。 1. Tomcat是Apache鼎力支持的Java Web应用服务器，由于它优秀的稳定性以及丰富的文档资料，广泛的使用人群，从而在开源领域受到最广泛的
-
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;由于zabbix自带的mysql监控模板监控的东西比较少，使用percona zabbix mysql-plugin实现对mysql的监控。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;percona zabbix mysql-plugin是perco
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Tomcat/5. 四大Java EE容器(Tomcat、JBoss、Resin、Glassfish)之简单比较/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Zabbix/22. zabbix使用percona zabbix mysql-plugin监控mysql数据库/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1503,7 +1487,7 @@ clas
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/60/">60</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/62/">62</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1548,7 +1532,7 @@ clas
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">599</span>
+                <span class="site-state-item-count">618</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1561,7 +1545,7 @@ clas
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-count">38</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1629,7 +1613,7 @@ clas
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
+    NexT.Mist
   </a>
 </div>
 
@@ -1708,13 +1692,6 @@ clas
 
   
   
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
-
-
 
   
     <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>

@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next pisces use-motion" lang="zh-Hans">
+<html class="theme-next mist use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -110,7 +110,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Pisces',
+    scheme: 'Mist',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
     fancybox: true,
     motion: true,
@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/3. shell 练习-计算进程占用内存和/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/22. shell 练习-找出活动ip/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -306,7 +306,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/3. shell 练习-计算进程占用内存和/" itemprop="url">shell 练习-计算进程占用内存和</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/22. shell 练习-找出活动ip/" itemprop="url">shell 练习-找出活动ip</a></h1>
         
 
         <div class="post-meta">
@@ -355,12 +355,13 @@
       
         
           
-          ps 可以查看进程的内存占用大小，写一个脚本计算一下所有进程所占用内存大小的和。（提示，使用ps aux 列出所有进程，过滤出RSS那列，然后求和）
-1234567#! /bin/bashsum=0for mem in `ps aux |awk '&#123;print $6&#125;' |grep -v 'RSS'`do    sum=$[$sum+$mem]doneecho "The tot
+          写一个脚本，实现判断192.168.0.0网络里，当前在线的IP有哪些
+思路： for循环， 0.1 –  0.254  依次去ping，能通说明在线。
+123456789101112#!/bin/baships="192.168.0."for i in `seq 1 254`doping -c 2 $ips$i &gt;/dev/null 2&gt;/dev/nullif [ $? == 0 ]
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/3. shell 练习-计算进程占用内存和/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/22. shell 练习-找出活动ip/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -406,7 +407,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/2. shell 练习-统计IP访问量/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/21. shell 练习-实现一个小型计算器/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -425,7 +426,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/2. shell 练习-统计IP访问量/" itemprop="url">shell 练习-统计IP访问量</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/21. shell 练习-实现一个小型计算器/" itemprop="url">shell 练习-实现一个小型计算器</a></h1>
         
 
         <div class="post-meta">
@@ -474,12 +475,11 @@
       
         
           
-          抓包 ip 访问日志 /var/log/1.log 然后进行系统分析：要求统计出每个 IP 的访问量有多少？提示，先 awk 过滤出 ip ，然后进行排序，统计重复数
-12#!/bin/bashawk '&#123;print $1&#125;' /var/log/1.log |sort -n|uniq -c|sort-rn
-          
+          12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849[root@nfs01 scripts]# cat bc.sh #!/bin/sh# First we should save the number which was inserted by userread -p "P
+          ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/2. shell 练习-统计IP访问量/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/21. shell 练习-实现一个小型计算器/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -525,7 +525,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/1. shell 练习-每日生成一个文件/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/20. shell 练习-乘法口诀表/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -544,7 +544,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/1. shell 练习-每日生成一个文件/" itemprop="url">shell 练习-每日生成一个文件</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/20. shell 练习-乘法口诀表/" itemprop="url">shell 练习-乘法口诀表</a></h1>
         
 
         <div class="post-meta">
@@ -593,13 +593,14 @@
       
         
           
-          请按照这样的日期格式（xxxx-xx-xx）每日生成一个文件，例如今天生成的文件为2013-09-23.log， 并且把磁盘的使用情况写到到这个文件中
-1234#!/bin/bashd=`date +%F`logfile=$d.logdf -h &gt; $d.log
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后使用 crontab -e 把
+          需要两层循环
+1234567891011#!/bin/bashfor i in `seq 1 9`do    for j in `seq 1 $i`    do        echo -n $i*$j=$((i*j))        echo -ne '\t'    doneechodone
+输出结果
+12345678910[root@localhost ~]# sh 1.sh 1*1=12*1
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/1. shell 练习-每日生成一个文件/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/20. shell 练习-乘法口诀表/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -645,7 +646,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Python/1. Python 基础篇/1. Python 基础语法/1.5 Python 的数值和字符串/6. Python 的数值/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/19. shell 练习-找规律打印数字/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -664,7 +665,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Python/1. Python 基础篇/1. Python 基础语法/1.5 Python 的数值和字符串/6. Python 的数值/" itemprop="url">Python 的数值</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/19. shell 练习-找规律打印数字/" itemprop="url">shell 练习-找规律打印数字</a></h1>
         
 
         <div class="post-meta">
@@ -676,8 +677,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T14:00:36+08:00">
-                2017-08-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-31T00:07:07+08:00">
+                2017-08-31
               </time>
             
 
@@ -713,12 +714,15 @@
       
         
           
-          Python Number（数字）&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Python Number 数据类型用于存储数值。&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;数据类型是不允许改变的，这就意味着如果改变 Number 数据类型的值，将重新分配内存空间。
-&#160;&#160;&#1
+          请详细查看如下几个数字的规律，并使用shell脚本输出后面的十个数字。
+10 31 53 77  105 141 …….
+试题解析：
+我想大多数人都会去比较这些数字的差值：
+10&#160;&#160;31&#160;&#160;53&#160;&#160;77&#160;&#160;105&#160;&#160;141&#160;&#160;21&#160;&#160;&#160;22&#160
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Python/1. Python 基础篇/1. Python 基础语法/1.5 Python 的数值和字符串/6. Python 的数值/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/19. shell 练习-找规律打印数字/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -764,7 +768,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Python/1. Python 基础篇/1. Python 基础语法/1.5 Python 的数值和字符串/7. Python 字符串/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/18. shell 练习-解决某个分区快满的问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -783,7 +787,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Python/1. Python 基础篇/1. Python 基础语法/1.5 Python 的数值和字符串/7. Python 字符串/" itemprop="url">Python 字符串</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/18. shell 练习-解决某个分区快满的问题/" itemprop="url">shell 练习-解决某个分区快满的问题</a></h1>
         
 
         <div class="post-meta">
@@ -795,8 +799,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T14:00:36+08:00">
-                2017-08-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-31T00:07:07+08:00">
+                2017-08-31
               </time>
             
 
@@ -832,13 +836,19 @@
       
         
           
-          Python 字符串&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;字符串是 Python 中最常用的数据类型。可以使用引号（‘’或“”）来创建字符串。
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;创建字符串很简单，只要为变量分配一个值即可。例如：
-12var1 = 'hello world'var
+          有一天，你发现你所管理的服务器磁盘某个分区马上要满了，那你如何做呢？
+提示：
+
+查看和统计各个分区使用情况，把占用空间大的目录以及文件找出来，看看是不是有一些老的没有用的文件占用了空间，比如有日志，那你可以考虑写一个任务计划每天定点删除一个月之前的；
+
+如果不能删除，那么就要想办法添加磁盘，假如你已经成功添加磁盘，请问，你如何分区，然后 如何解决某个分区快满的问题？
+
+
+1234567891011
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Python/1. Python 基础篇/1. Python 基础语法/1.5 Python 的数值和字符串/7. Python 字符串/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/18. shell 练习-解决某个分区快满的问题/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -884,7 +894,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Python/1. Python 基础篇/1. Python 基础语法/1.3 Python 的文件类型/4. Python 的文件类型/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/17. shell 练习-封ip/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -903,7 +913,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Python/1. Python 基础篇/1. Python 基础语法/1.3 Python 的文件类型/4. Python 的文件类型/" itemprop="url">Python 的文件类型</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/17. shell 练习-封ip/" itemprop="url">shell 练习-封ip</a></h1>
         
 
         <div class="post-meta">
@@ -915,8 +925,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T14:00:36+08:00">
-                2017-08-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-31T00:07:07+08:00">
+                2017-08-31
               </time>
             
 
@@ -952,12 +962,13 @@
       
         
           
-          Python 的文件类型&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Python 的使用我们可以用解释器交互方式 python 和 ipython，也可以建立一个程序文件。
-1.源代码&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Python 源代码文件以 “py” 为扩展名，由 Python 程
+          需求： 根据web服务器上的访问日志，把一些请求量非常高的ip给拒绝掉！ 
+分析： 我们要做的，不仅是要找到哪些ip请求量不合法，并且还要每隔一段时间把之前封掉的ip（若不再继续请求了）给解封。 所以该脚本的关键点在于定一个合适的时间段和阈值。 
+比如， 我们可以每一分钟去查看一下日志，把上一分钟的日志给过滤出来分析，并且只要请求的ip数量超过100次那么就直接封掉。 而解封的时间又规定为每半小时
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Python/1. Python 基础篇/1. Python 基础语法/1.3 Python 的文件类型/4. Python 的文件类型/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/17. shell 练习-封ip/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1003,7 +1014,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Python/1. Python 基础篇/1. Python 基础语法/1.2 Python 的安装/2. Python 的安装/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/16. shell 练习-监控httpd进程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1022,7 +1033,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Python/1. Python 基础篇/1. Python 基础语法/1.2 Python 的安装/2. Python 的安装/" itemprop="url">Python 的安装</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/16. shell 练习-监控httpd进程/" itemprop="url">shell 练习-监控httpd进程</a></h1>
         
 
         <div class="post-meta">
@@ -1034,8 +1045,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T14:00:36+08:00">
-                2017-08-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-31T00:07:07+08:00">
+                2017-08-31
               </time>
             
 
@@ -1071,13 +1082,17 @@
       
         
           
-          Python 的安装&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;python 官网
-1. linux 的 python 安装&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;CentOS 6.5 系统自带 Python 2.6 
-12[root@192 ~]# rpm -q pythonpython-
+          在服务器上，写一个监控脚本。
+
+每隔10s去检测一次服务器上的httpd进程数，如果大于等于500的时候，就需要自动重启一下apache服务，并检测启动是否成功？
+
+若没有正常启动还需再一次启动，最大不成功数超过5次则需要理解发邮件通知管理员，并且以后不需要再检测！ 
+
+如果启动成功后，1分钟后再次检测httpd进程数，若正常则重复之前操作（每隔10s检测一次），若还是大于等于500，那放弃重启并
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Python/1. Python 基础篇/1. Python 基础语法/1.2 Python 的安装/2. Python 的安装/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/16. shell 练习-监控httpd进程/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1123,7 +1138,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Python/1. Python 基础篇/1. Python 基础语法/1.2 Python 的安装/3. Pyhton 准备- ipython/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/15. shell 练习-创建用户并设置密码/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1142,7 +1157,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Python/1. Python 基础篇/1. Python 基础语法/1.2 Python 的安装/3. Pyhton 准备- ipython/" itemprop="url">Python 准备-ipython</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/15. shell 练习-创建用户并设置密码/" itemprop="url">shell 练习-创建用户并设置密码</a></h1>
         
 
         <div class="post-meta">
@@ -1154,8 +1169,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T14:00:36+08:00">
-                2017-08-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-31T00:07:07+08:00">
+                2017-08-31
               </time>
             
 
@@ -1191,11 +1206,17 @@
       
         
           
-          Python 准备-ipythonupdate&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;发现ipython notebook 灰常方便，主要是写一些代码片段的时候，debug起来甚至跟pycharm有的一拼。配置好服务器版本后，打开浏览器就能用，一定程度上提升了效率。具体如何配置ipython notebook的service可以看官网，值得注
+          用shell脚本实现如下需求：添加user_00 - user_09 10个用户，并且给他们设置一个随机密码，密码要求10位包含大小写字母以及数字，注意需要把每个用户的密码记录到一个日志文件里。
+提示： 
+
+随机密码使用命令 mkpasswd
+在脚本中给用户设置密码，可以使用echo 然后管道passwd命令
+
+12345678#!/bin/bashfor i in `seq -w 00 09`d
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Python/1. Python 基础篇/1. Python 基础语法/1.2 Python 的安装/3. Pyhton 准备- ipython/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/15. shell 练习-创建用户并设置密码/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1241,7 +1262,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Python/1. Python 基础篇/1. Python 基础语法/2.3 流程控制-for 字典/Python 流程控制-for循环 字典/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/14. shell 练习-输入数字执行对应命令/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1260,7 +1281,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Python/1. Python 基础篇/1. Python 基础语法/2.3 流程控制-for 字典/Python 流程控制-for循环 字典/" itemprop="url">Python 流程控制-for循环字典</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/14. shell 练习-输入数字执行对应命令/" itemprop="url">shell 练习-输入数字执行对应命令</a></h1>
         
 
         <div class="post-meta">
@@ -1272,8 +1293,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T14:00:36+08:00">
-                2017-08-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-31T00:07:07+08:00">
+                2017-08-31
               </time>
             
 
@@ -1309,13 +1330,13 @@
       
         
           
-          Python 流程控制-for循环 字典&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Python for循环不但可以遍历序列，还可以遍历字典。
-通过 for 循环遍历字典&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;先定义一个字典
-123456789In [4]: dic = &#123;'a':
+          写一个脚本实现如下功能：  输入一个数字，然后运行对应的一个命令。显示命令如下：*cmd meau**  1—date 2–ls 3–who 4–pwd
+当输入1时，会运行date, 输入2时运行ls, 依此类推。
+1234567891011121314151617181920#!/bin/bashecho "*cmd meau**  1--date  2--ls  3--who  4--pwd"
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Python/1. Python 基础篇/1. Python 基础语法/2.3 流程控制-for 字典/Python 流程控制-for循环 字典/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/14. shell 练习-输入数字执行对应命令/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1361,7 +1382,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/10/Python/1. Python 基础篇/1. Python 基础语法/2.2 流程控制-for 序列/13. Python for 循环语句/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/13. shell 练习-查找字母数小于6的单词/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1380,7 +1401,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/Python/1. Python 基础篇/1. Python 基础语法/2.2 流程控制-for 序列/13. Python for 循环语句/" itemprop="url">Python for 循环语句</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/13. shell 练习-查找字母数小于6的单词/" itemprop="url">shell 练习-查找字母数小于6的单词</a></h1>
         
 
         <div class="post-meta">
@@ -1392,8 +1413,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T14:00:36+08:00">
-                2017-08-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-31T00:07:07+08:00">
+                2017-08-31
               </time>
             
 
@@ -1429,13 +1450,15 @@
       
         
           
-          Python for 循环语句&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Python for循环可以遍历任何序列的项目，如一个列表或者一个字符串。
-语法：&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;for循环的语法格式如下：
-12for iterating_var in sequence:  
+          bash for循环打印下面这句话中字母数不大于6的单词。
+
+Bash also interprets a number of multi-character options.
+
+123456789#!/bin/bashfor s in Bash also interprets a number of multi-character optionsdo    n=`echo $s|wc-c`   
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/10/Python/1. Python 基础篇/1. Python 基础语法/2.2 流程控制-for 序列/13. Python for 循环语句/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/13. shell 练习-查找字母数小于6的单词/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1476,7 +1499,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/58/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/58/">58</a><span class="page-number current">59</span><a class="page-number" href="/page/60/">60</a><a class="extend next" rel="next" href="/page/60/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/58/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/58/">58</a><span class="page-number current">59</span><a class="page-number" href="/page/60/">60</a><span class="space">&hellip;</span><a class="page-number" href="/page/62/">62</a><a class="extend next" rel="next" href="/page/60/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1521,7 +1544,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">599</span>
+                <span class="site-state-item-count">618</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1534,7 +1557,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-count">38</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1602,7 +1625,7 @@
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
+    NexT.Mist
   </a>
 </div>
 
@@ -1681,13 +1704,6 @@
 
   
   
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
-
-
 
   
     <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>

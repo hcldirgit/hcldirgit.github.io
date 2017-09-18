@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next pisces use-motion" lang="zh-Hans">
+<html class="theme-next mist use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -110,7 +110,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Pisces',
+    scheme: 'Mist',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
     fancybox: true,
     motion: true,
@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/7. Zabbix脚本报警介质自定义/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/08/MySQL/22. mysql主从搭建/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -306,7 +306,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Zabbix/7. Zabbix脚本报警介质自定义/" itemprop="url">Zabbix脚本报警介质自定义</a></h1>
+                <a class="post-title-link" href="/2017/09/08/MySQL/22. mysql主从搭建/" itemprop="url">mysql 主从搭建</a></h1>
         
 
         <div class="post-meta">
@@ -318,8 +318,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:13:44+08:00">
-                2017-09-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-08T02:10:00+08:00">
+                2017-09-08
               </time>
             
 
@@ -355,17 +355,12 @@
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;zabbix支持mail报警，sms报警，以及自定义报警，用到最多的还是脚本报警，当事件通知到脚本，会传递给脚本三个参数。
-
-$1：发送给谁
-$2：标题
-$3：报警内容
-
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;添加媒介类型：Adminstrato
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mysql 主从 （mysql replication），主要用于 mysql 的实时备份或者读写分离。在配置之前做准备工作，配置两台 mysql 服务器；或者在同一个机器上跑两个 mysql 服务。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mys
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Zabbix/7. Zabbix脚本报警介质自定义/#more" rel="contents">
+            <a class="btn" href="/2017/09/08/MySQL/22. mysql主从搭建/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -411,7 +406,7 @@ $3：报警内容
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/6. zabbix使用自动发现功能监控服务器各JVM进程状态/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Shell/15. shell 中断继续退出/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -430,7 +425,7 @@ $3：报警内容
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Zabbix/6. zabbix使用自动发现功能监控服务器各JVM进程状态/" itemprop="url">zabbix使用自动发现功能监控服务器各JVM进程状态</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Shell/15. shell 中断继续退出/" itemprop="url">shell 中断继续退出</a></h1>
         
 
         <div class="post-meta">
@@ -442,7 +437,7 @@ $3：报警内容
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:13:44+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:23:14+08:00">
                 2017-09-03
               </time>
             
@@ -479,16 +474,13 @@ $3：报警内容
       
         
           
-          前言&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为什么需要做服务器jvm自动发现的监控呢？这个事情主要有两点原因：
-
-zabbix默认监控jvm状态是使用jmx中转进行监控的，监控效率比较低下
-zabbix使用jmx监控jvm的时候由于一个主机上的键值不能重复，也就导致了一台主机上只能监控一个jvm实例
-
-&#160;&#160;&#160;&#
+          break 直接结束本层循环：1[root@192 sbin]# vim break.sh
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加入内容：
+1234567891011#!/bin/bashfor i in `seq 1 5`do    echo $i    if [ $i==3 ]    then        break    fi  
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Zabbix/6. zabbix使用自动发现功能监控服务器各JVM进程状态/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Shell/15. shell 中断继续退出/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -534,7 +526,7 @@ zabbix使用jmx监控jvm的时候由于一个主机上的键值不能重复，�
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/5. zabbix2.2 使用自定义脚本监控网卡流量/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Shell/13. for 循环/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -553,7 +545,7 @@ zabbix使用jmx监控jvm的时候由于一个主机上的键值不能重复，�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Zabbix/5. zabbix2.2 使用自定义脚本监控网卡流量/" itemprop="url">zabbix2.2 使用自定义脚本监控网卡流量</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Shell/13. for 循环/" itemprop="url">for 循环</a></h1>
         
 
         <div class="post-meta">
@@ -565,7 +557,7 @@ zabbix使用jmx监控jvm的时候由于一个主机上的键值不能重复，�
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:13:44+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:23:14+08:00">
                 2017-09-03
               </time>
             
@@ -602,19 +594,13 @@ zabbix使用jmx监控jvm的时候由于一个主机上的键值不能重复，�
       
         
           
-          
-在客户端修改配置文件  /etc/zabbix/zabbix_agentd.conf
-
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需要改动两个地方：
-
-UnsafeUserParameters=1
-UserParameter=my.net.if
-
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;shell 脚本中也算是一门简易的编程语言了，当然循环是不能缺少的。常用到的循环有 for 循环和 while 循环。for 循环的结构是在日常运维中使用最频繁的循环结构。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一个简单的 for 循环脚本：
+1
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Zabbix/5. zabbix2.2 使用自定义脚本监控网卡流量/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Shell/13. for 循环/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -660,7 +646,7 @@ UserParameter=my.net.if
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/4. Zabbix自定义监控脚本配置/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Shell/14. while 循环/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -679,7 +665,7 @@ UserParameter=my.net.if
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Zabbix/4. Zabbix自定义监控脚本配置/" itemprop="url">Zabbix自定义监控脚本配置</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Shell/14. while 循环/" itemprop="url">while 循环</a></h1>
         
 
         <div class="post-meta">
@@ -691,7 +677,7 @@ UserParameter=my.net.if
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:13:44+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:23:14+08:00">
                 2017-09-03
               </time>
             
@@ -728,16 +714,14 @@ UserParameter=my.net.if
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注：要添加自定义脚本监控，必须升级zabbix agent版本至2.0.0以上，这里以2.0.8为例
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置方式：
-
-完成自定义监控脚本的编写（windows或linux脚本）
-
-&#160;&#160;&#1
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;while 循环常常用来写死循环的脚本，用于监控某项服务。
+1[root@192 sbin]# vim while.sh
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加入内容：
+1234567#!/bin/basha=5while [ $a -ge 1
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Zabbix/4. Zabbix自定义监控脚本配置/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Shell/14. while 循环/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -783,7 +767,7 @@ UserParameter=my.net.if
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/3. zabbix 增加客户端监控/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Shell/12. shell中的select用法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -802,7 +786,7 @@ UserParameter=my.net.if
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Zabbix/3. zabbix 增加客户端监控/" itemprop="url">zabbix 增加客户端监控</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Shell/12. shell中的select用法/" itemprop="url">shell中的select用法</a></h1>
         
 
         <div class="post-meta">
@@ -814,7 +798,7 @@ UserParameter=my.net.if
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:13:44+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:23:14+08:00">
                 2017-09-03
               </time>
             
@@ -851,13 +835,12 @@ UserParameter=my.net.if
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;zabbix 比 nagios 好的地方就是， zabbix 不需要命令行去配置，只需要在浏览器里面点点按钮就可以了，这样就直观和方便很多。在配置客户端之前，也需要在客户端上安装 zabbix。
-1yum install -y zabbix20-agent
-&#160;&#160;&#160;&#160
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;select也是循环的一种，它比较适合用在用户选择的情况下。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;比如，我们有一个这样的需求，运行脚本后，让用户去选择数字，选择1，会运行w命令，选择2运行top命令，选择3运行free命令，选择4退出。脚本这样
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Zabbix/3. zabbix 增加客户端监控/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Shell/12. shell中的select用法/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -903,7 +886,7 @@ UserParameter=my.net.if
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/26. zabbix自动发现实现批量监控docker状态/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Shell/11. case 选择/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -922,7 +905,7 @@ UserParameter=my.net.if
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Zabbix/26. zabbix自动发现实现批量监控docker状态/" itemprop="url">zabbix自动发现实现批量监控docker状态</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Shell/11. case 选择/" itemprop="url">case 选择</a></h1>
         
 
         <div class="post-meta">
@@ -934,7 +917,7 @@ UserParameter=my.net.if
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:13:44+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:23:14+08:00">
                 2017-09-03
               </time>
             
@@ -971,11 +954,13 @@ UserParameter=my.net.if
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;最近在搞zabbix监控docker以及docker内部应用状态信息，网上找的资料好少，只找到了一个大神的一篇文章，用的是python实现监控docker容器的基本状态，在他给的脚本基础上进行修改，另外，增加了docker内部常用应用的状态监控，目前在测试环境上部署成功了，具体还需要在线上环境部署后才能
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在 shell 脚本中，除了用 if 来判断逻辑外，还有一种常用的方式，那就是 case 了。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;具体格式：
+1234567891011121314case 变量 invalue1)      command 
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Zabbix/26. zabbix自动发现实现批量监控docker状态/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Shell/11. case 选择/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1021,7 +1006,7 @@ UserParameter=my.net.if
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/25. zabbix通过自定义脚本监控nginx，php-fpm和mysql占用内存数和进程的个数/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Shell/10. if 判断的几种用法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1040,7 +1025,7 @@ UserParameter=my.net.if
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Zabbix/25. zabbix通过自定义脚本监控nginx，php-fpm和mysql占用内存数和进程的个数/" itemprop="url">zabbix通过自定义脚本监控nginx，php-fpm和mysql占用内存数和进程的个数</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Shell/10. if 判断的几种用法/" itemprop="url">if 判断的几种用法</a></h1>
         
 
         <div class="post-meta">
@@ -1052,7 +1037,7 @@ UserParameter=my.net.if
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:13:44+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:23:14+08:00">
                 2017-09-03
               </time>
             
@@ -1089,13 +1074,16 @@ UserParameter=my.net.if
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;zabbix通过自定义脚本监控nginx，php-fpm和mysql占用内存数和进程的个数
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先，在zabbix脚本目录下添加一个脚本，写入如下代码
-12345678910111213141516171819
+          1.和文档相关的判断&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;shell 脚本中 if 还经常判断关于档案属性，比如判断是普通文件还是目录，判断文件是否有读写执行权限等。常用的也就几个选项：
+
+-e：判断文件或目录是否存在；
+-d：判断是不是目录，并是否存在；-f：判断是否是普通文件，并存在；
+-r：判断文档是否有读权限；
+-w：判断文档是否有
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Zabbix/25. zabbix通过自定义脚本监控nginx，php-fpm和mysql占用内存数和进程的个数/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Shell/10. if 判断的几种用法/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1141,7 +1129,7 @@ UserParameter=my.net.if
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/24. zabbix通过JMX监控tomcat状态/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Shell/9. if 逻辑判断/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1160,7 +1148,7 @@ UserParameter=my.net.if
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Zabbix/24. zabbix通过JMX监控tomcat状态/" itemprop="url">zabbix通过JMX监控tomcat状态</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Shell/9. if 逻辑判断/" itemprop="url">if 逻辑判断</a></h1>
         
 
         <div class="post-meta">
@@ -1172,7 +1160,7 @@ UserParameter=my.net.if
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:13:44+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:23:14+08:00">
                 2017-09-03
               </time>
             
@@ -1209,12 +1197,14 @@ UserParameter=my.net.if
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;因为大量使用tomcat作为应用服务，所以，这两天催生了一个想法，通过zabbix监控tomcat的运行状态，从而能够更快的发现tomcat服务出现的问题以及判断问题出现在哪块。
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先，zabbix监控tom
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在 shell 脚本中可以使用 if 逻辑判断，只不过它在 shell 中的语法有点奇怪。
+1.不带 else&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;格式如下：
+123if 判断语句；then      command  fi
+&#160;&#16
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Zabbix/24. zabbix通过JMX监控tomcat状态/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Shell/9. if 逻辑判断/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1260,7 +1250,7 @@ UserParameter=my.net.if
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/23. zabbix使用pyora监控oracle数据库/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Shell/8. shell 自定义变量/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1279,7 +1269,7 @@ UserParameter=my.net.if
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Zabbix/23. zabbix使用pyora监控oracle数据库/" itemprop="url">zabbix使用pyora监控oracle数据库</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Shell/8. shell 自定义变量/" itemprop="url">shell 自定义变量</a></h1>
         
 
         <div class="post-meta">
@@ -1291,7 +1281,7 @@ UserParameter=my.net.if
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:13:44+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:23:14+08:00">
                 2017-09-03
               </time>
             
@@ -1328,11 +1318,11 @@ UserParameter=my.net.if
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用Orabbix监控oracle数据库，发现可以实现对oracel数据库实行监控，但是    最近部署Orabbix监控oracle数据库，发现始终无法获取到数据库的内容。。。。。。由于Orabbix是基于java实现的，使用的是jdbc连接oracle数据库，获取到的值传递给zabbix捕捉器来捕捉
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在 shell 脚本中使用变量显得脚本更加专业更像是一门语言，变量的作用当然不是为了专业。比如写了有一个长达1000行的 shell 脚本，并且脚本中出现了某一个命令或者路径几百次，如果突然发现不对，想换一下，那不是要更改几百次。当然可以用批量替换的命令，但是也很麻烦，并且脚本显得臃肿。变量的作用就是用
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Zabbix/23. zabbix使用pyora监控oracle数据库/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Shell/8. shell 自定义变量/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1378,7 +1368,7 @@ UserParameter=my.net.if
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Zabbix/21. zabbix使用SNMP V3监控路由器接口流量/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Shell/6. date 命令/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1397,7 +1387,7 @@ UserParameter=my.net.if
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Zabbix/21. zabbix使用SNMP V3监控路由器接口流量/" itemprop="url">zabbix使用SNMP V3监控路由器接口流量</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Shell/6. date 命令/" itemprop="url">date命令</a></h1>
         
 
         <div class="post-meta">
@@ -1409,7 +1399,7 @@ UserParameter=my.net.if
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:13:44+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:23:14+08:00">
                 2017-09-03
               </time>
             
@@ -1446,12 +1436,20 @@ UserParameter=my.net.if
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;由于有需要监控网络流量， 于是，部署了zabbix监控路由器流量的应用，下面是通过查找资料，自行实验并成功监控路由器接口流量的过程。
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先，在路由器上面配置好SNMP协议，我这边配置的是SNMP V3版本协议
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;date 在脚本中用得很多，那必须得学会这个命令，下面是 date 的几种用法：
+
+输出四位的年、月、日，格式 2017.04.27
+
+1[root@192 sbin]# date +%Y-%m-%d
+
+
+输出两位的年、月、日，格式17-04-27
+
+1[root@192 sbin]# date +%y
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Zabbix/21. zabbix使用SNMP V3监控路由器接口流量/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Shell/6. date 命令/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1492,7 +1490,7 @@ UserParameter=my.net.if
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/60/">60</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/62/">62</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1537,7 +1535,7 @@ UserParameter=my.net.if
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">599</span>
+                <span class="site-state-item-count">618</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1550,7 +1548,7 @@ UserParameter=my.net.if
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-count">38</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1618,7 +1616,7 @@ UserParameter=my.net.if
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
+    NexT.Mist
   </a>
 </div>
 
@@ -1697,13 +1695,6 @@ UserParameter=my.net.if
 
   
   
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
-
-
 
   
     <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>

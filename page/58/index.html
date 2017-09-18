@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next pisces use-motion" lang="zh-Hans">
+<html class="theme-next mist use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -110,7 +110,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Pisces',
+    scheme: 'Mist',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
     fancybox: true,
     motion: true,
@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/13. shell 练习-查找字母数小于6的单词/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/32. shell 练习-判断是否开启web服务/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -306,7 +306,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/13. shell 练习-查找字母数小于6的单词/" itemprop="url">shell 练习-查找字母数小于6的单词</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/32. shell 练习-判断是否开启web服务/" itemprop="url">shell 练习-判断是否开启web服务</a></h1>
         
 
         <div class="post-meta">
@@ -355,15 +355,12 @@
       
         
           
-          bash for循环打印下面这句话中字母数不大于6的单词。
-
-Bash also interprets a number of multi-character options.
-
-123456789#!/bin/bashfor s in Bash also interprets a number of multi-character optionsdo    n=`echo $s|wc-c`   
+          写一个脚本判断你的Linux服务器里是否开启web服务？（监听80端口）如果开启了，请判断出跑的是什么服务，是httpd呢还是nginx又或者是其他的什么？
+123456789101112131415161718#!/bin/bashport=`netstat -lnp | grep 80`if [ -z "port" ]; then    echo "not start service.";  
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/13. shell 练习-查找字母数小于6的单词/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/32. shell 练习-判断是否开启web服务/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -409,7 +406,7 @@ Bash also interprets a number of multi-character options.
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/12. shell 练习-删除文本中的字母/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/31. shell 练习-批量杀进程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -428,7 +425,7 @@ Bash also interprets a number of multi-character options.
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/12. shell 练习-删除文本中的字母/" itemprop="url">shell 练习-删除文本中的字母</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/31. shell 练习-批量杀进程/" itemprop="url">shell 练习-批量杀进程</a></h1>
         
 
         <div class="post-meta">
@@ -477,15 +474,16 @@ Bash also interprets a number of multi-character options.
       
         
           
-          使用sed实现，把一个文本文档中的前5行中包含字母的行删除掉。
-1head -5 1.txt|sed '/[a-Z]/d'
-把一个文本文档的前5行中包含字母的行删除掉，同时把6到10行中的全部字母删除掉。
-假设文本名字叫做1.txt，并且文本行数大于10，脚本如下
-1234567891011121314151617181920212223242526#!/bin/bash##先获取该文本的行数nu
+          今天发现网站访问超级慢，top看如下：
+
+有很多sh进程，再ps查看：
+
+这个脚本，运行很慢，因为制定了cron，上一次还没有运行完，又有了新的运行任务。太多肯定会导致系统负载升高。当务之急就是先把这些在跑的给kill掉。那么请写一个脚本，直接杀死所有的sh。 
+12#!/bin/bashps aux |grep clearmem.sh |grep -v grep|awk '&#123;print
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/12. shell 练习-删除文本中的字母/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/31. shell 练习-批量杀进程/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -531,7 +529,7 @@ Bash also interprets a number of multi-character options.
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/11. shell 练习-自动重启php-fpm/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/30. shell 练习-统计网卡流量/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -550,7 +548,7 @@ Bash also interprets a number of multi-character options.
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/11. shell 练习-自动重启php-fpm/" itemprop="url">shell 练习-自动重启php-fpm</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/30. shell 练习-统计网卡流量/" itemprop="url">shell 练习-统计网卡流量</a></h1>
         
 
         <div class="post-meta">
@@ -599,14 +597,13 @@ Bash also interprets a number of multi-character options.
       
         
           
-          服务器上跑的是LNMP环境，近期总是有502现象。502为网站访问的状态码，200正常，502错误是nginx最为普通的错误状态码。由于502只是暂时的，并且只要一重启php-fpm服务则502消失，但不重启的话，则会一直持续很长时间。所以有必要写一个监控脚本，监控访问日志的状态码，一旦发生502，则自动重启一下php-fpm。
-我们设定： 
-
-access_log  /data1/log/acc
+          写一个脚本,检测你的网络流量，并记录到一个日志里。需要按照如下格式，并且一分钟统计一次（只需要统计外网网卡，假设网卡名字为eth0)：
+2017-08-04 01:11eth0 input: 1000bpseth0 output : 200000bps    
+################2017-08-04 01:12eth0 input: 1000bpseth0 output : 2000
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/11. shell 练习-自动重启php-fpm/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/30. shell 练习-统计网卡流量/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -652,7 +649,7 @@ access_log  /data1/log/acc
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/10. shell 练习-每天删除两天前的文件/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/29. shell 练习-检测文件改动/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -671,7 +668,7 @@ access_log  /data1/log/acc
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/10. shell 练习-每天删除两天前的文件/" itemprop="url">shell 练习-每天删除两天前的文件</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/29. shell 练习-检测文件改动/" itemprop="url">shell 练习-检测文件改动</a></h1>
         
 
         <div class="post-meta">
@@ -720,12 +717,11 @@ access_log  /data1/log/acc
       
         
           
-          web服务器上有个目录，它的结构是这样的，首先有256个一级子目录和一个特殊目录，另外这256个一级子目录下还有256个二级子目录（特殊目录除外）。在这些二级子目录下有很多小文件，而且是每时每刻都会生成很多个。 虽然文件不大，但是时间长了，逐渐发现该分区的下inode快被占用满了。 所以请写一个小脚本，实现每天删除两天前的小文件，注意忽略那个特殊的一级子目录default。
-目录： /data/w
+          有两台Linux服务器A和B，假如A可以直接ssh到B，不用输入密码。A和B都有一个目录叫做/data/web/ 这下面有很多文件，当然我们不知道具体有几层子目录，假若之前A和B上该目录下的文件都是一模一样的。但现在不确定是否一致了。固需要我们写一个脚本实现这样的功能，检测A机器和B机器/data/web/目录下文件的异同，我们以A机器上的文件作为标准。比如，假若B机器少了一个a.txt文件，那我
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/10. shell 练习-每天删除两天前的文件/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/29. shell 练习-检测文件改动/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -771,7 +767,7 @@ access_log  /data1/log/acc
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/9. shell 练习-日志汇总/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/28. shell 练习-统计数字并求和/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -790,7 +786,7 @@ access_log  /data1/log/acc
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/9. shell 练习-日志汇总/" itemprop="url">shell 练习-日志汇总</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/28. shell 练习-统计数字并求和/" itemprop="url">shell 练习-统计数字并求和</a></h1>
         
 
         <div class="post-meta">
@@ -839,12 +835,17 @@ access_log  /data1/log/acc
       
         
           
-          我有一个日志（php的slow_log) 几乎每分钟都有输出信息。需要我们来写个脚本分析一下它，目的就是为了归类汇总，按照它们出现的频次做个排序，假如日志是每天0点5分清空，那么按照每小时一次汇总分析该日志，最后在第二天0点0分时，再汇总一下整天的日志，怎么写呢？ 下面我给出一个日志样例和我写的分析汇总脚本供参考。日志样例：
-123456789101112131415161718192021222
+          计算文档a.txt中每一行中出现的数字个数并且要计算一下整个文档中一共出现了几个数字。例如a.txt内容如下：
+12aa*lkjskdjalskdflkskdjflkjj
+我们脚本名字为 ncount.sh, 运行它时：
+bash ncount.sh a.txt
+输入结果应该为：
+20sum:2
+1234567891011#!/bin/bashn=`wc -l a.txt|awk '&#123;p
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/9. shell 练习-日志汇总/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/28. shell 练习-统计数字并求和/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -890,7 +891,7 @@ access_log  /data1/log/acc
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/8. shell 练习/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/27. shell 练习-统计日志大小/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -909,7 +910,7 @@ access_log  /data1/log/acc
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/8. shell 练习/" itemprop="url">shell 练习8</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/27. shell 练习-统计日志大小/" itemprop="url">shell 练习-统计日志大小</a></h1>
         
 
         <div class="post-meta">
@@ -958,12 +959,12 @@ access_log  /data1/log/acc
       
         
           
-          需求： 两台web:A和B机器，其中一台B只打算跑附件（大多为图片），另一台A跑除了附件外的其他东西。其中附件会在A上生成，默认附件会通过A机器访问，但当我们更改某个附件的标志位时，那么附件则会跑到B上去访问。 假如提供给我们了将要在B上跑的附件列表和更改这些附件的标志位的一个sql文件，那么我们如何做呢？
-12345678910111213141516171819202122232425#! /
+          假如我们需要每小时都去执行你写的脚本。在脚本中实现这样的功能，当时间是0点和12点时，需要将目录/data/log/下的文件全部清空，注意只能清空文件内容而不能删除文件。而其他时间只需要统计一下每个文件的大小，一个文件一行，输出到一个按日期和时间为名字的日志里。 需要考虑/data/log/目录下的二级、三级、…  等子目录里面的文件。
+123456789101112131415#!/bin/ba
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/8. shell 练习/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/27. shell 练习-统计日志大小/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1009,7 +1010,7 @@ access_log  /data1/log/acc
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/7. shell 练习-备份数据库/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/26. shell 练习-统计最常用命令/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1028,7 +1029,7 @@ access_log  /data1/log/acc
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/7. shell 练习-备份数据库/" itemprop="url">shell 练习-备份数据库</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/26. shell 练习-统计最常用命令/" itemprop="url">shell 练习-统计最常用命令</a></h1>
         
 
         <div class="post-meta">
@@ -1077,11 +1078,13 @@ access_log  /data1/log/acc
       
         
           
-          设计一个shell脚本来备份数据库，首先在本地服务器上保存一份数据，然后再远程拷贝一份，本地保存一周的数据，远程保存一个月。&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;假定，我们知道mysql root账号的密码，要备份的库为discuz，本地备份目录为/bak/mysql, 远程服务器ip为192.168.123.30，远程提供了一个rsync
-          ...
+          写一个shell脚本来看看你使用最多的命令是哪些，列出你最常用的命令top10。
+思路：我们要用到一个文件就是.bash_history，然后再去sort、uniq，剩下的就不用多说了吧。很简单一个shell。
+1sort /root/.bash_history |uniq -c |sort -nr |head
+          
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/7. shell 练习-备份数据库/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/26. shell 练习-统计最常用命令/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1127,7 +1130,7 @@ access_log  /data1/log/acc
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/6. shell 练习-判断80端口是否开启/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/25. shell 练习-获取文件列表/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1146,7 +1149,7 @@ access_log  /data1/log/acc
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/6. shell 练习-判断80端口是否开启/" itemprop="url">shell 练习-判断80端口是否开启</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/25. shell 练习-获取文件列表/" itemprop="url">shell 练习-获取文件列表</a></h1>
         
 
         <div class="post-meta">
@@ -1195,12 +1198,12 @@ access_log  /data1/log/acc
       
         
           
-          写一个脚本，判断本机的80端口是否开启着，如果开启着什么都不做，如果发现端口不存在，那么重启一下httpd服务，并发邮件通知你自己。脚本写好后，可以每一分钟执行一次，也可以写一个死循环的脚本，30s检测一次。
-123456789101112131415161718#!/bin/bashmail=123@123.comif netstat -lnp|grep ':80'|grep -q 'LISTE
+          有一台服务器作为web应用，有一个目录（/data/web/attachment）不定时地会被用户上传新的文件，但是不知道什么时候会上传。所以，需要我们每5分钟做一次检测是否有新文件生成。
+请写一个shell脚本去完成检测。检测完成后若是有新文件，还需要将新文件的列表输出到一个按年、月、日、时、分为名字的日志里。请不要想的太复杂，核心命令只有一个 find /data/web/attachment
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/6. shell 练习-判断80端口是否开启/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/25. shell 练习-获取文件列表/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1246,7 +1249,7 @@ access_log  /data1/log/acc
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/5. shell 练习-还原 .bak备份文件/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/24. shell 练习-监控磁盘使用率/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1265,7 +1268,7 @@ access_log  /data1/log/acc
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/5. shell 练习-还原 .bak备份文件/" itemprop="url">shell 练习-还原 .bak备份文件</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/24. shell 练习-监控磁盘使用率/" itemprop="url">shell 练习-监控磁盘使用率</a></h1>
         
 
         <div class="post-meta">
@@ -1314,12 +1317,13 @@ access_log  /data1/log/acc
       
         
           
-          在你的/root 目录下有 .bak 后缀的备份文件，请写一脚本批量把这些文件都还原，也就是把.bak的后缀都去掉。
-1234567#! /bin/bashcd /rootfor i in `ls|grep 'bak'`;doa=`echo $i|awk -F'.bak' '&#123;print $0&#125;'`b=`echo $i|awk -F'.bak' '&#123;print $1&
+          写一个shell脚本，检测所有磁盘分区使用率和inode使用率并记录到以当天日期为命名的日志文件里，当发现某个分区容量或者inode使用量大于85%时，发邮件通知你自己。
+思路：就是先df -h 然后过滤出已使用的那一列，然后再想办法过滤出百分比的整数部分，然后和85去比较，同理，inode也是一样的思路。
+123456789101112131415161718192021222324252627
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/5. shell 练习-还原 .bak备份文件/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/24. shell 练习-监控磁盘使用率/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1365,7 +1369,7 @@ access_log  /data1/log/acc
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/4. shell 练习-监控机器存活状态/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/23. shell 练习-统计普通用户/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1384,7 +1388,7 @@ access_log  /data1/log/acc
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/4. shell 练习-监控机器存活状态/" itemprop="url">shell 练习-监控机器存活状态</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/23. shell 练习-统计普通用户/" itemprop="url">shell 练习-统计普通用户</a></h1>
         
 
         <div class="post-meta">
@@ -1433,15 +1437,13 @@ access_log  /data1/log/acc
       
         
           
-          设计一个脚本，监控远程的一台机器(假设ip为123.23.11.21)的存活状态，当发现宕机时发一封邮件给你自己。&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;提示：
-
-你可以使用ping命令   ping -c10 www.baidu.com
-发邮件的命令是  echo “邮件内容” |mail -s “主题” abc@139.com
-脚本可以搞
+          写个shell，看看你的Linux系统中是否有自定义用户（普通用户），若是有，一共有几个？
+假设所有普通用户都是uid大于1000的
+12345678#!/bin/bashn=`awk -F ':' '$3&gt;1000' /etc/passwd|wc -l`if [ $n -gt 0 ]then    echo "There are $n common users."else    echo 
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/4. shell 练习-监控机器存活状态/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/23. shell 练习-统计普通用户/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1482,7 +1484,7 @@ access_log  /data1/log/acc
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/57/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/57/">57</a><span class="page-number current">58</span><a class="page-number" href="/page/59/">59</a><a class="page-number" href="/page/60/">60</a><a class="extend next" rel="next" href="/page/59/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/57/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/57/">57</a><span class="page-number current">58</span><a class="page-number" href="/page/59/">59</a><span class="space">&hellip;</span><a class="page-number" href="/page/62/">62</a><a class="extend next" rel="next" href="/page/59/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1527,7 +1529,7 @@ access_log  /data1/log/acc
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">599</span>
+                <span class="site-state-item-count">618</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1540,7 +1542,7 @@ access_log  /data1/log/acc
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-count">38</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1608,7 +1610,7 @@ access_log  /data1/log/acc
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
+    NexT.Mist
   </a>
 </div>
 
@@ -1687,13 +1689,6 @@ access_log  /data1/log/acc
 
   
   
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
-
-
 
   
     <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>

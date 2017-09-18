@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next pisces use-motion" lang="zh-Hans">
+<html class="theme-next mist use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -110,7 +110,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Pisces',
+    scheme: 'Mist',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
     fancybox: true,
     motion: true,
@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/23. shell 练习-统计普通用户/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/42. shell 练习-抽签脚本/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -306,7 +306,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/23. shell 练习-统计普通用户/" itemprop="url">shell 练习-统计普通用户</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/42. shell 练习-抽签脚本/" itemprop="url">shell 练习-抽签脚本</a></h1>
         
 
         <div class="post-meta">
@@ -355,13 +355,18 @@
       
         
           
-          写个shell，看看你的Linux系统中是否有自定义用户（普通用户），若是有，一共有几个？
-假设所有普通用户都是uid大于1000的
-12345678#!/bin/bashn=`awk -F ':' '$3&gt;1000' /etc/passwd|wc -l`if [ $n -gt 0 ]then    echo "There are $n common users."else    echo 
+          
+写一个脚本执行后，输入名字，产生随机数01-99之间的数字。
+如果相同的名字重复输入，抓到的数字还是第一次抓取的结果，
+前面已经抓到的数字，下次不能在出现相同数字。
+第一个输入名字后，屏幕输出信息，并将名字和数字记录到文件里，程序不能退出
+
+继续等待别的学生输入。
+1234567891011121314151617181920212223242526272829#!/bin/bashwhile 
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/23. shell 练习-统计普通用户/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/42. shell 练习-抽签脚本/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -407,7 +412,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/22. shell 练习-找出活动ip/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/40. shell 练习-下载文件/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -426,7 +431,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/22. shell 练习-找出活动ip/" itemprop="url">shell 练习-找出活动ip</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/40. shell 练习-下载文件/" itemprop="url">shell 练习-下载文件</a></h1>
         
 
         <div class="post-meta">
@@ -475,13 +480,17 @@
       
         
           
-          写一个脚本，实现判断192.168.0.0网络里，当前在线的IP有哪些
-思路： for循环， 0.1 –  0.254  依次去ping，能通说明在线。
-123456789101112#!/bin/baships="192.168.0."for i in `seq 1 254`doping -c 2 $ips$i &gt;/dev/null 2&gt;/dev/nullif [ $? == 0 ]
+          创建一个函数，能接受两个参数：
+
+第一个参数为URL，即可下载的文件；第二个参数为目录，即下载后保存的位置；
+如果用户给的目录不存在，则提示用户是否创建；如果创建就继续执行，否则，函数返回一个51的错误值给调用脚本；
+如果给的目录存在，则下载文件；下载命令执行结束后测试文件下载成功与否；如果成功，则&gt;返回0给调用脚本，否则，返回52给调用脚本；
+
+提示，在函数中返回错误值给调用脚本，使用re
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/22. shell 练习-找出活动ip/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/40. shell 练习-下载文件/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -527,7 +536,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/21. shell 练习-实现一个小型计算器/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/41. shell 练习-猜数字/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -546,7 +555,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/21. shell 练习-实现一个小型计算器/" itemprop="url">shell 练习-实现一个小型计算器</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/41. shell 练习-猜数字/" itemprop="url">shell 练习-猜数字</a></h1>
         
 
         <div class="post-meta">
@@ -595,11 +604,12 @@
       
         
           
-          12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849[root@nfs01 scripts]# cat bc.sh #!/bin/sh# First we should save the number which was inserted by userread -p "P
+          写一个猜数字脚本，当用户输入的数字和预设数字（随机生成一个小于100的数字）一样时，直接退出，否则让用户一直输入，并且提示用户的数字比预设数字大或者小。
+12345678910111213141516171819#!/bin/bashm=`echo $RANDOM`n1=$[$m%100]while :do    read -p "Please input a number: " n    if 
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/21. shell 练习-实现一个小型计算器/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/41. shell 练习-猜数字/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -645,7 +655,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/20. shell 练习-乘法口诀表/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/39. shell 练习-列出子目录/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -664,7 +674,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/20. shell 练习-乘法口诀表/" itemprop="url">shell 练习-乘法口诀表</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/39. shell 练习-列出子目录/" itemprop="url">shell 练习-列出子目录</a></h1>
         
 
         <div class="post-meta">
@@ -713,14 +723,13 @@
       
         
           
-          需要两层循环
-1234567891011#!/bin/bashfor i in `seq 1 9`do    for j in `seq 1 $i`    do        echo -n $i*$j=$((i*j))        echo -ne '\t'    doneechodone
-输出结果
-12345678910[root@localhost ~]# sh 1.sh 1*1=12*1
+          脚本的功能：
+脚本可以带参数也可以不带，参数可以有多个，每个参数必须是一个目录，脚本检查参数个数，若等于0，则列出当前目录本身；否则，显示每个参数包含的子目录。
+123456789101112#!/bin/bashif [ $# == 0 ]then    ls -ld `pwd`else    for i in `seq 1 $#`    do        a=$i        echo "
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/20. shell 练习-乘法口诀表/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/39. shell 练习-列出子目录/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -766,7 +775,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/19. shell 练习-找规律打印数字/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/38. shell 练习-获取ip/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -785,7 +794,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/19. shell 练习-找规律打印数字/" itemprop="url">shell 练习-找规律打印数字</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/38. shell 练习-获取ip/" itemprop="url">shell 练习-获取ip</a></h1>
         
 
         <div class="post-meta">
@@ -834,15 +843,12 @@
       
         
           
-          请详细查看如下几个数字的规律，并使用shell脚本输出后面的十个数字。
-10 31 53 77  105 141 …….
-试题解析：
-我想大多数人都会去比较这些数字的差值：
-10&#160;&#160;31&#160;&#160;53&#160;&#160;77&#160;&#160;105&#160;&#160;141&#160;&#160;21&#160;&#160;&#160;22&#160
+          提示用户输入网卡的名字，然后我们用脚本输出网卡的ip。 看似简单，但是需要考虑多个方面，比如我们输入的不符合网卡名字的规范，怎么应对。名字符合规范，但是根本就没有这个网卡有怎么应对。
+1234567891011121314151617181920212223242526272829303132#!/bin/bashwhile :do     read -p "请输入网卡名: " e     e1=
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/19. shell 练习-找规律打印数字/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/38. shell 练习-获取ip/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -888,7 +894,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/18. shell 练习-解决某个分区快满的问题/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/37. shell 练习-用户交互脚本/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -907,7 +913,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/18. shell 练习-解决某个分区快满的问题/" itemprop="url">shell 练习-解决某个分区快满的问题</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/37. shell 练习-用户交互脚本/" itemprop="url">shell 练习-用户交互脚本</a></h1>
         
 
         <div class="post-meta">
@@ -956,19 +962,12 @@
       
         
           
-          有一天，你发现你所管理的服务器磁盘某个分区马上要满了，那你如何做呢？
-提示：
-
-查看和统计各个分区使用情况，把占用空间大的目录以及文件找出来，看看是不是有一些老的没有用的文件占用了空间，比如有日志，那你可以考虑写一个任务计划每天定点删除一个月之前的；
-
-如果不能删除，那么就要想办法添加磁盘，假如你已经成功添加磁盘，请问，你如何分区，然后 如何解决某个分区快满的问题？
-
-
-1234567891011
+          写一个脚本，执行后，打印一行提示“Please input a number:”，要求用户输入数值，然后打印出该数值，然后再次要求用户输入数值。直到用户输入”end”停止。
+123456789101112131415#!/bin/bashwhile :do        read -p "Please input a number:(end for exit) " n        num=` e
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/18. shell 练习-解决某个分区快满的问题/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/37. shell 练习-用户交互脚本/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1014,7 +1013,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/17. shell 练习-封ip/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/36. shell 练习-脚本传参/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1033,7 +1032,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/17. shell 练习-封ip/" itemprop="url">shell 练习-封ip</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/36. shell 练习-脚本传参/" itemprop="url">shell 练习-脚本传参</a></h1>
         
 
         <div class="post-meta">
@@ -1082,13 +1081,19 @@
       
         
           
-          需求： 根据web服务器上的访问日志，把一些请求量非常高的ip给拒绝掉！ 
-分析： 我们要做的，不仅是要找到哪些ip请求量不合法，并且还要每隔一段时间把之前封掉的ip（若不再继续请求了）给解封。 所以该脚本的关键点在于定一个合适的时间段和阈值。 
-比如， 我们可以每一分钟去查看一下日志，把上一分钟的日志给过滤出来分析，并且只要请求的ip数量超过100次那么就直接封掉。 而解封的时间又规定为每半小时
+          使用传参的方法写个脚本，实现加减乘除的功能。例如：  sh  a.sh  1   2，这样会分别计算加、减、乘、除的结果。
+要求：
+
+脚本需判断提供的两个数字必须为整数
+当做减法或者除法时，需要判断哪个数字大
+减法时需要用大的数字减小的数字
+除法时需要用大的数字除以小的数字，并且结果需要保留两个小数点。
+
+1234567891011121314151617181920212223242526272
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/17. shell 练习-封ip/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/36. shell 练习-脚本传参/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1134,7 +1139,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/16. shell 练习-监控httpd进程/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/35. shell 练习-被3整除/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1153,7 +1158,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/16. shell 练习-监控httpd进程/" itemprop="url">shell 练习-监控httpd进程</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/35. shell 练习-被3整除/" itemprop="url">shell 练习-被3整除</a></h1>
         
 
         <div class="post-meta">
@@ -1202,17 +1207,12 @@
       
         
           
-          在服务器上，写一个监控脚本。
-
-每隔10s去检测一次服务器上的httpd进程数，如果大于等于500的时候，就需要自动重启一下apache服务，并检测启动是否成功？
-
-若没有正常启动还需再一次启动，最大不成功数超过5次则需要理解发邮件通知管理员，并且以后不需要再检测！ 
-
-如果启动成功后，1分钟后再次检测httpd进程数，若正常则重复之前操作（每隔10s检测一次），若还是大于等于500，那放弃重启并
-          ...
+          写一个脚本： 计算100以内所有能被3整除的正整数的和
+12345678#!/bin/bashsum=0for i in &#123;1..100&#125;;do    if [ $[$i%3] -eq 0 ];then    sum=$[$i+$sum]     fidoneecho "sum:$sum"
+          
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/16. shell 练习-监控httpd进程/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/35. shell 练习-被3整除/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1258,7 +1258,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/15. shell 练习-创建用户并设置密码/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/34. shell 练习-带选项的用户脚本/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1277,7 +1277,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/15. shell 练习-创建用户并设置密码/" itemprop="url">shell 练习-创建用户并设置密码</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/34. shell 练习-带选项的用户脚本/" itemprop="url">shell 练习-带选项的用户脚本</a></h1>
         
 
         <div class="post-meta">
@@ -1326,17 +1326,18 @@
       
         
           
-          用shell脚本实现如下需求：添加user_00 - user_09 10个用户，并且给他们设置一个随机密码，密码要求10位包含大小写字母以及数字，注意需要把每个用户的密码记录到一个日志文件里。
-提示： 
+          要求如下：
 
-随机密码使用命令 mkpasswd
-在脚本中给用户设置密码，可以使用echo 然后管道passwd命令
-
-12345678#!/bin/bashfor i in `seq -w 00 09`d
+只支持三个选项 ‘–del’ ‘–add’ –help输入其他选项报错。
+使用‘–add’需要验证用户名是否存在，存在则反馈存在。且不添加。 不存在则创建该用户，切添加与该用户名相同的密码。并且反馈。
+使用‘–del’ 需要验证用户名是否存在，存在则删除用户及其家目录。不存在则反馈该用户不存在。
+–help 选项反馈出使用方法
+支持以，分隔   一次删除多个或者添加多个用户。
+能用e
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/15. shell 练习-创建用户并设置密码/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/34. shell 练习-带选项的用户脚本/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1382,7 +1383,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/14. shell 练习-输入数字执行对应命令/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/08/31/Shell 练习/33. shell 练习-监控mysql服务/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1401,7 +1402,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/31/Shell 练习/14. shell 练习-输入数字执行对应命令/" itemprop="url">shell 练习-输入数字执行对应命令</a></h1>
+                <a class="post-title-link" href="/2017/08/31/Shell 练习/33. shell 练习-监控mysql服务/" itemprop="url">shell 练习-监控mysql服务</a></h1>
         
 
         <div class="post-meta">
@@ -1450,13 +1451,12 @@
       
         
           
-          写一个脚本实现如下功能：  输入一个数字，然后运行对应的一个命令。显示命令如下：*cmd meau**  1—date 2–ls 3–who 4–pwd
-当输入1时，会运行date, 输入2时运行ls, 依此类推。
-1234567891011121314151617181920#!/bin/bashecho "*cmd meau**  1--date  2--ls  3--who  4--pwd"
+          假设，当前MySQL服务的root密码为123456，写脚本检测MySQL服务是否正常（比如，可以正常进入mysql执行show processlist），并检测一下当前的MySQL服务是主还是从，如果是从，请判断它的主从服务是否异常。如果是主，则不需要做什么。
+12345678910111213141516171819202122#!/bin/bashMysql_c="mysql -uroot 
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/31/Shell 练习/14. shell 练习-输入数字执行对应命令/#more" rel="contents">
+            <a class="btn" href="/2017/08/31/Shell 练习/33. shell 练习-监控mysql服务/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1497,7 +1497,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/56/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/56/">56</a><span class="page-number current">57</span><a class="page-number" href="/page/58/">58</a><span class="space">&hellip;</span><a class="page-number" href="/page/60/">60</a><a class="extend next" rel="next" href="/page/58/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/56/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/56/">56</a><span class="page-number current">57</span><a class="page-number" href="/page/58/">58</a><span class="space">&hellip;</span><a class="page-number" href="/page/62/">62</a><a class="extend next" rel="next" href="/page/58/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1542,7 +1542,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">599</span>
+                <span class="site-state-item-count">618</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1555,7 +1555,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-count">38</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1623,7 +1623,7 @@
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
+    NexT.Mist
   </a>
 </div>
 
@@ -1702,13 +1702,6 @@
 
   
   
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
-
-
 
   
     <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>

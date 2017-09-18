@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next pisces use-motion" lang="zh-Hans">
+<html class="theme-next mist use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -110,7 +110,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Pisces',
+    scheme: 'Mist',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
     fancybox: true,
     motion: true,
@@ -287,7 +287,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Docker/1. Docker/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/HA集群/3. heartbeat和keepalived的区别/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -306,7 +306,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Docker/1. Docker/" itemprop="url">Docker</a></h1>
+                <a class="post-title-link" href="/2017/09/03/HA集群/3. heartbeat和keepalived的区别/" itemprop="url">heartbeat和keepalived的区别</a></h1>
         
 
         <div class="post-meta">
@@ -318,7 +318,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:02:06+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:04:46+08:00">
                 2017-09-03
               </time>
             
@@ -355,13 +355,11 @@
       
         
           
-          1.Docker简介&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;容器虚拟化，比传统的虚拟化轻量
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;2013年出现，发展非常迅猛
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redhat在6.5版本开始支
+          1.Keepalived使用更简单&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从安装、配置、使用、维护等角度上对比，Keepalived都比Heartbeat要简单得多，尤其是Heartbeat 2.1.4后拆分成3个子项目，安装、配置、使用都比较复杂，尤其是出问题的时候，都不知道具体是哪个子系统出问题了；而Keepalived只有1个安装文件、
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Docker/1. Docker/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/HA集群/3. heartbeat和keepalived的区别/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -407,7 +405,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Hadoop/7. 【Hadoop】HDFS的运行原理/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/HA集群/2. heartbeat 配置文件详解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -426,7 +424,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Hadoop/7. 【Hadoop】HDFS的运行原理/" itemprop="url">【Hadoop】HDFS的运行原理</a></h1>
+                <a class="post-title-link" href="/2017/09/03/HA集群/2. heartbeat 配置文件详解/" itemprop="url">heartbeat 部署过程</a></h1>
         
 
         <div class="post-meta">
@@ -438,7 +436,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:02:06+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:04:46+08:00">
                 2017-09-03
               </time>
             
@@ -475,13 +473,12 @@
       
         
           
-          简介&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;HDFS（Hadoop Distributed File System ）Hadoop分布式文件系统。是根据google发表的论文翻版的。论文为GFS（Google File System）Google 文件系统（中文，英文）。
-HDFS有很多特点：
-保存多个副本，且提供容错机制，副本丢失或宕机自动
+          1 配置ha.cf&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第一个是ha.cf该文件位于在安装后创建的/etc/ha.d目录中。该文件中包括为Heartbeat使用何种介质通路和如何配置他们的信息。在源代码目录中的ha.cf文件包含了您可以使用的全部选项，详述如下：
+serial /dev/ttyS0&#160;&#160;&#160;&#16
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Hadoop/7. 【Hadoop】HDFS的运行原理/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/HA集群/2. heartbeat 配置文件详解/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -527,7 +524,7 @@ HDFS有很多特点：
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Hadoop/6. HDFS原理分析—— 基本概念/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/HA集群/1. HA 集群配置/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -546,7 +543,7 @@ HDFS有很多特点：
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Hadoop/6. HDFS原理分析—— 基本概念/" itemprop="url">HDFS原理分析—— 基本概念</a></h1>
+                <a class="post-title-link" href="/2017/09/03/HA集群/1. HA 集群配置/" itemprop="url">HA 集群配置</a></h1>
         
 
         <div class="post-meta">
@@ -558,7 +555,7 @@ HDFS有很多特点：
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:02:06+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:04:46+08:00">
                 2017-09-03
               </time>
             
@@ -595,12 +592,11 @@ HDFS有很多特点：
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;HDFS是Hadoop Distribute File System 的简称，也就是Hadoop的一个分布式文件系统。
-一、HDFS的主要设计理念1、存储超大文件&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里的“超大文件”是指几百MB、GB甚至TB级
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;HA 即 （high available）高可用，又被叫做双机热备，用于关键性业务。 简单理解就是，有两台机器A和B，正常是A提供服务，B待命闲置，当A宕机或服务宕掉，会切换至B机器继续提供服务。常用实现高可用的开源软件有heartbeat和keepalived，其中keepalived有负载均衡的功能
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Hadoop/6. HDFS原理分析—— 基本概念/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/HA集群/1. HA 集群配置/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -646,7 +642,7 @@ HDFS有很多特点：
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Hadoop/5. HDFS 原理、架构与特性介绍/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Haproxy/5. haproxy 基础配置文件详解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -665,7 +661,7 @@ HDFS有很多特点：
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Hadoop/5. HDFS 原理、架构与特性介绍/" itemprop="url">HDFS 原理、架构与特性介绍</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Haproxy/5. haproxy 基础配置文件详解/" itemprop="url">haproxy 基础配置文件详解</a></h1>
         
 
         <div class="post-meta">
@@ -677,7 +673,7 @@ HDFS有很多特点：
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:02:06+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:04:46+08:00">
                 2017-09-03
               </time>
             
@@ -714,19 +710,12 @@ HDFS有很多特点：
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;本文主要讲述 HDFS原理-架构、副本机制、HDFS负载均衡、机架感知、健壮性、文件删除恢复机制
-1.当前HDFS架构详尽分析
-HDFS架构
-NameNode 
-DataNode 
-Sencondary NameNode 
-
-数据存储细节
-NameNode 目录结构&#160;&#160;&#160;&
+          
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;HAproxy可以实现基于TCP（四层 例如:SSH,SMTP,MYSQL）和HTTP（七层 例如:web服务器）应用的代理软件，同时也可以作为负载均衡器使用，并且是开源完全免费的。HAproxy完全可以支持数以万计的并发链接，它的工作模式可以将其简单而安全地整合到当前的服务架构中，同时可以保护你的W
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Hadoop/5. HDFS 原理、架构与特性介绍/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Haproxy/5. haproxy 基础配置文件详解/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -772,7 +761,7 @@ NameNode 目录结构&#160;&#160;&#160;&
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Hadoop/4. Avro简介/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Haproxy/6. 源码编译安装 haproxy/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -791,7 +780,7 @@ NameNode 目录结构&#160;&#160;&#160;&
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Hadoop/4. Avro简介/" itemprop="url">Avro简介</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Haproxy/6. 源码编译安装 haproxy/" itemprop="url">haproxy 源码编译安装</a></h1>
         
 
         <div class="post-meta">
@@ -803,7 +792,7 @@ NameNode 目录结构&#160;&#160;&#160;&
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:02:06+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:04:46+08:00">
                 2017-09-03
               </time>
             
@@ -840,11 +829,11 @@ NameNode 目录结构&#160;&#160;&#160;&
       
         
           
-          一、引言1、 简介&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Avro是Hadoop中的一个子项目，也是Apache中一个独立的项目，Avro是一个基于二进制数据传输高性能的中间件。在Hadoop的其他项目中例如HBase(Ref)和Hive(Ref)的Client端与服务端的数据传输也采用了这个工具。Avro是一个数据序列化的系统。Avro 可
+          下载1234567[root@localhost ~]# cd /usr/local/src[root@localhost src]# wget http://www.haproxy.org/download/1.4/src/haproxy-1.4.25.tar.gz[root@localhost src]# yum -y install cmake  gcc gcc-c++  autoconf 
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Hadoop/4. Avro简介/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Haproxy/6. 源码编译安装 haproxy/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -890,7 +879,7 @@ NameNode 目录结构&#160;&#160;&#160;&
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Hadoop/3. Ambari——大数据平台的搭建利器/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Haproxy/4. haproxy 常用的8种算法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -909,7 +898,7 @@ NameNode 目录结构&#160;&#160;&#160;&
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Hadoop/3. Ambari——大数据平台的搭建利器/" itemprop="url">Ambari——大数据平台的搭建利器</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Haproxy/4. haproxy 常用的8种算法/" itemprop="url">haproxy 常用的8种算法</a></h1>
         
 
         <div class="post-meta">
@@ -921,7 +910,7 @@ NameNode 目录结构&#160;&#160;&#160;&
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:02:06+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:04:46+08:00">
                 2017-09-03
               </time>
             
@@ -958,11 +947,16 @@ NameNode 目录结构&#160;&#160;&#160;&
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;虽然大数据越来越流行，但其学习的门槛却一直阻碍着很多的分布式应用初学者或者大数据的业务应用开发者。多个产品之间的不兼容问题，快速集成和维护也显得比较困难。不管是 Hadoop V1 或者 V2 的安装，又或者 Spark/YARN 等的集成，都不是几行简单的命令可以完成的，而是需要手工修改很多的集群配置
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;HAProxy的负载均衡算法现在也越来越多了，具体有如下8种：
+
+roundrobin，表示简单的轮询，这个不多说，这个是负载均衡基本都具备的；
+static-rr，表示根据权重，建议关注；
+leastconn，表示最少连接者先处理，建议关注；
+source，表示根据请求源IP，这个跟Nginx的IP_
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Hadoop/3. Ambari——大数据平台的搭建利器/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Haproxy/4. haproxy 常用的8种算法/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1008,7 +1002,7 @@ NameNode 目录结构&#160;&#160;&#160;&
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Hadoop/1. Hadoop 大数据/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Haproxy/3. hapronxy 的特性/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1027,7 +1021,7 @@ NameNode 目录结构&#160;&#160;&#160;&
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Hadoop/1. Hadoop 大数据/" itemprop="url">Hadoop 大数据</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Haproxy/3. hapronxy 的特性/" itemprop="url">haproxy 的特性</a></h1>
         
 
         <div class="post-meta">
@@ -1039,7 +1033,7 @@ NameNode 目录结构&#160;&#160;&#160;&
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:02:06+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:04:46+08:00">
                 2017-09-03
               </time>
             
@@ -1076,12 +1070,12 @@ NameNode 目录结构&#160;&#160;&#160;&
       
         
           
-          1.大数据介绍&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;大数据指的是所涉及的数据量规模巨大到无法通过人工，在合理时间内达到截取、管理、处理、并整理成为人类所能解读的形式的信息。
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;大数据，可帮助我们察觉商业趋势、判定研究质量、避免疾病扩散、打击犯罪或测
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;负载均衡软件中，硬件设备有：F5，Big-IP等
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;基于软件的：HAProxy, LVS, Nginx等，在软件发负载均衡中，又分为两种实现方式，分贝时基于操作系统的负载均衡如：lvs, 和基于第三方应用实现的
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Hadoop/1. Hadoop 大数据/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Haproxy/3. hapronxy 的特性/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1127,7 +1121,7 @@ NameNode 目录结构&#160;&#160;&#160;&
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Hadoop/2. 2分钟读懂Hadoop和Spark的异同/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Haproxy/2. LVS、Nginx、HaProxy 优缺点/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1146,7 +1140,7 @@ NameNode 目录结构&#160;&#160;&#160;&
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Hadoop/2. 2分钟读懂Hadoop和Spark的异同/" itemprop="url">2分钟读懂Hadoop和Spark的异同</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Haproxy/2. LVS、Nginx、HaProxy 优缺点/" itemprop="url">LVS、Nginx、HaProxy 优缺点</a></h1>
         
 
         <div class="post-meta">
@@ -1158,7 +1152,7 @@ NameNode 目录结构&#160;&#160;&#160;&
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:02:06+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:04:45+08:00">
                 2017-09-03
               </time>
             
@@ -1195,13 +1189,12 @@ NameNode 目录结构&#160;&#160;&#160;&
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;谈到大数据，相信大家对Hadoop和Apache Spark这两个名字并不陌生。但我们往往对它们的理解只是提留在字面上，并没有对它们进行深入的思考，下面不妨跟我一块看下它们究竟有什么异同。
-
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解决问题的层面不
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;搭建负载均衡高可用环境相对简单，主要是要理解其中原理。此文描述了三种负载均衡器的优缺点，以便在实际的生产应用中，按需求取舍。
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;目前，在线上环境中应用较多的负载均衡器硬件有F5 BIG-IP,软件有LVS，Ng
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Hadoop/2. 2分钟读懂Hadoop和Spark的异同/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Haproxy/2. LVS、Nginx、HaProxy 优缺点/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1247,7 +1240,7 @@ NameNode 目录结构&#160;&#160;&#160;&
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Cacti/5. cacti监控找到网卡的方法/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Haproxy/1. HAProxy 配置文件结构/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1266,7 +1259,7 @@ NameNode 目录结构&#160;&#160;&#160;&
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Cacti/5. cacti监控找到网卡的方法/" itemprop="url">cacti 监控找到网卡的方法</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Haproxy/1. HAProxy 配置文件结构/" itemprop="url">haproxy 配置文件结构</a></h1>
         
 
         <div class="post-meta">
@@ -1278,7 +1271,7 @@ NameNode 目录结构&#160;&#160;&#160;&
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:00:30+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:04:45+08:00">
                 2017-09-03
               </time>
             
@@ -1315,13 +1308,13 @@ NameNode 目录结构&#160;&#160;&#160;&
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;只需要在客户机（要监控的机器）修改配置文件：
-1234[root@localhost ~]# vim /etc/snmp/snmpd.conf view    systemview    included   .1.3.6.1.2.1.1
-&#160;&#160;&#160;&#160;&#160;&#
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;HAProxy配置文件主要由5个部分组成，但是有些部分并不是必需的，可以根据需要选择相应的部分进行配置：
+1.global部分&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;设定全局参数变量，属于进程级别的配置，通常和操作系统配置有关
+2.defaults
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Cacti/5. cacti监控找到网卡的方法/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Haproxy/1. HAProxy 配置文件结构/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1367,7 +1360,7 @@ NameNode 目录结构&#160;&#160;&#160;&
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Cacti/4. cacti 有图无数据参数设定/">
+    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/Memcached/4. Memcached数据被踢(evictions0)现象分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="失落的乐章">
@@ -1386,7 +1379,7 @@ NameNode 目录结构&#160;&#160;&#160;&
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/03/Cacti/4. cacti 有图无数据参数设定/" itemprop="url">cacti 有图无数据参数设定</a></h1>
+                <a class="post-title-link" href="/2017/09/03/Memcached/4. Memcached数据被踢(evictions0)现象分析/" itemprop="url">Memcached数据被踢(evictions0)现象分析</a></h1>
         
 
         <div class="post-meta">
@@ -1398,7 +1391,7 @@ NameNode 目录结构&#160;&#160;&#160;&
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:00:30+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:04:45+08:00">
                 2017-09-03
               </time>
             
@@ -1435,12 +1428,13 @@ NameNode 目录结构&#160;&#160;&#160;&
       
         
           
-          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一切参数设定在客户端。（/etc/snmp/snmpd.conf）
-1234567891011#       sec.name  source          communitycom2sec notConfigUser  192.168.1.107(cacti主机的IP)       public#
+          &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;很多同学可能熟知Memcached的LRU淘汰算法，它是在slab内部进行的，如果所有空间都被slabs分配，即使另外一个slab里面有空位，仍然存在踢数据可能。你可以把slab理解为教室，如果你的教室满了，即使别的教室有空位你的教室也只能踢人才能进人。
+
+&#160;&#160;&#160;&#160
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/03/Cacti/4. cacti 有图无数据参数设定/#more" rel="contents">
+            <a class="btn" href="/2017/09/03/Memcached/4. Memcached数据被踢(evictions0)现象分析/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1481,7 +1475,7 @@ NameNode 目录结构&#160;&#160;&#160;&
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/29/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/29/">29</a><span class="page-number current">30</span><a class="page-number" href="/page/31/">31</a><span class="space">&hellip;</span><a class="page-number" href="/page/60/">60</a><a class="extend next" rel="next" href="/page/31/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/29/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/29/">29</a><span class="page-number current">30</span><a class="page-number" href="/page/31/">31</a><span class="space">&hellip;</span><a class="page-number" href="/page/62/">62</a><a class="extend next" rel="next" href="/page/31/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1526,7 +1520,7 @@ NameNode 目录结构&#160;&#160;&#160;&
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">599</span>
+                <span class="site-state-item-count">618</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1539,7 +1533,7 @@ NameNode 目录结构&#160;&#160;&#160;&
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-count">38</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1607,7 +1601,7 @@ NameNode 目录结构&#160;&#160;&#160;&
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
+    NexT.Mist
   </a>
 </div>
 
@@ -1686,13 +1680,6 @@ NameNode 目录结构&#160;&#160;&#160;&
 
   
   
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
-
-
 
   
     <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
