@@ -1,99 +1,15 @@
-<!doctype html>
-
-
-
-  
-
-
-<html class="theme-next muse use-motion" lang="zh-Hans">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-
-
-
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  <meta charset="utf-8">
   
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <title>使用mysql-proxy 快速实现mysql 集群读写分离 | 失落的乐章</title>
 
-
-
-
-  
-  
-  
+  <!-- keywords -->
   
 
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="MySQL," />
-
-
-
-
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
-
-
-
-
-
-
-<meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;目前较为常见的mysql读写分离分为两种：   基于程序代码内部实现：在代码中对select操作分发到从库；其它操作由主库执行；这类方法也是目前生产环境应用最广泛，知名的如DISCUZ X2。优点是性能较好，因为在程序代码中实现，不需要增加额外的设备作为硬件开支。缺点是需要开发人员来实现，运维人员无从下">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;目前较为常见的mysql读写分离分为两种：   基于程序代码内部实现：在代码中对select操作分发到从库；其它操作由主库执行；这类方法也是目前生产环境应用最广泛，知名的如DISCUZ X2。优点是性能较好，因为在程序代码中实现，不需要增加额外的设备作为硬件开支。缺点是需要开发人员来实现，运维人员无从下">
 <meta name="keywords" content="MySQL">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用mysql-proxy 快速实现mysql 集群读写分离">
@@ -107,251 +23,189 @@
 <meta name="twitter:title" content="使用mysql-proxy 快速实现mysql 集群读写分离">
 <meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;目前较为常见的mysql读写分离分为两种：   基于程序代码内部实现：在代码中对select操作分发到从库；其它操作由主库执行；这类方法也是目前生产环境应用最广泛，知名的如DISCUZ X2。优点是性能较好，因为在程序代码中实现，不需要增加额外的设备作为硬件开支。缺点是需要开发人员来实现，运维人员无从下">
 <meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/%E4%BD%BF%E7%94%A8mysql-proxy%20%E5%BF%AB%E9%80%9F%E5%AE%9E%E7%8E%B0mysql%20%E9%9B%86%E7%BE%A4%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB/01.jpeg?raw=true">
-
-
-
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Muse',
-    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-
-  <link rel="canonical" href="https://hcldirgit.github.io/2017/09/03/MySQL/36. 使用mysql-proxy 快速实现mysql 集群读写分离/"/>
-
-
-
-
-
-  <title>使用mysql-proxy 快速实现mysql 集群读写分离 | 失落的乐章</title>
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
-
   
-
-
-
-
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://hcldirgit.github.io/images/0.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-  ga('create', '85*****1', 'auto');
+
+  ga('create', 'UA-85415703-1', 'auto');
   ga('send', 'pageview');
+
 </script>
+<!-- End Google Analytics -->
 
 
-  <script type="text/javascript">
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-
-
-
-
-
-
-
-
-
-
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
 
   
-  
-    
-  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://hcldirgit.github.io/images/0.png" class="js-avatar">
+			
+		</a>
 
-  <div class="container sidebar-position-left page-post-detail ">
-    <div class="headband"></div>
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
 
-    <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">失落的乐章</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
-    </div>
-      
-        <p class="site-subtitle">技术面前，永远都是学生。</p>
-      
-  </div>
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
 
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
-  </div>
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.42px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.33px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.67px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.33px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.25px;">FTP</a> <a href="/tags/Git/" style="font-size: 10.83px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.67px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.5px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.42px;">Jenkins</a> <a href="/tags/LAMP/" style="font-size: 19.58px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 17.08px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.67px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.17px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.17px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.25px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.42px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.5px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.67px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 17.92px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.25px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.58px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.25px;">Puppet</a> <a href="/tags/Python/" style="font-size: 14.58px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.25px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.08px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.58px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.75px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 15.83px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.5px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 12.92px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15px;">shell</a> <a href="/tags/shell练习/" style="font-size: 18.75px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 12.92px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
 </div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
-            
-            分类
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            标签
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-message">
-          <a href="/message" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
-            
-            留言
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://hcldirgit.github.io/images/0.png" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
 </nav>
-
-
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
+      <div class="body-wrap"><article id="post-MySQL/36. 使用mysql-proxy 快速实现mysql 集群读写分离" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/MySQL/36. 使用mysql-proxy 快速实现mysql 集群读写分离/" class="article-date">
+  	<time datetime="2017-09-02T18:06:42.794Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
     
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/MySQL/36. 使用mysql-proxy 快速实现mysql 集群读写分离/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="失落的乐章">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/0.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="失落的乐章">
-    </span>
-
     
-      <header class="post-header">
-
+      <header class="article-header">
         
-        
-          <h1 class="post-title" itemprop="name headline">使用mysql-proxy 快速实现mysql 集群读写分离</h1>
-        
+  
+    <h1 class="article-title" itemprop="name">
+      使用mysql-proxy 快速实现mysql 集群读写分离
+      
+    </h1>
+  
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:06:42+08:00">
-                2017-09-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
       </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
     
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
+    <div class="article-entry" itemprop="articleBody">
       
         <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;目前较为常见的mysql读写分离分为两种： </p>
 <ol>
@@ -395,369 +249,85 @@
 <h2 id="附-mysql-proxy-LUA-读写分离脚本代码"><a href="#附-mysql-proxy-LUA-读写分离脚本代码" class="headerlink" title="附: mysql-proxy LUA 读写分离脚本代码:"></a>附: mysql-proxy LUA 读写分离脚本代码:</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div><div class="line">248</div><div class="line">249</div><div class="line">250</div><div class="line">251</div><div class="line">252</div><div class="line">253</div><div class="line">254</div><div class="line">255</div><div class="line">256</div><div class="line">257</div><div class="line">258</div><div class="line">259</div><div class="line">260</div><div class="line">261</div><div class="line">262</div><div class="line">263</div><div class="line">264</div><div class="line">265</div><div class="line">266</div><div class="line">267</div><div class="line">268</div><div class="line">269</div><div class="line">270</div><div class="line">271</div><div class="line">272</div><div class="line">273</div><div class="line">274</div><div class="line">275</div><div class="line">276</div><div class="line">277</div><div class="line">278</div><div class="line">279</div><div class="line">280</div><div class="line">281</div><div class="line">282</div><div class="line">283</div><div class="line">284</div><div class="line">285</div><div class="line">286</div><div class="line">287</div><div class="line">288</div><div class="line">289</div><div class="line">290</div><div class="line">291</div><div class="line">292</div><div class="line">293</div><div class="line">294</div><div class="line">295</div><div class="line">296</div><div class="line">297</div><div class="line">298</div><div class="line">299</div><div class="line">300</div><div class="line">301</div><div class="line">302</div><div class="line">303</div><div class="line">304</div><div class="line">305</div><div class="line">306</div><div class="line">307</div><div class="line">308</div><div class="line">309</div><div class="line">310</div><div class="line">311</div></pre></td><td class="code"><pre><div class="line">--[[</div><div class="line">--</div><div class="line">-- author : KDr2 </div><div class="line">-- version 0.01</div><div class="line">-- SYNOPSIS:</div><div class="line">---  </div><div class="line">1.维护了一个连接池</div><div class="line">---  2.读写分离，简单的将select开头的语句放到slave上执行</div><div class="line">---  </div><div class="line">3.事务支持，所有事务放到master上执行，事务中不更改连接</div><div class="line">---  4.简单日志</div><div class="line">--</div><div class="line">--]]</div><div class="line"></div><div class="line">--- config vars</div><div class="line"><span class="built_in">local</span> min_idle_connections = 4</div><div class="line"><span class="built_in">local</span> </div><div class="line">max_idle_connections = 8</div><div class="line"><span class="built_in">local</span> log_level=1</div><div class="line"><span class="built_in">local</span> encoding=<span class="string">"utf8"</span></div><div class="line">--- </div><div class="line">end of config</div><div class="line"></div><div class="line"></div><div class="line">事务标识，在事务内不归还连接</div><div class="line"></div><div class="line"><span class="built_in">local</span> </div><div class="line">transaction_flags=&#123;&#125;</div><div class="line">setmetatable(transaction_flags,&#123;__index=<span class="keyword">function</span>() </div><div class="line"><span class="built_in">return</span> 0 end&#125;)</div><div class="line"></div><div class="line">-- <span class="built_in">log</span> system</div><div class="line"><span class="built_in">log</span>=&#123;</div><div class="line">   level=&#123;debug=1,info=2,warn=3,error=4&#125;,</div><div class="line">   </div><div class="line">funcs=&#123;<span class="string">"debug"</span>,<span class="string">"info"</span>,<span class="string">"warn"</span>,<span class="string">"error"</span>&#125;,</div><div class="line">&#125;</div><div class="line"><span class="keyword">function</span> log.log(level,m)</div><div class="line">   </div><div class="line"><span class="keyword">if</span> level &gt;= log_level <span class="keyword">then</span></div><div class="line">      <span class="built_in">local</span> msg=<span class="string">"["</span> .. os.date(<span class="string">"%Y-%m-%d %X"</span>) </div><div class="line">..<span class="string">"] "</span>.. log.funcs[level] .. <span class="string">": "</span> .. tostring(m)</div><div class="line">      <span class="built_in">print</span>(msg) -- TODO  </div><div class="line">write msg into a <span class="built_in">log</span> file.</div><div class="line">   end</div><div class="line">end</div><div class="line"><span class="keyword">for</span> i,v <span class="keyword">in</span> ipairs(log.funcs) </div><div class="line"><span class="keyword">do</span></div><div class="line">   <span class="built_in">log</span>[v]=<span class="keyword">function</span>(m) log.log(log.level[v],m) end</div><div class="line">end</div><div class="line"></div><div class="line">-- connect to server</div><div class="line"><span class="keyword">function</span> connect_server() </div><div class="line">   log.info(<span class="string">" starting </span></div><div class="line"><span class="string">connect_server ... "</span>)</div><div class="line">   <span class="built_in">local</span> least_idle_conns_ndx = 0</div><div class="line">   <span class="built_in">local</span> </div><div class="line">least_idle_conns = 0</div><div class="line">   </div><div class="line">   <span class="keyword">for</span> i = 1, <span class="comment">#proxy.backends do</span></div><div class="line">      <span class="built_in">local</span> s </div><div class="line">= proxy.backends[i]</div><div class="line">      <span class="built_in">local</span> pool = s.pool </div><div class="line">      <span class="built_in">local</span> cur_idle = </div><div class="line">pool.users[<span class="string">""</span>].cur_idle_connections</div><div class="line"></div><div class="line">      log.debug(<span class="string">"["</span>.. s.address ..<span class="string">"].connected_clients = "</span> .. </div><div class="line">s.connected_clients)</div><div class="line">      log.debug(<span class="string">"["</span>.. s.address ..<span class="string">"].idling_connections </span></div><div class="line"><span class="string">= "</span> .. cur_idle)</div><div class="line">      log.debug(<span class="string">"["</span>.. s.address ..<span class="string">"].type = "</span> .. </div><div class="line">s.type)</div><div class="line">      log.debug(<span class="string">"["</span>.. s.address ..<span class="string">"].state = "</span> .. s.state)</div><div class="line"></div><div class="line">      <span class="keyword">if</span> s.state ~= proxy.BACKEND_STATE_DOWN <span class="keyword">then</span></div><div class="line">         -- try to </div><div class="line">connect to each backend once at least</div><div class="line">         <span class="keyword">if</span> cur_idle == 0 </div><div class="line"><span class="keyword">then</span></div><div class="line">            proxy.connection.backend_ndx = i</div><div class="line">            </div><div class="line">log.info(<span class="string">"server ["</span>.. proxy.backends[i].address ..<span class="string">"] open new </span></div><div class="line"><span class="string">connection"</span>)</div><div class="line">            <span class="built_in">return</span></div><div class="line">         end</div><div class="line">         -- try to open at </div><div class="line">least min_idle_connections</div><div class="line">         <span class="keyword">if</span> least_idle_conns_ndx == 0 </div><div class="line">or</div><div class="line">            ( cur_idle &lt; min_idle_connections and </div><div class="line">              </div><div class="line">cur_idle &lt; least_idle_conns ) <span class="keyword">then</span></div><div class="line">            least_idle_conns_ndx = </div><div class="line">i</div><div class="line">            least_idle_conns = cur_idle</div><div class="line">         end</div><div class="line">      end</div><div class="line">   </div><div class="line">end</div><div class="line"></div><div class="line">   <span class="keyword">if</span> least_idle_conns_ndx &gt; 0 <span class="keyword">then</span></div><div class="line">      proxy.connection.backend_ndx </div><div class="line">= least_idle_conns_ndx</div><div class="line">   end</div><div class="line">   </div><div class="line">   <span class="keyword">if</span> proxy.connection.backend_ndx </div><div class="line">&gt; 0 <span class="keyword">then</span> </div><div class="line">      <span class="built_in">local</span> s = </div><div class="line">proxy.backends[proxy.connection.backend_ndx]</div><div class="line">      <span class="built_in">local</span> pool = s.pool </div><div class="line"></div><div class="line">      <span class="built_in">local</span> cur_idle = pool.users[<span class="string">""</span>].cur_idle_connections</div><div class="line"></div><div class="line">      <span class="keyword">if</span> cur_idle &gt;= min_idle_connections <span class="keyword">then</span></div><div class="line">         -- we have 4 </div><div class="line">idling connections <span class="keyword">in</span> the pool, that<span class="string">'s good enough</span></div><div class="line"><span class="string">         log.debug("using </span></div><div class="line"><span class="string">pooled connection from: " .. proxy.connection.backend_ndx)</span></div><div class="line"><span class="string">         return </span></div><div class="line"><span class="string">proxy.PROXY_IGNORE_RESULT</span></div><div class="line"><span class="string">      end</span></div><div class="line"><span class="string">   end</span></div><div class="line"><span class="string">   -- open a new connection </span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">   log.info("opening new connection on: " .. </span></div><div class="line"><span class="string">proxy.backends[proxy.connection.backend_ndx].address)</span></div><div class="line"><span class="string">end</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">---</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">-- auth.packet is the packet</span></div><div class="line"><span class="string">function read_auth_result( auth )</span></div><div class="line"><span class="string">   if </span></div><div class="line"><span class="string">auth.packet:byte() == proxy.MYSQLD_PACKET_OK then</span></div><div class="line"><span class="string">      -- 连接正常</span></div><div class="line"><span class="string">      </span></div><div class="line"><span class="string">proxy.connection.backend_ndx = 0</span></div><div class="line"><span class="string">   elseif auth.packet:byte() == </span></div><div class="line"><span class="string">proxy.MYSQLD_PACKET_EOF then</span></div><div class="line"><span class="string">      -- we received either a </span></div><div class="line"><span class="string">      -- * </span></div><div class="line"><span class="string">MYSQLD_PACKET_ERR and the auth failed or</span></div><div class="line"><span class="string">      -- * MYSQLD_PACKET_EOF which </span></div><div class="line"><span class="string">means a OLD PASSWORD (4.0) was sent</span></div><div class="line"><span class="string">      log.error("(read_auth_result) ... </span></div><div class="line"><span class="string">not ok yet");</span></div><div class="line"><span class="string">   elseif auth.packet:byte() == proxy.MYSQLD_PACKET_ERR </span></div><div class="line"><span class="string">then</span></div><div class="line"><span class="string">      log.error("auth failed!")</span></div><div class="line"><span class="string">   end</span></div><div class="line"><span class="string">end</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">--- </span></div><div class="line"><span class="string">-- read/write splitting</span></div><div class="line"><span class="string">function read_query( packet ) </span></div><div class="line"><span class="string">   </span></div><div class="line"><span class="string">log.debug("[read_query]")</span></div><div class="line"><span class="string">   log.debug("authed backend = " .. </span></div><div class="line"><span class="string">proxy.connection.backend_ndx)</span></div><div class="line"><span class="string">   log.debug("used db = " .. </span></div><div class="line"><span class="string">proxy.connection.client.default_db)</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">   if packet:byte() == proxy.COM_QUIT then</span></div><div class="line"><span class="string">      proxy.response = </span></div><div class="line"><span class="string">&#123;</span></div><div class="line"><span class="string">         type = proxy.MYSQLD_PACKET_OK,</span></div><div class="line"><span class="string">      &#125;</span></div><div class="line"><span class="string">      return </span></div><div class="line"><span class="string">proxy.PROXY_SEND_RESULT</span></div><div class="line"><span class="string">   end</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">   if proxy.connection.backend_ndx == 0 then</span></div><div class="line"><span class="string">      local </span></div><div class="line"><span class="string">is_read=(string.upper(packet:sub(2))):match("^SELECT")</span></div><div class="line"><span class="string">      local </span></div><div class="line"><span class="string">target_type=proxy.BACKEND_TYPE_RW</span></div><div class="line"><span class="string">      if is_read then </span></div><div class="line"><span class="string">target_type=proxy.BACKEND_TYPE_RO end</span></div><div class="line"><span class="string">      for i = 1, #proxy.backends </span></div><div class="line"><span class="string">do</span></div><div class="line"><span class="string">         local s = proxy.backends[i]</span></div><div class="line"><span class="string">         local pool = s.pool </span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">         local cur_idle = </span></div><div class="line"><span class="string">pool.users[proxy.connection.client.username].cur_idle_connections</span></div><div class="line"><span class="string">         </span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">         if cur_idle &gt; 0 and </span></div><div class="line"><span class="string">            s.state ~= </span></div><div class="line"><span class="string">proxy.BACKEND_STATE_DOWN and </span></div><div class="line"><span class="string">            s.type == target_type </span></div><div class="line"><span class="string">then</span></div><div class="line"><span class="string">            proxy.connection.backend_ndx = i</span></div><div class="line"><span class="string">            </span></div><div class="line"><span class="string">break</span></div><div class="line"><span class="string">         end</span></div><div class="line"><span class="string">      end</span></div><div class="line"><span class="string">   end</span></div><div class="line"><span class="string">   -- sync the client-side </span></div><div class="line"><span class="string">default_db with the server-side default_db</span></div><div class="line"><span class="string">   if proxy.connection.server and </span></div><div class="line"><span class="string">proxy.connection.client.default_db ~= proxy.connection.server.default_db </span></div><div class="line"><span class="string">then</span></div><div class="line"><span class="string">      local server_db=proxy.connection.server.default_db</span></div><div class="line"><span class="string">      local </span></div><div class="line"><span class="string">client_db=proxy.connection.client.default_db</span></div><div class="line"><span class="string">      local default_db= </span></div><div class="line"><span class="string">(#client_db &gt; 0) and client_db or server_db</span></div><div class="line"><span class="string">      if #default_db &gt; 0 </span></div><div class="line"><span class="string">then</span></div><div class="line"><span class="string">         proxy.queries:append(2, string.char(proxy.COM_INIT_DB) .. </span></div><div class="line"><span class="string">default_db)</span></div><div class="line"><span class="string">         proxy.queries:append(2, string.char(proxy.COM_QUERY) .. </span></div><div class="line"><span class="string">"set names '</span><span class="string">" .. encoding .."</span><span class="string">'")</span></div><div class="line"><span class="string">         log.info("change database to " .. </span></div><div class="line"><span class="string">default_db);</span></div><div class="line"><span class="string">      end</span></div><div class="line"><span class="string">   end</span></div><div class="line"><span class="string">   if proxy.connection.backend_ndx &gt; 0 </span></div><div class="line"><span class="string">then</span></div><div class="line"><span class="string">      log.debug("Query[" .. packet:sub(2) .. "] Target is [" .. </span></div><div class="line"><span class="string">proxy.backends[proxy.connection.backend_ndx].address .."]")</span></div><div class="line"><span class="string">   end</span></div><div class="line"><span class="string">   </span></div><div class="line"><span class="string">proxy.queries:append(1, packet)</span></div><div class="line"><span class="string">   return proxy.PROXY_SEND_QUERY</span></div><div class="line"><span class="string">end</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">---</span></div><div class="line"><span class="string">-- as long as we are in a transaction keep the connection</span></div><div class="line"><span class="string">-- </span></div><div class="line"><span class="string">otherwise release it so another client can use it</span></div><div class="line"><span class="string">function read_query_result( </span></div><div class="line"><span class="string">inj ) </span></div><div class="line"><span class="string">   local res      = assert(inj.resultset)</span></div><div class="line"><span class="string">   local flags    = </span></div><div class="line"><span class="string">res.flags</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">   if inj.id ~= 1 then</span></div><div class="line"><span class="string">      -- ignore the result of the USE </span></div><div class="line"><span class="string">&lt;default_db&gt;</span></div><div class="line"><span class="string">      return proxy.PROXY_IGNORE_RESULT</span></div><div class="line"><span class="string">   end</span></div><div class="line"><span class="string">   </span></div><div class="line"><span class="string">is_in_transaction = flags.in_trans</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">   if flags.in_trans then</span></div><div class="line"><span class="string">      </span></div><div class="line"><span class="string">transaction_flags[proxy.connection.server.thread_id] = </span></div><div class="line"><span class="string">transaction_flags[proxy.connection.server.thread_id] + 1</span></div><div class="line"><span class="string">   elseif </span></div><div class="line"><span class="string">inj.query:sub(2):lower():match("^%s*commit%s*$") or </span></div><div class="line"><span class="string">inj.query:sub(2):lower():match("^%s*rollback%s*$") then</span></div><div class="line"><span class="string">      </span></div><div class="line"><span class="string">transaction_flags[proxy.connection.server.thread_id] = </span></div><div class="line"><span class="string">transaction_flags[proxy.connection.server.thread_id] - 1</span></div><div class="line"><span class="string">      if </span></div><div class="line"><span class="string">transaction_flags[proxy.connection.server.thread_id] &lt; 0 then </span></div><div class="line"><span class="string">transaction_flags[proxy.connection.server.thread_id] = 0 end</span></div><div class="line"><span class="string">   end</span></div><div class="line"><span class="string">   </span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">   log.debug("transaction res : " .. </span></div><div class="line"><span class="string">tostring(transaction_flags[proxy.connection.server.thread_id]));</span></div><div class="line"><span class="string">   if </span></div><div class="line"><span class="string">transaction_flags[proxy.connection.server.thread_id]==0 or </span></div><div class="line"><span class="string">transaction_flags[proxy.connection.server.thread_id] == nil then </span></div><div class="line"><span class="string">      -- </span></div><div class="line"><span class="string">isnot in a transaction, need to release the backend</span></div><div class="line"><span class="string">      </span></div><div class="line"><span class="string">proxy.connection.backend_ndx = 0</span></div><div class="line"><span class="string">   end</span></div><div class="line"><span class="string">end</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">--- </span></div><div class="line"><span class="string">-- close the connections if we have enough connections in the </span></div><div class="line"><span class="string">pool</span></div><div class="line"><span class="string">--</span></div><div class="line"><span class="string">-- @return nil - close connection </span></div><div class="line"><span class="string">-- IGNORE_RESULT - store </span></div><div class="line"><span class="string">connection in the pool</span></div><div class="line"><span class="string">function disconnect_client()</span></div><div class="line"><span class="string">   </span></div><div class="line"><span class="string">log.debug("[disconnect_client]")</span></div><div class="line"><span class="string">   if proxy.connection.backend_ndx == 0 </span></div><div class="line"><span class="string">then</span></div><div class="line"><span class="string">      for i = 1, #proxy.backends do</span></div><div class="line"><span class="string">         local s = </span></div><div class="line"><span class="string">proxy.backends[i]</span></div><div class="line"><span class="string">         local pool = s.pool </span></div><div class="line"><span class="string">         local cur_idle = </span></div><div class="line"><span class="string">pool.users[proxy.connection.client.username].cur_idle_connections</span></div><div class="line"><span class="string">         </span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">         if s.state ~= proxy.BACKEND_STATE_DOWN and</span></div><div class="line"><span class="string">            cur_idle </span></div><div class="line"><span class="string">&gt; max_idle_connections then</span></div><div class="line"><span class="string">            -- try to disconnect a </span></div><div class="line"><span class="string">backend</span></div><div class="line"><span class="string">            proxy.connection.backend_ndx = i</span></div><div class="line"><span class="string">            </span></div><div class="line"><span class="string">log.info("[".. proxy.backends[i].address .."] closing connection, idling: " .. </span></div><div class="line"><span class="string">cur_idle)</span></div><div class="line"><span class="string">            return</span></div><div class="line"><span class="string">         end</span></div><div class="line"><span class="string">      end</span></div><div class="line"><span class="string">      return </span></div><div class="line"><span class="string">proxy.PROXY_IGNORE_RESULT</span></div><div class="line"><span class="string">   end</span></div><div class="line"><span class="string">end</span></div></pre></td></tr></table></figure>
       
     </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/MySQL/" rel="tag"># MySQL</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2017/09/03/MySQL/35. 使用 Xtrabackup 在线对MySQL做主从复制/" rel="next" title="使用 Xtrabackup 在线对MySQL做主从复制">
-                <i class="fa fa-chevron-left"></i> 使用 Xtrabackup 在线对MySQL做主从复制
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/09/03/MySQL/37. 数据库死锁原理及解决思路/" rel="prev" title="数据库死锁原理及解决思路">
-                数据库死锁原理及解决思路 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  <div class="comments" id="comments">
     
   </div>
-
-
-        </div>
-        
-          
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    
+<nav id="article-nav">
+  
+    <a href="/2017/09/03/MySQL/37. 数据库死锁原理及解决思路/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          数据库死锁原理及解决思路
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/09/03/MySQL/35. 使用 Xtrabackup 在线对MySQL做主从复制/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">使用 Xtrabackup 在线对MySQL做主从复制</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="MySQL/36. 使用mysql-proxy 快速实现mysql 集群读写分离" data-title="使用mysql-proxy 快速实现mysql 集群读写分离" data-url="https://hcldirgit.github.io/2017/09/03/MySQL/36. 使用mysql-proxy 快速实现mysql 集群读写分离/"  data-images="https://hcldirgit.github.io/images/0.png" data-content="使用mysql-proxy 快速实现mysql 集群读写分离">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
     </div>
   </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/images/0.png"
-               alt="失落的乐章" />
-          <p class="site-author-name" itemprop="name">失落的乐章</p>
-           
-              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
-          
-        </div>
-        <nav class="site-state motion-element">
-
-          
-            <div class="site-state-item site-state-posts">
-              <a href="/">
-                <span class="site-state-item-count">627</span>
-                <span class="site-state-item-name">日志</span>
-              </a>
-            </div>
-          
-
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-tags">
-              <a href="/tags/index.html">
-                <span class="site-state-item-count">38</span>
-                <span class="site-state-item-name">标签</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-
-        <div class="links-of-author motion-element">
-          
-            
-              <span class="links-of-author-item">
-                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
-                  
-                    <i class="fa fa-fw fa-github"></i>
-                  
-                  GitHub
-                </a>
-              </span>
-            
-          
-        </div>
-
-        
-        
-
-        
-        
-
-        
-
-
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、安装mysql-proxy"><span class="nav-number">1.</span> <span class="nav-text">一、安装mysql-proxy</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、安装lua-mysql-proxy需要使用lua脚本进行数据转发"><span class="nav-number">1.1.</span> <span class="nav-text">1、安装lua  (mysql-proxy需要使用lua脚本进行数据转发)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、安装libevent"><span class="nav-number">1.2.</span> <span class="nav-text">2、安装libevent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、安装check"><span class="nav-number">1.3.</span> <span class="nav-text">3、安装check</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、安装mysql客户端"><span class="nav-number">1.4.</span> <span class="nav-text">4、安装mysql客户端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5、设置环境变量"><span class="nav-number">1.5.</span> <span class="nav-text">5、设置环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6、安装mysql-proxy"><span class="nav-number">1.6.</span> <span class="nav-text">6、安装mysql-proxy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7、启动mysql-proxy"><span class="nav-number">1.7.</span> <span class="nav-text">7、启动mysql-proxy</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、测试"><span class="nav-number">2.</span> <span class="nav-text">二、测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、连接测试"><span class="nav-number">2.1.</span> <span class="nav-text">1、连接测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、读写分离测试"><span class="nav-number">2.2.</span> <span class="nav-text">2、读写分离测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附-mysql-proxy-LUA-读写分离脚本代码"><span class="nav-number">3.</span> <span class="nav-text">附: mysql-proxy LUA 读写分离脚本代码:</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
-      
-
+</footer>
     </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright" >
-  
-  &copy; 
-  <span itemprop="copyrightYear">2017</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
-</div>
-
-
-<div class="powered-by">
-  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
-</div>
-
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Muse
-  </a>
-</div>
-
-
-        
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
     
 
-  </div>
-
-  
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
+<script>
+	var yiliaConfig = {
+		fancybox: ,
+		mathjax: ,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
 </script>
+<script src="/js/main.js"></script>
 
 
 
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
-
-
-
-  
-  
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
-
-
-
-  
-
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
+  </div>
 </body>
 </html>

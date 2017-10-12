@@ -1,99 +1,15 @@
-<!doctype html>
-
-
-
-  
-
-
-<html class="theme-next muse use-motion" lang="zh-Hans">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-
-
-
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  <meta charset="utf-8">
   
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <title>深入理解 Neutron -- OpenStack 网络实现 | 失落的乐章</title>
 
-
-
-
-  
-  
-  
+  <!-- keywords -->
   
 
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="OpenStack," />
-
-
-
-
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
-
-
-
-
-
-
-<meta name="description" content="概述&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Neutron 的设计目标是实现“网络即服务”，为了达到这一目标，在设计上遵循了基于“软件定义网络”实现网络虚拟化的原则，在实现上充分利用了 Linux 系统上的各种网络相关的技术。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;理解了 Linux">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="概述&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Neutron 的设计目标是实现“网络即服务”，为了达到这一目标，在设计上遵循了基于“软件定义网络”实现网络虚拟化的原则，在实现上充分利用了 Linux 系统上的各种网络相关的技术。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;理解了 Linux">
 <meta name="keywords" content="OpenStack">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深入理解 Neutron -- OpenStack 网络实现">
@@ -137,251 +53,189 @@
 <meta name="twitter:title" content="深入理解 Neutron -- OpenStack 网络实现">
 <meta name="twitter:description" content="概述&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Neutron 的设计目标是实现“网络即服务”，为了达到这一目标，在设计上遵循了基于“软件定义网络”实现网络虚拟化的原则，在实现上充分利用了 Linux 系统上的各种网络相关的技术。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;理解了 Linux">
 <meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%20Neutron%20--%20OpenStack%20%E7%BD%91%E7%BB%9C%E5%AE%9E%E7%8E%B0/01.png?raw=true">
-
-
-
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Muse',
-    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-
-  <link rel="canonical" href="https://hcldirgit.github.io/2017/09/03/OpenStack/4. 深入理解 Neutron -- OpenStack 网络实现/"/>
-
-
-
-
-
-  <title>深入理解 Neutron -- OpenStack 网络实现 | 失落的乐章</title>
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
-
   
-
-
-
-
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://hcldirgit.github.io/images/0.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-  ga('create', '85*****1', 'auto');
+
+  ga('create', 'UA-85415703-1', 'auto');
   ga('send', 'pageview');
+
 </script>
+<!-- End Google Analytics -->
 
 
-  <script type="text/javascript">
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "https://hm.baidu.com/hm.js?87980c**************99ec5e26fb5";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-
-
-
-
-
-
-
-
-
-
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
 
   
-  
-    
-  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://hcldirgit.github.io/images/0.png" class="js-avatar">
+			
+		</a>
 
-  <div class="container sidebar-position-left page-post-detail ">
-    <div class="headband"></div>
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
 
-    <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">失落的乐章</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
-    </div>
-      
-        <p class="site-subtitle">技术面前，永远都是学生。</p>
-      
-  </div>
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
 
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
-  </div>
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.42px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.33px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.67px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.33px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.25px;">FTP</a> <a href="/tags/Git/" style="font-size: 10.83px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.67px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.5px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.42px;">Jenkins</a> <a href="/tags/LAMP/" style="font-size: 19.58px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 17.08px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.67px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.17px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.17px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.25px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.42px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.5px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.67px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 17.92px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.25px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.58px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.25px;">Puppet</a> <a href="/tags/Python/" style="font-size: 14.58px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.25px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.08px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.58px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.75px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 15.83px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.5px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 12.92px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15px;">shell</a> <a href="/tags/shell练习/" style="font-size: 18.75px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 12.92px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
 </div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
-            
-            分类
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            标签
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-message">
-          <a href="/message" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-external-link"></i> <br />
-            
-            留言
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://hcldirgit.github.io/images/0.png" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
 </nav>
-
-
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
+      <div class="body-wrap"><article id="post-OpenStack/4. 深入理解 Neutron -- OpenStack 网络实现" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/OpenStack/4. 深入理解 Neutron -- OpenStack 网络实现/" class="article-date">
+  	<time datetime="2017-09-02T18:09:22.857Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
     
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://hcldirgit.github.io/2017/09/03/OpenStack/4. 深入理解 Neutron -- OpenStack 网络实现/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="失落的乐章">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/0.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="失落的乐章">
-    </span>
-
     
-      <header class="post-header">
-
+      <header class="article-header">
         
-        
-          <h1 class="post-title" itemprop="name headline">深入理解 Neutron -- OpenStack 网络实现</h1>
-        
+  
+    <h1 class="article-title" itemprop="name">
+      深入理解 Neutron -- OpenStack 网络实现
+      
+    </h1>
+  
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T02:09:22+08:00">
-                2017-09-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
       </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenStack/">OpenStack</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
     
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
+    <div class="article-entry" itemprop="articleBody">
       
         <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Neutron 的设计目标是实现“网络即服务”，为了达到这一目标，在设计上遵循了基于“软件定义网络”实现网络虚拟化的原则，在实现上充分利用了 Linux 系统上的各种网络相关的技术。</p>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;理解了 Linux 系统上的这些概念将有利于快速理解 Neutron 的原理和实现。</p>
@@ -1009,369 +863,85 @@
 
       
     </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/OpenStack/" rel="tag"># OpenStack</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2017/09/03/OpenStack/3. keystone整体架构与功能/" rel="next" title="keystone整体架构与功能">
-                <i class="fa fa-chevron-left"></i> keystone整体架构与功能
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/09/03/Php/1. LAMP安装php/" rel="prev" title="LAMP安装php">
-                LAMP安装php <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  <div class="comments" id="comments">
     
   </div>
-
-
-        </div>
-        
-          
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    
+<nav id="article-nav">
+  
+    <a href="/2017/09/03/Php/1. LAMP安装php/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          LAMP安装php
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/09/03/OpenStack/3. keystone整体架构与功能/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">keystone整体架构与功能</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="OpenStack/4. 深入理解 Neutron -- OpenStack 网络实现" data-title="深入理解 Neutron -- OpenStack 网络实现" data-url="https://hcldirgit.github.io/2017/09/03/OpenStack/4. 深入理解 Neutron -- OpenStack 网络实现/"  data-images="https://hcldirgit.github.io/images/0.png" data-content="深入理解 Neutron -- OpenStack 网络实现">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
     </div>
   </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/images/0.png"
-               alt="失落的乐章" />
-          <p class="site-author-name" itemprop="name">失落的乐章</p>
-           
-              <p class="site-description motion-element" itemprop="description">失落的乐章的Blog</p>
-          
-        </div>
-        <nav class="site-state motion-element">
-
-          
-            <div class="site-state-item site-state-posts">
-              <a href="/">
-                <span class="site-state-item-count">627</span>
-                <span class="site-state-item-name">日志</span>
-              </a>
-            </div>
-          
-
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-tags">
-              <a href="/tags/index.html">
-                <span class="site-state-item-count">38</span>
-                <span class="site-state-item-name">标签</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-
-        <div class="links-of-author motion-element">
-          
-            
-              <span class="links-of-author-item">
-                <a href="https://github.com/hcldirgit" target="_blank" title="GitHub">
-                  
-                    <i class="fa fa-fw fa-github"></i>
-                  
-                  GitHub
-                </a>
-              </span>
-            
-          
-        </div>
-
-        
-        
-
-        
-        
-
-        
-
-
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#涉及的-Linux-网络技术"><span class="nav-number">1.1.</span> <span class="nav-text">涉及的 Linux 网络技术</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本概念"><span class="nav-number">2.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#网络"><span class="nav-number">2.1.</span> <span class="nav-text">网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子网"><span class="nav-number">2.2.</span> <span class="nav-text">子网</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#端口"><span class="nav-number">2.3.</span> <span class="nav-text">端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#抽象系统架构"><span class="nav-number">2.4.</span> <span class="nav-text">抽象系统架构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GRE-模式"><span class="nav-number">3.</span> <span class="nav-text">GRE 模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#计算节点"><span class="nav-number">3.1.</span> <span class="nav-text">计算节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#qbr"><span class="nav-number">3.2.</span> <span class="nav-text">qbr</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#br-int"><span class="nav-number">3.3.</span> <span class="nav-text">br-int</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#br-tun"><span class="nav-number">3.4.</span> <span class="nav-text">br-tun</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表-0"><span class="nav-number">3.5.</span> <span class="nav-text">表 0</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表-1"><span class="nav-number">3.6.</span> <span class="nav-text">表 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表-2"><span class="nav-number">3.7.</span> <span class="nav-text">表 2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表-3"><span class="nav-number">3.8.</span> <span class="nav-text">表 3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表-10"><span class="nav-number">3.9.</span> <span class="nav-text">表 10</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表-20"><span class="nav-number">3.10.</span> <span class="nav-text">表 20</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表21"><span class="nav-number">3.11.</span> <span class="nav-text">表21</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络节点"><span class="nav-number">4.</span> <span class="nav-text">网络节点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#br-tun-1"><span class="nav-number">4.1.</span> <span class="nav-text">br-tun</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#br-int-1"><span class="nav-number">4.2.</span> <span class="nav-text">br-int</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络名字空间"><span class="nav-number">4.3.</span> <span class="nav-text">网络名字空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dhcp-服务"><span class="nav-number">4.4.</span> <span class="nav-text">dhcp 服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#router服务"><span class="nav-number">4.5.</span> <span class="nav-text">router服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#br-ex"><span class="nav-number">4.6.</span> <span class="nav-text">br-ex</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VLAN-模式"><span class="nav-number">5.</span> <span class="nav-text">VLAN 模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#计算节点-1"><span class="nav-number">5.1.</span> <span class="nav-text">计算节点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#br-int-2"><span class="nav-number">5.1.1.</span> <span class="nav-text">br-int</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#br-eth1"><span class="nav-number">5.1.2.</span> <span class="nav-text">br-eth1</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络节点-1"><span class="nav-number">5.2.</span> <span class="nav-text">网络节点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#br-eth1-1"><span class="nav-number">5.2.1.</span> <span class="nav-text">br-eth1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#br-int-3"><span class="nav-number">5.2.2.</span> <span class="nav-text">br-int</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#br-ex-1"><span class="nav-number">5.2.3.</span> <span class="nav-text">br-ex</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VXLAN-模式"><span class="nav-number">6.</span> <span class="nav-text">VXLAN 模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#计算节点-2"><span class="nav-number">6.1.</span> <span class="nav-text">计算节点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#br-int-4"><span class="nav-number">6.1.1.</span> <span class="nav-text">br-int</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#br-tun-2"><span class="nav-number">6.1.2.</span> <span class="nav-text">br-tun</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#表-0-1"><span class="nav-number">6.1.3.</span> <span class="nav-text">表 0</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#表-2-1"><span class="nav-number">6.1.4.</span> <span class="nav-text">表 2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#表-3-1"><span class="nav-number">6.1.5.</span> <span class="nav-text">表 3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#表-4"><span class="nav-number">6.1.6.</span> <span class="nav-text">表 4</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#表-10-1"><span class="nav-number">6.1.7.</span> <span class="nav-text">表 10</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#表-20-1"><span class="nav-number">6.1.8.</span> <span class="nav-text">表 20</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#表-22"><span class="nav-number">6.1.9.</span> <span class="nav-text">表 22</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络节点-2"><span class="nav-number">7.</span> <span class="nav-text">网络节点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#br-tun-3"><span class="nav-number">7.1.</span> <span class="nav-text">br-tun</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表-0-2"><span class="nav-number">7.2.</span> <span class="nav-text">表 0</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表-2-2"><span class="nav-number">7.3.</span> <span class="nav-text">表 2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表-3-2"><span class="nav-number">7.4.</span> <span class="nav-text">表 3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表-4-1"><span class="nav-number">7.5.</span> <span class="nav-text">表 4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表-10-2"><span class="nav-number">7.6.</span> <span class="nav-text">表 10</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表-20-2"><span class="nav-number">7.7.</span> <span class="nav-text">表 20</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表-22-1"><span class="nav-number">7.8.</span> <span class="nav-text">表 22</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#br-int-5"><span class="nav-number">7.9.</span> <span class="nav-text">br-int</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#br-ex-2"><span class="nav-number">7.10.</span> <span class="nav-text">br-ex</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络名字空间-1"><span class="nav-number">8.</span> <span class="nav-text">网络名字空间</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DHCP-服务"><span class="nav-number">8.1.</span> <span class="nav-text">DHCP 服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#路由服务"><span class="nav-number">8.2.</span> <span class="nav-text">路由服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安全组"><span class="nav-number">8.3.</span> <span class="nav-text">安全组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#INPUT"><span class="nav-number">8.4.</span> <span class="nav-text">INPUT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OUTPUT"><span class="nav-number">8.5.</span> <span class="nav-text">OUTPUT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FORWARD"><span class="nav-number">8.6.</span> <span class="nav-text">FORWARD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#整体逻辑"><span class="nav-number">8.7.</span> <span class="nav-text">整体逻辑</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快速查找安全组规则"><span class="nav-number">9.</span> <span class="nav-text">快速查找安全组规则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#其它"><span class="nav-number">9.1.</span> <span class="nav-text">其它</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#负载均衡即服务"><span class="nav-number">10.</span> <span class="nav-text">负载均衡即服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#典型场景"><span class="nav-number">10.1.</span> <span class="nav-text">典型场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现细节"><span class="nav-number">10.2.</span> <span class="nav-text">实现细节</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#qlbaas-命名空间"><span class="nav-number">10.3.</span> <span class="nav-text">qlbaas 命名空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HAProxy"><span class="nav-number">10.4.</span> <span class="nav-text">HAProxy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其它问题"><span class="nav-number">10.5.</span> <span class="nav-text">其它问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#防火墙即服务"><span class="nav-number">11.</span> <span class="nav-text">防火墙即服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#典型场景-1"><span class="nav-number">11.1.</span> <span class="nav-text">典型场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现细节-1"><span class="nav-number">11.2.</span> <span class="nav-text">实现细节</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其它问题-1"><span class="nav-number">11.3.</span> <span class="nav-text">其它问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式路由"><span class="nav-number">12.</span> <span class="nav-text">分布式路由</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#典型场景-2"><span class="nav-number">12.1.</span> <span class="nav-text">典型场景</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#东西向"><span class="nav-number">12.1.1.</span> <span class="nav-text">东西向</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#同一机器"><span class="nav-number">12.1.1.1.</span> <span class="nav-text">同一机器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#不同机器"><span class="nav-number">12.1.1.2.</span> <span class="nav-text">不同机器</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#南北向"><span class="nav-number">12.1.2.</span> <span class="nav-text">南北向</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#无-floating-IP"><span class="nav-number">12.1.2.1.</span> <span class="nav-text">无 floating IP</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#有-floating-IP"><span class="nav-number">12.1.2.2.</span> <span class="nav-text">有 floating IP</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络节点-3"><span class="nav-number">12.2.</span> <span class="nav-text">网络节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算节点-3"><span class="nav-number">12.3.</span> <span class="nav-text">计算节点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#东西流量"><span class="nav-number">12.3.1.</span> <span class="nav-text">东西流量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#南北流量"><span class="nav-number">12.3.2.</span> <span class="nav-text">南北流量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#流表规则"><span class="nav-number">12.4.</span> <span class="nav-text">流表规则</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#所有对网关的-arp-request-不能出到外部网络"><span class="nav-number">12.4.1.</span> <span class="nav-text">所有对网关的 arp request 不能出到外部网络</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#所有发往网关的包也不能出到外部网络"><span class="nav-number">12.4.2.</span> <span class="nav-text">所有发往网关的包也不能出到外部网络</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#所有从路由器接口路由出去的包，需要修改源-mac-为特殊-mac"><span class="nav-number">12.4.3.</span> <span class="nav-text">所有从路由器接口路由出去的包，需要修改源 mac 为特殊 mac</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#同样，收到外部特殊源-mac-的包要修改为正确的路由器接口-mac"><span class="nav-number">12.4.4.</span> <span class="nav-text">同样，收到外部特殊源 mac 的包要修改为正确的路由器接口 mac</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注意事项"><span class="nav-number">12.5.</span> <span class="nav-text">注意事项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置"><span class="nav-number">12.6.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Neutron-Server"><span class="nav-number">12.6.1.</span> <span class="nav-text">Neutron Server</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#L3-Agent"><span class="nav-number">12.6.2.</span> <span class="nav-text">L3 Agent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#L2-Agent"><span class="nav-number">12.6.3.</span> <span class="nav-text">L2 Agent</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现细节-2"><span class="nav-number">12.7.</span> <span class="nav-text">实现细节</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#添加路由器接口"><span class="nav-number">12.7.1.</span> <span class="nav-text">添加路由器接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除路由器接口"><span class="nav-number">12.7.2.</span> <span class="nav-text">删除路由器接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动新的虚拟机节点"><span class="nav-number">12.7.3.</span> <span class="nav-text">启动新的虚拟机节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除虚拟机节点"><span class="nav-number">12.7.4.</span> <span class="nav-text">删除虚拟机节点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现细节-3"><span class="nav-number">12.8.</span> <span class="nav-text">实现细节</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#integration-网桥规则添加"><span class="nav-number">12.8.1.</span> <span class="nav-text">integration 网桥规则添加</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tunnel-网桥规则添加"><span class="nav-number">12.8.2.</span> <span class="nav-text">tunnel 网桥规则添加</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#physical-网桥规则添加"><span class="nav-number">12.8.3.</span> <span class="nav-text">physical 网桥规则添加</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#所有网桥上添加-mac-规则"><span class="nav-number">12.8.4.</span> <span class="nav-text">所有网桥上添加 mac 规则</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#外部网络为-vlan-的情况下"><span class="nav-number">12.8.4.1.</span> <span class="nav-text">外部网络为 vlan 的情况下</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#外部网络为-tunnel-的情况下"><span class="nav-number">12.8.4.2.</span> <span class="nav-text">外部网络为 tunnel 的情况下</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#工具"><span class="nav-number">13.</span> <span class="nav-text">工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#easyOVS"><span class="nav-number">13.1.</span> <span class="nav-text">easyOVS</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#主要功能一览"><span class="nav-number">13.1.1.</span> <span class="nav-text">主要功能一览</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装"><span class="nav-number">13.1.2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#打开-OpenStack-支持"><span class="nav-number">13.1.3.</span> <span class="nav-text">打开 OpenStack 支持</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#环境变量"><span class="nav-number">13.1.3.1.</span> <span class="nav-text">环境变量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#配置文件"><span class="nav-number">13.1.3.2.</span> <span class="nav-text">配置文件</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#操作命令"><span class="nav-number">13.1.4.</span> <span class="nav-text">操作命令</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#help"><span class="nav-number">13.1.4.1.</span> <span class="nav-text">help</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#list"><span class="nav-number">13.1.4.2.</span> <span class="nav-text">list</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#show"><span class="nav-number">13.1.4.3.</span> <span class="nav-text">show</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#dump"><span class="nav-number">13.1.4.4.</span> <span class="nav-text">dump</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#addflow"><span class="nav-number">13.1.4.5.</span> <span class="nav-text">addflow</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#delflow"><span class="nav-number">13.1.4.6.</span> <span class="nav-text">delflow</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#set"><span class="nav-number">13.1.4.7.</span> <span class="nav-text">set</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#exit"><span class="nav-number">13.1.4.8.</span> <span class="nav-text">exit</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#get"><span class="nav-number">13.1.4.9.</span> <span class="nav-text">get</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ipt"><span class="nav-number">13.1.4.10.</span> <span class="nav-text">ipt</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#query"><span class="nav-number">13.1.4.11.</span> <span class="nav-text">query</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#sh"><span class="nav-number">13.1.4.12.</span> <span class="nav-text">sh</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#quit"><span class="nav-number">13.1.4.13.</span> <span class="nav-text">quit</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参数"><span class="nav-number">13.1.5.</span> <span class="nav-text">参数</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#h"><span class="nav-number">13.1.5.1.</span> <span class="nav-text">-h</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#c"><span class="nav-number">13.1.5.2.</span> <span class="nav-text">-c</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#m"><span class="nav-number">13.1.5.3.</span> <span class="nav-text">-m</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#v"><span class="nav-number">13.1.5.4.</span> <span class="nav-text">-v</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#–version"><span class="nav-number">13.1.5.5.</span> <span class="nav-text">–version</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">14.</span> <span class="nav-text">参考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附：安装配置"><span class="nav-number">15.</span> <span class="nav-text">附：安装配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DevStack-安装-OpenStack-多节点（Juno-Neutron-ML2-VXLAN）"><span class="nav-number">16.</span> <span class="nav-text">DevStack 安装 OpenStack 多节点（Juno+Neutron+ML2+VXLAN）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络环境"><span class="nav-number">17.</span> <span class="nav-text">网络环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#控制节点"><span class="nav-number">17.1.</span> <span class="nav-text">控制节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算节点-4"><span class="nav-number">17.2.</span> <span class="nav-text">计算节点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置-stack-用户"><span class="nav-number">18.</span> <span class="nav-text">配置 stack 用户</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载代码"><span class="nav-number">19.</span> <span class="nav-text">下载代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写运行配置文件"><span class="nav-number">20.</span> <span class="nav-text">编写运行配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行配置"><span class="nav-number">21.</span> <span class="nav-text">执行配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其它事项"><span class="nav-number">22.</span> <span class="nav-text">其它事项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#停止服务"><span class="nav-number">22.1.</span> <span class="nav-text">停止服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#清除安装。"><span class="nav-number">22.2.</span> <span class="nav-text">清除安装。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手动清除"><span class="nav-number">22.3.</span> <span class="nav-text">手动清除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#依赖版本"><span class="nav-number">22.4.</span> <span class="nav-text">依赖版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#screen-操作"><span class="nav-number">22.5.</span> <span class="nav-text">screen 操作</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
-      
-
+</footer>
     </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright" >
-  
-  &copy; 
-  <span itemprop="copyrightYear">2017</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">失落的乐章</span>
-</div>
-
-
-<div class="powered-by">
-  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
-</div>
-
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Muse
-  </a>
-</div>
-
-
-        
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
     
 
-  </div>
-
-  
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
+<script>
+	var yiliaConfig = {
+		fancybox: ,
+		mathjax: ,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
 </script>
+<script src="/js/main.js"></script>
 
 
 
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
-
-
-
-  
-  
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
-
-
-
-  
-
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
+  </div>
 </body>
 </html>
