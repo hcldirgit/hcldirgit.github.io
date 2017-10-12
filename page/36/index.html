@@ -555,87 +555,6 @@
 
 
   
-    <article id="post-Apache/43. apache 配置https 支持ssl" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Apache/43. apache 配置https 支持ssl/" class="article-date">
-  	<time datetime="2017-09-02T18:00:30.922Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Apache/43. apache 配置https 支持ssl/">
-        apache 配置https 支持ssl
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="安装openssl"><a href="#安装openssl" class="headerlink" title="安装openssl"></a>安装openssl</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;apache2.0 建议安装0.9版本，曾经试过2.0.59 对openssl-1.0编译不过去。<a href="http://www.openssl.org/source/" target="_blank" rel="external">下载Openssl</a></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">tar -zxf openssl-0.9.8k.tar.gz    <span class="comment">#解压安装包   </span></div><div class="line"><span class="built_in">cd</span> openssl-0.9.8k                 <span class="comment">#进入已经解压的安装包   </span></div><div class="line">./config                          <span class="comment">#配置安装。推荐使用默认配置   </span></div><div class="line">make &amp;&amp; make install              <span class="comment">#编译及安装</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;openssl默认将被安装到/usr/local/ssl </p>
-<h2 id="让apache支持ssl，编译的时候，要指定ssl支持。"><a href="#让apache支持ssl，编译的时候，要指定ssl支持。" class="headerlink" title="让apache支持ssl，编译的时候，要指定ssl支持。"></a>让apache支持ssl，编译的时候，要指定ssl支持。</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;静态或者动态</p>
-<ul>
-<li>静态方法即  –enable-ssl=static –with-ssl=/usr/local/ssl</li>
-<li><ul>
-<li>动态方法  –enable-ssl=shared –with-ssl=/usr/local/ssl</li>
-</ul>
-</li>
-</ul>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其中第二种方法会在module/ 目录下生成 mod_ssl.so 模块，而静态不会有，当然第二种方法也需要在httpd.conf 中加入</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">LoadModule ssl_module modules/mod_ssl.so</div></pre></td></tr></table></figure>
-<h2 id="生成证书"><a href="#生成证书" class="headerlink" title="生成证书"></a>生成证书</h2><h3 id="创建私钥"><a href="#创建私钥" class="headerlink" title="创建私钥"></a>创建私钥</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在创建证书请求之前，您需要首先生成服务器证书私钥文件。  </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/ssl/bin                    <span class="comment">#进入openssl安装目录  </span></div><div class="line">openssl genrsa -out server.key 2048      <span class="comment">#运行openssl命令，生成2048位长的私钥server.key文件</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果需要对 server.key 添加保护密码，请使用 -des3 扩展命令。Windows环境下不支持加密格式私钥，Linux环境下使用加密格式私钥时，每次重启Apache都需要输入该私钥密码（例：openssl genrsa -des3 -out server.key 2048）。 </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cp server.key   /usr/<span class="built_in">local</span>/apache/conf/ssl.key/</div></pre></td></tr></table></figure>
-<h3 id="生成证书请求（CSR）文件"><a href="#生成证书请求（CSR）文件" class="headerlink" title="生成证书请求（CSR）文件"></a>生成证书请求（CSR）文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">openssl req -new -key server.key -out certreq.csr   </div><div class="line">Country Name：                           <span class="comment">#您所在国家的ISO标准代号，中国为CN   </span></div><div class="line">State or Province Name：                 <span class="comment">#您单位所在地省/自治区/直辖市   </span></div><div class="line">Locality Name：                          <span class="comment">#您单位所在地的市/县/区   </span></div><div class="line">Organization Name：                      <span class="comment">#您单位/机构/企业合法的名称   </span></div><div class="line">Organizational Unit Name：               <span class="comment">#部门名称   </span></div><div class="line">Common Name：                            <span class="comment">#通用名，例如：www.itrus.com.cn。此项必须与您访问提供SSL服务的服务器时所应用的域名完全匹配。   </span></div><div class="line">Email Address：                          <span class="comment">#邮件地址，不必输入，直接回车跳过   </span></div><div class="line"><span class="string">"extra"</span>attributes                        <span class="comment">#以下信息不必输入，回车跳过直到命令执行完毕。</span></div></pre></td></tr></table></figure>
-<h3 id="备份私钥并提交证书请求"><a href="#备份私钥并提交证书请求" class="headerlink" title="备份私钥并提交证书请求"></a>备份私钥并提交证书请求</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;请将证书请求文件certreq.csr提交给天威诚信，并备份保存证书私钥文件server.key，等待证书的签发。服务器证书密钥对必须配对使用，私钥文件丢失将导致证书不可用。 </p>
-<h2 id="安装证书"><a href="#安装证书" class="headerlink" title="安装证书"></a>安装证书</h2><h3 id="获取服务器证书中级CA证书"><a href="#获取服务器证书中级CA证书" class="headerlink" title="获取服务器证书中级CA证书"></a>获取服务器证书中级CA证书</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为保障服务器证书在客户端的兼容性，服务器证书需要安装两张中级CA证书(不同品牌证书，可能只有一张中级证书)。   </p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从邮件中获取中级CA证书：   </p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;将证书签发邮件中的从BEGIN到 END结束的两张中级CA证书内容（包括“—–BEGIN CERTIFICATE—–”和“—–END CERTIFICATE—–”）粘贴到同一个记事本等文本编辑器中，中间用回车换行分隔。修改文件扩展名，保存为conf/ssl.crt/intermediatebundle.crt文件(如果只有一张中级证书，则只需要保存并安装一张中级证书)。   </p>
-<h3 id="获取EV服务器证书"><a href="#获取EV服务器证书" class="headerlink" title="获取EV服务器证书"></a>获取EV服务器证书</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;将证书签发邮件中的从BEGIN到 END结束的服务器证书内容（包括“—–BEGIN CERTIFICATE—–”和“—–END CERTIFICATE—–”） 粘贴到记事本等文本编辑器中，保存为ssl.crt/server.crt文件 </p>
-<h3 id="apache的配置-2-0的配置"><a href="#apache的配置-2-0的配置" class="headerlink" title="apache的配置 2.0的配置"></a>apache的配置 2.0的配置</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;httpd.conf 中增加</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">Listen  443</div><div class="line">NameVirtualHost *:443</div><div class="line"></div><div class="line">    DocumentRoot <span class="string">"/data/web/www"</span></div><div class="line">    ServerName aaa.com:443</div><div class="line">    ErrorLog <span class="string">"logs/error.log"</span></div><div class="line">    CustomLog <span class="string">"logs/access.log"</span> combined</div><div class="line">     </div><div class="line">        SSLEngine on</div><div class="line">        SSLCertificateFile /usr/<span class="built_in">local</span>/apache/conf/ssl.crt/server.crt</div><div class="line">        SSLCertificateKeyFile /usr/<span class="built_in">local</span>/apache/conf/ssl.key/server.key</div><div class="line">        SSLCertificateChainFile /usr/<span class="built_in">local</span>/apache/conf/ssl.crt/intermediatebundle.crt</div></pre></td></tr></table></figure>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-Apache/42. apache 访问控制" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -735,6 +654,87 @@
 
 
   
+    <article id="post-Apache/43. apache 配置https 支持ssl" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Apache/43. apache 配置https 支持ssl/" class="article-date">
+  	<time datetime="2017-09-02T18:00:30.922Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Apache/43. apache 配置https 支持ssl/">
+        apache 配置https 支持ssl
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="安装openssl"><a href="#安装openssl" class="headerlink" title="安装openssl"></a>安装openssl</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;apache2.0 建议安装0.9版本，曾经试过2.0.59 对openssl-1.0编译不过去。<a href="http://www.openssl.org/source/" target="_blank" rel="external">下载Openssl</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">tar -zxf openssl-0.9.8k.tar.gz    <span class="comment">#解压安装包   </span></div><div class="line"><span class="built_in">cd</span> openssl-0.9.8k                 <span class="comment">#进入已经解压的安装包   </span></div><div class="line">./config                          <span class="comment">#配置安装。推荐使用默认配置   </span></div><div class="line">make &amp;&amp; make install              <span class="comment">#编译及安装</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;openssl默认将被安装到/usr/local/ssl </p>
+<h2 id="让apache支持ssl，编译的时候，要指定ssl支持。"><a href="#让apache支持ssl，编译的时候，要指定ssl支持。" class="headerlink" title="让apache支持ssl，编译的时候，要指定ssl支持。"></a>让apache支持ssl，编译的时候，要指定ssl支持。</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;静态或者动态</p>
+<ul>
+<li>静态方法即  –enable-ssl=static –with-ssl=/usr/local/ssl</li>
+<li><ul>
+<li>动态方法  –enable-ssl=shared –with-ssl=/usr/local/ssl</li>
+</ul>
+</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其中第二种方法会在module/ 目录下生成 mod_ssl.so 模块，而静态不会有，当然第二种方法也需要在httpd.conf 中加入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">LoadModule ssl_module modules/mod_ssl.so</div></pre></td></tr></table></figure>
+<h2 id="生成证书"><a href="#生成证书" class="headerlink" title="生成证书"></a>生成证书</h2><h3 id="创建私钥"><a href="#创建私钥" class="headerlink" title="创建私钥"></a>创建私钥</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在创建证书请求之前，您需要首先生成服务器证书私钥文件。  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/ssl/bin                    <span class="comment">#进入openssl安装目录  </span></div><div class="line">openssl genrsa -out server.key 2048      <span class="comment">#运行openssl命令，生成2048位长的私钥server.key文件</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果需要对 server.key 添加保护密码，请使用 -des3 扩展命令。Windows环境下不支持加密格式私钥，Linux环境下使用加密格式私钥时，每次重启Apache都需要输入该私钥密码（例：openssl genrsa -des3 -out server.key 2048）。 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cp server.key   /usr/<span class="built_in">local</span>/apache/conf/ssl.key/</div></pre></td></tr></table></figure>
+<h3 id="生成证书请求（CSR）文件"><a href="#生成证书请求（CSR）文件" class="headerlink" title="生成证书请求（CSR）文件"></a>生成证书请求（CSR）文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">openssl req -new -key server.key -out certreq.csr   </div><div class="line">Country Name：                           <span class="comment">#您所在国家的ISO标准代号，中国为CN   </span></div><div class="line">State or Province Name：                 <span class="comment">#您单位所在地省/自治区/直辖市   </span></div><div class="line">Locality Name：                          <span class="comment">#您单位所在地的市/县/区   </span></div><div class="line">Organization Name：                      <span class="comment">#您单位/机构/企业合法的名称   </span></div><div class="line">Organizational Unit Name：               <span class="comment">#部门名称   </span></div><div class="line">Common Name：                            <span class="comment">#通用名，例如：www.itrus.com.cn。此项必须与您访问提供SSL服务的服务器时所应用的域名完全匹配。   </span></div><div class="line">Email Address：                          <span class="comment">#邮件地址，不必输入，直接回车跳过   </span></div><div class="line"><span class="string">"extra"</span>attributes                        <span class="comment">#以下信息不必输入，回车跳过直到命令执行完毕。</span></div></pre></td></tr></table></figure>
+<h3 id="备份私钥并提交证书请求"><a href="#备份私钥并提交证书请求" class="headerlink" title="备份私钥并提交证书请求"></a>备份私钥并提交证书请求</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;请将证书请求文件certreq.csr提交给天威诚信，并备份保存证书私钥文件server.key，等待证书的签发。服务器证书密钥对必须配对使用，私钥文件丢失将导致证书不可用。 </p>
+<h2 id="安装证书"><a href="#安装证书" class="headerlink" title="安装证书"></a>安装证书</h2><h3 id="获取服务器证书中级CA证书"><a href="#获取服务器证书中级CA证书" class="headerlink" title="获取服务器证书中级CA证书"></a>获取服务器证书中级CA证书</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为保障服务器证书在客户端的兼容性，服务器证书需要安装两张中级CA证书(不同品牌证书，可能只有一张中级证书)。   </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从邮件中获取中级CA证书：   </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;将证书签发邮件中的从BEGIN到 END结束的两张中级CA证书内容（包括“—–BEGIN CERTIFICATE—–”和“—–END CERTIFICATE—–”）粘贴到同一个记事本等文本编辑器中，中间用回车换行分隔。修改文件扩展名，保存为conf/ssl.crt/intermediatebundle.crt文件(如果只有一张中级证书，则只需要保存并安装一张中级证书)。   </p>
+<h3 id="获取EV服务器证书"><a href="#获取EV服务器证书" class="headerlink" title="获取EV服务器证书"></a>获取EV服务器证书</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;将证书签发邮件中的从BEGIN到 END结束的服务器证书内容（包括“—–BEGIN CERTIFICATE—–”和“—–END CERTIFICATE—–”） 粘贴到记事本等文本编辑器中，保存为ssl.crt/server.crt文件 </p>
+<h3 id="apache的配置-2-0的配置"><a href="#apache的配置-2-0的配置" class="headerlink" title="apache的配置 2.0的配置"></a>apache的配置 2.0的配置</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;httpd.conf 中增加</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">Listen  443</div><div class="line">NameVirtualHost *:443</div><div class="line"></div><div class="line">    DocumentRoot <span class="string">"/data/web/www"</span></div><div class="line">    ServerName aaa.com:443</div><div class="line">    ErrorLog <span class="string">"logs/error.log"</span></div><div class="line">    CustomLog <span class="string">"logs/access.log"</span> combined</div><div class="line">     </div><div class="line">        SSLEngine on</div><div class="line">        SSLCertificateFile /usr/<span class="built_in">local</span>/apache/conf/ssl.crt/server.crt</div><div class="line">        SSLCertificateKeyFile /usr/<span class="built_in">local</span>/apache/conf/ssl.key/server.key</div><div class="line">        SSLCertificateChainFile /usr/<span class="built_in">local</span>/apache/conf/ssl.crt/intermediatebundle.crt</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Apache/41. apache配置防盗链" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -767,6 +767,63 @@
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;检测是否有错，并重启apache 服务</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># apachectl -t</span></div><div class="line">Syntax OK</div><div class="line">[root@lamp ~]<span class="comment"># apachectl restart</span></div></pre></td></tr></table></figure>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：在这段配置中涉及到一个名词 referer ，它其实就是上次访问的网站连接。我们是根据来源链接做限制的，如果来源链接并不是想要的，就直接拒绝，这就是防盗链的原理。当然不止是图片，mp3，rar，zip等文件同样支持。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Apache/4. apache 的默认编码" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Apache/4. apache 的默认编码/" class="article-date">
+  	<time datetime="2017-09-02T18:00:30.920Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Apache/4. apache 的默认编码/">
+        apache 的默认编码
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在httpd.conf 中有一个参数是控制apache的默认编码的，<code>AddDefaultCharset</code>  它的作用就是当开发者没有指定程序的编码时，apache会按照这里的配置来显示效果。一般这个参数是不需要的，因为很少有程序不指定编码。为了引起不必要的麻烦，建议开启这个编码的童鞋去掉吧。</p>
 
       
     </div>
@@ -842,63 +899,6 @@
 <li>None 如果一个文档是基于文件的，则不在应答中包含任何ETag头 </li>
 </ul>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在大型多WEB集群时,使用ETag时有问题,所以有人建议使用WEB集群时不要使用ETag,其实很好解决,因为多服务器时,INode不一样, 所以不同的服务器生成的ETag不一样,所以用户有可能重复下载(这时ETag就会不准),明白了上面的原理和设置后,解决方法也很容易,让ETag后面 二个参数,MTime和Size就好了.只要ETag的计算没有INode参于计算,就会很准了.</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Apache/4. apache 的默认编码" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Apache/4. apache 的默认编码/" class="article-date">
-  	<time datetime="2017-09-02T18:00:30.920Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Apache/4. apache 的默认编码/">
-        apache 的默认编码
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在httpd.conf 中有一个参数是控制apache的默认编码的，<code>AddDefaultCharset</code>  它的作用就是当开发者没有指定程序的编码时，apache会按照这里的配置来显示效果。一般这个参数是不需要的，因为很少有程序不指定编码。为了引起不必要的麻烦，建议开启这个编码的童鞋去掉吧。</p>
 
       
     </div>

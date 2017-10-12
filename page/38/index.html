@@ -750,6 +750,71 @@
 
 
   
+    <article id="post-Apache/22. htpasswd 默认创建的密码只有前8位有效" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Apache/22. htpasswd 默认创建的密码只有前8位有效/" class="article-date">
+  	<time datetime="2017-09-02T18:00:30.899Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Apache/22. htpasswd 默认创建的密码只有前8位有效/">
+        htpasswd 默认创建的密码只有前8位有效
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;按照如下命令创建密码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">htpasswd -c .htpasswd  user1</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;假如，密码为123456789</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;那么访问时，不管是输入 12345678 还是 123456789 甚至是 123456781234  都能顺利通过验证。这是为什么呢？</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;htpasswd默认情况，是使用系统库中的crypt()函数来对密码明文进行单向加密的。在网上找到该函数的说明：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;crypt()将使用Data Encryption Standard(DES)演算法将参数key所指的字符串加以编码，key字符串长度仅取前8个字符，超过此长度的字符没有意义。参数salt为两个字 符组成的字符串，由a-z,A-Z,0-9,”.”,和”/“所组成，用来决定使用4096种不同内建表格的哪一个。函数执行成功后会返回指向编码过的字符串指针，参数key所指的字符串不会有所更动。编码过的字符串长度为13个字符，前两个字符为参数salt代表的字符串。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;所以，如果你想创建超过8位的密码，请使用-m参数或者-s 参数，这两个参数分别表示创建的密码以MD5加密方式加密和以SHA方式加密。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">htpasswd -c -m .htpasswd  user1</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样创建的密码没有8位数限制了。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Apache/21. apache如何在虚拟主机中实现用户验证" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -799,71 +864,6 @@
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;保存后，然后创建apache的验证用户</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">htpasswd -cm /data/.htpasswd  <span class="built_in">test</span></div></pre></td></tr></table></figure>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;增加第二个用户的时候，就不要加-c了，因为-c是创建的意思，如果加上会把这个文件重写。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Apache/22. htpasswd 默认创建的密码只有前8位有效" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Apache/22. htpasswd 默认创建的密码只有前8位有效/" class="article-date">
-  	<time datetime="2017-09-02T18:00:30.899Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Apache/22. htpasswd 默认创建的密码只有前8位有效/">
-        htpasswd 默认创建的密码只有前8位有效
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;按照如下命令创建密码</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">htpasswd -c .htpasswd  user1</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;假如，密码为123456789</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;那么访问时，不管是输入 12345678 还是 123456789 甚至是 123456781234  都能顺利通过验证。这是为什么呢？</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;htpasswd默认情况，是使用系统库中的crypt()函数来对密码明文进行单向加密的。在网上找到该函数的说明：</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;crypt()将使用Data Encryption Standard(DES)演算法将参数key所指的字符串加以编码，key字符串长度仅取前8个字符，超过此长度的字符没有意义。参数salt为两个字 符组成的字符串，由a-z,A-Z,0-9,”.”,和”/“所组成，用来决定使用4096种不同内建表格的哪一个。函数执行成功后会返回指向编码过的字符串指针，参数key所指的字符串不会有所更动。编码过的字符串长度为13个字符，前两个字符为参数salt代表的字符串。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;所以，如果你想创建超过8位的密码，请使用-m参数或者-s 参数，这两个参数分别表示创建的密码以MD5加密方式加密和以SHA方式加密。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">htpasswd -c -m .htpasswd  user1</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样创建的密码没有8位数限制了。</p>
 
       
     </div>

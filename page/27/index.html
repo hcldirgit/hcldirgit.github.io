@@ -585,78 +585,6 @@
 
 
   
-    <article id="post-LVS/3. LVS 负载均衡 fullnat 模式和 nat 模式的区别" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/LVS/3. LVS 负载均衡 fullnat 模式和 nat 模式的区别/" class="article-date">
-  	<time datetime="2017-09-02T18:04:46.048Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/LVS/3. LVS 负载均衡 fullnat 模式和 nat 模式的区别/">
-        LVS 负载均衡 fullnat 模式和 nat 模式的区别
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关于LVS和FULLNAT的介绍可以看一下 <a href="http://blog.aliyun.com/1750" target="_blank" rel="external">淘宝吴佳明(普空)的视频</a> ，FULLNAT 模式很大简化了LVS的配置和部署，目前淘宝和百度基本上都在使用FULLNAT模式来作为接入侧的负载均衡模式.</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;百度的LVS叫做BVS, Baidu Virtual Server, 是在LVS基础上修改的增加了L3 Though 和 SYN Porxy，貌似也是吴佳明(普空)在百度搞的, 类似FULLNAT 项目.</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面的图来自吴佳明(普空)的PPT, 自己重画了一遍，关于NAT和FULLNAT的区别如下图所示：</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/LVS%20%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%20fullnat%20%E6%A8%A1%E5%BC%8F%E5%92%8C%20nat%20%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB/01.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;看完上图后发现 FULLNAT有一个问题是：RealServer无法获得用户IP；淘宝通过叫TOA的方式解决的，</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;主要原理是：将 client address 放到了TCP Option 里面带给后端RealServer，RealServer 收到后保存在 socket 的结构体里并通过toa内核模块 hook 了 getname 函数，这样当用户调用 getname 获取远端地址时，返回的是保存在 socket 的 TCPOption 的 IP . 百度的 BVS 是通过叫 ttm 模块实现的，其实现方式跟 toa 基本一样，只是没有开源.</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;实现原理图如下：</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/LVS%20%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%20fullnat%20%E6%A8%A1%E5%BC%8F%E5%92%8C%20nat%20%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB/03.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面看下上面说的逻辑的实现<a href="https://github.com/alibaba/LVS" target="_blank" rel="external">代码</a></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;lvs侧在TCP报文的选项中插入clientip代码: tcp_fnat_in_handler()</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/LVS%20%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%20fullnat%20%E6%A8%A1%E5%BC%8F%E5%92%8C%20nat%20%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB/04.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;RS 侧收到建连报文时，取出 toa 里面的 client ip 和 port  存放在 socket 的 use_data 里, toa.c</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/LVS%20%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%20fullnat%20%E6%A8%A1%E5%BC%8F%E5%92%8C%20nat%20%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB/05.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;HOOK挂载：</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/LVS%20%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%20fullnat%20%E6%A8%A1%E5%BC%8F%E5%92%8C%20nat%20%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB/06.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当应用层调用 getpeername() 或者 getsocketname() 时，会进入到 inet_getname_toa,如果存在toa 信息则将 socket 存放的真是的 clientip 返回给应用层。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LVS/">LVS</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-LVS/23. 阿里云下配置keepalive，利用HAVIP实现HA" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -731,6 +659,78 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LVS/">LVS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/keepalived/">keepalived</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-LVS/3. LVS 负载均衡 fullnat 模式和 nat 模式的区别" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/LVS/3. LVS 负载均衡 fullnat 模式和 nat 模式的区别/" class="article-date">
+  	<time datetime="2017-09-02T18:04:46.048Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/LVS/3. LVS 负载均衡 fullnat 模式和 nat 模式的区别/">
+        LVS 负载均衡 fullnat 模式和 nat 模式的区别
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关于LVS和FULLNAT的介绍可以看一下 <a href="http://blog.aliyun.com/1750" target="_blank" rel="external">淘宝吴佳明(普空)的视频</a> ，FULLNAT 模式很大简化了LVS的配置和部署，目前淘宝和百度基本上都在使用FULLNAT模式来作为接入侧的负载均衡模式.</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;百度的LVS叫做BVS, Baidu Virtual Server, 是在LVS基础上修改的增加了L3 Though 和 SYN Porxy，貌似也是吴佳明(普空)在百度搞的, 类似FULLNAT 项目.</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面的图来自吴佳明(普空)的PPT, 自己重画了一遍，关于NAT和FULLNAT的区别如下图所示：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/LVS%20%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%20fullnat%20%E6%A8%A1%E5%BC%8F%E5%92%8C%20nat%20%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB/01.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;看完上图后发现 FULLNAT有一个问题是：RealServer无法获得用户IP；淘宝通过叫TOA的方式解决的，</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;主要原理是：将 client address 放到了TCP Option 里面带给后端RealServer，RealServer 收到后保存在 socket 的结构体里并通过toa内核模块 hook 了 getname 函数，这样当用户调用 getname 获取远端地址时，返回的是保存在 socket 的 TCPOption 的 IP . 百度的 BVS 是通过叫 ttm 模块实现的，其实现方式跟 toa 基本一样，只是没有开源.</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;实现原理图如下：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/LVS%20%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%20fullnat%20%E6%A8%A1%E5%BC%8F%E5%92%8C%20nat%20%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB/03.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面看下上面说的逻辑的实现<a href="https://github.com/alibaba/LVS" target="_blank" rel="external">代码</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;lvs侧在TCP报文的选项中插入clientip代码: tcp_fnat_in_handler()</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/LVS%20%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%20fullnat%20%E6%A8%A1%E5%BC%8F%E5%92%8C%20nat%20%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB/04.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;RS 侧收到建连报文时，取出 toa 里面的 client ip 和 port  存放在 socket 的 use_data 里, toa.c</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/LVS%20%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%20fullnat%20%E6%A8%A1%E5%BC%8F%E5%92%8C%20nat%20%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB/05.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;HOOK挂载：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/LVS%20%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%20fullnat%20%E6%A8%A1%E5%BC%8F%E5%92%8C%20nat%20%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB/06.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当应用层调用 getpeername() 或者 getsocketname() 时，会进入到 inet_getname_toa,如果存在toa 信息则将 socket 存放的真是的 clientip 返回给应用层。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LVS/">LVS</a></li></ul>
 	</div>
 
       

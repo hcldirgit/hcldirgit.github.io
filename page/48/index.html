@@ -168,10 +168,10 @@
 </nav>
       <div class="body-wrap">
   
-    <article id="post-2. Linux 命令/74. Linux 命令- rpm" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-2. Linux 命令/25. Linux 文件属性详解" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/09/03/2. Linux 命令/74. Linux 命令- rpm/" class="article-date">
+      <a href="/2017/09/03/2. Linux 命令/25. Linux 文件属性详解/" class="article-date">
   	<time datetime="2017-09-02T17:57:34.247Z" itemprop="datePublished">2017-09-03</time>
 </a>
     </div>
@@ -183,8 +183,8 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/2. Linux 命令/74. Linux 命令- rpm/">
-        Linux 命令- rpm
+      <a class="article-title" href="/2017/09/03/2. Linux 命令/25. Linux 文件属性详解/">
+        Linux 文件属性详解
         
       </a>
     </h1>
@@ -195,90 +195,34 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;rpm命令是RPM软件包的管理工具。RPM是 “Redhat Package Manager” 的缩写，根据名字也能猜到这是Redhat公司开发出来的。RPM 是以一种数据库记录的方式来将需要的套件安装到Linux 主机的一套管理程序。也就是说，linux系统中存在着一个关于RPM的数据库，它记录了安装的包以及包与包之间依赖相关性。RPM包是预先在linux机器上编译好并打包好的文件，安装起来非常快捷。但是也有一些缺点，比如安装的环境必须与编译时的环境一致或者相当；包与包之间存在着相互依赖的情况；卸载包时需要先把依赖的包卸载掉，如果依赖的包是系统所必须的，那就不能卸载这个包，否则会造成系统崩溃。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果光驱中还有系统安装盘的话，可以通过 mount /dev/cdrom /mnt 命令把光驱挂载到/mnt目录下，那么会在/mnt/Packages目录下看到很多.rpm的文件，这就是RPM包了。</p>
-<h2 id="命令格式"><a href="#命令格式" class="headerlink" title="命令格式"></a>命令格式</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rpm [选项] [参数]</div></pre></td></tr></table></figure>
-<h2 id="命令选项"><a href="#命令选项" class="headerlink" title="命令选项"></a>命令选项</h2><ul>
-<li>-a：查询所有套件； </li>
-<li>-b&lt;完成阶段&gt;&lt;套件档&gt;+或-t &lt;完成阶段&gt;&lt;套件档&gt;+：设置包装套件的完成阶段，并指定套件档的文件名称； </li>
-<li>-c：只列出组态配置文件，本参数需配合”-l”参数使用； </li>
-<li>-d：只列出文本文件，本参数需配合”-l”参数使用； </li>
-<li>-e&lt;套件档&gt;或–erase&lt;套件档&gt;：删除指定的套件； </li>
-<li>-f&lt;文件&gt;+：查询拥有指定文件的套件；</li>
-<li>-h或–hash：套件安装时列出标记； </li>
-<li>-i：显示套件的相关信息； </li>
-<li>-i&lt;套件档&gt;或–install&lt;套件档&gt;：安装指定的套件档； </li>
-<li>-l：显示套件的文件列表； </li>
-<li>-p&lt;套件档&gt;+：查询指定的RPM套件档； </li>
-<li>-q：使用询问模式，当遇到任何问题时，rpm指令会先询问用户； </li>
-<li>-R：显示套件的关联性信息； </li>
-<li>-s：显示文件状态，本参数需配合”-l”参数使用； </li>
-<li>-U&lt;套件档&gt;或–upgrade&lt;套件档&gt;：升级指定的套件档； </li>
-<li>-v：显示指令执行过程； </li>
-<li>-vv：详细显示指令执行过程，便于排错。</li>
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Linux 文件或目录的属性主要包括：文件或目录的节点、种类、权限模式、链接数量、所归属的用户和用户组、最近访问或修改的时间等内容。具体情况如下：</p>
+<h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls -lih</div></pre></td></tr></table></figure>
+<h2 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># ls -lih</span></div><div class="line">总计 316K</div><div class="line">2095120 lrwxrwxrwx 1 root root   11 11-22 06:58 linklog.log -&gt; log2012.log</div><div class="line">2095112 -rw-r--r-- 1 root root 296K 11-13 06:03 log2012.log</div><div class="line">2095110 -rw-r--r-- 1 root root   61 11-13 06:03 log2013.log</div><div class="line">2095107 -rw-r--r-- 1 root root    0 11-13 06:03 log2014.log</div><div class="line">2095117 -rw-r--r-- 1 root root    0 11-13 06:06 log2015.log</div><div class="line">2095118 -rw-r--r-- 1 root root    0 11-16 14:41 log2016.log</div><div class="line">2095119 -rw-r--r-- 1 root root    0 11-16 14:43 log2017.log</div><div class="line">2095113 drwxr-xr-x 6 root root 4.0K 10-27 01:58 scf</div><div class="line">2095109 drwxrwxr-x 2 root root 4.0K 11-13 06:08 test3</div><div class="line">2095131 drwxrwxr-x 2 root root 4.0K 11-13 05:50 test4</div></pre></td></tr></table></figure>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><ul>
+<li>第一列：inode</li>
+<li>第二列：文件种类和权限；</li>
+<li>第三列： 硬链接个数；</li>
+<li>第四列： 属主；</li>
+<li>第五列：所归属的组；</li>
+<li>第六列：文件或目录的大小；</li>
+<li>第七列和第八列：最后访问或修改时间；</li>
+<li>第九列：文件名或目录名</li>
 </ul>
-<h2 id="命令参数"><a href="#命令参数" class="headerlink" title="命令参数"></a>命令参数</h2><ul>
-<li>软件包：指定要操纵的rpm软件包</li>
-</ul>
-<h2 id="使用实例"><a href="#使用实例" class="headerlink" title="使用实例"></a>使用实例</h2><h3 id="实例1：安装一个rpm"><a href="#实例1：安装一个rpm" class="headerlink" title="实例1：安装一个rpm"></a>实例1：安装一个rpm</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># rpm -ivh /mnt/Packages/libjpeg-turbo-devel-1.2.1-1.el6.i686.rpm</span></div><div class="line">Preparing... <span class="comment">########################################### [100%]</span></div><div class="line">1:libjpeg-turbo-devel <span class="comment">########################################### [100%]</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其中libhpeg-turbo-devel-1.2.1-1，el6.i686.rpm 是rpm包的文件名。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另外在安装一个rpm常用的附带参数：</p>
-<ul>
-<li><strong>–force</strong>:强制安装，即使覆盖属于其他包的文件也要安装</li>
-<li><strong>nodeps</strong>：当要安装的rpm包依赖其他包时，几十其他包没有安装，也要安装这个包</li>
-</ul>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;也就是说 <code>rpm -i --force --nodeps</code> 可以忽略所有依赖关系和文件问题，什么包都能安装上，但这种强制安装的软件包不能保证完全发挥功能。</p>
-<h3 id="实例2：升级一个rpm包"><a href="#实例2：升级一个rpm包" class="headerlink" title="实例2：升级一个rpm包"></a>实例2：升级一个rpm包</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rpm -Uvh filename</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;“-U”即升级的意思</p>
-<h3 id="实例3：卸载一个rpm包"><a href="#实例3：卸载一个rpm包" class="headerlink" title="实例3：卸载一个rpm包"></a>实例3：卸载一个rpm包</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rpm -e filename</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># rpm -qa |grep libjpeg-turbo-devel</span></div><div class="line">libjpeg-turbo-devel-1.2.1-1.el6.i686</div><div class="line">[root@localhost ~]<span class="comment"># rpm -e libjpeg-turbo-devel</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong><br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里的filename是通过rpm的查询功能所查询到的。卸载时后边跟的filename和安装时的是有区别的，安装时是把一个存在的文件作为参数，而卸载时只需要包名即可。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有时会出现一些错误或者警告</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">... is needed by ...</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这说明这个软件被其他软件需要，不能随便卸载，可以用 <code>rpm -e --nodeps</code> 强制卸载</p>
-<h3 id="实例4：如何安装-src-rpm软件包"><a href="#实例4：如何安装-src-rpm软件包" class="headerlink" title="实例4：如何安装.src.rpm软件包"></a>实例4：如何安装.src.rpm软件包</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有些rpm包是以 .src.rpm结尾的，这类rpm包是包含了源代码的rpm包，在安装时需要进行编译。这类rpm包有两种方法安装：</p>
-<h4 id="方法一："><a href="#方法一：" class="headerlink" title="方法一："></a>方法一：</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">rpm -i your-package.src.rpm </div><div class="line"><span class="built_in">cd</span> /usr/src/redhat/SPECS </div><div class="line">rpmbuild -bp your-package.specs <span class="comment">#一个和软件包同名的specs文件 </span></div><div class="line"><span class="built_in">cd</span> /usr/src/redhat/BUILD/your-package/ <span class="comment">#一个和软件包同名的目录 </span></div><div class="line">./configure <span class="comment">#这一步和编译普通的源码软件一样，可以加上参数 </span></div><div class="line">make </div><div class="line">make install</div></pre></td></tr></table></figure>
-<h4 id="方法二："><a href="#方法二：" class="headerlink" title="方法二："></a>方法二：</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">rpm -i you-package.src.rpm </div><div class="line"><span class="built_in">cd</span> /usr/src/redhat/SPECS</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;前两步和方法一相同</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rpmbuild -bb your-package.specs   <span class="comment">#一个和软件包同名的specs文件</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这是在 <code>/usr/src/redhat/RPM/i386/</code>（根据提提包的不同，也可能是i686、noarch等等）在这个目录下，有一个新的rpm包，这个是编译好的二进制文件。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;执行 <code>rpm -i new-package.rpm</code>即可安装完成。</p>
-<h3 id="实例5：不安装但是获取rpm包中的文件"><a href="#实例5：不安装但是获取rpm包中的文件" class="headerlink" title="实例5：不安装但是获取rpm包中的文件"></a>实例5：不安装但是获取rpm包中的文件</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需要使用工具 <code>rpm2cpio</code>和<code>cpio</code></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">rpm2cpio xxx.rpm | cpio -vi</div><div class="line">rpm2cpio xxx.rpm | cpio -idmv</div><div class="line">rpm2cpio xxx.rpm | cpio --extract --make-firectories</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;参数i和extract相同，表示提取文件。v表示显示执行进程，d和make-directory相同，表示根据包中文件原来的路径建立目录，m表示保持文件的更新时间。</p>
-<h3 id="实例6：查看与rpm包相关的文件和其他信息"><a href="#实例6：查看与rpm包相关的文件和其他信息" class="headerlink" title="实例6：查看与rpm包相关的文件和其他信息"></a>实例6：查看与rpm包相关的文件和其他信息</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;假设使用rpm包<code>mysql-3.23.54a-11</code></p>
-<h4 id="1-列出系统中所有安装过的rpm包"><a href="#1-列出系统中所有安装过的rpm包" class="headerlink" title="1. 列出系统中所有安装过的rpm包"></a>1. 列出系统中所有安装过的rpm包</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rpm -qa</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查找所有安装过的包含某个字符串sql的rpm包</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rpm -qa | grep sql</div></pre></td></tr></table></figure>
-<h4 id="2-获得某个rpm包的文件全名"><a href="#2-获得某个rpm包的文件全名" class="headerlink" title="2. 获得某个rpm包的文件全名"></a>2. 获得某个rpm包的文件全名</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rpm -q mysql</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以获得系统中安装的mysql软件包全名，从中可以获得当前软件包的版本信息。此例可以得到信息 mysql-3.23.54a-11</p>
-<h4 id="3-一个rpm包中的文件的安装路径"><a href="#3-一个rpm包中的文件的安装路径" class="headerlink" title="3. 一个rpm包中的文件的安装路径"></a>3. 一个rpm包中的文件的安装路径</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rpm -ql 包名</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意：这里的是不包括 .rpm 后缀的rpm包的名称，也就是说这能使用mysql或者mysql-3.23.54a-11而不是mysql-3.23.54a-11.rpm。如果只是想知道可执行程序放到那里去了，也可以用which</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">which</span> mysql</div></pre></td></tr></table></figure>
-<h4 id="4-一个rpm包中包含哪些文件。"><a href="#4-一个rpm包中包含哪些文件。" class="headerlink" title="4. 一个rpm包中包含哪些文件。"></a>4. 一个rpm包中包含哪些文件。</h4><ul>
-<li>一个没有安装过的rpm包，使用 </li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rpm -qlp ***.rpm</div></pre></td></tr></table></figure>
-<ul>
-<li>一个已经安装过的rpm包，还可以使用 </li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rpm -ql ***.rpm</div></pre></td></tr></table></figure>
-<h4 id="5-获取关于一个rpm包的版本，用途等相关信息"><a href="#5-获取关于一个rpm包的版本，用途等相关信息" class="headerlink" title="5. 获取关于一个rpm包的版本，用途等相关信息"></a>5. 获取关于一个rpm包的版本，用途等相关信息</h4><ul>
-<li>一个没有安装过的rpm包，使用</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rpm -qip ***.rpm</div></pre></td></tr></table></figure>
-<ul>
-<li>一个已经安装过的rpm包，还可以使用</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rpm -qi ***.rpm</div></pre></td></tr></table></figure>
-<h4 id="6-某个程序是哪个rpm包安装的，或者哪个rpm包包含这个程序"><a href="#6-某个程序是哪个rpm包安装的，或者哪个rpm包包含这个程序" class="headerlink" title="6. 某个程序是哪个rpm包安装的，或者哪个rpm包包含这个程序"></a>6. 某个程序是哪个rpm包安装的，或者哪个rpm包包含这个程序</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">rpm -qf `<span class="built_in">which</span> 程序名` <span class="comment">#返回软件包的全名 </span></div><div class="line">rpm -qif `<span class="built_in">which</span> 程序名` <span class="comment">#返回软件包的有关信息 </span></div><div class="line">rpm -qlf `<span class="built_in">which</span> 程序名` <span class="comment">#返回软件包的文件列表</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意：这里不是引号，而是`(反引号)，就是键盘左上角那个键。也可以使用 <code>rpm -qilf</code>，同时输出rpm包信息和文件列表</p>
-<h4 id="7-某个文件是哪个rpm包安装的，或者哪个rpm包包含这个文件。"><a href="#7-某个文件是哪个rpm包安装的，或者哪个rpm包包含这个文件。" class="headerlink" title="7. 某个文件是哪个rpm包安装的，或者哪个rpm包包含这个文件。"></a>7. 某个文件是哪个rpm包安装的，或者哪个rpm包包含这个文件。</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意，前一个问题中的方法，只适用与可执行的程序，而下面的方法，不仅可以用于可执行程序，也可以用于普通的任何文件。前提是知道这个文件名。首先获得这个程序的完整路径，可以用whereis或者which，然后使用rpm -qf例如：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">whereis ftptop </div><div class="line">ftptop: /usr/bin/ftptop /usr/share/man/man1/ftptop.1.gz </div><div class="line">rpm -qf /usr/bin/ftptop proftpd-1.2.8-1 </div><div class="line">rpm -qf /usr/share/doc/proftpd-1.2.8/rfc/rfc0959.txt proftpd-1.2.8-1</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以 <code>log2012.log</code> 为例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">2095112 -rw-r--r-- 1 root root 296K 11-13 06:03 log2012.log</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;文件类型：文件类型是-，表示这是一个普通文件； 关于文件的类型，请参考：<a href="https://hcldirgit.github.io/2017/06/09/24.%20Linux%20%E6%96%87%E4%BB%B6%E7%B1%BB%E5%9E%8B%E4%B8%8E%E6%89%A9%E5%B1%95%E5%90%8D/">Linux文件类型与扩展名</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;文件权限：文件权限是rw-r–r– ，表示文件属主可读、可写、不可执行，文件所归属的用户组不可写，可读，不可执行，其它用户不可写，可读，不可执行；</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;硬链接个数： log2012.log这个文件没有硬链接；因为数值是1，就是他本身；</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;文件属主：也就是这个文件归哪于哪个用户 ，它归于root，也就是第一个root；</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;文件属组：也就是说，对于这个文件，它归属于哪个用户组，在这里是root用户组；</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;文件大小：文件大小是296k个字节；</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;访问可修改时间 ：这里的时间是最后访问的时间，最后访问和文件被修改或创建的时间，有时并不是一致的；</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当然文档的属性不仅仅包括这些，这些是我们最常用的一些属性。</p>
+<h2 id="关于-inode"><a href="#关于-inode" class="headerlink" title="关于 inode"></a>关于 inode</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;inode 译成中文就是索引节点。每个存储设备或存储设备的分区（存储设备是硬盘、软盘、U盘等等）被格式化为文件系统后，应该有两部份，一部份是inode，另一部份是Block，Block是用来存储数据用的。而inode呢，就是用来存储这些数 据的信息，这些信息包括文件大小、属主、归属的用户组、读写权限等。inode为每个文件进行信息索引，所以就有了inode的数值。操作系统根据指令， 能通过inode值最快的找到相对应的文件。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;做个比喻，比如一本书，存储设备或分区就相当于这本书，Block相当于书中的每一页，inode 就相当于这本书前面的目录，一本书有很多的内容，如果想查找某部份的内容，我们可以先查目录，通过目录能最快的找到我们想要看的内容。虽然不太恰当，但还是比较形象。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当我们用ls 查看某个目录或文件时，如果加上-i 参数，就可以看到inode节点了；比如我们前面所说的例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment">#  ls -li log2012.log </span></div><div class="line">2095112 -rw-r--r-- 1 root root 302108 11-13 06:03 log2012.log</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;log2012.log 的inode值是 2095112 ； 查看一个文件或目录的inode，要通过ls 命令的的 -i参数。</p>
 
       
     </div>

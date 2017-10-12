@@ -1269,81 +1269,6 @@
 
 
   
-    <article id="post-Nagios/1. Nagios 安装" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Nagios/1. Nagios 安装/" class="article-date">
-  	<time datetime="2017-09-02T18:06:42.827Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Nagios/1. Nagios 安装/">
-        Nagios安装
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<a href="http://nagios.org" target="_blank" rel="external">Nagios官网</a></p>
-<h2 id="1-nagios-简介"><a href="#1-nagios-简介" class="headerlink" title="1.nagios 简介"></a>1.nagios 简介</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;nagios 是一个开源软件，可以监控网络设备网络流量、linux/windows 主机状态，甚至可以监控打印机。它可以运行在 linux 上或 windows 上。基于浏览器的 web 界面方便运维人员查看监控项目的状态，支持 web 界面配置、管理操作、支持短信、邮件通知，可以自定义脚本实现自定义化监控。</p>
-<h2 id="2-nagios-安装-服务端（192-168-0-62）"><a href="#2-nagios-安装-服务端（192-168-0-62）" class="headerlink" title="2.nagios 安装 - 服务端（192.168.0.62）"></a>2.nagios 安装 - 服务端（192.168.0.62）</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先来安装服务器，nagios 同样也是需要 apache + php 的环境，centos 6 默认的 yum 源里没有 nagios 相关的 rpm 包，需要安装一个 epel 的扩展源。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@nagios ~]<span class="comment"># yum install -y epel-release</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后安装 nagios 相关的包</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@nagios ~]<span class="comment"># yum install -y httpd nagios nagios-plugins nagios-plugins-all nrpe nagios-plugins-nrpe</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;设置登录 nagios 后台的用户和密码：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@nagios ~]<span class="comment"># htpasswd -c /etc/nagios/passwd nagiosadmin</span></div><div class="line">New password: </div><div class="line">Re-type new password: </div><div class="line">Adding password <span class="keyword">for</span> user nagiosadmin</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;检查配置文件是否有问题</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@nagios ~]<span class="comment"># nagios -v /etc/nagios/nagios.cfg</span></div></pre></td></tr></table></figure>
-<p><img src="https://github.com/hcldirgit/image/blob/master/nagios%E5%AE%89%E8%A3%85/01.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明配置文件没有问题</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动服务</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@nagios ~]<span class="comment"># service httpd start</span></div><div class="line">[root@nagios ~]<span class="comment"># service nagios start</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;浏览器访问 <a href="http://ip/nagios" target="_blank" rel="external">http://ip/nagios</a></p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/nagios%E5%AE%89%E8%A3%85/03.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输入设置的帐号密码登录</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/nagios%E5%AE%89%E8%A3%85/02.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;此时，nagios 监控的只有 localhost ，还没有其他机器，要想添加监控客户机，还需要在客户端安装 nagios 相关的软件包，并且需要在服务端配置。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nagios/">Nagios</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-Nagios/2. nagios 监控客户端" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1426,6 +1351,81 @@
 <p><img src="https://github.com/hcldirgit/image/blob/master/nagios%E7%9B%91%E6%8E%A7%E5%AE%A2%E6%88%B7%E7%AB%AF/08.png?raw=true" alt=""></p>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;稍微等一会就可以查看到具体的状态了。</p>
 <p><img src="https://github.com/hcldirgit/image/blob/master/nagios%E7%9B%91%E6%8E%A7%E5%AE%A2%E6%88%B7%E7%AB%AF/09.png?raw=true" alt=""></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nagios/">Nagios</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Nagios/1. Nagios 安装" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Nagios/1. Nagios 安装/" class="article-date">
+  	<time datetime="2017-09-02T18:06:42.827Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Nagios/1. Nagios 安装/">
+        Nagios安装
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<a href="http://nagios.org" target="_blank" rel="external">Nagios官网</a></p>
+<h2 id="1-nagios-简介"><a href="#1-nagios-简介" class="headerlink" title="1.nagios 简介"></a>1.nagios 简介</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;nagios 是一个开源软件，可以监控网络设备网络流量、linux/windows 主机状态，甚至可以监控打印机。它可以运行在 linux 上或 windows 上。基于浏览器的 web 界面方便运维人员查看监控项目的状态，支持 web 界面配置、管理操作、支持短信、邮件通知，可以自定义脚本实现自定义化监控。</p>
+<h2 id="2-nagios-安装-服务端（192-168-0-62）"><a href="#2-nagios-安装-服务端（192-168-0-62）" class="headerlink" title="2.nagios 安装 - 服务端（192.168.0.62）"></a>2.nagios 安装 - 服务端（192.168.0.62）</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先来安装服务器，nagios 同样也是需要 apache + php 的环境，centos 6 默认的 yum 源里没有 nagios 相关的 rpm 包，需要安装一个 epel 的扩展源。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@nagios ~]<span class="comment"># yum install -y epel-release</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后安装 nagios 相关的包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@nagios ~]<span class="comment"># yum install -y httpd nagios nagios-plugins nagios-plugins-all nrpe nagios-plugins-nrpe</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;设置登录 nagios 后台的用户和密码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@nagios ~]<span class="comment"># htpasswd -c /etc/nagios/passwd nagiosadmin</span></div><div class="line">New password: </div><div class="line">Re-type new password: </div><div class="line">Adding password <span class="keyword">for</span> user nagiosadmin</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;检查配置文件是否有问题</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@nagios ~]<span class="comment"># nagios -v /etc/nagios/nagios.cfg</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/nagios%E5%AE%89%E8%A3%85/01.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明配置文件没有问题</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@nagios ~]<span class="comment"># service httpd start</span></div><div class="line">[root@nagios ~]<span class="comment"># service nagios start</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;浏览器访问 <a href="http://ip/nagios" target="_blank" rel="external">http://ip/nagios</a></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/nagios%E5%AE%89%E8%A3%85/03.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输入设置的帐号密码登录</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/nagios%E5%AE%89%E8%A3%85/02.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;此时，nagios 监控的只有 localhost ，还没有其他机器，要想添加监控客户机，还需要在客户端安装 nagios 相关的软件包，并且需要在服务端配置。</p>
 
       
     </div>

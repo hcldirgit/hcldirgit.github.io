@@ -345,98 +345,6 @@
 
 
   
-    <article id="post-2. Linux 命令/77. Linux 命令- w" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/2. Linux 命令/77. Linux 命令- w/" class="article-date">
-  	<time datetime="2017-09-02T17:57:34.284Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/2. Linux 命令/77. Linux 命令- w/">
-        Linux 命令- w
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;w命令用于显示已经登陆系统的用户列表，并显示用户正在执行的指令。执行这个命令可得知目前登入系统的用户有那些人，以及他们正在执行的程序。单独执行w命令会显示所有的用户，您也可指定用户名称，仅显示某位用户的相关信息。</p>
-<h2 id="命令格式"><a href="#命令格式" class="headerlink" title="命令格式"></a>命令格式</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">w [参数] [用户名称]</div></pre></td></tr></table></figure>
-<h2 id="命令选项"><a href="#命令选项" class="headerlink" title="命令选项"></a>命令选项</h2><ul>
-<li>-f 　开启或关闭显示用户从何处登入系统。 </li>
-<li>-h 　不显示各栏位的标题信息列。 </li>
-<li>-l 　使用详细格式列表，此为预设值。 </li>
-<li>-s 　使用简洁格式列表，不显示用户登入时间，终端机阶段作业和程序所耗费的CPU时间。 </li>
-<li>-u 　忽略执行程序的名称，以及该程序耗费CPU时间的信息。 </li>
-<li>-V 　显示版本信息。 </li>
-</ul>
-<h2 id="命令功能"><a href="#命令功能" class="headerlink" title="命令功能"></a>命令功能</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;显示目前登入系统的用户信息。 </p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;执行这项指令可得知目前登入系统的用户有那些人，以及他们正在执行的程序。单独执行w<br>指令会显示所有的用户，您也可指定用户名称，仅显示某位用户的相关信息。 </p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;w命令也用于显示登录到系统的用户情况，但是与who不同的是，w命令功能更加强大，它不但可以显示有谁登录到系统，还可以显示出这些用户当前正在进行的工作，感觉比较实用，具体用法如下： </p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;w命令的显示项目按以下顺序排列：当前时间，系统启动到现在的时间，登录用户的数目，系统在最 近1秒、5秒和15秒的平均负载。然后是每个用户的各项数据，项目显示顺序如下：登录帐号、终端名称、远 程主机名、登录时间、空闲时间、JCPU、PCPU、当前正在运行进程的命令行。 </p>
-<h2 id="使用实例"><a href="#使用实例" class="headerlink" title="使用实例"></a>使用实例</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># w </span></div><div class="line">20:39:37 up 136 days, 3:58, 1 user, load average: 0.00, 0.00, 0.00 </div><div class="line">USER   TTY     FROM             login@   IDLE    JCPU    PCPU   WHAT </div><div class="line">root   pts/0   222.94.97.122   20:39    1.00s   0.00s   0.00s   w</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;linux管理员最常用的命令就是这个 <code>w</code> 了，该命令显示的信息还是蛮丰富的。第一行从左面开始显示的信息依次为：时间，系统运行时间，登录用户数，平均负载。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第二行开始以及下面所有的行，告诉我们的信息是，当前登录的都有哪些用户，以及他们是从哪里登录的等等。</p>
-<ul>
-<li>USER：登录用户名</li>
-<li>TTY：登录后系统分配的终端号</li>
-<li>FROM：远程主机名，即从哪里登录的</li>
-<li>LOGIN@：何时登录</li>
-<li>IDLE：用户空间时间，这是个计时器，一旦用户执行任何操作，该计时器便会被重置</li>
-<li>JCPU：和该终端连接的所有进程占用时间。包括当前正在运行的后台作业占用时间</li>
-<li>PCPU：当前进程所占用的时间</li>
-<li>WHAT：当前正在运行进程的命令行</li>
-</ul>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在这些信息中，我们最应该关注的应该是第一行中的 ‘load average:’ 后面的三个数值。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第一个数值表示1分钟内系统的平均负载值；第二个数值表示5分钟内系统的平均负载值；第三个数值表示15分钟系统的平均负载值。这个值的意义是，单位时间段内CPU活动进程数。当然这个值越大就说明服务器压力越大。一般情况下这个值只要不超过服务器的cpu数量就没有关系，如果服务器cpu数量为8，那么这个值若小于8，就说明当前服务器没有压力，否则就要关注一下了。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;怎么查看服务器有几个cpu</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">grep -c <span class="string">'processor'</span> /proc/cpuinfo</div></pre></td></tr></table></figure>
-<p><img src="https://github.com/hcldirgit/image/blob/master/linux%E5%91%BD%E4%BB%A4-w/01.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;‘/proc/cpuinfo’ 这个文件记录了cpu的详细信息。目前市面上的服务器通常都是2颗4核cpu，在linux看来，它就是8个cpu。查看这个文件时则会显示8段类似的信息，而最后一段信息中processor : 后面跟的是 ‘7’ 所以查看当前系统有几个cpu，我们可以使用这个命令： grep -c ‘processor’ /proc/cpuinfo 而如何看几颗物理cpu呢，需要查看关键字 “physical id”</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另外，uptime命令同样可以查看系统负载。实际上uptime得出的结果和w的第一行是一致的。</p>
-<h2 id="备注"><a href="#备注" class="headerlink" title="备注"></a>备注</h2><p>1) 区别于<code>who</code>命令，<code>w</code>命令不仅可以看到登录服务器的用户信息，而且可以看到这些用户做了什么<br>2) <code>who am i</code>命令，显示出自己在系统中的用户名，登录终端，登录时间<br>3) <code>whoami</code>命令，显示自己在系统中的用户名<br>4) <code>logname</code>命令，可以显示自己初次登录到系统中的用户名，主要识别sudo前后情形<br>5) <code>last</code>命令，查看最近1个月用户登录服务器的情况<br>6) <code>tty</code>命令，来查看所连接的设备或终端</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux命令/">Linux命令</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-2. Linux 命令/58. Linux 命令- netstat" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -601,6 +509,98 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">[root@andy ~]<span class="comment"># netstat -anpt | grep ':16064'</span></div><div class="line">tcp        0      0 :::16064                    :::*                        LISTEN      24594/java          </div><div class="line">tcp        0      0 ::ffff:192.168.120.20:16064 ::ffff:192.168.119.201:6462 ESTABLISHED 24594/java          </div><div class="line">tcp        0      0 ::ffff:192.168.120.20:16064 ::ffff:192.168.119.20:26341 ESTABLISHED 24594/java          </div><div class="line">tcp        0      0 ::ffff:192.168.120.20:16064 ::ffff:192.168.119.20:32208 ESTABLISHED 24594/java          </div><div class="line">tcp        0      0 ::ffff:192.168.120.20:16064 ::ffff:192.168.119.20:32207 ESTABLISHED 24594/java          </div><div class="line">tcp        0      0 ::ffff:192.168.120.20:16064 ::ffff:10.2.1.68:51303      ESTABLISHED 24594/java          </div><div class="line">tcp        0      0 ::ffff:192.168.120.20:16064 ::ffff:10.2.1.68:51302      ESTABLISHED 24594/java          </div><div class="line">tcp        0      0 ::ffff:192.168.120.20:16064 ::ffff:10.2.1.68:50020      ESTABLISHED 24594/java          </div><div class="line">tcp        0      0 ::ffff:192.168.120.20:16064 ::ffff:10.2.1.68:50019      ESTABLISHED 24594/java          </div><div class="line">tcp        0      0 ::ffff:192.168.120.20:16064 ::ffff:10.2.1.68:56155      ESTABLISHED 24594/java          </div><div class="line">tcp        0      0 ::ffff:192.168.120.20:16064 ::ffff:10.2.1.68:50681      ESTABLISHED 24594/java          </div><div class="line">tcp        0      0 ::ffff:192.168.120.20:16064 ::ffff:10.2.1.68:50680      ESTABLISHED 24594/java          </div><div class="line">tcp        0      0 ::ffff:192.168.120.20:16064 ::ffff:10.2.1.68:52136      ESTABLISHED 24594/java          </div><div class="line">tcp        0      0 ::ffff:192.168.120.20:16064 ::ffff:10.2.1.68:56989      ESTABLISHED 24594/java          </div><div class="line">tcp        0      0 ::ffff:192.168.120.20:16064 ::ffff:10.2.1.68:56988      ESTABLISHED 24594/java          </div><div class="line">[root@andy ~]<span class="comment">#</span></div></pre></td></tr></table></figure>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong></p>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;运行在端口16064的进程id为24596，再通过ps命令就可以找到具体的应用程序了。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux命令/">Linux命令</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-2. Linux 命令/77. Linux 命令- w" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/2. Linux 命令/77. Linux 命令- w/" class="article-date">
+  	<time datetime="2017-09-02T17:57:34.284Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/2. Linux 命令/77. Linux 命令- w/">
+        Linux 命令- w
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;w命令用于显示已经登陆系统的用户列表，并显示用户正在执行的指令。执行这个命令可得知目前登入系统的用户有那些人，以及他们正在执行的程序。单独执行w命令会显示所有的用户，您也可指定用户名称，仅显示某位用户的相关信息。</p>
+<h2 id="命令格式"><a href="#命令格式" class="headerlink" title="命令格式"></a>命令格式</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">w [参数] [用户名称]</div></pre></td></tr></table></figure>
+<h2 id="命令选项"><a href="#命令选项" class="headerlink" title="命令选项"></a>命令选项</h2><ul>
+<li>-f 　开启或关闭显示用户从何处登入系统。 </li>
+<li>-h 　不显示各栏位的标题信息列。 </li>
+<li>-l 　使用详细格式列表，此为预设值。 </li>
+<li>-s 　使用简洁格式列表，不显示用户登入时间，终端机阶段作业和程序所耗费的CPU时间。 </li>
+<li>-u 　忽略执行程序的名称，以及该程序耗费CPU时间的信息。 </li>
+<li>-V 　显示版本信息。 </li>
+</ul>
+<h2 id="命令功能"><a href="#命令功能" class="headerlink" title="命令功能"></a>命令功能</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;显示目前登入系统的用户信息。 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;执行这项指令可得知目前登入系统的用户有那些人，以及他们正在执行的程序。单独执行w<br>指令会显示所有的用户，您也可指定用户名称，仅显示某位用户的相关信息。 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;w命令也用于显示登录到系统的用户情况，但是与who不同的是，w命令功能更加强大，它不但可以显示有谁登录到系统，还可以显示出这些用户当前正在进行的工作，感觉比较实用，具体用法如下： </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;w命令的显示项目按以下顺序排列：当前时间，系统启动到现在的时间，登录用户的数目，系统在最 近1秒、5秒和15秒的平均负载。然后是每个用户的各项数据，项目显示顺序如下：登录帐号、终端名称、远 程主机名、登录时间、空闲时间、JCPU、PCPU、当前正在运行进程的命令行。 </p>
+<h2 id="使用实例"><a href="#使用实例" class="headerlink" title="使用实例"></a>使用实例</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># w </span></div><div class="line">20:39:37 up 136 days, 3:58, 1 user, load average: 0.00, 0.00, 0.00 </div><div class="line">USER   TTY     FROM             login@   IDLE    JCPU    PCPU   WHAT </div><div class="line">root   pts/0   222.94.97.122   20:39    1.00s   0.00s   0.00s   w</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;linux管理员最常用的命令就是这个 <code>w</code> 了，该命令显示的信息还是蛮丰富的。第一行从左面开始显示的信息依次为：时间，系统运行时间，登录用户数，平均负载。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第二行开始以及下面所有的行，告诉我们的信息是，当前登录的都有哪些用户，以及他们是从哪里登录的等等。</p>
+<ul>
+<li>USER：登录用户名</li>
+<li>TTY：登录后系统分配的终端号</li>
+<li>FROM：远程主机名，即从哪里登录的</li>
+<li>LOGIN@：何时登录</li>
+<li>IDLE：用户空间时间，这是个计时器，一旦用户执行任何操作，该计时器便会被重置</li>
+<li>JCPU：和该终端连接的所有进程占用时间。包括当前正在运行的后台作业占用时间</li>
+<li>PCPU：当前进程所占用的时间</li>
+<li>WHAT：当前正在运行进程的命令行</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在这些信息中，我们最应该关注的应该是第一行中的 ‘load average:’ 后面的三个数值。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第一个数值表示1分钟内系统的平均负载值；第二个数值表示5分钟内系统的平均负载值；第三个数值表示15分钟系统的平均负载值。这个值的意义是，单位时间段内CPU活动进程数。当然这个值越大就说明服务器压力越大。一般情况下这个值只要不超过服务器的cpu数量就没有关系，如果服务器cpu数量为8，那么这个值若小于8，就说明当前服务器没有压力，否则就要关注一下了。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;怎么查看服务器有几个cpu</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">grep -c <span class="string">'processor'</span> /proc/cpuinfo</div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/linux%E5%91%BD%E4%BB%A4-w/01.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;‘/proc/cpuinfo’ 这个文件记录了cpu的详细信息。目前市面上的服务器通常都是2颗4核cpu，在linux看来，它就是8个cpu。查看这个文件时则会显示8段类似的信息，而最后一段信息中processor : 后面跟的是 ‘7’ 所以查看当前系统有几个cpu，我们可以使用这个命令： grep -c ‘processor’ /proc/cpuinfo 而如何看几颗物理cpu呢，需要查看关键字 “physical id”</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另外，uptime命令同样可以查看系统负载。实际上uptime得出的结果和w的第一行是一致的。</p>
+<h2 id="备注"><a href="#备注" class="headerlink" title="备注"></a>备注</h2><p>1) 区别于<code>who</code>命令，<code>w</code>命令不仅可以看到登录服务器的用户信息，而且可以看到这些用户做了什么<br>2) <code>who am i</code>命令，显示出自己在系统中的用户名，登录终端，登录时间<br>3) <code>whoami</code>命令，显示自己在系统中的用户名<br>4) <code>logname</code>命令，可以显示自己初次登录到系统中的用户名，主要识别sudo前后情形<br>5) <code>last</code>命令，查看最近1个月用户登录服务器的情况<br>6) <code>tty</code>命令，来查看所连接的设备或终端</p>
 
       
     </div>
@@ -816,114 +816,6 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># ps -ef|grep init</span></div><div class="line">root         1     0  0 Nov02 ?        00:00:00 init [3]                  </div><div class="line">root     17563 17534  0 17:37 pts/1    00:00:00 grep init</div><div class="line">[root@localhost ~]<span class="comment"># kill -9 1</span></div><div class="line">[root@localhost ~]<span class="comment"># kill -HUP 1</span></div><div class="line">[root@localhost ~]<span class="comment"># ps -ef|grep init</span></div><div class="line">root         1     0  0 Nov02 ?        00:00:00 init [3]                  </div><div class="line">root     17565 17534  0 17:38 pts/1    00:00:00 grep init</div><div class="line">[root@localhost ~]<span class="comment"># kill -KILL 1</span></div><div class="line">[root@localhost ~]<span class="comment"># ps -ef|grep init</span></div><div class="line">root         1     0  0 Nov02 ?        00:00:00 init [3]                  </div><div class="line">root     17567 17534  0 17:38 pts/1    00:00:00 grep init</div><div class="line">[root@localhost ~]<span class="comment">#</span></div></pre></td></tr></table></figure>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong></p>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;init是Linux系统操作中不可缺少的程序之一。所谓的init进程，它是一个由内核启动的用户级进程。内核自行启动（已经被载入内存，开始运行，并已初始化所有的设备驱动程序和数据结构等）之后，就通过启动一个用户级程序init的方式，完成引导进程。所以,init始终是第一个进程（其进程编号始终为1）。 其它所有进程都是init进程的子孙。init进程是不可杀的！</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux命令/">Linux命令</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-2. Linux 命令/65. Linux 命令- sort" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/2. Linux 命令/65. Linux 命令- sort/" class="article-date">
-  	<time datetime="2017-09-02T17:57:34.280Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/2. Linux 命令/65. Linux 命令- sort/">
-        Linux 命令- sort
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;sort 命令在 linux 里非常有用，它将文件进行排序，并将排序结果标准输出。</p>
-<h2 id="1-命令语法"><a href="#1-命令语法" class="headerlink" title="1. 命令语法"></a>1. 命令语法</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sort [参数] [文件]</div></pre></td></tr></table></figure>
-<h2 id="2-命令功能"><a href="#2-命令功能" class="headerlink" title="2. 命令功能"></a>2. 命令功能</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用作排序</p>
-<h2 id="3-命令参数"><a href="#3-命令参数" class="headerlink" title="3. 命令参数"></a>3. 命令参数</h2><ul>
-<li>-b   忽略每行前面开始出的空格字符。</li>
-<li>-d   排序时，处理英文字母、数字及空格字符外，忽略其他的字符。</li>
-<li>-f   排序时，将小写字母视为大写字母。</li>
-<li>-i   排序时，除了040至176之间的ASCII字符外，忽略其他的字符。</li>
-<li>-c   检查文件是否已经按照顺序排序。</li>
-<li>-m   将几个排序好的文件进行合并。</li>
-<li>-M  前面3个字母依照月份的缩写进行排序。</li>
-<li>-n   依照数值的大小排序。</li>
-<li>-o&lt;输出文件&gt;   将排序后的结果存入指定的文件。</li>
-<li>-r   以相反的顺序来排序。</li>
-<li>-t&lt;分隔字符&gt;   指定排序时所用的栏位分隔字符。</li>
-<li>-k 指定域</li>
-<li>–help   显示帮助。</li>
-<li>–version   显示版本信息。</li>
-</ul>
-<h2 id="使用实例"><a href="#使用实例" class="headerlink" title="使用实例"></a>使用实例</h2><h3 id="实例1：对-etc-passwd-的帐号进行排序"><a href="#实例1：对-etc-passwd-的帐号进行排序" class="headerlink" title="实例1：对 /etc/passwd 的帐号进行排序"></a>实例1：对 /etc/passwd 的帐号进行排序</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat /etc/passwd|sort</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># cat /etc/passwd|sort</span></div><div class="line">adm:x:3:4:adm:/var/adm:/sbin/nologin</div><div class="line">bin:x:1:1:bin:/bin:/sbin/nologin</div><div class="line">chrony:x:997:995::/var/lib/chrony:/sbin/nologin</div><div class="line">daemon:x:2:2:daemon:/sbin:/sbin/nologin</div><div class="line">dbus:x:81:81:System message bus:/:/sbin/nologin</div><div class="line">ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin</div><div class="line">games:x:12:100:games:/usr/games:/sbin/nologin</div><div class="line">halt:x:7:0:halt:/sbin:/sbin/halt</div><div class="line">lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin</div><div class="line">mail:x:8:12:mail:/var/spool/mail:/sbin/nologin</div><div class="line">nobody:x:99:99:Nobody:/:/sbin/nologin</div><div class="line">operator:x:11:0:operator:/root:/sbin/nologin</div><div class="line">polkitd:x:998:996:User <span class="keyword">for</span> polkitd:/:/sbin/nologin</div><div class="line">postfix:x:89:89::/var/spool/postfix:/sbin/nologin</div><div class="line">root:x:0:0:root:/root:/bin/bash</div><div class="line">shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown</div><div class="line">sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin</div><div class="line">sync:x:5:0:sync:/sbin:/bin/sync</div><div class="line">systemd-bus-proxy:x:999:997:systemd Bus Proxy:/:/sbin/nologin</div><div class="line">systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin</div><div class="line">tss:x:59:59:Account used by the trousers package to sandbox the tcsd daemon:/dev/null:/sbin/nologin</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果 sort 不加任何选项，则从手自缚向后，一次按 ASCII 码值进行比较，最后将它们按升序输出。</p>
-<h3 id="实例2：对-etc-passwd-第三栏排序"><a href="#实例2：对-etc-passwd-第三栏排序" class="headerlink" title="实例2：对 /etc/passwd 第三栏排序"></a>实例2：对 /etc/passwd 第三栏排序</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat /etc/passwd|sort -t<span class="string">':'</span> -k 3</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># cat /etc/passwd|sort -t':' -k 3</span></div><div class="line">root:x:0:0:root:/root:/bin/bash</div><div class="line">operator:x:11:0:operator:/root:/sbin/nologin</div><div class="line">bin:x:1:1:bin:/bin:/sbin/nologin</div><div class="line">games:x:12:100:games:/usr/games:/sbin/nologin</div><div class="line">ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin</div><div class="line">systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin</div><div class="line">daemon:x:2:2:daemon:/sbin:/sbin/nologin</div><div class="line">adm:x:3:4:adm:/var/adm:/sbin/nologin</div><div class="line">lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin</div><div class="line">sync:x:5:0:sync:/sbin:/bin/sync</div><div class="line">tss:x:59:59:Account used by the trousers package to sandbox the tcsd daemon:/dev/null:/sbin/nologin</div><div class="line">shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown</div><div class="line">halt:x:7:0:halt:/sbin:/sbin/halt</div><div class="line">sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin</div><div class="line">mail:x:8:12:mail:/var/spool/mail:/sbin/nologin</div><div class="line">dbus:x:81:81:System message bus:/:/sbin/nologin</div><div class="line">postfix:x:89:89::/var/spool/postfix:/sbin/nologin</div><div class="line">chrony:x:997:995::/var/lib/chrony:/sbin/nologin</div><div class="line">polkitd:x:998:996:User <span class="keyword">for</span> polkitd:/:/sbin/nologin</div><div class="line">systemd-bus-proxy:x:999:997:systemd Bus Proxy:/:/sbin/nologin</div><div class="line">nobody:x:99:99:Nobody:/:/sbin/nologin</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认是以字符串来排序的</p>
-<h3 id="实例3：对-etc-passwd-第三栏以纯数字排序"><a href="#实例3：对-etc-passwd-第三栏以纯数字排序" class="headerlink" title="实例3：对 /etc/passwd 第三栏以纯数字排序"></a>实例3：对 /etc/passwd 第三栏以纯数字排序</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat /etc/passwd|sort -t<span class="string">':'</span> -k3 -n</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># cat /etc/passwd|sort -t':' -k 3 -n</span></div><div class="line">root:x:0:0:root:/root:/bin/bash</div><div class="line">bin:x:1:1:bin:/bin:/sbin/nologin</div><div class="line">daemon:x:2:2:daemon:/sbin:/sbin/nologin</div><div class="line">adm:x:3:4:adm:/var/adm:/sbin/nologin</div><div class="line">lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin</div><div class="line">sync:x:5:0:sync:/sbin:/bin/sync</div><div class="line">shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown</div><div class="line">halt:x:7:0:halt:/sbin:/sbin/halt</div><div class="line">mail:x:8:12:mail:/var/spool/mail:/sbin/nologin</div><div class="line">operator:x:11:0:operator:/root:/sbin/nologin</div><div class="line">games:x:12:100:games:/usr/games:/sbin/nologin</div><div class="line">ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin</div><div class="line">tss:x:59:59:Account used by the trousers package to sandbox the tcsd daemon:/dev/null:/sbin/nologin</div><div class="line">sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin</div><div class="line">dbus:x:81:81:System message bus:/:/sbin/nologin</div><div class="line">postfix:x:89:89::/var/spool/postfix:/sbin/nologin</div><div class="line">nobody:x:99:99:Nobody:/:/sbin/nologin</div><div class="line">systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin</div><div class="line">chrony:x:997:995::/var/lib/chrony:/sbin/nologin</div><div class="line">polkitd:x:998:996:User <span class="keyword">for</span> polkitd:/:/sbin/nologin</div><div class="line">systemd-bus-proxy:x:999:997:systemd Bus Proxy:/:/sbin/nologin</div></pre></td></tr></table></figure>
-<h3 id="实例4：去重复排序"><a href="#实例4：去重复排序" class="headerlink" title="实例4：去重复排序"></a>实例4：去重复排序</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sort -u seq.txt</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">[rocrocket@rocrocket programming]$ cat seq.txt</div><div class="line">banana</div><div class="line">apple</div><div class="line">pear</div><div class="line">orange</div><div class="line">pear</div><div class="line">[rocrocket@rocrocket programming]$ sort seq.txt</div><div class="line">apple</div><div class="line">banana</div><div class="line">orange</div><div class="line">pear</div><div class="line">pear</div><div class="line">[rocrocket@rocrocket programming]$ sort -u seq.txt</div><div class="line">apple</div><div class="line">banana</div><div class="line">orange</div><div class="line">pear</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;pear 由于重复被 -u 选项去重复了</p>
-<h3 id="实例5：进行降序排列"><a href="#实例5：进行降序排列" class="headerlink" title="实例5：进行降序排列"></a>实例5：进行降序排列</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sort -r number.txt</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">rocrocket@rocrocket programming]$ cat number.txt</div><div class="line">1</div><div class="line">3</div><div class="line">5</div><div class="line">2</div><div class="line">4</div><div class="line">[rocrocket@rocrocket programming]$ sort number.txt</div><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">[rocrocket@rocrocket programming]$ sort -r number.txt</div><div class="line">5</div><div class="line">4</div><div class="line">3</div><div class="line">2</div><div class="line">1</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;sort 默认的排列方式是升序，使用 -r 选项就可以改成降序</p>
-<h3 id="实例6：把排序结果输出到源文件中"><a href="#实例6：把排序结果输出到源文件中" class="headerlink" title="实例6：把排序结果输出到源文件中"></a>实例6：把排序结果输出到源文件中</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sort -r number.txt -o number.txt</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">[rocrocket@rocrocket programming]$ sort -r number.txt &gt; number.txt</div><div class="line">[rocrocket@rocrocket programming]$ cat number.txt</div><div class="line">[rocrocket@rocrocket programming]$</div><div class="line"></div><div class="line">[rocrocket@rocrocket programming]$ cat number.txt</div><div class="line">1</div><div class="line">3</div><div class="line">5</div><div class="line">2</div><div class="line">4</div><div class="line">[rocrocket@rocrocket programming]$ sort -r number.txt -o number.txt</div><div class="line">[rocrocket@rocrocket programming]$ cat number.txt</div><div class="line">5</div><div class="line">4</div><div class="line">3</div><div class="line">2</div><div class="line">1</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;直接把排序结果用重定向输出到源文件中，结果文件被清空了；使用 -o 选项解决了这个问题，可以放心把输出结果写入源文件</p>
 
       
     </div>
@@ -1182,6 +1074,114 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget --ftp-user=USERNAME --ftp-password=PASSWORD url</div></pre></td></tr></table></figure>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;备注：编译安装<br>使用如下命令编译安装： </p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># tar zxvf wget-1.9.1.tar.gz </span></div><div class="line"><span class="comment"># cd wget-1.9.1 </span></div><div class="line"><span class="comment"># ./configure </span></div><div class="line"><span class="comment"># make </span></div><div class="line"><span class="comment"># make install</span></div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux命令/">Linux命令</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-2. Linux 命令/65. Linux 命令- sort" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/2. Linux 命令/65. Linux 命令- sort/" class="article-date">
+  	<time datetime="2017-09-02T17:57:34.280Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/2. Linux 命令/65. Linux 命令- sort/">
+        Linux 命令- sort
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;sort 命令在 linux 里非常有用，它将文件进行排序，并将排序结果标准输出。</p>
+<h2 id="1-命令语法"><a href="#1-命令语法" class="headerlink" title="1. 命令语法"></a>1. 命令语法</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sort [参数] [文件]</div></pre></td></tr></table></figure>
+<h2 id="2-命令功能"><a href="#2-命令功能" class="headerlink" title="2. 命令功能"></a>2. 命令功能</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用作排序</p>
+<h2 id="3-命令参数"><a href="#3-命令参数" class="headerlink" title="3. 命令参数"></a>3. 命令参数</h2><ul>
+<li>-b   忽略每行前面开始出的空格字符。</li>
+<li>-d   排序时，处理英文字母、数字及空格字符外，忽略其他的字符。</li>
+<li>-f   排序时，将小写字母视为大写字母。</li>
+<li>-i   排序时，除了040至176之间的ASCII字符外，忽略其他的字符。</li>
+<li>-c   检查文件是否已经按照顺序排序。</li>
+<li>-m   将几个排序好的文件进行合并。</li>
+<li>-M  前面3个字母依照月份的缩写进行排序。</li>
+<li>-n   依照数值的大小排序。</li>
+<li>-o&lt;输出文件&gt;   将排序后的结果存入指定的文件。</li>
+<li>-r   以相反的顺序来排序。</li>
+<li>-t&lt;分隔字符&gt;   指定排序时所用的栏位分隔字符。</li>
+<li>-k 指定域</li>
+<li>–help   显示帮助。</li>
+<li>–version   显示版本信息。</li>
+</ul>
+<h2 id="使用实例"><a href="#使用实例" class="headerlink" title="使用实例"></a>使用实例</h2><h3 id="实例1：对-etc-passwd-的帐号进行排序"><a href="#实例1：对-etc-passwd-的帐号进行排序" class="headerlink" title="实例1：对 /etc/passwd 的帐号进行排序"></a>实例1：对 /etc/passwd 的帐号进行排序</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat /etc/passwd|sort</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># cat /etc/passwd|sort</span></div><div class="line">adm:x:3:4:adm:/var/adm:/sbin/nologin</div><div class="line">bin:x:1:1:bin:/bin:/sbin/nologin</div><div class="line">chrony:x:997:995::/var/lib/chrony:/sbin/nologin</div><div class="line">daemon:x:2:2:daemon:/sbin:/sbin/nologin</div><div class="line">dbus:x:81:81:System message bus:/:/sbin/nologin</div><div class="line">ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin</div><div class="line">games:x:12:100:games:/usr/games:/sbin/nologin</div><div class="line">halt:x:7:0:halt:/sbin:/sbin/halt</div><div class="line">lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin</div><div class="line">mail:x:8:12:mail:/var/spool/mail:/sbin/nologin</div><div class="line">nobody:x:99:99:Nobody:/:/sbin/nologin</div><div class="line">operator:x:11:0:operator:/root:/sbin/nologin</div><div class="line">polkitd:x:998:996:User <span class="keyword">for</span> polkitd:/:/sbin/nologin</div><div class="line">postfix:x:89:89::/var/spool/postfix:/sbin/nologin</div><div class="line">root:x:0:0:root:/root:/bin/bash</div><div class="line">shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown</div><div class="line">sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin</div><div class="line">sync:x:5:0:sync:/sbin:/bin/sync</div><div class="line">systemd-bus-proxy:x:999:997:systemd Bus Proxy:/:/sbin/nologin</div><div class="line">systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin</div><div class="line">tss:x:59:59:Account used by the trousers package to sandbox the tcsd daemon:/dev/null:/sbin/nologin</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果 sort 不加任何选项，则从手自缚向后，一次按 ASCII 码值进行比较，最后将它们按升序输出。</p>
+<h3 id="实例2：对-etc-passwd-第三栏排序"><a href="#实例2：对-etc-passwd-第三栏排序" class="headerlink" title="实例2：对 /etc/passwd 第三栏排序"></a>实例2：对 /etc/passwd 第三栏排序</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat /etc/passwd|sort -t<span class="string">':'</span> -k 3</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># cat /etc/passwd|sort -t':' -k 3</span></div><div class="line">root:x:0:0:root:/root:/bin/bash</div><div class="line">operator:x:11:0:operator:/root:/sbin/nologin</div><div class="line">bin:x:1:1:bin:/bin:/sbin/nologin</div><div class="line">games:x:12:100:games:/usr/games:/sbin/nologin</div><div class="line">ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin</div><div class="line">systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin</div><div class="line">daemon:x:2:2:daemon:/sbin:/sbin/nologin</div><div class="line">adm:x:3:4:adm:/var/adm:/sbin/nologin</div><div class="line">lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin</div><div class="line">sync:x:5:0:sync:/sbin:/bin/sync</div><div class="line">tss:x:59:59:Account used by the trousers package to sandbox the tcsd daemon:/dev/null:/sbin/nologin</div><div class="line">shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown</div><div class="line">halt:x:7:0:halt:/sbin:/sbin/halt</div><div class="line">sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin</div><div class="line">mail:x:8:12:mail:/var/spool/mail:/sbin/nologin</div><div class="line">dbus:x:81:81:System message bus:/:/sbin/nologin</div><div class="line">postfix:x:89:89::/var/spool/postfix:/sbin/nologin</div><div class="line">chrony:x:997:995::/var/lib/chrony:/sbin/nologin</div><div class="line">polkitd:x:998:996:User <span class="keyword">for</span> polkitd:/:/sbin/nologin</div><div class="line">systemd-bus-proxy:x:999:997:systemd Bus Proxy:/:/sbin/nologin</div><div class="line">nobody:x:99:99:Nobody:/:/sbin/nologin</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认是以字符串来排序的</p>
+<h3 id="实例3：对-etc-passwd-第三栏以纯数字排序"><a href="#实例3：对-etc-passwd-第三栏以纯数字排序" class="headerlink" title="实例3：对 /etc/passwd 第三栏以纯数字排序"></a>实例3：对 /etc/passwd 第三栏以纯数字排序</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat /etc/passwd|sort -t<span class="string">':'</span> -k3 -n</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># cat /etc/passwd|sort -t':' -k 3 -n</span></div><div class="line">root:x:0:0:root:/root:/bin/bash</div><div class="line">bin:x:1:1:bin:/bin:/sbin/nologin</div><div class="line">daemon:x:2:2:daemon:/sbin:/sbin/nologin</div><div class="line">adm:x:3:4:adm:/var/adm:/sbin/nologin</div><div class="line">lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin</div><div class="line">sync:x:5:0:sync:/sbin:/bin/sync</div><div class="line">shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown</div><div class="line">halt:x:7:0:halt:/sbin:/sbin/halt</div><div class="line">mail:x:8:12:mail:/var/spool/mail:/sbin/nologin</div><div class="line">operator:x:11:0:operator:/root:/sbin/nologin</div><div class="line">games:x:12:100:games:/usr/games:/sbin/nologin</div><div class="line">ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin</div><div class="line">tss:x:59:59:Account used by the trousers package to sandbox the tcsd daemon:/dev/null:/sbin/nologin</div><div class="line">sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin</div><div class="line">dbus:x:81:81:System message bus:/:/sbin/nologin</div><div class="line">postfix:x:89:89::/var/spool/postfix:/sbin/nologin</div><div class="line">nobody:x:99:99:Nobody:/:/sbin/nologin</div><div class="line">systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin</div><div class="line">chrony:x:997:995::/var/lib/chrony:/sbin/nologin</div><div class="line">polkitd:x:998:996:User <span class="keyword">for</span> polkitd:/:/sbin/nologin</div><div class="line">systemd-bus-proxy:x:999:997:systemd Bus Proxy:/:/sbin/nologin</div></pre></td></tr></table></figure>
+<h3 id="实例4：去重复排序"><a href="#实例4：去重复排序" class="headerlink" title="实例4：去重复排序"></a>实例4：去重复排序</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sort -u seq.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">[rocrocket@rocrocket programming]$ cat seq.txt</div><div class="line">banana</div><div class="line">apple</div><div class="line">pear</div><div class="line">orange</div><div class="line">pear</div><div class="line">[rocrocket@rocrocket programming]$ sort seq.txt</div><div class="line">apple</div><div class="line">banana</div><div class="line">orange</div><div class="line">pear</div><div class="line">pear</div><div class="line">[rocrocket@rocrocket programming]$ sort -u seq.txt</div><div class="line">apple</div><div class="line">banana</div><div class="line">orange</div><div class="line">pear</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;pear 由于重复被 -u 选项去重复了</p>
+<h3 id="实例5：进行降序排列"><a href="#实例5：进行降序排列" class="headerlink" title="实例5：进行降序排列"></a>实例5：进行降序排列</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sort -r number.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">rocrocket@rocrocket programming]$ cat number.txt</div><div class="line">1</div><div class="line">3</div><div class="line">5</div><div class="line">2</div><div class="line">4</div><div class="line">[rocrocket@rocrocket programming]$ sort number.txt</div><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">[rocrocket@rocrocket programming]$ sort -r number.txt</div><div class="line">5</div><div class="line">4</div><div class="line">3</div><div class="line">2</div><div class="line">1</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;sort 默认的排列方式是升序，使用 -r 选项就可以改成降序</p>
+<h3 id="实例6：把排序结果输出到源文件中"><a href="#实例6：把排序结果输出到源文件中" class="headerlink" title="实例6：把排序结果输出到源文件中"></a>实例6：把排序结果输出到源文件中</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sort -r number.txt -o number.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">[rocrocket@rocrocket programming]$ sort -r number.txt &gt; number.txt</div><div class="line">[rocrocket@rocrocket programming]$ cat number.txt</div><div class="line">[rocrocket@rocrocket programming]$</div><div class="line"></div><div class="line">[rocrocket@rocrocket programming]$ cat number.txt</div><div class="line">1</div><div class="line">3</div><div class="line">5</div><div class="line">2</div><div class="line">4</div><div class="line">[rocrocket@rocrocket programming]$ sort -r number.txt -o number.txt</div><div class="line">[rocrocket@rocrocket programming]$ cat number.txt</div><div class="line">5</div><div class="line">4</div><div class="line">3</div><div class="line">2</div><div class="line">1</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;直接把排序结果用重定向输出到源文件中，结果文件被清空了；使用 -o 选项解决了这个问题，可以放心把输出结果写入源文件</p>
+
       
     </div>
     
