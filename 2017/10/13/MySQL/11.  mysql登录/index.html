@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>mysql登录 | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;mysql服务启动时，不仅会监听 IP:Port，还会监听一个socket。我们安装的mysql是监听在/tmp/mysql.sock。如果php是在本地，那么php和mysql通信可以通过socket通信，如果是远程，就需要通过tcp/ip来通信了。在Linux命令行下，可以通过如下方法来连接mysq">
+<meta name="keywords" content="MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql登录">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/10/13/MySQL/11.  mysql登录/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;mysql服务启动时，不仅会监听 IP:Port，还会监听一个socket。我们安装的mysql是监听在/tmp/mysql.sock。如果php是在本地，那么php和mysql通信可以通过socket通信，如果是远程，就需要通过tcp/ip来通信了。在Linux命令行下，可以通过如下方法来连接mysq">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/mysql%E7%99%BB%E5%BD%95/01.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/mysql%E7%99%BB%E5%BD%95/02.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/mysql%E7%99%BB%E5%BD%95/03.png?raw=true">
+<meta property="og:updated_time" content="2017-10-13T12:50:34.144Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mysql登录">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;mysql服务启动时，不仅会监听 IP:Port，还会监听一个socket。我们安装的mysql是监听在/tmp/mysql.sock。如果php是在本地，那么php和mysql通信可以通过socket通信，如果是远程，就需要通过tcp/ip来通信了。在Linux命令行下，可以通过如下方法来连接mysq">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/mysql%E7%99%BB%E5%BD%95/01.png?raw=true">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.43px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.26px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.74px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.48px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.3px;">FTP</a> <a href="/tags/Git/" style="font-size: 10.87px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.74px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.61px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.43px;">Jenkins</a> <a href="/tags/LAMP/" style="font-size: 19.57px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.96px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.52px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.13px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.35px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.3px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.65px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.39px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.74px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 17.83px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.3px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.78px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.3px;">Puppet</a> <a href="/tags/Python/" style="font-size: 14.78px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.52px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.17px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.78px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.91px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 16.09px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.61px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 13.04px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15.22px;">shell</a> <a href="/tags/shell练习/" style="font-size: 18.7px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 13.04px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-MySQL/11.  mysql登录" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/MySQL/11.  mysql登录/" class="article-date">
+  	<time datetime="2017-10-13T13:29:39.993Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      mysql登录
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mysql服务启动时，不仅会监听 IP:Port，还会监听一个socket。我们安装的mysql是监听在/tmp/mysql.sock。如果php是在本地，那么php和mysql通信可以通过socket通信，如果是远程，就需要通过tcp/ip来通信了。在Linux命令行下，可以通过如下方法来连接mysql服务器。</p>
+<a id="more"></a>
+<h2 id="tcp-ip的方式"><a href="#tcp-ip的方式" class="headerlink" title="tcp/ip的方式"></a>tcp/ip的方式</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># /usr/local/mysql/bin/mysql -uroot -h 127.0.0.1</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样就连接上了，如果默认mysql的root用户密码为空，就不用加-p选项，不过最好还是设置一个密码。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># /usr/local/mysql/bin/mysqladmin -uroot password 'yanyi'</span></div></pre></td></tr></table></figure>
+<p>`&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;只是第一次设置密码的时候可以这样，再次设置时，就需要先输入之前的root密码了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># /usr/local/mysql/bin/mysqladmin -uroot -pyanyi password '123456'</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;还有个问题，每次敲命令都是用的绝对路径，这样很繁琐，两个办法可以解决。第一个办法是设置alias，第二个办法是设置PATH</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># alias mysql=/usr/local/mysql/bin/mysql</span></div><div class="line">[root@lamp ~]<span class="comment"># alias mysqladmin=/usr/local/mysql/bin/mysqladmin</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果要永久生效，需要把两个alias放到 <code>.bashrc</code> 里面。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># vim .bashrc</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/mysql%E7%99%BB%E5%BD%95/01.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另外就是设置PATH</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># vim /etc/profile.d/path.sh</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/usr/<span class="built_in">local</span>/mysql/bin</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;保存后执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># source /etc/profile.d/path.sh</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当给mysql设置密码后再去连接，就需要加上-p选项了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># mysql -uroot -pyanyi -h127.0.0.1</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其中-h指定ip，如果是远程机器，则-h后面跟远程服务器ip，默认port是3306，如果是其他端口，需要用-P来定义</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># mysql -uroot -pyanyi -h127.0.0.1 -P3306</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另外有时候还需要mysql授权客户机，要不无法登录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># mysql -uroot -pyanyi</span></div><div class="line"></div><div class="line">mysql&gt; grant all on *.* to <span class="string">'root'</span>@<span class="string">'192.168.0.99'</span> identified by <span class="string">'112233'</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;all就是所有权限。<em>.</em>前边的*表示所有的库，后边的*表示所有的表，这里就是所有的库和所有的表。’root’@’192.168.99’ root表示授权给root，192.168.0.99是客户端ip，授权哪个客户端IP。<code>identifined by</code> 后边跟的密码</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mysql&gt; use mysql</div><div class="line">mysql&gt; selct * from user <span class="built_in">where</span> host=<span class="string">'192.168.0.99'</span>\G;</div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/mysql%E7%99%BB%E5%BD%95/02.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;再次连接</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># mysql -uroot -h192.168.0.99 -p112233</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里-p选项跟的密码是授权设置的密码，不是root的密码。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;登录以后查看一下当前登录用户</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql&gt; select user();</div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/mysql%E7%99%BB%E5%BD%95/03.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用户是 root@192.168.0.99</p>
+<h2 id="socket方式"><a href="#socket方式" class="headerlink" title="socket方式"></a>socket方式</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这种只适合连接本机的mysql：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># mysql -uroot -S /tmp/mysql.sock -pyanyi</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里的-S可以省略掉。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/13/MySQL/19. mysqld_multi stop 不能停掉mysql/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          mysqld_multi stop 不能停掉mysql
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/13/MySQL/6. MySQL调优/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">MySQL调优</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="MySQL/11.  mysql登录" data-title="mysql登录" data-url="https://hcldirgit.github.io/2017/10/13/MySQL/11.  mysql登录/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="mysql登录">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

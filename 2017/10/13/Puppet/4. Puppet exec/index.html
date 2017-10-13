@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Puppet exec | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="exec&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;让puppet执行外部命令 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;多次反复用这个方式执行命令是有威胁性的,因此建议对执行的命令进行加锁或者类似的处理. 你也可以让exec只有在收到一个其他资源的事件的时候才执行. 因为exec资源是一种挥">
+<meta name="keywords" content="Puppet">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Puppet exec">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/10/13/Puppet/4. Puppet exec/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="exec&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;让puppet执行外部命令 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;多次反复用这个方式执行命令是有威胁性的,因此建议对执行的命令进行加锁或者类似的处理. 你也可以让exec只有在收到一个其他资源的事件的时候才执行. 因为exec资源是一种挥">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-13T13:08:57.286Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Puppet exec">
+<meta name="twitter:description" content="exec&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;让puppet执行外部命令 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;多次反复用这个方式执行命令是有威胁性的,因此建议对执行的命令进行加锁或者类似的处理. 你也可以让exec只有在收到一个其他资源的事件的时候才执行. 因为exec资源是一种挥">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.43px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.26px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.74px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.48px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.3px;">FTP</a> <a href="/tags/Git/" style="font-size: 10.87px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.74px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.61px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.43px;">Jenkins</a> <a href="/tags/LAMP/" style="font-size: 19.57px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.96px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.52px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.13px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.35px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.3px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.65px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.39px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.74px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 17.83px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.3px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.78px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.3px;">Puppet</a> <a href="/tags/Python/" style="font-size: 14.78px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.52px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.17px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.78px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.91px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 16.09px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.61px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 13.04px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15.22px;">shell</a> <a href="/tags/shell练习/" style="font-size: 18.7px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 13.04px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Puppet/4. Puppet exec" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Puppet/4. Puppet exec/" class="article-date">
+  	<time datetime="2017-10-13T13:29:40.477Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Puppet exec
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Puppet/">Puppet</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="exec"><a href="#exec" class="headerlink" title="exec"></a>exec</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;让puppet执行外部命令</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;多次反复用这个方式执行命令是有威胁性的,因此建议对执行的命令进行加锁或者类似的处理. 你也可以让exec只有在收到一个其他资源的事件的时候才执行. 因为exec资源是一种挥发性资源,命令执行完了,这个资源可以说就处理完了. 因此在不同的类里面,exec资源的名字可以是相同的,这是exec资源特殊的地方.例如下面的例子;</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># defined in the production class</span></div><div class="line"><span class="built_in">exec</span> &#123; <span class="string">"make"</span>:</div><div class="line">    cwd =&gt; <span class="string">"/prod/build/dir"</span>,</div><div class="line">    path =&gt; <span class="string">"/usr/bin:/usr/sbin:/bin"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">. etc. .</div><div class="line"></div><div class="line"><span class="comment"># defined in the test class</span></div><div class="line"><span class="built_in">exec</span> &#123; <span class="string">"make"</span>:</div><div class="line">    cwd =&gt; <span class="string">"/test/build/dir"</span>,</div><div class="line">    path =&gt; <span class="string">"/usr/bin:/usr/sbin:/bin"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在不同的类定义相同名字的exec资源,如果是其他类型的资源,将会在执行puppet的时候得到一个错误,但是在exec资源里面,这却是正确的.</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;不过为了方便 起见,建议每个exec资源的名字最好是唯一的.</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意,如果一个exec资源从别的资源收到一个事件,exec资源将会再一次的执行.</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;利用exec资源可以做到puppet不能做到的事情. 这是对puppet一个强有力的扩展.</p>
+<h2 id="要求"><a href="#要求" class="headerlink" title="要求"></a>要求</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;无附加要求。</p>
+<h2 id="平台"><a href="#平台" class="headerlink" title="平台"></a>平台</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;所有平台。</p>
+<h2 id="版本兼容性"><a href="#版本兼容性" class="headerlink" title="版本兼容性"></a>版本兼容性</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这一部分还未完成。</p>
+<h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><h3 id="command"><a href="#command" class="headerlink" title="command"></a>command</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;将会被执行的命令，必须为被执行命令的绝对路径，或者得提供该命令的搜索路径。如果命令被成功执行，所有的输出会被记录在实例的正常（normal）日志里，但是如果命令执行失败（既返回值与我们所指定的不同），那么所有的输出会在错误（err）日志中被记录。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个是exec资源类型的名变量（namevar）。</p>
+<h3 id="creates"><a href="#creates" class="headerlink" title="creates"></a>creates</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;指定命令所生成的文件。如果提供了这个参数，那么命令只会在所指定的文件不存在的情况的被执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">exec</span> &#123; <span class="string">"tar xf /my/tar/file.tar"</span>:</div><div class="line">    cwd =&gt; <span class="string">"/var/tmp"</span>,</div><div class="line">    creates =&gt; <span class="string">"/var/tmp/myfile"</span>,</div><div class="line">    path =&gt; [<span class="string">"/usr/bin"</span>, <span class="string">"/usr/sbin"</span>]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="cwd"><a href="#cwd" class="headerlink" title="cwd"></a>cwd</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;指定命令执行的目录。如果目录不存在，则命令执行失败。</p>
+<h3 id="env"><a href="#env" class="headerlink" title="env"></a>env</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们不建议使用这个参数，请使用‘environment’。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这一部分还未完成。</p>
+<h3 id="environment"><a href="#environment" class="headerlink" title="environment"></a>environment</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为命令设定额外的环境变量。要注意的是如果你用这个来设定PATH，那么PATH的属性会被覆盖。多个环境变量应该以数组的形式来设定。</p>
+<h3 id="group"><a href="#group" class="headerlink" title="group"></a>group</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;定义运行命令的用户组。在不同的平台下的运行的结果无法确定，由于不同用户运行命令的时候，变量是不变的，所以这是平台的问题，而不是Ruby或Puppet的问题。</p>
+<h3 id="logoutput"><a href="#logoutput" class="headerlink" title="logoutput"></a>logoutput</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否记录输出。默认会根据exec资源的日志等级（loglevel） 来记录输出。若定义为on_failure，则仅在命令返回错误的时候记录输出。可取的值为：true，false和其他合法的日志等级。</p>
+<h3 id="onlyif"><a href="#onlyif" class="headerlink" title="onlyif"></a>onlyif</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果这个参数被设定了，则exec只会在onlyif设定的命令返回0时才执行。例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">exec</span> &#123; <span class="string">"logrotate"</span>:</div><div class="line">    path =&gt; <span class="string">"/usr/bin:/usr/sbin:/bin"</span>,</div><div class="line">    onlyif =&gt; <span class="string">"test `du /var/log/messages | cut -f1` -gt 100000"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;只有在test返回true的时候logrotate才会被运行。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需要注意的是onlyif定义的命令跟主命令遵循同样的规则，也就是说如果path没有被设置的话，需要使用绝对路径。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;除此之外，onlyif还可以接受数组做为其值，例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">onlyif =&gt; [<span class="string">"test -f /tmp/file1"</span>, <span class="string">"test -f /tmp/file2"</span>]</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上面的代码限定了只有在所有数组中的条件返回true时exec才会被执行。</p>
+<h3 id="path"><a href="#path" class="headerlink" title="path"></a>path</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;命令执行的搜索路径。如果path没有被定义，命令需要使用绝对路径。路径可以以数组或以冒号分隔的形式来定义。</p>
+<h3 id="refresh"><a href="#refresh" class="headerlink" title="refresh"></a>refresh</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;定义如何更新命令。当exec收到一个来自其他资源的事件时，默认只会重新执行一次命令。不过这个参数允许你定义更新时执行不同的命令。</p>
+<h3 id="refreshonly"><a href="#refreshonly" class="headerlink" title="refreshonly"></a>refreshonly</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;该属性可以使命令变成仅刷新触发的，也就是说只有在一个依赖的对象被改变时，命令才会被执行。仅当命令与其他对象有依赖关系时，这个参数才有意义。当你要触发某个行为时，会显得很有用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Pull down the main aliases file</span></div><div class="line">file &#123; <span class="string">"/etc/aliases"</span>:</div><div class="line">    <span class="built_in">source</span> =&gt; <span class="string">"puppet://server/module/aliases"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment"># Rebuild the database, but only when the file changes</span></div><div class="line"><span class="built_in">exec</span> &#123; newaliases:</div><div class="line">    path =&gt; [<span class="string">"/usr/bin"</span>, <span class="string">"/usr/sbin"</span>],</div><div class="line">    subscribe =&gt; File[<span class="string">"/etc/aliases"</span>],</div><div class="line">    refreshonly =&gt; <span class="literal">true</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要注意的是只有subscribe和notify可以促发行为，而不是require，所以在使用 refreshonly时，只有同时使用subscribe或notify才有意义。有效的值为true, false。</p>
+<h3 id="returns"><a href="#returns" class="headerlink" title="returns"></a>returns</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;指定返回的代码。如果被执行的命令返回了其他的代码，一个错误（error）会被返回。默认值是0，可以定义为一个由可以接受的返回代码组成的数组或单值。</p>
+<h3 id="timeout"><a href="#timeout" class="headerlink" title="timeout"></a>timeout</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;命令运行的最长时间。如果命令运行的时间超过了timeout定义的时间，那么这个命令就会被终止，并作为运行失败处理。当定义为负值时就会取消运行时间的限制。timeout的值是以秒为单位的。</p>
+<h3 id="unless"><a href="#unless" class="headerlink" title="unless"></a>unless</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果这个变量被指定了，那么exec会执行，除非unless所设定的命令返回0。例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">exec</span> &#123; <span class="string">"/bin/echo root &gt;&gt; /usr/lib/cron/cron.allow"</span>:</div><div class="line">    path =&gt; <span class="string">"/usr/bin:/usr/sbin:/bin"</span>,</div><div class="line">    unless =&gt; <span class="string">"grep root /usr/lib/cron/cron.allow 2&gt;/dev/null"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上面这段代码先用grep在cron.allow文件（Solaris系统中）中找root，如果没有找到，就写入root。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要注意的是这个参数里的命令跟主命令遵循同样的规则，也就是说如果path没有被设置的话，需要使用绝对路径。</p>
+<h3 id="user"><a href="#user" class="headerlink" title="user"></a>user</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;定义运行命令的用户。 注意如果你使用了这个参数，那么任何的错误输出不会在当下被捕捉，这是Ruby的一个bug。 If you are using Puppet to create this user, the exec will automatically require the user, as long as it is specified by name.</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/13/Resin/1. resin安装与配置/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          resin安装与配置
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/13/Puppet/3. Puppet cron/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Puppet cron</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="Puppet/4. Puppet exec" data-title="Puppet exec" data-url="https://hcldirgit.github.io/2017/10/13/Puppet/4. Puppet exec/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="Puppet exec">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

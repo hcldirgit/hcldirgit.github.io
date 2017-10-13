@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>学习CDN不得不读之-Squid 高级优化指南 | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;首先要明确一下，squid 能够用来作什么。很多人没有搞明白 squid 的工作原理，只是听说 squid 性能不错可以用来给网站提速，就直接在自己的 website 前面套了一个 squid ，这基本没有任何用处，即使你都是静态页面，后面apache上面没有开 mod_expires，一样缓存不了，s">
+<meta name="keywords" content="Squid">
+<meta property="og:type" content="article">
+<meta property="og:title" content="学习CDN不得不读之-Squid 高级优化指南">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/10/13/Squid/16. 学习CDN不得不读之-Squid 高级优化指南/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;首先要明确一下，squid 能够用来作什么。很多人没有搞明白 squid 的工作原理，只是听说 squid 性能不错可以用来给网站提速，就直接在自己的 website 前面套了一个 squid ，这基本没有任何用处，即使你都是静态页面，后面apache上面没有开 mod_expires，一样缓存不了，s">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-13T13:24:14.167Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="学习CDN不得不读之-Squid 高级优化指南">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;首先要明确一下，squid 能够用来作什么。很多人没有搞明白 squid 的工作原理，只是听说 squid 性能不错可以用来给网站提速，就直接在自己的 website 前面套了一个 squid ，这基本没有任何用处，即使你都是静态页面，后面apache上面没有开 mod_expires，一样缓存不了，s">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.43px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.26px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.74px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.48px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.3px;">FTP</a> <a href="/tags/Git/" style="font-size: 10.87px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.74px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.61px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.43px;">Jenkins</a> <a href="/tags/LAMP/" style="font-size: 19.57px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.96px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.52px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.13px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.35px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.3px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.65px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.39px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.74px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 17.83px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.3px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.78px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.3px;">Puppet</a> <a href="/tags/Python/" style="font-size: 14.78px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.52px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.17px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.78px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.91px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 16.09px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.61px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 13.04px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15.22px;">shell</a> <a href="/tags/shell练习/" style="font-size: 18.7px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 13.04px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Squid/16. 学习CDN不得不读之-Squid 高级优化指南" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Squid/16. 学习CDN不得不读之-Squid 高级优化指南/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.095Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      学习CDN不得不读之-Squid 高级优化指南
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Squid/">Squid</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先要明确一下，squid 能够用来作什么。很多人没有搞明白 squid 的工作原理，只是听说 squid 性能不错可以用来给网站提速，就直接在自己的 website 前面套了一个 squid ，这基本没有任何用处，即使你都是静态页面，后面apache上面没有开 mod_expires，一样缓存不了，squid只能起到一个连接管理的用处。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一般说来，网站用 squid 加速，目的有二种</p>
+<ol>
+<li><p>squid 本身具有缓存功能，可以将webserver输出的内容缓存起来，在缓存没有过期之前来的访问，都直接用缓存里面的内容，这样可以有效减少 webserver 机器上面的请求数量。这是 squid 的主要功用。</p>
+</li>
+<li><p>网络慢的用户会长时间占用 webserver 的 TCP 连接，webserver 对每个连接占用的资源比较大，如果长时间不能释放出来服务其他请求，性能会有比较大的影响。前面放一个 squid, webserver 就可以迅速处理完逻辑以后，把数据快速发送给 squid, 然后去处理别的逻辑，而 squid 每个 TCP 连接占用的资源很少，不用担心占用太多资源。这个用途也叫做连接管理，有一些网络设备也可以做这个事情，价格都很贵。</p>
+</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面针对 squid 的两种功用，来讲述如何调整业务逻辑和 squid 参数预操作</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在搞 squid 之前，不管你用什么编译配置，需要什么特殊选项，都请 –enable-snmp ，并配置好 mrtg 之类，可以图形化的显示 squid 状态，例如 Request Hit Ratio(RHR), Byte Hit Ratio(BHR), 等等，反馈是做一切事情的基础，优化也不例外。</p>
+<a id="more"></a>
+<h2 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h2><h3 id="A-使用-Expires-header-来控制缓存"><a href="#A-使用-Expires-header-来控制缓存" class="headerlink" title="A.使用 Expires header 来控制缓存"></a>A.使用 Expires header 来控制缓存</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;squid在缓存webserver内容的时候，需要后端webserver输出一些控制信息告诉他页面是不是可以被缓存，以及可以缓存多久。否则 squid 是不会自作主张给你缓存内容的。一个页面到底能不能缓存，只有开发网站的人才知道，因此开发人员有责任在动态页面里面输出 Expires 和 Cache-Control header。简单举一个 php 的例子以说明这两个 header 的值是什么含义，其中$expiretime 的单位是秒。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">header(”Expires: ” . gmt_date_format(time()+<span class="variable">$expiretime</span>));</div><div class="line">header(”Cache-Control: max-age=” . “<span class="variable">$expiretime</span>”);</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;对于静态文件，有两种方式来让 squid 自动给静态文件缓存，一种是使用 apache 的 mod_expires ，可以针对路径或者针对文件类型/扩展名来自动输出 cache 头。详细的请参考 mod_expires 的说明 。另一种是用 squid 的 refresh_pattern 来指定。详细的还是请参考 squid 的配置文件。一般来说，如果后端不是配置很麻烦，建议还是在后端做，前端的配置修改大多数都是违背http协议的，如果出现问题，也比较难排查。</p>
+<h3 id="B-根据-squid-访问的模式，进行业务拆分"><a href="#B-根据-squid-访问的模式，进行业务拆分" class="headerlink" title="B.根据 squid 访问的模式，进行业务拆分"></a>B.根据 squid 访问的模式，进行业务拆分</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;进行了 Expires Header 的处理以后，squid 就真正可以起到加速的作用了，你可能也能感觉到，网站的访问速度明显加快。但是不要满足于这点成绩，查看 squid 的 snmp 统计图，通常 hit ratio 并不会太高，有 50% 就了不起了。这就是我们需要进一步优化的，我们的目标是让大部分 squid 都达到 9X% 的命中率。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为什么 squid 命中这么低呢，这大概有两种原因。大多数的网站都是有一些页面不能够被缓存的，例如登录页面。这些页面请求也从 squid 走，成为分母的一部分，直接就降低了命中率，我们首先可以做的事情是，把这些不能够缓存的页面请求，拆分到单独一个 squid 上面，或者访问量不大的话，干脆把 apache 暴露出来。这样能够缓存的那个 squid 命中率马上上升一截。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有人可能会说，把不能缓存的页面分拆开去，就光为了让能缓存的那个数字好看，这不是掩耳盗铃么？其实这么做是有意义的，首先就是去掉了不能缓存页面 的干 扰，使得我们进一步优化 squid 的依据更加准确。其次是不可缓存请求和可缓存请求之间的重要性通常是有差距的，分拆了以后，它们之间不容易互相抢占资源，不会因为下载图片的连接太多把 squid 占满，影响更重要的登录请求。第三就是可缓存内容通常是图片等页面元素,　浏览器在 load 它们的时候，对每个站点的并发连接会有控制，如果分开成不同的IP，可以多一些请求同时执行。提高少许显示速度。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其实观察 sohu, sina 之类的页面，你会发现它们的页面也是分拆的，可以看到页面里面的图片都是指向 images.sohu.com 之类的地址，虽然它们可能和其他页面一样后台都指向同一个 apache。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样做完，缓存命中率大概能上升到 70%-80% 了，运气好的时候完全可以上 90%。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另一种导致 squid 命中低的原因和这个比较类似，同样都是可缓存的内容，有的可能是软件下载站上面的大文件，有的是新闻站点上面的小图片，如果同一个 squid 对这样差别巨大的文件加速的话，会严重干扰 squid 的缓存策略，两者不能兼顾，要不就是大文件占据了 cache ，把小文件都挤出了 cache, 要不就是小文件特别多，大文件无法进入 cache, 导致大文件经常 miss 。这个比不能缓存的页面还要恶心，因此即使在服务器资源有限的情况下，也要优先拆分这两类型访问。一般来说，文件大小分界线定在 1M 左右就可以了，如果是有软件下载这样特别大的文件，可以在 4M – 10M 左右再拆分一次。对于不同访问类型的 squid, 其系统优化参数也会有所不同，这个我们后面还会讲到。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;只要悉心按照访问模式来拆分业务，大部分起缓存作用的 squid 都可以达到很高的命中率，至少都可以到达 9X%。</p>
+<h3 id="C-根据不同的需求，调整参数优化缓存"><a href="#C-根据不同的需求，调整参数优化缓存" class="headerlink" title="C.根据不同的需求，调整参数优化缓存"></a>C.根据不同的需求，调整参数优化缓存</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;完成 A 和 B 两步优化以后， squid 的命中率经常可以达到 9x%, 可以说我们已经给 squid 创造了非常优秀的外部环境，下面我们就要从 squid 本身入手，通过调整它的缓存参数和缓存策略，甚至系统的参数，来让 squid 发挥出更好的性能。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在 B 步骤中，我们把 squid 划分成了三种用途，缓存大文件，缓存小文件，不缓存文件，这其中最后一种用途情况下面 squid 不起到缓存效果，只用来做连接管理，因此我们把它放到后面的连接管理里面叙述，这里只讨论和缓存相关的 squid 参数。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;squid 有内存缓存和磁盘缓存两级缓存, 通常来说, 只要是专门给 squid 用的机器, 内    存缓存都建议开得比较大, 大内存缓存总是有好处的嘛, 但是注意不要使得系统开始吃     swap ,像Linux这样一开始吃 swap 性能就下降比较严重的系统尤其要注意. 这个程度需要自己试验确定.</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;通常 1G 内存的Linux机器用来跑 squid ,内存缓存可以开到 512M.</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有些libc比较差的平台, 例如比较老的 freebsd 系统, 其 malloc 函数的质量不高,可能会造成比较多的内存碎片,导致 squid 运行一段时间以后分配不出来内存挂掉. 这时候推荐在编译时候使用 dlmalloc package. 即使如此, 仍然要再缩小 squid 的内存缓存,以防不幸发生.</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;磁盘缓存的情况比较复杂, squid 有 ufs, aufs, coss, diskd, null 五种存储后端, 其中 ufs, aufs, diskd 都是在文件系统上面保存很多小文件, coss 是 squid 自己实现了一个简单的文件系统,可以使用一个大文件或者一个磁盘设备来存储. null 则是给不想要磁盘缓存的情况准备的. coss 看起来好像比较拽, 但是以前试验并不足够稳定,因此并不推荐使用. 剩下的三种存储方式,具体选择哪种需要根据操作系统的特性来进行.</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;ufs 是最传统的存储方式, 我们知道, squid 是一个单进程的程序, 它使用 ufs 存储后端时, 直接在进程里面读写文件. 这是一种很简单的方式, 缺点是当读写磁盘被阻塞的时候, squid 不能够处理请求, 会造成服务质量波动比较大. 因此出现了 aufs 和 diskd 两种存储后端, 原理都是 squid 主服务循环不负责读写文件, 而是通过消息队列或者tcp/pipe连接将数据传送给其他的线程(aufs)/进程(diskd), 然后其他线程/进程进行读写. 很显然,这两种存储方式有一定的通信开销, 因此不一定就比 ufs 好, 需要具体问题具体分析</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;前面说到, ufs/aufs/diskd都是在文件系统上面存储很多小文件,因此文件系统本身的特性严重影响了squid缓存的性能,对于 Linux ,强烈推荐用 reiserfs 等适合处理小文件的文件系统, bsd 则至少要打开 softupdate, 以及 dirhash 等一切对很多小文件有好处的选项. 在比较新的系统上面, reiserfs 等文件系统的性能已经足够优越, 通常 ufs 就已经可以应付需要. 对于一些老系统,使用 aufs 或者 diskd 是比较好的选择,如果系统的线程库比较好(如Linux,Solaris),那么使用 aufs, 否则 diskd.</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;也有一些例外情况, 比如多 cpu 的 Linux 2.6 系统, 线程库很优秀, 虽然 ufs 本身已经比较快了,但是 squid 单进程无法利用另外的 cpu , 不如使用 aufs , 让另外的 cpu 也可以起到一些作用, aufs 在编译的时候可以选择使用几个读写线程. 这个个人觉得稍微超过 cpu 个数就可以了.但是并没有实际测试过.</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;磁盘缓存开多大? 这个问题没有固定答案. 需要经过试验来确定, 一般来说开大一些没有太大问题. 只要你的硬盘足够</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/13/Squid/15. Squid的防盗链/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          Squid的防盗链
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/13/Squid/14. 删除squid缓存/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">删除squid缓存</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="Squid/16. 学习CDN不得不读之-Squid 高级优化指南" data-title="学习CDN不得不读之-Squid 高级优化指南" data-url="https://hcldirgit.github.io/2017/10/13/Squid/16. 学习CDN不得不读之-Squid 高级优化指南/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="学习CDN不得不读之-Squid 高级优化指南">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

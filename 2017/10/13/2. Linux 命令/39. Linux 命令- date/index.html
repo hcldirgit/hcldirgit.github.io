@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Linux 命令- date | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;在linux环境中，不管是编程还是其他维护，时间是必不可少的，也经常会用到时间的运算，熟练运用date命令来表示自己想要表示的时间，肯定可以给自己的工作带来诸多方便。">
+<meta name="keywords" content="Linux命令">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 命令- date">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/10/13/2. Linux 命令/39. Linux 命令- date/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;在linux环境中，不管是编程还是其他维护，时间是必不可少的，也经常会用到时间的运算，熟练运用date命令来表示自己想要表示的时间，肯定可以给自己的工作带来诸多方便。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-13T09:46:54.448Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux 命令- date">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;在linux环境中，不管是编程还是其他维护，时间是必不可少的，也经常会用到时间的运算，熟练运用date命令来表示自己想要表示的时间，肯定可以给自己的工作带来诸多方便。">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.43px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.26px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.74px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.48px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.3px;">FTP</a> <a href="/tags/Git/" style="font-size: 10.87px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.74px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.61px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.43px;">Jenkins</a> <a href="/tags/LAMP/" style="font-size: 19.57px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.96px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.52px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.13px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.35px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.3px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.65px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.39px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.74px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 17.83px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.3px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.78px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.3px;">Puppet</a> <a href="/tags/Python/" style="font-size: 14.78px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.52px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.17px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.78px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.91px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 16.09px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.61px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 13.04px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15.22px;">shell</a> <a href="/tags/shell练习/" style="font-size: 18.7px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 13.04px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-2. Linux 命令/39. Linux 命令- date" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/2. Linux 命令/39. Linux 命令- date/" class="article-date">
+  	<time datetime="2017-10-13T13:29:41.659Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Linux 命令- date
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux命令/">Linux命令</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在linux环境中，不管是编程还是其他维护，时间是必不可少的，也经常会用到时间的运算，熟练运用date命令来表示自己想要表示的时间，肯定可以给自己的工作带来诸多方便。</p>
+<a id="more"></a>
+<h2 id="1．命令格式"><a href="#1．命令格式" class="headerlink" title="1．命令格式"></a>1．命令格式</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">date [参数]... [+格式]</div></pre></td></tr></table></figure>
+<h2 id="2．命令功能"><a href="#2．命令功能" class="headerlink" title="2．命令功能"></a>2．命令功能</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;date 可以用来显示或设定系统的日期与时间。</p>
+<h2 id="3．命令参数："><a href="#3．命令参数：" class="headerlink" title="3．命令参数："></a>3．命令参数：</h2><h3 id="必要参数"><a href="#必要参数" class="headerlink" title="必要参数:"></a>必要参数:</h3><ul>
+<li>%H 小时(以00-23来表示)。 </li>
+<li>%I 小时(以01-12来表示)。</li>
+<li>%K 小时(以0-23来表示)。</li>
+<li>%l 小时(以0-12来表示)。</li>
+<li>%M 分钟(以00-59来表示)。 </li>
+<li>%P AM或PM。 </li>
+<li>%r 时间(含时分秒，小时以12小时AM/PM来表示)。 </li>
+<li>%s 总秒数。起算时间为1970-01-01 00:00:00 UTC。</li>
+<li>%S 秒(以本地的惯用法来表示)。</li>
+<li>%T 时间(含时分秒，小时以24小时制来表示)。</li>
+<li>%X 时间(以本地的惯用法来表示)。 </li>
+<li>%Z 市区。 </li>
+<li>%a 星期的缩写。 </li>
+<li>%A 星期的完整名称。 </li>
+<li>%b 月份英文名的缩写。 </li>
+<li>%B 月份的完整英文名称。 </li>
+<li>%c 日期与时间。只输入date指令也会显示同样的结果。 </li>
+<li>%d 日期(以01-31来表示)。 </li>
+<li>%D 日期(含年月日)。 </li>
+<li>%j 该年中的第几天。 </li>
+<li>%m 月份(以01-12来表示)。 </li>
+<li>%U 该年中的周数。 </li>
+<li>%w 该周的天数，0代表周日，1代表周一，异词类推。</li>
+<li>%x 日期(以本地的惯用法来表示)。 </li>
+<li>%y 年份(以00-99来表示)。 </li>
+<li>%Y 年份(以四位数来表示)。 </li>
+<li>%n 在显示时，插入新的一行。 </li>
+<li>%t 在显示时，插入tab。 </li>
+<li>MM 月份(必要) </li>
+<li>DD 日期(必要) </li>
+<li>hh 小时(必要) </li>
+<li>mm 分钟(必要)</li>
+<li>ss 秒(选择性) </li>
+</ul>
+<h3 id="选择参数"><a href="#选择参数" class="headerlink" title="选择参数:"></a>选择参数:</h3><ul>
+<li>-d&lt;字符串&gt; 　显示字符串所指的日期与时间。字符串前后必须加上双引号。 </li>
+<li>-s&lt;字符串&gt; 　根据字符串来设置日期与时间。字符串前后必须加上双引号。 </li>
+<li>-u 　显示GMT。 </li>
+<li>–help 　在线帮助。 </li>
+<li>–version 　显示版本信息 </li>
+</ul>
+<h2 id="4．使用说明"><a href="#4．使用说明" class="headerlink" title="4．使用说明"></a>4．使用说明</h2><h3 id="1-在显示方面，使用者可以设定欲显示的格式，格式设定为一个加号后接数个标记，其中可用的标记列表如下-打印出-："><a href="#1-在显示方面，使用者可以设定欲显示的格式，格式设定为一个加号后接数个标记，其中可用的标记列表如下-打印出-：" class="headerlink" title="1.在显示方面，使用者可以设定欲显示的格式，格式设定为一个加号后接数个标记，其中可用的标记列表如下: % :  打印出 %："></a>1.在显示方面，使用者可以设定欲显示的格式，格式设定为一个加号后接数个标记，其中可用的标记列表如下: % :  打印出 %：</h3><ul>
+<li><p>%n : 下一行</p>
+</li>
+<li><p>%t : 跳格</p>
+</li>
+<li><p>%H : 小时(00..23)</p>
+</li>
+<li><p>%I : 小时(01..12)</p>
+</li>
+<li><p>%k : 小时(0..23)</p>
+</li>
+<li><p>%l : 小时(1..12)</p>
+</li>
+<li><p>%M : 分钟(00..59)</p>
+</li>
+<li><p>%p : 显示本地 AM 或 PM</p>
+</li>
+<li><p>%r : 直接显示时间 (12 小时制，格式为 hh:mm:ss [AP]M)</p>
+</li>
+<li><p>%s : 从 1970 年 1 月 1 日 00:00:00 UTC 到目前为止的秒数</p>
+</li>
+<li><p>%S : 秒(00..61)</p>
+</li>
+<li><p>%T : 直接显示时间 (24 小时制)</p>
+</li>
+<li><p>%X : 相当于 %H:%M:%S</p>
+</li>
+<li><p>%Z : 显示时区 %a : 星期几 (Sun..Sat)</p>
+</li>
+<li><p>%A : 星期几 (Sunday..Saturday)</p>
+</li>
+<li><p>%b : 月份 (Jan..Dec)</p>
+</li>
+<li><p>%B : 月份 (January..December)</p>
+</li>
+<li><p>;%c : 直接显示日期与时间</p>
+</li>
+<li><p>%d : 日 (01..31)</p>
+</li>
+<li><p>%D : 直接显示日期 (mm/dd/yy)</p>
+</li>
+<li><p>%h : 同 %b</p>
+</li>
+<li><p>%j : 一年中的第几天 (001..366)</p>
+</li>
+<li><p>%m : 月份 (01..12)</p>
+</li>
+<li><p>%U : 一年中的第几周 (00..53) (以 Sunday 为一周的第一天的情形)</p>
+</li>
+<li><p>%w : 一周中的第几天 (0..6)</p>
+</li>
+<li><p>%W : 一年中的第几周 (00..53) (以 Monday 为一周的第一天的情形)</p>
+</li>
+<li><p>%x : 直接显示日期 (mm/dd/yy)</p>
+</li>
+<li><p>%y : 年份的最后两位数字 (00.99)</p>
+</li>
+<li><p>%Y : 完整年份 (0000..9999)</p>
+</li>
+</ul>
+<h3 id="2-在设定时间方面："><a href="#2-在设定时间方面：" class="headerlink" title="2.在设定时间方面："></a>2.在设定时间方面：</h3><ul>
+<li><p>date -s //设置当前时间，只有root权限才能设置，其他只能查看。</p>
+</li>
+<li><p>date -s 20080523 //设置成20080523，这样会把具体时间设置成空00:00:00</p>
+</li>
+<li><p>date -s 01:01:01 //设置具体时间，不会对日期做更改</p>
+</li>
+<li><p>date -s “01:01:01 2008-05-23″ //这样可以设置全部时间</p>
+</li>
+<li><p>date -s “01:01:01 20080523″ //这样可以设置全部时间</p>
+</li>
+<li><p>date -s “2008-05-23 01:01:01″ //这样可以设置全部时间</p>
+</li>
+<li><p>date -s “20080523 01:01:01″ //这样可以设置全部时间</p>
+</li>
+</ul>
+<h3 id="3-加减："><a href="#3-加减：" class="headerlink" title="3.加减："></a>3.加减：</h3><ul>
+<li><p>date +%Y%m%d         //显示前天年月日</p>
+</li>
+<li><p>date +%Y%m%d –date=”+1 day”  //显示前一天的日期</p>
+</li>
+<li><p>date +%Y%m%d –date=”-1 day”  //显示后一天的日期</p>
+</li>
+<li><p>date +%Y%m%d –date=”-1 month”  //显示上一月的日期</p>
+</li>
+<li><p>date +%Y%m%d –date=”+1 month”  //显示下一月的日期</p>
+</li>
+<li><p>;date +%Y%m%d –date=”-1 year”  //显示前一年的日期</p>
+</li>
+<li><p>date +%Y%m%d –date=”+1 year”  //显示下一年的日期</p>
+</li>
+</ul>
+<h2 id="5．使用实例"><a href="#5．使用实例" class="headerlink" title="5．使用实例"></a>5．使用实例</h2><h3 id="实例1：显示当前时间"><a href="#实例1：显示当前时间" class="headerlink" title="实例1：显示当前时间"></a>实例1：显示当前时间</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">date</div><div class="line">date <span class="string">'+%c'</span></div><div class="line">date <span class="string">'+%D'</span></div><div class="line">date <span class="string">'+%x'</span></div><div class="line">date <span class="string">'+%T'</span></div><div class="line">date <span class="string">'+%X'</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># date</span></div><div class="line">2012年 12月 08日 星期六 08:31:35 CST</div><div class="line">[root@localhost ~]<span class="comment"># date '+%c'</span></div><div class="line">2012年12月08日 星期六 08时34分44秒</div><div class="line">[root@localhost ~]<span class="comment"># date '+%D'</span></div><div class="line">12/08/12[root@localhost ~]<span class="comment"># date '+%x'</span></div><div class="line">2012年12月08日</div><div class="line">[root@localhost ~]<span class="comment"># date '+%T'</span></div><div class="line">08:35:36[root@localhost ~]<span class="comment"># date '+%X'</span></div><div class="line">08时35分54秒</div><div class="line">[root@localhost ~]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<h3 id="实例2：显示日期和设定时间"><a href="#实例2：显示日期和设定时间" class="headerlink" title="实例2：显示日期和设定时间"></a>实例2：显示日期和设定时间</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">date --date 08:42:00</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># date '+%c'</span></div><div class="line">2012年12月08日 星期六 08时41分37秒</div><div class="line">[root@localhost ~]<span class="comment"># date --date 08:42:00</span></div><div class="line">2012年 12月 08日 星期六 08:42:00 CST</div><div class="line">[root@localhost ~]<span class="comment"># date '+%c' --date 08:45:00</span></div><div class="line">2012年12月08日 星期六 08时45分00秒</div><div class="line">[root@localhost ~]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<h3 id="实例3：date-d参数使用"><a href="#实例3：date-d参数使用" class="headerlink" title="实例3：date -d参数使用"></a>实例3：date -d参数使用</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># date -d "nov 22"</span></div><div class="line">2012年 11月 22日 星期四 00:00:00 CST</div><div class="line">[root@localhost ~]<span class="comment"># date -d '2 weeks'</span></div><div class="line">2012年 12月 22日 星期六 08:50:21 CST</div><div class="line">[root@localhost ~]<span class="comment"># date -d 'next monday'</span></div><div class="line">2012年 12月 10日 星期一 00:00:00 CST</div><div class="line">[root@localhost ~]<span class="comment">#  date -d next-day +%Y%m%d</span></div><div class="line">20121209[root@localhost ~]<span class="comment"># date -d tomorrow +%Y%m%d</span></div><div class="line">20121209[root@localhost ~]<span class="comment"># date -d last-day +%Y%m%d</span></div><div class="line">20121207[root@localhost ~]<span class="comment"># date -d yesterday +%Y%m%d</span></div><div class="line">20121207[root@localhost ~]<span class="comment"># date -d last-month +%Y%m</span></div><div class="line">201211[root@localhost ~]<span class="comment"># date -d next-month +%Y%m</span></div><div class="line">201301[root@localhost ~]<span class="comment"># date -d '30 days ago' </span></div><div class="line">2012年 11月 08日 星期四 08:51:37 CST</div><div class="line">[root@localhost ~]<span class="comment"># date -d '-100 days' </span></div><div class="line">2012年 08月 30日 星期四 08:52:03 CST</div><div class="line">[root@localhost ~]<span class="comment">#  date -d 'dec 14 -2 weeks'</span></div><div class="line">2012年 11月 30日 星期五 00:00:00 CST</div><div class="line">[root@localhost ~]<span class="comment"># date -d '50 days'</span></div><div class="line">2013年 01月 27日 星期日 08:52:27 CST</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;date 命令的另一个扩展是 -d 选项，该选项非常有用。使用这个功能强大的选项，通过将日期作为引号括起来的参数提供，您可以快速地查明一个特定的日期。-d 选项还可以告诉您，相对于当前日期若干天的究竟是哪一天，从现在开始的若干天或若干星期以后，或者以前（过去）。通过将这个相对偏移使用引号括起来，作为 -d 选项的参数，就可以完成这项任务。</p>
+<h4 id="具体说明如下："><a href="#具体说明如下：" class="headerlink" title="具体说明如下："></a>具体说明如下：</h4><ul>
+<li><p>date -d “nov 22”  今年的 11 月 22 日是星期三</p>
+</li>
+<li><p>date -d ‘2 weeks’ 2周后的日期</p>
+</li>
+<li><p>date -d ‘next monday’ (下周一的日期)</p>
+</li>
+<li><p>date -d next-day +%Y%m%d（明天的日期）或者：date -d tomorrow +%Y%m%d</p>
+</li>
+<li><p>date -d last-day +%Y%m%d(昨天的日期) 或者：date -d yesterday +%Y%m%d</p>
+</li>
+<li><p>date -d last-month +%Y%m(上个月是几月)</p>
+</li>
+<li><p>date -d next-month +%Y%m(下个月是几月)</p>
+</li>
+<li><p>使用 ago 指令，您可以得到过去的日期：</p>
+</li>
+<li><p>date -d ‘30 days ago’ （30天前的日期）</p>
+</li>
+<li><p>使用负数以得到相反的日期：</p>
+</li>
+<li><p>date -d ‘dec 14 -2 weeks’ （相对:dec 14这个日期的两周前的日期）</p>
+</li>
+<li><p>date -d ‘-100 days’ (100天以前的日期)</p>
+</li>
+<li><p>date -d ‘50 days’(50天后的日期)</p>
+</li>
+</ul>
+<h3 id="实例4：显示月份和日数"><a href="#实例4：显示月份和日数" class="headerlink" title="实例4：显示月份和日数"></a>实例4：显示月份和日数</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">date  <span class="string">'+%B %d'</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># date  '+%B %d' </span></div><div class="line">十二月 08[root@localhost ~]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<h3 id="实例5：显示时间后跳行，再显示目前日期"><a href="#实例5：显示时间后跳行，再显示目前日期" class="headerlink" title="实例5：显示时间后跳行，再显示目前日期"></a>实例5：显示时间后跳行，再显示目前日期</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">date <span class="string">'+%T%n%D'</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># date '+%T%n%D'</span></div><div class="line">09:00:30</div><div class="line">12/08/12</div><div class="line">[root@localhost ~]<span class="comment">#</span></div></pre></td></tr></table></figure>
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/13/2. Linux 命令/8. Linux 命令- mv/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          Linux 命令- mv
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/13/2. Linux 命令/17. Linux 命令- whereis/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Linux 命令- whereis</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="2. Linux 命令/39. Linux 命令- date" data-title="Linux 命令- date" data-url="https://hcldirgit.github.io/2017/10/13/2. Linux 命令/39. Linux 命令- date/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="Linux 命令- date">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

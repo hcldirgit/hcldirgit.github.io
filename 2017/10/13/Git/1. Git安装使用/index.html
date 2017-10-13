@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Git安装使用 | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1.安装git&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;centos上   1[root@localhost ~]# yum install -y epel-release 1[root@localhost ~]# yum install -y git">
+<meta name="keywords" content="Git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git安装使用">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/10/13/Git/1. Git安装使用/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="1.安装git&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;centos上   1[root@localhost ~]# yum install -y epel-release 1[root@localhost ~]# yum install -y git">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Git%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8/01.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Git%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8/02.png?raw=true">
+<meta property="og:updated_time" content="2017-10-13T10:02:19.859Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Git安装使用">
+<meta name="twitter:description" content="1.安装git&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;centos上   1[root@localhost ~]# yum install -y epel-release 1[root@localhost ~]# yum install -y git">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/Git%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8/01.png?raw=true">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.43px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.26px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.74px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.48px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.3px;">FTP</a> <a href="/tags/Git/" style="font-size: 10.87px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.74px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.61px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.43px;">Jenkins</a> <a href="/tags/LAMP/" style="font-size: 19.57px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.96px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.52px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.13px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.35px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.3px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.65px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.39px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.74px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 17.83px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.3px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.78px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.3px;">Puppet</a> <a href="/tags/Python/" style="font-size: 14.78px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.52px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.17px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.78px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.91px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 16.09px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.61px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 13.04px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15.22px;">shell</a> <a href="/tags/shell练习/" style="font-size: 18.7px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 13.04px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Git/1. Git安装使用" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Git/1. Git安装使用/" class="article-date">
+  	<time datetime="2017-10-13T13:29:40.447Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Git安装使用
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Git/">Git</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-安装git"><a href="#1-安装git" class="headerlink" title="1.安装git"></a>1.安装git</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;centos上  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># yum install -y epel-release</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># yum install -y git</span></div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;ubuntu上</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install git</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;windows 上安装 msysgit,<a href="https://git-for-windows.github.io/" target="_blank" rel="external">下载地址</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安装完成后，还需要最后一步设置  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># git config --global user.name "yanyi"</span></div><div class="line">[root@localhost ~]<span class="comment"># git config --global user.email "hcldir@qq.com"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;设置完成会生成 .gitconfig 文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># ls -la</span></div><div class="line">-rw-r--r-- 1 root root 44 1月 6 20:01 .gitconfig</div><div class="line">[root@localhost ~]<span class="comment"># cat .gitconfig </span></div><div class="line">[user]</div><div class="line">      name = yanyi</div><div class="line">      email = hcldir@qq.com</div></pre></td></tr></table></figure>
+<h2 id="2-创建版本库"><a href="#2-创建版本库" class="headerlink" title="2.创建版本库"></a>2.创建版本库</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># mkdir /home/gitroot</span></div><div class="line">[root@localhost ~]<span class="comment"># cd /home/gitroot</span></div><div class="line">[root@localhost gitroot]<span class="comment"># git init</span></div><div class="line">Initialized empty Git repository <span class="keyword">in</span> /home/gitroot/.git/</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：git init 用这个命令初始化，让这个目录变成git可以管理的仓库。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;ls -a 可以看到多了一个 .git 文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost gitroot]<span class="comment"># ls -a</span></div><div class="line">. .. .git</div></pre></td></tr></table></figure>
+<h2 id="3-提交文件到仓库"><a href="#3-提交文件到仓库" class="headerlink" title="3.提交文件到仓库"></a>3.提交文件到仓库</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;创建一个文件 1.txt</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@localhost gitroot]<span class="comment"># echo -e "123\naaa\n456\nbbb" &gt; 1.txt</span></div><div class="line">[root@localhost gitroot]<span class="comment"># cat 1.txt</span></div><div class="line">123</div><div class="line">aaa</div><div class="line">456</div><div class="line">bbb</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;把1.txt添加到仓库中</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost gitroot]<span class="comment"># git add 1.txt</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>add</strong> 完了必须要 <strong>commit</strong> 才算真正把文件提交到git仓库里</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost gitroot]<span class="comment"># git commit -m "add new file 1.txt"</span></div><div class="line">[master (root-commit) 0214d82] add new file 1.txt</div><div class="line"> 1 files changed, 4 insertions(+), 0 deletions(-)</div><div class="line"> create mode 100644 1.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;更改 1.txt后，查看和版本库是否一致</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[root@localhost gitroot]<span class="comment"># git status</span></div><div class="line"><span class="comment"># On branch master</span></div><div class="line"><span class="comment"># Changed but not updated:</span></div><div class="line"><span class="comment"># (use "git add &lt;file&gt;..." to update what will be committed)</span></div><div class="line"><span class="comment"># (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># modified: 1.txt</span></div><div class="line"><span class="comment">#</span></div><div class="line">no changes added to commit (use <span class="string">"git add"</span> and/or <span class="string">"git commit -a"</span>)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：<strong>git status</strong>  查看当前仓库中的状态，比如是否有改动的文件  </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果不提交，需要把文件恢复成版本库里的文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@localhost gitroot]<span class="comment"># git checkout -- 1.txt</span></div><div class="line">[root@localhost gitroot]<span class="comment"># cat 1.txt</span></div><div class="line">123</div><div class="line">aaa</div><div class="line">456</div><div class="line">bbb</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;再次执行 git status 命令，提示没有任何更改</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">[root@localhost gitroot]<span class="comment"># git status</span></div><div class="line"><span class="comment"># On branch master</span></div><div class="line">nothing to commit (working directory clean)</div><div class="line">``` </div><div class="line"></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;再次修改 1.txt文件，对比修改内容</span></div><div class="line"></div><div class="line">```bash</div><div class="line">[root@localhost gitroot]<span class="comment"># echo -e "111111\n2222222222" &gt;&gt; 1.txt </span></div><div class="line">[root@localhost gitroot]<span class="comment"># git status</span></div><div class="line"><span class="comment"># On branch master</span></div><div class="line"><span class="comment"># Changed but not updated:</span></div><div class="line"><span class="comment"># (use "git add &lt;file&gt;..." to update what will be committed)</span></div><div class="line"><span class="comment"># (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># modified: 1.txt</span></div><div class="line"><span class="comment">#</span></div><div class="line">no changes added to commit (use <span class="string">"git add"</span> and/or <span class="string">"git commit -a"</span>)</div><div class="line">[root@localhost gitroot]<span class="comment"># git diff 1.txt</span></div><div class="line">diff --git a/1.txt b/1.txt</div><div class="line">index b149eee..aa2d2ae 100644</div><div class="line">--- a/1.txt</div><div class="line">+++ b/1.txt</div><div class="line">@@ -2,3 +2,5 @@</div><div class="line"> aaa</div><div class="line"> 456</div><div class="line"> bbb</div><div class="line">+111111</div><div class="line">+2222222222</div></pre></td></tr></table></figure>
+<p>说明：<strong>git diff</strong> 1.txt  可以对比1.txt本次修改了什么内容，相比较仓库里面的版本。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;把更改个文件提交到版本库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@localhost gitroot]<span class="comment"># git add 1.txt</span></div><div class="line">[root@localhost gitroot]<span class="comment"># git commit -m "add a line 1.txt"</span></div><div class="line">[master 182c98f] add a line 1.txt</div><div class="line">1 files changed, 2 insertions(+), 0 deletions(-)</div><div class="line">[root@localhost gitroot]<span class="comment"># git status</span></div><div class="line"><span class="comment"># On branch master</span></div><div class="line">nothing to commit (working directory clean)</div></pre></td></tr></table></figure>
+<h2 id="4-版本回退"><a href="#4-版本回退" class="headerlink" title="4.版本回退"></a>4.版本回退</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;多更改几次1.txt，并进行 git add,  git commit操作</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">[root@localhost gitroot]<span class="comment"># echo "asdfkjsadkjf" &gt;&gt; 1.txt</span></div><div class="line">[root@localhost gitroot]<span class="comment"># git add 1.txt</span></div><div class="line">[root@localhost gitroot]<span class="comment"># git commit -m "change 1.txt agin"</span></div><div class="line">[master 0c72aba] change 1.txt agin</div><div class="line"> 1 files changed, 1 insertions(+), 0 deletions(-)</div><div class="line">[root@localhost gitroot]<span class="comment"># echo "123456" &gt;&gt; 1.txt</span></div><div class="line">[root@localhost gitroot]<span class="comment"># git add 1.txt</span></div><div class="line">[root@localhost gitroot]<span class="comment"># git commit -m "change 1.txt agin agin"</span></div><div class="line">[master e4fe595] change 1.txt agin agin</div><div class="line"> 1 files changed, 1 insertions(+), 0 deletions(-)</div><div class="line">[root@localhost gitroot]<span class="comment"># git status</span></div><div class="line"><span class="comment"># On branch master</span></div><div class="line">nothing to commit (working directory clean)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>git log</strong>  查看所有提交git仓库的记录操作</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">[root@localhost gitroot]<span class="comment"># git log</span></div><div class="line">commit e4fe59596fc6c16757cb1d772d775932701f86ab</div><div class="line">Author: yanyi &lt;hcldir@qq.com&gt;</div><div class="line">Date:   Fri Jan 6 21:57:43 2017 +0800</div><div class="line"></div><div class="line">     change 1.txt agin agin</div><div class="line"></div><div class="line">commit 0c72aba21aba27ccc9c9873ec53c552d5474a02f</div><div class="line">Author: yanyi &lt;hcldir@qq.com&gt;</div><div class="line">Date:   Fri Jan 6 21:56:41 2017 +0800</div><div class="line"></div><div class="line">     change 1.txt agin</div><div class="line"></div><div class="line">commit 182c98ff8798f47965ba44ed218e9da5e9964295</div><div class="line">Author: yanyi &lt;hcldir@qq.com&gt;</div><div class="line">Date:   Fri Jan 6 20:34:15 2017 +0800</div><div class="line"></div><div class="line">     add a line 1.txt</div><div class="line"></div><div class="line">commit 0214d8252fd3c37a7f09fc32e8ff29d10d577230</div><div class="line">Author: yanyi &lt;hcldir@qq.com&gt;</div><div class="line">Date:   Fri Jan 6 20:15:19 2017 +0800</div><div class="line"></div><div class="line">     add new file 1.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;根据这个 log 可退回到前边某个版本</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>git log –pretty=oneline</strong> 命令可以让每个版本单独一行显示，更清晰。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@localhost gitroot]<span class="comment"># git log --pretty=oneline</span></div><div class="line">e4fe59596fc6c16757cb1d772d775932701f86ab change 1.txt agin agin</div><div class="line">0c72aba21aba27ccc9c9873ec53c552d5474a02f change 1.txt agin</div><div class="line">182c98ff8798f47965ba44ed218e9da5e9964295 add a line 1.txt</div><div class="line">0214d8252fd3c37a7f09fc32e8ff29d10d577230 add new file 1.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>git reset –hard 字符串</strong> 可以退回到以前版本，字符串可以简写，只写前边几位</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost gitroot]<span class="comment"># git reset --hard 182c</span></div><div class="line">HEAD is now at 182c98f add a line 1.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;退回版本后，在 git log 则无法显示退回版本以上的版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost gitroot]<span class="comment"># git log --pretty=oneline</span></div><div class="line">182c98ff8798f47965ba44ed218e9da5e9964295 add a line 1.txt</div><div class="line">0214d8252fd3c37a7f09fc32e8ff29d10d577230 add new file 1.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>git reflog</strong> 可以显示所有版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@localhost gitroot]<span class="comment"># git reflog</span></div><div class="line">e4fe595 HEAD@&#123;0&#125;: e4fe5: updating HEAD</div><div class="line">182c98f HEAD@&#123;1&#125;: 182c: updating HEAD</div><div class="line">e4fe595 HEAD@&#123;2&#125;: commit: change 1.txt agin agin</div><div class="line">0c72aba HEAD@&#123;3&#125;: commit: change 1.txt agin</div><div class="line">182c98f HEAD@&#123;4&#125;: commit: add a line 1.txt</div><div class="line">0214d82 HEAD@&#123;5&#125;: commit (initial): add new file 1.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后可以使用 git reset –hard 字符串 再次退回版本。</p>
+<h2 id="5-撤销修改（文件恢复）"><a href="#5-撤销修改（文件恢复）" class="headerlink" title="5.撤销修改（文件恢复）"></a>5.撤销修改（文件恢复）</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果修改文件后，发现改的不对，想恢复到上一次提交的状态，或不小心删除了文件。可以使用</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>git checkout – file</strong> 恢复到上一次提交的状态。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost gitroot]<span class="comment"># git checkout 1.txt</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果文件修改完成，保存后，git add 了，但没有 commit ，想退回到上一次提交的状态可以用<strong>git reset HEAD <file></file></strong>，再使用 git checkout – file </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">[root@localhost gitroot]<span class="comment"># git add 1.txt</span></div><div class="line">[root@localhost gitroot]<span class="comment"># git status</span></div><div class="line"><span class="comment"># On branch master</span></div><div class="line"><span class="comment"># Changes to be committed:</span></div><div class="line"><span class="comment"># (use "git reset HEAD &lt;file&gt;..." to unstage)</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># modified: 1.txt</span></div><div class="line"><span class="comment">#</span></div><div class="line">[root@localhost gitroot]<span class="comment"># git reset HEAD 1.txt</span></div><div class="line">Unstaged changes after reset:</div><div class="line">M 1.txt</div><div class="line">[root@localhost gitroot]<span class="comment"># git checkout -- 1.txt</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果不仅 add 又 commit 了，就用版本退回恢复到上一次提交状态。</p>
+<h2 id="6-文件删除"><a href="#6-文件删除" class="headerlink" title="6.文件删除"></a>6.文件删除</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;新建 2.txt 文件，add 并 commit 提交到 git 仓库。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@localhost gitroot]<span class="comment"># echo "2222222" &gt;&gt; 2.txt</span></div><div class="line">[root@localhost gitroot]<span class="comment"># git add 2.txt</span></div><div class="line">[root@localhost gitroot]<span class="comment"># git commit -m " a new 2.txt"</span></div><div class="line">[master 44ec005] a new 2.txt</div><div class="line"> 1 files changed, 1 insertions(+), 0 deletions(-)</div><div class="line"> create mode 100644 2.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面删除它</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost gitroot]<span class="comment"># rm -rf 2.txt</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;git status 可以看到，提示 2.txt 被删除</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[root@localhost gitroot]<span class="comment"># git status</span></div><div class="line"><span class="comment"># On branch master</span></div><div class="line"><span class="comment"># Changed but not updated:</span></div><div class="line"><span class="comment"># (use "git add/rm &lt;file&gt;..." to update what will be committed)</span></div><div class="line"><span class="comment"># (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># deleted: 2.txt</span></div><div class="line"><span class="comment">#</span></div><div class="line">no changes added to commit (use <span class="string">"git add"</span> and/or <span class="string">"git commit -a"</span>)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果需要恢复就用 git checkout – 2.txt，现在是要从 git 仓库里删除 2.txt，命令 <strong>git rm file</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@localhost gitroot]<span class="comment"># git rm 2.txt</span></div><div class="line">rm <span class="string">'2.txt'</span></div><div class="line">[root@localhost gitroot]<span class="comment"># git commit -m "delete 2.txt"</span></div><div class="line">[master b01be1a] delete 2.txt</div><div class="line"> 1 files changed, 0 insertions(+), 1 deletions(-)</div><div class="line"> delete mode 100644 2.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样就彻底从 git 仓库删除 2.txt 了</p>
+<h2 id="7-创建远程仓库（github）"><a href="#7-创建远程仓库（github）" class="headerlink" title="7.创建远程仓库（github）"></a>7.创建远程仓库（github）</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先到 <a href="https://github.com/" target="_blank" rel="external">https://github.com/</a> 注册一个账号，创建自己的git，点repositories 再点new</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;名字自定义，比如叫studygit  选择public  点 create repository</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;添加key：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;右上角点自己头像，选择settings，左侧选择SSH and GPG keys</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;填写好标题，key 在自己主机上创建，命令 ssh-keygen</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">[root@localhost gitroot]<span class="comment"># ssh-keygen</span></div><div class="line">Generating public/private rsa key pair.</div><div class="line">Enter file <span class="keyword">in</span> <span class="built_in">which</span> to save the key (/root/.ssh/id_rsa): </div><div class="line">Created directory <span class="string">'/root/.ssh'</span>.</div><div class="line">Enter passphrase (empty <span class="keyword">for</span> no passphrase): </div><div class="line">Enter same passphrase again: </div><div class="line">Your identification has been saved <span class="keyword">in</span> /root/.ssh/id_rsa.</div><div class="line">Your public key has been saved <span class="keyword">in</span> /root/.ssh/id_rsa.pub.</div><div class="line">The key fingerprint is:</div><div class="line">1f:5f:50:04:2b:80:16:16:e1:9a:a8:59:8c:0a:83:f4 root@localhost</div><div class="line">The key<span class="string">'s randomart image is:</span></div><div class="line"><span class="string">+--[ RSA 2048]----+</span></div><div class="line"><span class="string">|      ==.   .oo  |</span></div><div class="line"><span class="string">|     oo  .   o   | </span></div><div class="line"><span class="string">| .   ..   . o    |</span></div><div class="line"><span class="string">|oo.. o     . .   |</span></div><div class="line"><span class="string">|= +Eo   S .   .  |</span></div><div class="line"><span class="string">|o=       . o .   |</span></div><div class="line"><span class="string">|+         . .    |</span></div><div class="line"><span class="string">|                 |</span></div><div class="line"><span class="string">|                 |</span></div><div class="line"><span class="string">+-----------------+</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;右上角点New SSH key，把linux机器上的 /root/.ssh/id_rsa.pub内容粘贴到这里</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost gitroot]<span class="comment"># cat /root/.ssh/id_rsa.pub</span></div><div class="line">ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAmTutzYNSxeZNJmHZXtczs8UbfvPZAkKF/Kwj4f8rlD5IG0Mml+euYjgzb2ppQzvh/sxqFJOKBvM9MhQ5MRc2t4eLm1U11FLyxLLJh6Kdtc6do8lWRJLJFOomkky6DQ4ISN8RinW6GMaT22H41xQ4LozIoA2EbYKELsno6MxbFqfwJlwSgv6WB3oBwDWYaY6nf7c04K2jH/xJwxLD8OyO+SzI15JdQBuZrgAXIvh5sQwwX6spKBKqyeYhTOGXZkkI8FSiY90ZMJrsxwZvbZVMNrpvFnXFN5f8ZHeVM33pTpT05EMLt+FrHixuccP8EJjq4efcwQQcrZJoFJYJZSy5vQ== root@localhost</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;把本地仓库推送到远程仓库，命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git remote add origin git@github.com:hcldirgit/studygit.git</div><div class="line">git push -u origin master</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">[root@localhost home]<span class="comment"># mkdir studygit</span></div><div class="line">[root@localhost home]<span class="comment"># cd studygit</span></div><div class="line">[root@localhost studygit]<span class="comment"># echo "# studygit" &gt;&gt; README.md</span></div><div class="line">[root@localhost studygit]<span class="comment"># git init</span></div><div class="line"> itialized empty Git repository <span class="keyword">in</span> /home/studygit/.git/</div><div class="line">[root@localhost studygit]<span class="comment"># git add README.md</span></div><div class="line">[root@localhost studygit]<span class="comment"># git commit -m "first commit"</span></div><div class="line">[master (root-commit) f3cba66] first commit</div><div class="line"> 1 files changed, 1 insertions(+), 0 deletions(-)</div><div class="line"> create mode 100644 README.md</div><div class="line">[root@localhost studygit]<span class="comment"># git remote add origin git@github.com:hcldirgit/studygit.git</span></div><div class="line">[root@localhost studygit]<span class="comment"># git push -u origin master </span></div><div class="line">The authenticity of host <span class="string">'github.com (192.30.253.112)'</span> can<span class="string">'t be established.</span></div><div class="line"><span class="string">RSA key fingerprint is 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48.</span></div><div class="line"><span class="string">Are you sure you want to continue connecting (yes/no)? yes</span></div><div class="line"><span class="string">Warning: Permanently added '</span>github.com,192.30.253.112<span class="string">' (RSA) to the list of known hosts.</span></div><div class="line"><span class="string">Counting objects: 6, done.</span></div><div class="line"><span class="string">Delta compression using up to 4 threads.</span></div><div class="line"><span class="string">Compressing objects: 100% (4/4), done.</span></div><div class="line"><span class="string">Writing objects: 100% (6/6), 3.12 KiB, done.</span></div><div class="line"><span class="string">Total 6 (delta 0), reused 0 (delta 0)</span></div><div class="line"><span class="string">To git@github.com:hcldirgit/studygit.git</span></div><div class="line"><span class="string"> * [new branch] master -&gt; master</span></div><div class="line"><span class="string">Branch master set up to track remote branch master from origin.</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下一次再推送，就可以直接 git push </p>
+<h2 id="8-克隆远程仓库"><a href="#8-克隆远程仓库" class="headerlink" title="8.克隆远程仓库"></a>8.克隆远程仓库</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在 github 上想把别人的仓库克隆下来</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[root@localhost studygit]<span class="comment"># cd /home/</span></div><div class="line">[root@localhost home]<span class="comment"># git clone git@github.com:aminglinux/lanmp.git</span></div><div class="line">Initialized empty Git repository <span class="keyword">in</span> /home/lanmp/.git/</div><div class="line">Warning: Permanently added the RSA host key <span class="keyword">for</span> IP address <span class="string">'192.30.253.113'</span> to the list of known hosts.</div><div class="line">remote: Counting objects: 26, <span class="keyword">done</span>.</div><div class="line">remote: Total 26 (delta 0), reused 0 (delta 0), pack-reused 26</div><div class="line">Receiving objects: 100% (26/26), 5.46 KiB, <span class="keyword">done</span>.</div><div class="line">Resolving deltas: 100% (4/4), <span class="keyword">done</span>.</div><div class="line">[root@localhost home]<span class="comment"># ls</span></div><div class="line">gitroot lanmp studygit</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;它提示，会在当前目录下初始化一个仓库，并创建一个.git的目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Initialized empty Git repository <span class="keyword">in</span> /home/lanmp/.git/</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;完成后可以看到一个lanmp 的目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[root@localhost home]<span class="comment"># ls</span></div><div class="line">gitroot lanmp studygit</div><div class="line">[root@localhost home]<span class="comment"># cd lanmp</span></div><div class="line">[root@localhost lanmp]<span class="comment"># ls</span></div><div class="line">lanmp.sh README.md</div><div class="line">[root@localhost lanmp]<span class="comment"># cat README.md</span></div><div class="line"><span class="comment"># lanmp</span></div><div class="line">lamp/lnmp 一键安装脚本</div><div class="line">author: aming</div><div class="line">version: 0.2</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编辑修改后，使用 git push 再推送到远程服务端。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注：如果是克隆的别人的 git 仓库，则无法推送，因为别人没有加我的 key 。</p>
+<h2 id="9-使用分支"><a href="#9-使用分支" class="headerlink" title="9.使用分支"></a>9.使用分支</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看分支，命令 <strong>git branch</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost studygit]<span class="comment"># git branch</span></div><div class="line">* master</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;创建分支，命令 <strong>git branch 分支名</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost studygit]<span class="comment"># git branch yanyi</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;切换到创建分之下，<strong>git checkout 分支名</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost studygit]<span class="comment"># git checkout yanyi</span></div><div class="line">Switched to branch <span class="string">'yanyi'</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在新分支下，创建文件并提交</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@localhost studygit]<span class="comment"># echo "234qw34\qwerqwer" &gt; 2.txt</span></div><div class="line">[root@localhost studygit]<span class="comment"># git add 2.txt</span></div><div class="line">[root@localhost studygit]<span class="comment"># git commit -m "add new 2.txt"</span></div><div class="line">[yanyi acbc9ea] add new 2.txt</div><div class="line"> 1 files changed, 1 insertions(+), 0 deletions(-)</div><div class="line"> create mode 100644 2.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;切换到 master 分支，查看</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost studygit]<span class="comment"># git checkout master</span></div><div class="line">Switched to branch <span class="string">'master'</span></div><div class="line">[root@localhost studygit]<span class="comment"># ls</span></div><div class="line">lanmp.sh README.md</div></pre></td></tr></table></figure>
+<h2 id="10-分支的合并和删除"><a href="#10-分支的合并和删除" class="headerlink" title="10.分支的合并和删除"></a>10.分支的合并和删除</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>把 yanyi 分支合并到 master  ，命令 <code>git merge yanyi</code> 。注意必须先切换到 master 分支下执行命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[root@localhost studygit]<span class="comment"># git checkout master</span></div><div class="line">Switched to branch <span class="string">'master'</span></div><div class="line">[root@localhost studygit]<span class="comment"># git merge yanyi </span></div><div class="line">Updating 23545a4..acbc9ea</div><div class="line">Fast-forward</div><div class="line"> 2.txt | 1 +</div><div class="line"> 1 files changed, 1 insertions(+), 0 deletions(-)</div><div class="line"> create mode 100644 2.txt</div><div class="line">[root@localhost studygit]<span class="comment"># ls</span></div><div class="line">2.txt lanmp.sh README.md</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果master分支和yanyi分支都对2.txt进行了编辑，当合并时会提示冲突，需要先解决冲突才可以继续合并。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解决冲突的方法是在master分支下，编辑2.txt，改为yanyi分支里面2.txt的内容。 然后提交2.txt，再合并yanyi分支。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;但是这样有一个问题，万一master分支更改的内容是我们想要的呢？ 我们可以编辑2.txt内容，改为我们想要的，然后提交。切换到yanyi分支，然后合并master分支到yanyi分支即可。（倒着合并）合并分支有一个原则，那就是要把最新的分支合并到旧的分支。也就是说merge后面跟的分支名字一定是最新的分支。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>删除分支，命令 <code>git branch -d 分支名</code></strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>如果分支没有合并，删除之前会提示。不合并，强制删除，命令 <code>git branch -D 分支名</code></strong></p>
+<h2 id="11-分支使用原则"><a href="#11-分支使用原则" class="headerlink" title="11.分支使用原则"></a>11.分支使用原则</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;对于分支的应用，建议大家以这样的原则来：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;master分支是非常重要的，线上发布代码用这个分支，平时我们开发代码不要在这个分支上。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;创建一个dev分支，专门用作开发，只有当发布到线上之前，才会把dev分支合并到master</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;开发人员应该在dev的基础上再分支成个人分支，个人分支（在自己pc上）里面开发代码，然后合并到dev分支</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Git%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8/01.png?raw=true" alt=""></p>
+<h2 id="12-git-stash-保留现场"><a href="#12-git-stash-保留现场" class="headerlink" title="12.git stash 保留现场"></a>12.git stash 保留现场</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当你正在进行项目中某一部分的工作，里面的东西处于一个比较杂乱的状态，而你想转到其他分支上进行一些工作。问题是，你不想提交进行了一半的工作，否则以后你无法回到这个工作点。解决这个问题的办法就是<strong>git stash</strong>命令。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;比如我们在 yanyi 分支，编辑了一个新的文件3.txt</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这时候我们需要到其他分支去修复一个bug，所以需要先git add 3.txt</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后 git  stash  保存一下现场</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;再切换到另外分支去修复bug，修复完bug后，再回到 yanyi 分支</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>git stash list</strong> 可以看到我们保存过的现场</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用 <strong>git stash apply</strong> 恢复现场</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;也可以指定stash：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>git stash apply stash@{0}</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">[root@localhost studygit]<span class="comment"># echo "wqerqwer\asdasg\q1234234" &gt; 3.txt</span></div><div class="line">[root@localhost studygit]<span class="comment"># ls</span></div><div class="line">2.txt 3.txt lanmp.sh README.md</div><div class="line">[root@localhost studygit]<span class="comment"># git add 3.txt</span></div><div class="line">[root@localhost studygit]<span class="comment"># git stash</span></div><div class="line">Saved working directory and index state WIP on yanyi: acbc9ea add new 2.txt</div><div class="line">HEAD is now at acbc9ea add new 2.txt</div><div class="line">[root@localhost studygit]<span class="comment"># git stash list</span></div><div class="line">stash@&#123;0&#125;: WIP on yanyi: acbc9ea add new 2.txt</div><div class="line">[root@localhost studygit]<span class="comment"># git stash apply stash@&#123;0&#125;</span></div><div class="line"><span class="comment"># On branch yanyi</span></div><div class="line"><span class="comment"># Changes to be committed:</span></div><div class="line"><span class="comment"># (use "git reset HEAD &lt;file&gt;..." to unstage)</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># new file: 3.txt</span></div><div class="line"><span class="comment">#</span></div><div class="line">[root@localhost studygit]<span class="comment"># ls</span></div><div class="line">2.txt 3.txt lanmp.sh README.md</div></pre></td></tr></table></figure>
+<h2 id="13-远程分支管理"><a href="#13-远程分支管理" class="headerlink" title="13.远程分支管理"></a>13.远程分支管理</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看远程库信息，使用<strong>git remote -v</strong> 本地新建的分支如果不推送到远程，对其他人就是不可见的</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost studygit]<span class="comment"># git remote -v</span></div><div class="line">origin git@github.com:hcldirgit/studygit.git (fetch)</div><div class="line">origin git@github.com:hcldirgit/studygit.git (push)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看远程分支 <strong>git ls-remote origin</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@localhost studygit]<span class="comment"># git ls-remote origin</span></div><div class="line">acbc9ea125b527e9f3ab30dcf5f5b3e415c760e1 HEAD</div><div class="line">acbc9ea125b527e9f3ab30dcf5f5b3e415c760e1 refs/heads/dev</div><div class="line">acbc9ea125b527e9f3ab30dcf5f5b3e415c760e1 refs/heads/master</div><div class="line">acbc9ea125b527e9f3ab30dcf5f5b3e415c760e1 refs/heads/yanyi</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从本地推送分支，使用<strong>git push origin branch-name</strong>，如果推送失败，先用<strong>git pull</strong>抓取远程的新提交</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost studygit]<span class="comment"># git push origin yanyi</span></div><div class="line">Everything up-to-date</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost studygit]<span class="comment"># git pull</span></div><div class="line">Already up-to-date.</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在本地创建和远程分支对应的分支，使用<strong>git checkout -b branch-name origin/branch-name</strong>，本地和远程分支的名称最好一致</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">[root@localhost home]<span class="comment"># rm -rf studygit</span></div><div class="line">[root@localhost home]<span class="comment"># git clone git@github.com:hcldirgit/studygit.git</span></div><div class="line">Initialized empty Git repository <span class="keyword">in</span> /home/studygit/.git/</div><div class="line">remote: Counting objects: 9, <span class="keyword">done</span>.</div><div class="line">remote: Compressing objects: 100% (6/6), <span class="keyword">done</span>.</div><div class="line">remote: Total 9 (delta 0), reused 9 (delta 0), pack-reused 0</div><div class="line">Receiving objects: 100% (9/9), <span class="keyword">done</span>.</div><div class="line">[root@localhost home]<span class="comment"># cd studygit</span></div><div class="line">[root@localhost studygit]<span class="comment"># ls</span></div><div class="line">2.txt lanmp.sh README.md</div><div class="line">[root@localhost studygit]<span class="comment"># git branch</span></div><div class="line">* master</div><div class="line">[root@localhost studygit]<span class="comment"># git checkout -b dev origin/dev</span></div><div class="line">Branch dev <span class="built_in">set</span> up to track remote branch dev from origin.</div><div class="line">Switched to a new branch <span class="string">'dev'</span></div><div class="line">[root@localhost studygit]<span class="comment"># git checkout -b yanyi origin/yanyi</span></div><div class="line">Branch yanyi <span class="built_in">set</span> up to track remote branch yanyi from origin.</div><div class="line">Switched to a new branch <span class="string">'yanyi'</span></div><div class="line">[root@localhost studygit]<span class="comment"># git checkout -b yi origin/yi </span></div><div class="line">Branch yi <span class="built_in">set</span> up to track remote branch yi from origin.</div><div class="line">Switched to a new branch <span class="string">'yi'</span></div><div class="line">[root@localhost studygit]<span class="comment"># git branch</span></div><div class="line"> dev</div><div class="line"> master</div><div class="line"> yanyi</div><div class="line">* yi</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从远程抓取分支，使用<strong>git pull</strong>，如果有冲突，要先处理冲突。</p>
+<h2 id="14-标签管理"><a href="#14-标签管理" class="headerlink" title="14.标签管理"></a>14.标签管理</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;标签类似于快照功能，我们可以给版本库打一个标签，记录某个时刻库的状态。我们可以随时恢复到该状态。</p>
+<p><strong><code>git checkout master</code> 先切到master分支上</strong></p>
+<p><strong><code>git tag v1.0</code>  给master打一个标签v1.0</strong></p>
+<p><strong><code>git tag</code> 可以查看所有的标签</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">[root@localhost studygit]<span class="comment"># git tag v1.0</span></div><div class="line">[root@localhost studygit]<span class="comment"># git tag</span></div><div class="line">v1.0</div><div class="line">[root@localhost studygit]<span class="comment"># git show v1.0</span></div><div class="line">commit acbc9ea125b527e9f3ab30dcf5f5b3e415c760e1</div><div class="line">Author: yanyi &lt;hcldir@qq.com&gt;</div><div class="line">Date: Mon Jan 9 05:08:10 2017 +0800</div><div class="line"> </div><div class="line"> add new 2.txt</div><div class="line"> </div><div class="line">diff --git a/2.txt b/2.txt</div><div class="line">new file mode 100644</div><div class="line">index 0000000..e9af856</div><div class="line">--- /dev/null</div><div class="line">+++ b/2.txt</div><div class="line">@@ -0,0 +1 @@</div><div class="line">+234qw34\qwerqwer</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>tag是针对commit来打标签的，所以可以针对历史的commit来打tag</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;命令 <strong>git log –pretty=oneline –abbrev-commit</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[root@localhost studygit]<span class="comment"># git log --pretty=oneline</span></div><div class="line">acbc9ea125b527e9f3ab30dcf5f5b3e415c760e1 add new 2.txt</div><div class="line">23545a469bcea58ba25718515d1de2c78c9d7235 add lanmp.sh</div><div class="line">f3cba6670b29b8848c8a8ea61777918f097bcfbe first commit</div><div class="line">[root@localhost studygit]<span class="comment"># git log --pretty=oneline --abbrev-commit</span></div><div class="line">acbc9ea add new 2.txt</div><div class="line">23545a4 add lanmp.sh</div><div class="line">f3cba66 first commit</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>git tag v0.9 23545a4</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">[root@localhost studygit]<span class="comment"># git tag v0.9 23545a4</span></div><div class="line">[root@localhost studygit]<span class="comment"># git tag</span></div><div class="line">v0.9</div><div class="line">v1.0</div><div class="line">[root@localhost studygit]<span class="comment"># git show v0.9</span></div><div class="line">commit 23545a469bcea58ba25718515d1de2c78c9d7235</div><div class="line">Author: yanyi &lt;hcldir@qq.com&gt;</div><div class="line">Date: Sun Jan 8 04:13:11 2017 +0800</div><div class="line"></div><div class="line">add lanmp.sh</div><div class="line"></div><div class="line">diff --git a/lanmp.sh b/lanmp.sh</div><div class="line">new file mode 100644</div><div class="line">index 0000000..5a1db53</div><div class="line">--- /dev/null</div><div class="line">+++ b/lanmp.sh</div><div class="line">@@ -0,0 +1,465 @@</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>git tag -a v0.8 -m “tag just v1.1 and so on”  acbc9ea</strong>  可以对标签进行描述</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">[root@localhost studygit]<span class="comment"># git tag -a v0.8 -m "tag just v1.1 and so on" acbc9ea</span></div><div class="line">[root@localhost studygit]<span class="comment"># git tag</span></div><div class="line">v0.8</div><div class="line">v0.9</div><div class="line">v1.0</div><div class="line">[root@localhost studygit]<span class="comment"># git show v0.8</span></div><div class="line">tag v0.8</div><div class="line">Tagger: yanyi &lt;hcldir@qq.com&gt;</div><div class="line">Date: Mon Jan 9 19:32:17 2017 +0800</div><div class="line"> </div><div class="line">tag just v1.1 and so on</div><div class="line"> </div><div class="line">commit acbc9ea125b527e9f3ab30dcf5f5b3e415c760e1</div><div class="line">Author: yanyi &lt;hcldir@qq.com&gt;</div><div class="line">Date: Mon Jan 9 05:08:10 2017 +0800</div><div class="line"> </div><div class="line"> add new 2.txt</div><div class="line"> </div><div class="line">diff --git a/2.txt b/2.txt</div><div class="line">new file mode 100644</div><div class="line">index 0000000..e9af856</div><div class="line">--- /dev/null</div><div class="line">+++ b/2.txt</div><div class="line">@@ -0,0 +1 @@</div><div class="line">+234qw34\qwerqwer</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>git tag -d v0.8</strong> 删除标签</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost studygit]<span class="comment"># git tag -d v0.8</span></div><div class="line">Deleted tag <span class="string">'v0.8'</span> (was 2321146)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>git push origin v1.0</strong>   推送指定标签到远程</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost studygit]<span class="comment"># git push origin v1.0 </span></div><div class="line">Total 0 (delta 0), reused 0 (delta 0)</div><div class="line">To git@github.com:hcldirgit/studygit.git</div><div class="line">* [new tag]         v1.0 -&gt; v1.0</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>git push –tag origin</strong>   推送所有标签</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost studygit]<span class="comment"># git push --tag origin</span></div><div class="line">Total 0 (delta 0), reused 0 (delta 0)</div><div class="line">To git@github.com:hcldirgit/studygit.git</div><div class="line"> * [new tag] v0.9 -&gt; v0.9</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果本地删除了一个标签，远程也想要删除需要这样操作：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>git tag v1.0 -d</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>git push origin :refs/tags/v1.0</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@localhost studygit]<span class="comment"># git tag v1.0 -d</span></div><div class="line">Deleted tag <span class="string">'v1.0'</span> (was acbc9ea)</div><div class="line">[root@localhost studygit]<span class="comment"># git push origin :refs/tags/v1.0</span></div><div class="line">To git@github.com:hcldirgit/studygit.git</div><div class="line">- [deleted]          v1.0</div></pre></td></tr></table></figure>
+<h2 id="15-git-别名"><a href="#15-git-别名" class="headerlink" title="15.git 别名"></a>15.git 别名</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;git commit 这个命令是不是有点长？ 用别名可以提高我们的工作效率</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>git config –global alias.ci commit</strong> </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>git config –global alias.co  checkout</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>git config –global alias.br  branch</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[root@localhost studygit]<span class="comment"># git config --global alias.ci comit</span></div><div class="line">[root@localhost studygit]<span class="comment"># git config --global alias.br branch</span></div><div class="line">[root@localhost studygit]<span class="comment"># git config --global alias.co checkout</span></div><div class="line">[root@localhost studygit]<span class="comment"># git config --global alias.lg "log --pretty=oneline"</span></div><div class="line">[root@localhost studygit]<span class="comment"># git br</span></div><div class="line"> dev</div><div class="line">* master</div><div class="line"> yanyi</div><div class="line"> yi</div><div class="line">[root@localhost studygit]<span class="comment"># git co dev</span></div><div class="line">Switched to branch <span class="string">'dev'</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;别名所在文件 <strong>/root/.gitconfig</strong> 也可以直接编辑该文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[root@localhost studygit]<span class="comment"># cat /root/.gitconfig</span></div><div class="line">[user]</div><div class="line">      name = yanyi</div><div class="line">      email = hcldir@qq.com</div><div class="line">[<span class="built_in">alias</span>]</div><div class="line">      ci = comit</div><div class="line">      br = branch</div><div class="line">      co = checkout</div><div class="line">      lg = <span class="built_in">log</span> --pretty=oneline</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看git别名使用命令</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>git config –list |grep alias</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@localhost studygit]<span class="comment"># git config --list |grep alias</span></div><div class="line">alias.ci=comit</div><div class="line">alias.br=branch</div><div class="line">alias.co=checkout</div><div class="line">alias.lg=<span class="built_in">log</span> --pretty=oneline</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>git config –list</strong> 可以详细查看</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">[root@localhost studygit]<span class="comment"># git config --list</span></div><div class="line">user.name=yanyi</div><div class="line">user.email=hcldir@qq.com</div><div class="line">alias.ci=comit</div><div class="line">alias.br=branch</div><div class="line">alias.co=checkout</div><div class="line">alias.lg=<span class="built_in">log</span> --pretty=oneline</div><div class="line">core.repositoryformatversion=0</div><div class="line">core.filemode=<span class="literal">true</span></div><div class="line">core.bare=<span class="literal">false</span></div><div class="line">core.logallrefupdates=<span class="literal">true</span></div><div class="line">remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*</div><div class="line">remote.origin.url=git@github.com:hcldirgit/studygit.git</div><div class="line">branch.master.remote=origin</div><div class="line">branch.master.merge=refs/heads/master</div><div class="line">branch.dev.remote=origin</div><div class="line">branch.dev.merge=refs/heads/dev</div><div class="line">branch.yanyi.remote=origin</div><div class="line">branch.yanyi.merge=refs/heads/yanyi</div><div class="line">branch.yi.remote=origin</div><div class="line">branch.yi.merge=refs/heads/yi</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>查询log小技巧</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git config --global alias.lg <span class="string">"log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset' --abbrev-commit"</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@localhost studygit]<span class="comment"># git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset' --abbrev-commit"</span></div><div class="line">[root@localhost studygit]<span class="comment"># git lg</span></div><div class="line">* acbc9ea - (HEAD, origin/yi, origin/yanyi, origin/master, origin/dev, origin/HEAD, yi, yanyi, master, dev) add new 2.txt (15 hours ago) &lt;yanyi&gt;</div><div class="line">* 23545a4 - (v0.9) add lanmp.sh (2 days ago) &lt;yanyi&gt;</div><div class="line">* f3cba66 - first commit (2 days ago) &lt;yanyi&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用以后，git 就会有颜色</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Git%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8/02.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;取消别名</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>git config –global –unset alias.br</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@localhost studygit]<span class="comment"># git config --global --unset alias.br</span></div><div class="line">[root@localhost studygit]<span class="comment"># git br</span></div><div class="line">git: <span class="string">'br'</span> is not a git <span class="built_in">command</span>. See <span class="string">'git --help'</span>.</div><div class="line"></div><div class="line">Did you mean this?</div><div class="line">        var</div><div class="line">`</div></pre></td></tr></table></figure>
+<h2 id="16-搭建-git-服务器"><a href="#16-搭建-git-服务器" class="headerlink" title="16.搭建 git 服务器"></a>16.搭建 git 服务器</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;github 毕竟是公开的，而私有仓库又得花钱买。所以我们可以想办法搭建一个私有的，只自己公司使用的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;yum install git安装git</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@gitserver ~]<span class="comment"># yum install -y epel-release</span></div><div class="line">[root@gitserver ~]<span class="comment"># yum install -y git</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>useradd -s /usr/bin/git-shell git 添加git用户，并且设置shell为/usr/bin/git-shell,目的是为了不让git用户远程登陆</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@gitserver ~]<span class="comment"># useradd -s /usr/bin/git-shell git</span></div><div class="line">[root@gitserver ~]<span class="comment"># cd /home/git</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;创建 authorized_keys 文件，并更改属主、属组和权限，用来存客户端机器上的公钥  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@gitserver git]<span class="comment"># mkdir .ssh</span></div><div class="line">[root@gitserver git]<span class="comment"># touch .ssh/authorized_keys</span></div><div class="line">[root@gitserver git]<span class="comment"># vim .ssh/authorized_keys</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;公钥内容在，客户端 /root/.shh/id_rsa.pub</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost studygit]<span class="comment"># cat /root/.ssh/id_rsa.pub</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;设置权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@gitserver git]<span class="comment"># chown -R git .ssh</span></div><div class="line">[root@gitserver git]<span class="comment"># chmod 700 .ssh</span></div><div class="line">[root@gitserver git]<span class="comment"># chmod 600 .ssh/authorized_keys</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;客户端查看能否连接</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@localhost studygit]<span class="comment"># ssh git@192.168.0.91</span></div><div class="line">The authenticity of host <span class="string">'192.168.0.91 (192.168.0.91)'</span> can<span class="string">'t be established.</span></div><div class="line"><span class="string">RSA key fingerprint is 38:82:75:f9:11:a3:56:b4:00:ce:46:75:65:7c:5c:9b.</span></div><div class="line"><span class="string">Are you sure you want to continue connecting (yes/no)? yes</span></div><div class="line"><span class="string">Warning: Permanently added '</span>192.168.0.91<span class="string">' (RSA) to the list of known hosts.</span></div><div class="line"><span class="string">fatal: What do you think I am? A shell?</span></div><div class="line"><span class="string">Connection to 192.168.0.91 closed.</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样就说明可以连接</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;主机设置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@gitserver git]<span class="comment"># usermod -s /bin/bash git</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;客户端连接</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@localhost studygit]<span class="comment"># ssh git@192.168.0.91</span></div><div class="line">Last login: Mon Jan 9 21:53:51 2017 from 192.168.0.92</div><div class="line">[git@gitserver ~]$ <span class="built_in">logout</span></div><div class="line">Connection to 192.168.0.91 closed.</div><div class="line">[root@localhost studygit]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样检测客户端公钥能登录主机，检测完成主机改回设置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@gitserver git]<span class="comment"># usermod -s /usr/bin/git-shell git</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样客户端就不能登录主机</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;定好存储git仓库的目录，比如 /data/gitroot</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[root@gitserver git]<span class="comment"># mkdir -p /data/gitroot</span></div><div class="line">[root@gitserver git]<span class="comment"># cd /data/gitroot</span></div><div class="line">[root@gitserver gitroot]<span class="comment"># git init --bare sample.git</span></div><div class="line">Initialized empty Git repository <span class="keyword">in</span> /data/gitroot/sample.git/</div><div class="line">[root@gitserver gitroot]<span class="comment"># ls -la</span></div><div class="line">总用量 12</div><div class="line">drwxr-xr-x 3 root root 4096 1月 9 22:16 .</div><div class="line">drwxr-xr-x 3 root root 4096 1月 9 22:16 ..</div><div class="line">drwxr-xr-x 7 root root 4096 1月 9 22:16 sample.git</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：<strong>git init –bare sample.git</strong>  会创建一个裸仓库，裸仓库没有工作区，因为服务器上的Git仓库纯粹是为了共享，所以不让用户直接登录到服务器上去改工作区，并且服务器上的Git仓库通常都以.git结尾</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;更改权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@gitserver gitroot]<span class="comment"># chown -R git.git sample.git</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在客户端上（自己pc）克隆远程仓库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@localhost home]<span class="comment"># git clone git@192.168.0.91:/data/gitroot/sample.git</span></div><div class="line">Initialized empty Git repository <span class="keyword">in</span> /home/sample/.git/</div><div class="line">warning: You appear to have cloned an empty repository.</div><div class="line">[root@localhost home]<span class="comment"># ls</span></div><div class="line">gitroot lanmp sample studygit</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;客户端操作，推送到服务器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">[root@localhost sample]<span class="comment"># ls</span></div><div class="line">[root@localhost sample]<span class="comment"># echo "1234\abcd\5678\efgh" &gt; 1.txt</span></div><div class="line">[root@localhost sample]<span class="comment"># git add 1.txt</span></div><div class="line">[root@localhost sample]<span class="comment"># git commit -m "add new 1.txt"</span></div><div class="line">[master (root-commit) a86f429] add new 1.txt</div><div class="line"> 1 files changed, 1 insertions(+), 0 deletions(-)</div><div class="line"> create mode 100644 1.txt</div><div class="line">[root@localhost sample]<span class="comment"># git push -u origin master</span></div><div class="line">Counting objects: 3, <span class="keyword">done</span>.</div><div class="line">Writing objects: 100% (3/3), 224 bytes, <span class="keyword">done</span>.</div><div class="line">Total 3 (delta 0), reused 0 (delta 0)</div><div class="line">To git@192.168.0.91:/data/gitroot/sample.git</div><div class="line"> * [new branch] master -&gt; master</div><div class="line">Branch master <span class="built_in">set</span> up to track remote branch master from origin.</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以上操作是在git服务器上做的，平时git服务器是不需要开发人员登录修改代码的，它仅仅是充当着一个服务器的角色，就像github一样，平时操作都是在我们自己的pc上做的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先要把客户端上的公钥放到git服务器上/home/git/.ssh/authorized_keys文件里 git clone git@ip:/data/gitroot/sample.git</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;此时就可以在当前目录下生成一个sample的目录，这个就是我们克隆的远程仓库了。进入到这里面，可以开发一些代码，然后push到远程。  </p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/13/Git/2.  github常见操作和常见错误  错误提示  fatal   remote origin already exists./" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          github常见操作和常见错误  错误提示  fatal   remote origin already exists.
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/13/Git/3. git,github,gitlab/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">git,github,gitlab</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="Git/1. Git安装使用" data-title="Git安装使用" data-url="https://hcldirgit.github.io/2017/10/13/Git/1. Git安装使用/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="Git安装使用">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

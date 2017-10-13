@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Linux 命令- vmstat | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;vmstat是Virtual Meomory Statistics（虚拟内存统计）的缩写，可对操作系统的虚拟内存、进程、CPU活动进行监控。他是对系统的整体情况进行统计，不足之处是无法对某个进程进行深入分析。vmstat 工具提供了一种低开销的系统性能观察方式。因为 vmstat 本身就是低开销工具，在">
+<meta name="keywords" content="Linux命令">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 命令- vmstat">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/10/13/2. Linux 命令/48. Linux 命令- vmstat/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;vmstat是Virtual Meomory Statistics（虚拟内存统计）的缩写，可对操作系统的虚拟内存、进程、CPU活动进行监控。他是对系统的整体情况进行统计，不足之处是无法对某个进程进行深入分析。vmstat 工具提供了一种低开销的系统性能观察方式。因为 vmstat 本身就是低开销工具，在">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-13T09:47:46.775Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux 命令- vmstat">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;vmstat是Virtual Meomory Statistics（虚拟内存统计）的缩写，可对操作系统的虚拟内存、进程、CPU活动进行监控。他是对系统的整体情况进行统计，不足之处是无法对某个进程进行深入分析。vmstat 工具提供了一种低开销的系统性能观察方式。因为 vmstat 本身就是低开销工具，在">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.43px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.26px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.74px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.48px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.3px;">FTP</a> <a href="/tags/Git/" style="font-size: 10.87px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.74px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.61px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.43px;">Jenkins</a> <a href="/tags/LAMP/" style="font-size: 19.57px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.96px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.52px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.13px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.35px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.3px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.65px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.39px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.74px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 17.83px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.3px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.78px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.3px;">Puppet</a> <a href="/tags/Python/" style="font-size: 14.78px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.52px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.17px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.78px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.91px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 16.09px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.61px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 13.04px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15.22px;">shell</a> <a href="/tags/shell练习/" style="font-size: 18.7px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 13.04px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-2. Linux 命令/48. Linux 命令- vmstat" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/2. Linux 命令/48. Linux 命令- vmstat/" class="article-date">
+  	<time datetime="2017-10-13T13:29:41.833Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Linux 命令- vmstat
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux命令/">Linux命令</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;vmstat是Virtual Meomory Statistics（虚拟内存统计）的缩写，可对操作系统的虚拟内存、进程、CPU活动进行监控。他是对系统的整体情况进行统计，不足之处是无法对某个进程进行深入分析。vmstat 工具提供了一种低开销的系统性能观察方式。因为 vmstat 本身就是低开销工具，在非常高负荷的服务器上，你需要查看并监控系统的健康情况,在控制窗口还是能够使用vmstat 输出结果。在学习vmstat命令前，我们先了解一下Linux系统中关于物理内存和虚拟内存相关信息。</p>
+<a id="more"></a>
+<h2 id="物理内存和虚拟内存区别："><a href="#物理内存和虚拟内存区别：" class="headerlink" title="物理内存和虚拟内存区别："></a>物理内存和虚拟内存区别：</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们知道，直接从物理内存读写数据要比从硬盘读写数据要快的多，因此，我们希望所有数据的读取和写入都在内存完成，而内存是有限的，这样就引出了物理内存与虚拟内存的概念。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;物理内存就是系统硬件提供的内存大小，是真正的内存，相对于物理内存，在linux下还有一个虚拟内存的概念，虚拟内存就是为了满足物理内存的不足而提出的策略，它是利用磁盘空间虚拟出的一块逻辑内存，用作虚拟内存的磁盘空间被称为交换空间（Swap Space）。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;作为物理内存的扩展，linux会在物理内存不足时，使用交换分区的虚拟内存，更详细的说，就是内核会将暂时不用的内存块信息写到交换空间，这样以来，物理内存得到了释放，这块内存就可以用于其它目的，当需要用到原始的内容时，这些信息会被重新从交换空间读入物理内存。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;linux的内存管理采取的是分页存取机制，为了保证物理内存能得到充分的利用，内核会在适当的时候将物理内存中不经常使用的数据块自动交换到虚拟内存中，而将经常使用的信息保留到物理内存。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要深入了解linux内存运行机制，需要知道下面提到的几个方面：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先，Linux系统会不时的进行页面交换操作，以保持尽可能多的空闲物理内存，即使并没有什么事情需要内存，Linux也会交换出暂时不用的内存页面。这可以避免等待交换所需的时间。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其次，linux进行页面交换是有条件的，不是所有页面在不用时都交换到虚拟内存，linux内核根据”最近最经常使用“算法，仅仅将一些不经常使用的页面文件交换到虚拟内存，有时我们会看到这么一个现象：linux物理内存还有很多，但是交换空间也使用了很多。其实，这并不奇怪，例如，一个占用很大内存的进程运行时，需要耗费很多内存资源，此时就会有一些不常用页面文件被交换到虚拟内存中，但后来这个占用很多内存资源的进程结束并释放了很多内存时，刚才被交换出去的页面文件并不会自动的交换进物理内存，除非有这个必要，那么此刻系统物理内存就会空闲很多，同时交换空间也在被使用，就出现了刚才所说的现象了。关于这点，不用担心什么，只要知道是怎么一回事就可以了。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;最后，交换空间的页面在使用时会首先被交换到物理内存，如果此时没有足够的物理内存来容纳这些页面，它们又会被马上交换出去，如此以来，虚拟内存中可能没有足够空间来存储这些交换页面，最终会导致linux出现假死机、服务异常等问题，linux虽然可以在一段时间内自行恢复，但是恢复后的系统已经基本不可用了。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;因此，合理规划和设计linux内存的使用，是非常重要的。</p>
+<h2 id="虚拟内存原理："><a href="#虚拟内存原理：" class="headerlink" title="虚拟内存原理："></a>虚拟内存原理：</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在系统中运行的每个进程都需要使用到内存，但不是每个进程都需要每时每刻使用系统分配的内存空间。当系统运行所需内存超过实际的物理内存，内核会释放某些进程所占用但未使用的部分或所有物理内存，将这部分资料存储在磁盘上直到进程下一次调用，并将释放出的内存提供给有需要的进程使用。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在Linux内存管理中，主要是通过“调页Paging”和“交换Swapping”来完成上述的内存调度。调页算法是将内存中最近不常使用的页面换到磁盘上，把活动页面保留在内存中供进程使用。交换技术是将整个进程，而不是部分页面，全部交换到磁盘上。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;分页(Page)写入磁盘的过程被称作Page-Out，分页(Page)从磁盘重新回到内存的过程被称作Page-In。当内核需要一个分页时，但发现此分页不在物理内存中(因为已经被Page-Out了)，此时就发生了分页错误（Page Fault）。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当系统内核发现可运行内存变少时，就会通过Page-Out来释放一部分物理内存。经管Page-Out不是经常发生，但是如果Page-out频繁不断的发生，直到当内核管理分页的时间超过运行程式的时间时，系统效能会急剧下降。这时的系统已经运行非常慢或进入暂停状态，这种状态亦被称作thrashing(颠簸)。</p>
+<h2 id="1．命令格式"><a href="#1．命令格式" class="headerlink" title="1．命令格式"></a>1．命令格式</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">vmstat [-a] [-n] [-S unit] [delay [ count]]</div><div class="line">vmstat [-s] [-n] [-S unit]</div><div class="line">vmstat [-m] [-n] [delay [ count]]</div><div class="line">vmstat [-d] [-n] [delay [ count]]</div><div class="line">vmstat [-p disk partition] [-n] [delay [ count]]</div><div class="line">vmstat [-f]</div><div class="line">vmstat [-V]</div></pre></td></tr></table></figure>
+<h2 id="2．命令功能"><a href="#2．命令功能" class="headerlink" title="2．命令功能"></a>2．命令功能</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用来显示虚拟内存的信息</p>
+<h2 id="3．命令参数"><a href="#3．命令参数" class="headerlink" title="3．命令参数"></a>3．命令参数</h2><ul>
+<li>-a：显示活跃和非活跃内存</li>
+<li>-f：显示从系统启动至今的fork数量 。</li>
+<li>-m：显示slabinfo</li>
+<li>-n：只在开始时显示一次各字段名称。</li>
+<li>-s：显示内存相关统计信息及多种系统活动数量。</li>
+<li>delay：刷新时间间隔。如果不指定，只显示一条结果。</li>
+<li>count：刷新次数。如果不指定刷新次数，但指定了刷新时间间隔，这时刷新次数为无穷。</li>
+<li>-d：显示磁盘相关统计信息。</li>
+<li>-p：显示指定磁盘分区统计信息</li>
+<li>-S：使用指定单位显示。参数有 k 、K 、m 、M ，分别代表1000、1024、1000000、1048576字节（byte）。默认单位为K（1024 bytes）</li>
+<li>-V：显示vmstat版本信息。</li>
+</ul>
+<h2 id="4．使用实例"><a href="#4．使用实例" class="headerlink" title="4．使用实例"></a>4．使用实例</h2><h3 id="实例1：显示虚拟内存使用情况"><a href="#实例1：显示虚拟内存使用情况" class="headerlink" title="实例1：显示虚拟内存使用情况"></a>实例1：显示虚拟内存使用情况</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vmstat</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># vmstat 5 6</span></div><div class="line">procs -----------memory---------- ---swap-- -----io---- --system-- -----cpu------</div><div class="line"> r  b   swpd   free   buff  cache   si   so    bi    bo   <span class="keyword">in</span>   cs us sy id wa st</div><div class="line"> 0  0      0 3029876 199616 690980    0    0     0     2    3    2  0  0 100  0  0</div><div class="line"> 0  0      0 3029752 199616 690980    0    0     0    41 1009   39  0  0 100  0  0</div><div class="line"> 0  0      0 3029752 199616 690980    0    0     0     3 1004   36  0  0 100  0  0</div><div class="line"> 0  0      0 3029752 199616 690980    0    0     0     4 1004   36  0  0 100  0  0</div><div class="line"> 0  0      0 3029752 199616 690980    0    0     0     6 1003   33  0  0 100  0  0</div><div class="line"> 0  0      0 3029752 199616 690980    0    0     0     5 1003   33  0  0 100  0  0</div></pre></td></tr></table></figure>
+<h4 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h4><h5 id="字段说明："><a href="#字段说明：" class="headerlink" title="字段说明："></a>字段说明：</h5><h6 id="Procs（进程）："><a href="#Procs（进程）：" class="headerlink" title="Procs（进程）："></a>Procs（进程）：</h6><ul>
+<li>r: 运行队列中进程数量</li>
+<li>b: 等待IO的进程数量</li>
+</ul>
+<h6 id="Memory（内存）："><a href="#Memory（内存）：" class="headerlink" title="Memory（内存）："></a>Memory（内存）：</h6><ul>
+<li>swpd: 使用虚拟内存大小</li>
+<li>free: 可用内存大小</li>
+<li>buff: 用作缓冲的内存大小</li>
+<li>cache: 用作缓存的内存大小</li>
+</ul>
+<h6 id="Swap："><a href="#Swap：" class="headerlink" title="Swap："></a>Swap：</h6><ul>
+<li>si: 每秒从交换区写到内存的大小</li>
+<li>so: 每秒写入交换区的内存大小</li>
+<li>IO：（现在的Linux版本块的大小为1024bytes）</li>
+<li>bi: 每秒读取的块数</li>
+<li>bo: 每秒写入的块数</li>
+</ul>
+<h6 id="系统："><a href="#系统：" class="headerlink" title="系统："></a>系统：</h6><ul>
+<li>in: 每秒中断数，包括时钟中断。</li>
+<li>cs: 每秒上下文切换数。</li>
+</ul>
+<h6 id="CPU（以百分比表示）："><a href="#CPU（以百分比表示）：" class="headerlink" title="CPU（以百分比表示）："></a>CPU（以百分比表示）：</h6><ul>
+<li>us: 用户进程执行时间(user time)</li>
+<li>sy: 系统进程执行时间(system time)</li>
+<li>id: 空闲时间(包括IO等待时间),中央处理器的空闲时间 。以百分比表示。</li>
+<li>wa: 等待IO时间</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;备注： 如果 r经常大于 4 ，且id经常少于40，表示cpu的负荷很重。如果bi，bo 长期不等于0，表示内存不足。如果disk 经常不等于0， 且在 b中的队列 大于3， 表示 io性能不好。Linux在具有高稳定性、可靠性的同时，具有很好的可伸缩性和扩展性，能够针对不同的应用和硬件环境调整，优化出满足当前应用需要的最佳性能。因此企业在维护Linux系统、进行系统调优时，了解系统性能分析工具是至关重要的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vmstat 5 5</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;表示在5秒时间内进行5次采样。将得到一个数据汇总他能够反映真正的系统情况。</p>
+<h3 id="实例2：显示活跃和非活跃内存"><a href="#实例2：显示活跃和非活跃内存" class="headerlink" title="实例2：显示活跃和非活跃内存"></a>实例2：显示活跃和非活跃内存</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vmstat -a 2 5</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># vmstat -a 2 5</span></div><div class="line">procs -----------memory---------- ---swap-- -----io---- --system-- -----cpu------</div><div class="line"> r  b   swpd   free  inact active   si   so    bi    bo   <span class="keyword">in</span>   cs us sy id wa st</div><div class="line"> 0  0      0 3029752 387728 513008    0    0     0     2    3    2  0  0 100  0  0</div><div class="line"> 0  0      0 3029752 387728 513076    0    0     0     0 1005   34  0  0 100  0  0</div><div class="line"> 0  0      0 3029752 387728 513076    0    0     0    22 1004   36  0  0 100  0  0</div><div class="line"> 0  0      0 3029752 387728 513076    0    0     0     0 1004   33  0  0 100  0  0</div><div class="line"> 0  0      0 3029752 387728 513076    0    0     0     0 1003   32  0  0 100  0  0</div><div class="line">[root@localhost ~]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<h4 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用-a选项显示活跃和非活跃内存时，所显示的内容除增加inact和active外，其他显示内容与例子1相同。</p>
+<h5 id="字段说明：-1"><a href="#字段说明：-1" class="headerlink" title="字段说明："></a>字段说明：</h5><h6 id="Memory（内存）：-1"><a href="#Memory（内存）：-1" class="headerlink" title="Memory（内存）："></a>Memory（内存）：</h6><ul>
+<li>inact: 非活跃内存大小（当使用-a选项时显示）</li>
+<li>active: 活跃的内存大小（当使用-a选项时显示）</li>
+</ul>
+<h3 id="实例3：查看系统已经fork了多少次"><a href="#实例3：查看系统已经fork了多少次" class="headerlink" title="实例3：查看系统已经fork了多少次"></a>实例3：查看系统已经fork了多少次</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vmstat -f</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@SCF1129 ~]<span class="comment"># vmstat -f</span></div><div class="line">     12744849 forks</div><div class="line">[root@SCF1129 ~]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<h4 id="说明：-1"><a href="#说明：-1" class="headerlink" title="说明："></a>说明：</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个数据是从/proc/stat中的processes字段里取得的</p>
+<h3 id="实例4：查看内存使用的详细信息"><a href="#实例4：查看内存使用的详细信息" class="headerlink" title="实例4：查看内存使用的详细信息"></a>实例4：查看内存使用的详细信息</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vmstat -s</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># vmstat -s</span></div><div class="line">      4043760  total memory</div><div class="line">      1013884  used memory</div><div class="line">       513012  active memory</div><div class="line">       387728  inactive memory</div><div class="line">      3029876  free memory</div><div class="line">       199616  buffer memory</div><div class="line">       690980  swap cache</div><div class="line">      6096656  total swap</div><div class="line">            0  used swap</div><div class="line">      6096656  free swap</div><div class="line">        83587 non-nice user cpu ticks</div><div class="line">          132 nice user cpu ticks</div><div class="line">       278599 system cpu ticks</div><div class="line">    913344692 idle cpu ticks</div><div class="line">       814550 IO-wait cpu ticks</div><div class="line">        10547 IRQ cpu ticks</div><div class="line">        21261 softirq cpu ticks</div><div class="line">            0 stolen cpu ticks</div><div class="line">       310215 pages paged <span class="keyword">in</span></div><div class="line">     14254652 pages paged out</div><div class="line">            0 pages swapped <span class="keyword">in</span></div><div class="line">            0 pages swapped out</div><div class="line">    288374745 interrupts</div><div class="line">    146680577 CPU context switches</div><div class="line">   1351868832 boot time</div><div class="line">       367291 forks</div></pre></td></tr></table></figure>
+<h4 id="说明-1"><a href="#说明-1" class="headerlink" title="说明"></a>说明</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这些信息的分别来自于/proc/meminfo,/proc/stat和/proc/vmstat。</p>
+<h3 id="实例5：查看磁盘的读-写"><a href="#实例5：查看磁盘的读-写" class="headerlink" title="实例5：查看磁盘的读/写"></a>实例5：查看磁盘的读/写</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vmstat -d</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># vmstat -d</span></div><div class="line">disk- ------------reads------------ ------------writes----------- -----IO------</div><div class="line">       total merged sectors      ms  total merged sectors      ms    cur    sec</div><div class="line">ram0       0      0       0       0      0      0       0       0      0      0</div><div class="line">ram1       0      0       0       0      0      0       0       0      0      0</div><div class="line">ram2       0      0       0       0      0      0       0       0      0      0</div><div class="line">ram3       0      0       0       0      0      0       0       0      0      0</div><div class="line">ram4       0      0       0       0      0      0       0       0      0      0</div><div class="line">ram5       0      0       0       0      0      0       0       0      0      0</div><div class="line">ram6       0      0       0       0      0      0       0       0      0      0</div><div class="line">ram7       0      0       0       0      0      0       0       0      0      0</div><div class="line">ram8       0      0       0       0      0      0       0       0      0      0</div><div class="line">ram9       0      0       0       0      0      0       0       0      0      0</div><div class="line">ram10      0      0       0       0      0      0       0       0      0      0</div><div class="line">ram11      0      0       0       0      0      0       0       0      0      0</div><div class="line">ram12      0      0       0       0      0      0       0       0      0      0</div><div class="line">ram13      0      0       0       0      0      0       0       0      0      0</div><div class="line">ram14      0      0       0       0      0      0       0       0      0      0</div><div class="line">ram15      0      0       0       0      0      0       0       0      0      0</div><div class="line">sda    33381   6455  615407   63224 2068111 1495416 28508288 15990289      0  10491</div><div class="line">hdc        0      0       0       0      0      0       0       0      0      0</div><div class="line">fd0        0      0       0       0      0      0       0       0      0      0</div><div class="line">md0        0      0       0       0      0      0       0       0      0      0</div><div class="line">[root@localhost ~]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<h4 id="说明-2"><a href="#说明-2" class="headerlink" title="说明"></a>说明</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这些信息主要来自于/proc/diskstats.</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;merged:表示一次来自于合并的写/读请求,一般系统会把多个连接/邻近的读/写请求合并到一起来操作.</p>
+<h3 id="实例6：查看-dev-sda1磁盘的读-写"><a href="#实例6：查看-dev-sda1磁盘的读-写" class="headerlink" title="实例6：查看/dev/sda1磁盘的读/写"></a>实例6：查看/dev/sda1磁盘的读/写</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vmstat -p /dev/sda1</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[root@SCF1129 ~]<span class="comment"># df</span></div><div class="line">文件系统                 1K-块      已用      可用 已用% 挂载点</div><div class="line">/dev/sda3            1119336548  27642068 1034835500   3% /tmpfs                 32978376         0  32978376   0% /dev/shm</div><div class="line">/dev/sda1              1032088     59604    920056   7% /boot</div><div class="line">[root@SCF1129 ~]<span class="comment"># vmstat -p /dev/sda1</span></div><div class="line">sda1          reads   <span class="built_in">read</span> sectors  writes    requested writes</div><div class="line">               18607    4249978          6         48[root@SCF1129 ~]<span class="comment"># vmstat -p /dev/sda3</span></div><div class="line">sda3          reads   <span class="built_in">read</span> sectors  writes    requested writes</div><div class="line">              429350   35176268   28998789  980301488[root@SCF1129 ~]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<h4 id="说明-3"><a href="#说明-3" class="headerlink" title="说明"></a>说明</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这些信息主要来自于/proc/diskstats。</p>
+<ul>
+<li>reads:来自于这个分区的读的次数。</li>
+<li>read sectors:来自于这个分区的读扇区的次数。</li>
+<li>writes:来自于这个分区的写的次数。</li>
+<li>requested writes:来自于这个分区的写请求次数。</li>
+</ul>
+<h3 id="实例7：查看系统的slab信息"><a href="#实例7：查看系统的slab信息" class="headerlink" title="实例7：查看系统的slab信息"></a>实例7：查看系统的slab信息</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vmstat -m</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># vmstat -m</span></div><div class="line">Cache                       Num  Total   Size  Pages</div><div class="line">ip_conntrack_expect           0      0    136     28</div><div class="line">ip_conntrack                  3     13    304     13</div><div class="line">ip_fib_alias                 11     59     64     59</div><div class="line">ip_fib_hash                  11     59     64     59</div><div class="line">AF_VMCI                       0      0    960      4</div><div class="line">bio_map_info                100    105   1064      7</div><div class="line">dm_mpath                      0      0   1064      7</div><div class="line">jbd_4k                        0      0   4096      1</div><div class="line">dm_uevent                     0      0   2608      3</div><div class="line">dm_tio                        0      0     24    144</div><div class="line">dm_io                         0      0     48     77</div><div class="line">scsi_cmd_cache               10     10    384     10</div><div class="line">sgpool-128                   32     32   4096      1</div><div class="line">sgpool-64                    32     32   2048      2</div><div class="line">sgpool-32                    32     32   1024      4</div><div class="line">sgpool-16                    32     32    512      8</div><div class="line">sgpool-8                     45     45    256     15</div><div class="line">scsi_io_context               0      0    112     34</div><div class="line">ext3_inode_cache          51080  51105    760      5</div><div class="line">ext3_xattr                   36     88     88     44</div><div class="line">journal_handle               18    144     24    144</div><div class="line">journal_head                 56     80     96     40</div><div class="line">revoke_table                  4    202     16    202</div><div class="line">revoke_record                 0      0     32    112</div><div class="line">uhci_urb_priv                 0      0     56     67</div><div class="line">UNIX                         13     33    704     11</div><div class="line">flow_cache                    0      0    128     30</div><div class="line">msi_cache                    33     59     64     59</div><div class="line">cfq_ioc_pool                 14     90    128     30</div><div class="line">cfq_pool                     12     90    216     18</div><div class="line">crq_pool                     16     96     80     48</div><div class="line">deadline_drq                  0      0     80     48</div><div class="line">as_arq                        0      0     96     40</div><div class="line">mqueue_inode_cache            1      4    896      4</div><div class="line">isofs_inode_cache             0      0    608      6</div><div class="line">hugetlbfs_inode_cache         1      7    576      7</div><div class="line">Cache                       Num  Total   Size  Pages</div><div class="line">ext2_inode_cache              0      0    720      5</div><div class="line">ext2_xattr                    0      0     88     44</div><div class="line">dnotify_cache                 0      0     40     92</div><div class="line">dquot                         0      0    256     15</div><div class="line">eventpoll_pwq                 3     53     72     53</div><div class="line">eventpoll_epi                 3     20    192     20</div><div class="line">inotify_event_cache           0      0     40     92</div><div class="line">inotify_watch_cache           1     53     72     53</div><div class="line">kioctx                        0      0    320     12</div><div class="line">kiocb                         0      0    256     15</div><div class="line">fasync_cache                  0      0     24    144</div><div class="line">shmem_inode_cache           254    290    768      5</div><div class="line">posix_timers_cache            0      0    128     30</div><div class="line">uid_cache                     0      0    128     30</div><div class="line">ip_mrt_cache                  0      0    128     30</div><div class="line">tcp_bind_bucket               3    112     32    112</div><div class="line">inet_peer_cache               0      0    128     30</div><div class="line">secpath_cache                 0      0     64     59</div><div class="line">xfrm_dst_cache                0      0    384     10</div><div class="line">ip_dst_cache                  5     10    384     10</div><div class="line">arp_cache                     1     15    256     15</div><div class="line">RAW                           3      5    768      5</div><div class="line">UDP                           5     10    768      5</div><div class="line">tw_sock_TCP                   0      0    192     20</div><div class="line">request_sock_TCP              0      0    128     30</div><div class="line">TCP                           4      5   1600      5</div><div class="line">blkdev_ioc                   14    118     64     59</div><div class="line">blkdev_queue                 20     30   1576      5</div><div class="line">blkdev_requests              13     42    272     14</div><div class="line">biovec-256                    7      7   4096      1</div><div class="line">biovec-128                    7      8   2048      2</div><div class="line">biovec-64                     7      8   1024      4</div><div class="line">biovec-16                     7     15    256     15</div><div class="line">biovec-4                      7     59     64     59</div><div class="line">biovec-1                     23    202     16    202</div><div class="line">bio                         270    270    128     30</div><div class="line">utrace_engine_cache           0      0     64     59</div><div class="line">Cache                       Num  Total   Size  Pages</div><div class="line">utrace_cache                  0      0     64     59</div><div class="line">sock_inode_cache             33     48    640      6</div><div class="line">skbuff_fclone_cache           7      7    512      7</div><div class="line">skbuff_head_cache           319    390    256     15</div><div class="line">file_lock_cache               1     22    176     22</div><div class="line">Acpi-Operand               4136   4248     64     59</div><div class="line">Acpi-ParseExt                 0      0     64     59</div><div class="line">Acpi-Parse                    0      0     40     92</div><div class="line">Acpi-State                    0      0     80     48</div><div class="line">Acpi-Namespace             2871   2912     32    112</div><div class="line">delayacct_cache              81    295     64     59</div><div class="line">taskstats_cache               4     53     72     53</div><div class="line">proc_inode_cache           1427   1440    592      6</div><div class="line">sigqueue                      0      0    160     24</div><div class="line">radix_tree_node           13166  13188    536      7</div><div class="line">bdev_cache                   23     24    832      4</div><div class="line">sysfs_dir_cache            5370   5412     88     44</div><div class="line">mnt_cache                    26     30    256     15</div><div class="line">inode_cache                2009   2009    560      7</div><div class="line">dentry_cache              60952  61020    216     18</div><div class="line">filp                        479   1305    256     15</div><div class="line">names_cache                   3      3   4096      1</div><div class="line">avc_node                     14     53     72     53</div><div class="line">selinux_inode_security      994   1200     80     48</div><div class="line">key_jar                       2     20    192     20</div><div class="line">idr_layer_cache              74     77    528      7</div><div class="line">buffer_head              164045 164800     96     40</div><div class="line">mm_struct                    51     56    896      4</div><div class="line">vm_area_struct             1142   1958    176     22</div><div class="line">fs_cache                     35    177     64     59</div><div class="line">files_cache                  36     55    768      5</div><div class="line">signal_cache                 72    162    832      9</div><div class="line">sighand_cache                68     84   2112      3</div><div class="line">task_struct                  76     80   1888      2</div><div class="line">anon_vma                    458    864     24    144</div><div class="line">pid                          83    295     64     59</div><div class="line">shared_policy_node            0      0     48     77</div><div class="line">Cache                       Num  Total   Size  Pages</div><div class="line">numa_policy                  37    144     24    144</div><div class="line">size-131072(DMA)              0      0 131072      1</div><div class="line">size-131072                   0      0 131072      1</div><div class="line">size-65536(DMA)               0      0  65536      1</div><div class="line">size-65536                    1      1  65536      1</div><div class="line">size-32768(DMA)               0      0  32768      1</div><div class="line">size-32768                    2      2  32768      1</div><div class="line">size-16384(DMA)               0      0  16384      1</div><div class="line">size-16384                    5      5  16384      1</div><div class="line">size-8192(DMA)                0      0   8192      1</div><div class="line">size-8192                     7      7   8192      1</div><div class="line">size-4096(DMA)                0      0   4096      1</div><div class="line">size-4096                   110    111   4096      1</div><div class="line">size-2048(DMA)                0      0   2048      2</div><div class="line">size-2048                   602    602   2048      2</div><div class="line">size-1024(DMA)                0      0   1024      4</div><div class="line">size-1024                   344    352   1024      4</div><div class="line">size-512(DMA)                 0      0    512      8</div><div class="line">size-512                    433    480    512      8</div><div class="line">size-256(DMA)                 0      0    256     15</div><div class="line">size-256                   1139   1155    256     15</div><div class="line">size-128(DMA)                 0      0    128     30</div><div class="line">size-64(DMA)                  0      0     64     59</div><div class="line">size-64                    5639   5782     64     59</div><div class="line">size-32(DMA)                  0      0     32    112</div><div class="line">size-128                    801    930    128     30</div><div class="line">size-32                    3005   3024     32    112</div><div class="line">kmem_cache                  137    137   2688      1</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这组信息来自于/proc/slabinfo。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;slab:由于内核会有许多小对象，这些对象构造销毁十分频繁，比如i-node，dentry，这些对象如果每次构建的时候就向内存要一个页(4kb)，而其实只有几个字节，这样就会非常浪费，为了解决这个问题，就引入了一种新的机制来处理在同一个页框中如何分配小存储区，而slab可以对小对象进行分配,这样就不用为每一个对象分配页框，从而节省了空间，内核对一些小对象创建析构很频繁，slab对这些小对象进行缓冲,可以重复利用,减少内存分配次数。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/13/2. Linux 命令/49. Linux 命令- iostat/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          Linux 命令- iostat
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/13/2. Linux 命令/71. Linux 命令- awk/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Linux 命令- awk</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="2. Linux 命令/48. Linux 命令- vmstat" data-title="Linux 命令- vmstat" data-url="https://hcldirgit.github.io/2017/10/13/2. Linux 命令/48. Linux 命令- vmstat/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="Linux 命令- vmstat">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

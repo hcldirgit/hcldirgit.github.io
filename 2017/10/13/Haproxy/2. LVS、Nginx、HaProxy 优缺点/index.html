@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>LVS、Nginx、HaProxy 优缺点 | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;搭建负载均衡高可用环境相对简单，主要是要理解其中原理。此文描述了三种负载均衡器的优缺点，以便在实际的生产应用中，按需求取舍。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;目前，在线上环境中应用较多的负载均衡器硬件有F5 BIG-IP,软件有LVS，Ng">
+<meta name="keywords" content="haproxy,LVS,Nginx">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LVS、Nginx、HaProxy 优缺点">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/10/13/Haproxy/2. LVS、Nginx、HaProxy 优缺点/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;搭建负载均衡高可用环境相对简单，主要是要理解其中原理。此文描述了三种负载均衡器的优缺点，以便在实际的生产应用中，按需求取舍。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;目前，在线上环境中应用较多的负载均衡器硬件有F5 BIG-IP,软件有LVS，Ng">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-13T10:04:21.721Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LVS、Nginx、HaProxy 优缺点">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;搭建负载均衡高可用环境相对简单，主要是要理解其中原理。此文描述了三种负载均衡器的优缺点，以便在实际的生产应用中，按需求取舍。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;目前，在线上环境中应用较多的负载均衡器硬件有F5 BIG-IP,软件有LVS，Ng">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.43px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.26px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.74px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.48px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.3px;">FTP</a> <a href="/tags/Git/" style="font-size: 10.87px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.74px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.61px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.43px;">Jenkins</a> <a href="/tags/LAMP/" style="font-size: 19.57px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.96px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.52px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.13px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.35px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.3px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.65px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.39px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.74px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 17.83px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.3px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.78px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.3px;">Puppet</a> <a href="/tags/Python/" style="font-size: 14.78px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.52px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.17px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.78px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.91px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 16.09px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.61px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 13.04px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15.22px;">shell</a> <a href="/tags/shell练习/" style="font-size: 18.7px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 13.04px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Haproxy/2. LVS、Nginx、HaProxy 优缺点" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Haproxy/2. LVS、Nginx、HaProxy 优缺点/" class="article-date">
+  	<time datetime="2017-10-13T13:29:40.292Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      LVS、Nginx、HaProxy 优缺点
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LVS/">LVS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/haproxy/">haproxy</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;搭建负载均衡高可用环境相对简单，主要是要理解其中原理。此文描述了三种负载均衡器的优缺点，以便在实际的生产应用中，按需求取舍。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;目前，在线上环境中应用较多的负载均衡器硬件有F5 BIG-IP,软件有LVS，Nginx及HAProxy,高可用软件有Heartbeat、Keepalived，成熟的架构有LVS+Keepalived、Nginx+Keepalived、HAProxy+keepalived及DRBD+Heartbeat.</p>
+<a id="more"></a>
+<h2 id="三种负载均衡器的优缺点说明如下："><a href="#三种负载均衡器的优缺点说明如下：" class="headerlink" title="三种负载均衡器的优缺点说明如下："></a>三种负载均衡器的优缺点说明如下：</h2><h3 id="LVS"><a href="#LVS" class="headerlink" title="LVS"></a>LVS</h3><h4 id="LVS的优点："><a href="#LVS的优点：" class="headerlink" title="LVS的优点："></a>LVS的优点：</h4><ol>
+<li>抗负载能力强、工作在第4层仅作分发之用，没有流量的产生，这个特点也决定了它在负载均衡软件里的性能最强的；无流量，同时保证了均衡器IO的性能不会受到大流量的影响；</li>
+<li>工作稳定，自身有完整的双机热备方案，如LVS+Keepalived和LVS+Heartbeat；</li>
+<li>应用范围比较广，可以对所有应用做负载均衡；</li>
+<li>配置性比较低，这是一个缺点也是一个优点，因为没有可太多配置的东西，所以并不需要太多接触，大大减少了人为出错的几率；</li>
+</ol>
+<h4 id="LVS的缺点："><a href="#LVS的缺点：" class="headerlink" title="LVS的缺点："></a>LVS的缺点：</h4><ol>
+<li>软件本身不支持正则处理，不能做动静分离，这就凸显了Nginx/HAProxy+Keepalived的优势。</li>
+<li>如果网站应用比较庞大，LVS/DR+Keepalived就比较复杂了，特别是后面有Windows Server应用的机器，实施及配置还有维护过程就比较麻烦，相对而言，Nginx/HAProxy+Keepalived就简单多了。</li>
+</ol>
+<hr>
+<ul>
+<li>LVS/DR如何处理请求报文的，会修改IP包内容吗？<ul>
+<li>vs/dr本身不会关心IP层以上的信息，即使是端口号也是tcp/ip协议栈去判断是否正确，vs/dr本身主要做这么几个事：<ul>
+<li>接收client的请求，根据你设定的负载均衡算法选取一台realserver的ip；</li>
+<li>以选取的这个ip对应的mac地址作为目标mac，然后重新将IP包封装成帧转发给这台RS；</li>
+<li>在hash table中记录连接信息。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;vs/dr做的事情很少，也很简单，所以它的效率很高，不比硬件负载均衡设备差多少。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;数据包、数据帧的大致流向是这样的：client –&gt; VS –&gt; RS –&gt; client</p>
+<pre><code>- 前面已作了回答，vs/dr不会修改IP包的内容.
+</code></pre><ul>
+<li>RealServer为什么要在lo接口上配置VIP？在出口网卡上配置VIP可以吗？<ul>
+<li>既然要让RS能够处理目标地址为vip的IP包，首先必须要让RS能接收到这个包。</li>
+</ul>
+</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在lo上配置vip能够完成接收包并将结果返回client。</p>
+<pre><code>- 答案是不可以将VIP设置在出口网卡上,否则会响应客户端的arp request,造成client/gateway arp table紊乱，以至于整个load balance都不能正常工作。
+</code></pre><ul>
+<li>RealServer为什么要抑制arp帧？<br>  &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个问题在上一问题中已经作了说明，这里结合实施命令进一步阐述。我们在具体实施部署的时候都会作如下调整： </li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> <span class="string">"1"</span> &gt;/proc/sys/net/ipv4/conf/lo/arp_ignore    </div><div class="line"><span class="built_in">echo</span> <span class="string">"2"</span> &gt;/proc/sys/net/ipv4/conf/lo/arp_announce    </div><div class="line"><span class="built_in">echo</span> <span class="string">"1"</span> &gt;/proc/sys/net/ipv4/conf/all/arp_ignore    </div><div class="line"><span class="built_in">echo</span> <span class="string">"2"</span> &gt;/proc/sys/net/ipv4/conf/all/arp_announce</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;相信很多人都不会弄懂它们的作用是什么，只知道一定得有。我这里也不打算拿出来详细讨论，只是作几点说明，就当是补充吧。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> <span class="string">"1"</span> &gt;/proc/sys/net/ipv4/conf/lo/arp_ignore    </div><div class="line"><span class="built_in">echo</span> <span class="string">"2"</span> &gt;/proc/sys/net/ipv4/conf/lo/arp_announce</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这两条是可以不用的，因为arp对逻辑接口没有意义。</p>
+<ul>
+<li>如果你的RS的外部网络接口是eth0，那么     </li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> <span class="string">"1"</span> &gt;/proc/sys/net/ipv4/conf/all/arp_ignore     </div><div class="line"><span class="built_in">echo</span> <span class="string">"2"</span> &gt;/proc/sys/net/ipv4/conf/all/arp_announce</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其实真正要执行的是：      </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> <span class="string">"1"</span> &gt;/proc/sys/net/ipv4/conf/eth0/arp_ignore      </div><div class="line"><span class="built_in">echo</span> <span class="string">"2"</span> &gt;/proc/sys/net/ipv4/conf/eth0/arp_announce</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;所以我个人建议把上面两条也加到你的脚本里去，因为万一系统里上面两条默认的值不是0，那有可能是会出问题滴。</p>
+<ul>
+<li>LVS/DR load balancer（director）与RS为什么要在同一网段中？<br>  从第一个问题中大家应该明白vs/dr是如何将请求转发给RS的了吧？它是在数据链路层来实现的，所以director必须和RS在同一网段里面。</li>
+<li>为什么director上lo接口除了VIP另外还要在eth0配一个ip（即DIP）？<ul>
+<li>如果是用了keepalived等工具做HA或者Load Balance,则在健康检查时需要用到DIP。</li>
+<li>没有健康检查机制的HA或者Load Balance则没有存在的实际意义。</li>
+</ul>
+</li>
+<li>LVS/DR ip_forward需要开启吗？<br>  不需要。因为director跟realserver是同一个网段，无需开启转发。</li>
+<li>director的vip的netmask一定要是255.255.255.255吗？<br>  lvs/dr里，director的vip的netmask 没必要设置为255.255.255.255，也不需要再去<br>  route add -host $VIP dev eth0:0<br>  director的vip本来就是要像正常的ip地址一样对外通告的,不要搞得这么特殊.          </li>
+<li>LVS/DR如何进行tcp的三次握手？</li>
+</ul>
+<hr>
+<h3 id="Nginx"><a href="#Nginx" class="headerlink" title="Nginx"></a>Nginx</h3><h4 id="Nginx的优点："><a href="#Nginx的优点：" class="headerlink" title="Nginx的优点："></a>Nginx的优点：</h4><ol>
+<li>工作在OSI第7层，可以针对http应用做一些分流的策略。比如针对域名、目录结构。它的正则比HAProxy更为强大和灵活；</li>
+<li>Nginx对网络的依赖非常小，理论上能ping通就就能进行负载功能，这个也是它的优势所在；</li>
+<li>Nginx安装和配置比较简单，测试起来比较方便；</li>
+<li>可以承担高的负载压力且稳定，一般能支撑超过几万次的并发量；</li>
+<li>Nginx可以通过端口检测到服务器内部的故障，比如根据服务器处理网页返回的状态码、超时等等，并且会把返回错误的请求重新提交到另一个节点；</li>
+<li>Nginx不仅仅是一款优秀的负载均衡器/反向代理软件，它同时也是功能强大的Web应用服务器。LNMP现在也是非常流行的web环境，大有和LAMP环境分庭抗礼之势，Nginx在处理静态页面、特别是抗高并发方面相对apache有优势；</li>
+<li>Nginx现在作为Web反向加速缓存越来越成熟了，速度比传统的Squid服务器更快，有需求的朋友可以考虑用其作为反向代理加速器；</li>
+</ol>
+<h4 id="Nginx的缺点："><a href="#Nginx的缺点：" class="headerlink" title="Nginx的缺点："></a>Nginx的缺点：</h4><ol>
+<li>Nginx不支持url来检测。</li>
+<li>Nginx仅能支持http和Email，这个它的弱势。</li>
+<li>Nginx的Session的保持，Cookie的引导能力相对欠缺。</li>
+</ol>
+<h3 id="HaProxy"><a href="#HaProxy" class="headerlink" title="HaProxy"></a>HaProxy</h3><h4 id="HAProxy的优点："><a href="#HAProxy的优点：" class="headerlink" title="HAProxy的优点："></a>HAProxy的优点：</h4><ol>
+<li>HAProxy是支持虚拟主机的，可以工作在4、7层(支持多网段)；</li>
+<li>能够补充Nginx的一些缺点比如Session的保持，Cookie的引导等工作；</li>
+<li>支持url检测后端的服务器；</li>
+<li>它跟LVS一样，本身仅仅就只是一款负载均衡软件；单纯从效率上来讲HAProxy更会比Nginx有更出色的负载均衡速度，在并发处理上也是优于Nginx的；</li>
+<li>HAProxy可以对Mysql读进行负载均衡，对后端的MySQL节点进行检测和负载均衡，不过在后端的MySQL slaves数量超过10台时性能不如LVS；</li>
+<li>HAProxy的算法较多，达到8种；</li>
+</ol>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/13/Hadoop/7. 【Hadoop】HDFS的运行原理/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          【Hadoop】HDFS的运行原理
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/13/Haproxy/3. hapronxy 的特性/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">haproxy 的特性</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="Haproxy/2. LVS、Nginx、HaProxy 优缺点" data-title="LVS、Nginx、HaProxy 优缺点" data-url="https://hcldirgit.github.io/2017/10/13/Haproxy/2. LVS、Nginx、HaProxy 优缺点/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="LVS、Nginx、HaProxy 优缺点">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

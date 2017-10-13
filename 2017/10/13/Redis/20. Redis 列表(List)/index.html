@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Redis 列表(List) | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Redis列表是简单的字符串列表，按照插入顺序排序。你可以添加一个元素导列表的头部（左边）或者尾部（右边） &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;一个列表最多可以包含 232 - 1 个元素 (4294967295, 每个列表超过40亿个元素)。">
+<meta name="keywords" content="Redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis 列表(List)">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/10/13/Redis/20. Redis 列表(List)/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Redis列表是简单的字符串列表，按照插入顺序排序。你可以添加一个元素导列表的头部（左边）或者尾部（右边） &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;一个列表最多可以包含 232 - 1 个元素 (4294967295, 每个列表超过40亿个元素)。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-13T13:11:19.725Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis 列表(List)">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Redis列表是简单的字符串列表，按照插入顺序排序。你可以添加一个元素导列表的头部（左边）或者尾部（右边） &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;一个列表最多可以包含 232 - 1 个元素 (4294967295, 每个列表超过40亿个元素)。">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.43px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.26px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.74px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.48px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.3px;">FTP</a> <a href="/tags/Git/" style="font-size: 10.87px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.74px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.61px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.43px;">Jenkins</a> <a href="/tags/LAMP/" style="font-size: 19.57px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.96px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.52px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.13px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.35px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.3px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.65px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.39px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.74px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 17.83px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.3px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.78px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.3px;">Puppet</a> <a href="/tags/Python/" style="font-size: 14.78px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.52px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.17px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.78px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.91px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 16.09px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.61px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 13.04px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15.22px;">shell</a> <a href="/tags/shell练习/" style="font-size: 18.7px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 13.04px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Redis/20. Redis 列表(List)" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Redis/20. Redis 列表(List)/" class="article-date">
+  	<time datetime="2017-10-13T14:03:32.199Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Redis 列表(List)
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/">Redis</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis列表是简单的字符串列表，按照插入顺序排序。你可以添加一个元素导列表的头部（左边）或者尾部（右边）</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一个列表最多可以包含 232 - 1 个元素 (4294967295, 每个列表超过40亿个元素)。</p>
+<a id="more"></a>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; LPUSH runoobkey redis</div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; LPUSH runoobkey mongodb</div><div class="line">(<span class="built_in">integer</span>) 2</div><div class="line">redis 127.0.0.1:6379&gt; LPUSH runoobkey mysql</div><div class="line">(<span class="built_in">integer</span>) 3</div><div class="line">redis 127.0.0.1:6379&gt; LRANGE runoobkey 0 10</div><div class="line"> </div><div class="line">1) <span class="string">"mysql"</span></div><div class="line">2) <span class="string">"mongodb"</span></div><div class="line">3) <span class="string">"redis"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在以上实例中我们使用了 <strong>LPUSH</strong> 将三个值插入了名为 <strong>runoobkey</strong> 的列表当中。</p>
+<h2 id="Redis-列表命令"><a href="#Redis-列表命令" class="headerlink" title="Redis 列表命令"></a>Redis 列表命令</h2><h3 id="1-Redis-Blpop-命令"><a href="#1-Redis-Blpop-命令" class="headerlink" title="1.Redis Blpop 命令"></a>1.Redis Blpop 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>BLPOP key1 [key2 ] timeout</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>移出并获取列表的第一个元素， 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止。</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Blpop 命令移出并获取列表的第一个元素， 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止。</p>
+<h4 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Blpop 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; BLPOP LIST1 LIST2 .. LISTN TIMEOUT</div></pre></td></tr></table></figure>
+<h4 id="可用版本"><a href="#可用版本" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 2.0.0</p>
+<h4 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果列表为空，返回一个 nil 。 否则，返回一个含有两个元素的列表，第一个元素是被弹出元素所属的 key ，第二个元素是被弹出元素的值。</p>
+<h4 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; BLPOP list1 100</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在以上实例中，操作会被阻塞，如果指定的列表 key list1 存在数据则会返回第一个元素，否则在等待100秒后会返回 nil 。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(nil)</div><div class="line">(100.06s)</div></pre></td></tr></table></figure>
+<h3 id="2-Redis-Brpop-命令"><a href="#2-Redis-Brpop-命令" class="headerlink" title="2.Redis Brpop 命令"></a>2.Redis Brpop 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>BRPOP key1 [key2 ] timeout</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>移出并获取列表的最后一个元素， 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止。</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Brpop 命令移出并获取列表的最后一个元素， 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止。</p>
+<h4 id="语法-1"><a href="#语法-1" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Blpop 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; BRPOP LIST1 LIST2 .. LISTN TIMEOUT</div></pre></td></tr></table></figure>
+<h4 id="可用版本-1"><a href="#可用版本-1" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 2.0.0</p>
+<h4 id="返回值-1"><a href="#返回值-1" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;假如在指定时间内没有任何元素被弹出，则返回一个 nil 和等待时长。 反之，返回一个含有两个元素的列表，第一个元素是被弹出元素所属的 key ，第二个元素是被弹出元素的值。</p>
+<h4 id="实例-2"><a href="#实例-2" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; BRPOP list1 100</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在以上实例中，操作会被阻塞，如果指定的列表 key list1 存在数据则会返回第一个元素，否则在等待100秒后会返回 nil 。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(nil)</div><div class="line">(100.06s)</div></pre></td></tr></table></figure>
+<h3 id="3-Redis-Brpoplpush-命令"><a href="#3-Redis-Brpoplpush-命令" class="headerlink" title="3.Redis Brpoplpush 命令"></a>3.Redis Brpoplpush 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>BRPOPLPUSH source destination timeout</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>从列表中弹出一个值，将弹出的元素插入到另外一个列表中并返回它；</code> 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Brpoplpush 命令从列表中弹出一个值，将弹出的元素插入到另外一个列表中并返回它； 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止。</p>
+<h4 id="语法-2"><a href="#语法-2" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Brpoplpush 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; BRPOPLPUSH LIST1 ANOTHER_LIST TIMEOUT</div></pre></td></tr></table></figure>
+<h4 id="可用版本-2"><a href="#可用版本-2" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 2.0.0</p>
+<h4 id="返回值-2"><a href="#返回值-2" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;假如在指定时间内没有任何元素被弹出，则返回一个 nil 和等待时长。 反之，返回一个含有两个元素的列表，第一个元素是被弹出元素的值，第二个元素是等待时长。</p>
+<h4 id="实例-3"><a href="#实例-3" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 非空列表</span></div><div class="line"> </div><div class="line">redis&gt; BRPOPLPUSH msg reciver 500</div><div class="line"><span class="string">"hello moto"</span> <span class="comment"># 弹出元素的值</span></div><div class="line">(3.38s) <span class="comment"># 等待时长</span></div><div class="line"> </div><div class="line">redis&gt; LLEN reciver</div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line"> </div><div class="line">redis&gt; LRANGE reciver 0 0</div><div class="line">1) <span class="string">"hello moto"</span></div><div class="line"> </div><div class="line"> </div><div class="line"><span class="comment"># 空列表</span></div><div class="line"> </div><div class="line">redis&gt; BRPOPLPUSH msg reciver 1</div><div class="line">(nil)</div><div class="line">(1.34s)</div></pre></td></tr></table></figure>
+<h3 id="4-Redis-Lindex-命令"><a href="#4-Redis-Lindex-命令" class="headerlink" title="4.Redis Lindex 命令"></a>4.Redis Lindex 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>LINDEX key index</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>通过索引获取列表中的元素</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Lindex 命令用于通过索引获取列表中的元素。你也可以使用负数下标，以 -1 表示列表的最后一个元素， -2 表示列表的倒数第二个元素，以此类推。</p>
+<h4 id="语法-3"><a href="#语法-3" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Lindex 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; LINDEX KEY_NAME INDEX_POSITION</div></pre></td></tr></table></figure>
+<h4 id="可用版本-3"><a href="#可用版本-3" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.0.0</p>
+<h4 id="返回值-3"><a href="#返回值-3" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;列表中下标为指定索引值的元素。 如果指定索引值不在列表的区间范围内，返回 nil 。</p>
+<h4 id="实例-4"><a href="#实例-4" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; LPUSH mylist <span class="string">"World"</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; LPUSH mylist <span class="string">"Hello"</span></div><div class="line">(<span class="built_in">integer</span>) 2</div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; LINDEX mylist 0</div><div class="line"><span class="string">"Hello"</span></div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; LINDEX mylist -1</div><div class="line"><span class="string">"World"</span></div><div class="line"> </div><div class="line">redis 127.0.0.1:6379&gt; LINDEX mylist 3 <span class="comment"># index不在 mylist 的区间范围内</span></div><div class="line">(nil)</div></pre></td></tr></table></figure>
+<h3 id="5-Redis-Linsert-命令"><a href="#5-Redis-Linsert-命令" class="headerlink" title="5.Redis Linsert 命令"></a>5.Redis Linsert 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>LINSERT key BEFORE|AFTER pivot value</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>在列表的元素前或者后插入元素</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Linsert 命令用于在列表的元素前或者后插入元素。 当指定元素不存在于列表中时，不执行任何操作。 当列表不存在时，被视为空列表，不执行任何操作。 如果 key 不是列表类型，返回一个错误。</p>
+<h4 id="语法-4"><a href="#语法-4" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Linsert 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; LINSERT KEY_NAME BEFORE EXISTING_VALUE NEW_VALUE</div></pre></td></tr></table></figure>
+<h4 id="可用版本-4"><a href="#可用版本-4" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.0.0</p>
+<h4 id="返回值-4"><a href="#返回值-4" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果命令执行成功，返回插入操作完成之后，列表的长度。 如果没有找到指定元素 ，返回 -1 。 如果 key 不存在或为空列表，返回 0 。</p>
+<h4 id="实例-5"><a href="#实例-5" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; RPUSH list1 <span class="string">"foo"</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; RPUSH list1 <span class="string">"bar"</span></div><div class="line">(<span class="built_in">integer</span>) 2</div><div class="line">redis 127.0.0.1:6379&gt; LINSERT list1 BEFORE <span class="string">"bar"</span> <span class="string">"Yes"</span></div><div class="line">(<span class="built_in">integer</span>) 3</div><div class="line">redis 127.0.0.1:6379&gt; LRANGE mylist 0 -1</div><div class="line">1) <span class="string">"foo"</span></div><div class="line">2) <span class="string">"Yes"</span></div><div class="line">3) <span class="string">"bar"</span></div></pre></td></tr></table></figure>
+<h3 id="6-Redis-Llen-命令"><a href="#6-Redis-Llen-命令" class="headerlink" title="6.Redis Llen 命令"></a>6.Redis Llen 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>LLEN key</code> </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>获取列表长度</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Llen 命令用于返回列表的长度。 如果列表 key 不存在，则 key 被解释为一个空列表，返回 0 。 如果 key 不是列表类型，返回一个错误。</p>
+<h4 id="语法-5"><a href="#语法-5" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Llen 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; LLEN KEY_NAME</div></pre></td></tr></table></figure>
+<h4 id="可用版本-5"><a href="#可用版本-5" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.0.0</p>
+<h4 id="返回值-5"><a href="#返回值-5" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;列表的长度。</p>
+<h4 id="实例-6"><a href="#实例-6" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; RPUSH list1 <span class="string">"foo"</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; RPUSH list1 <span class="string">"bar"</span></div><div class="line">(<span class="built_in">integer</span>) 2</div><div class="line">redis 127.0.0.1:6379&gt; LLEN list1</div><div class="line">(<span class="built_in">integer</span>) 2</div></pre></td></tr></table></figure>
+<h3 id="7-Redis-Lpop-命令"><a href="#7-Redis-Lpop-命令" class="headerlink" title="7.Redis Lpop 命令"></a>7.Redis Lpop 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>LPOP key</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>移出并获取列表的第一个元素</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Lpop 命令用于移除并返回列表的第一个元素。</p>
+<h4 id="语法-6"><a href="#语法-6" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Lpop 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; LLEN KEY_NAME</div></pre></td></tr></table></figure>
+<h4 id="可用版本-6"><a href="#可用版本-6" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.0.0</p>
+<h4 id="返回值-6"><a href="#返回值-6" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;列表的第一个元素。 当列表 key 不存在时，返回 nil 。</p>
+<h4 id="实例-7"><a href="#实例-7" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; RPUSH list1 <span class="string">"foo"</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; RPUSH list1 <span class="string">"bar"</span></div><div class="line">(<span class="built_in">integer</span>) 2</div><div class="line">redis 127.0.0.1:6379&gt; LPOP list1</div><div class="line"><span class="string">"foo"</span></div></pre></td></tr></table></figure>
+<h3 id="8-Redis-Lpush-命令"><a href="#8-Redis-Lpush-命令" class="headerlink" title="8.Redis Lpush 命令"></a>8.Redis Lpush 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>LPUSH key value1 [value2]</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>将一个或多个值插入到列表头部</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Lpush 命令将一个或多个值插入到列表头部。 如果 key 不存在，一个空列表会被创建并执行 LPUSH 操作。 当 key 存在但不是列表类型时，返回一个错误。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意：在Redis 2.4版本以前的 LPUSH 命令，都只接受单个 value 值。</p>
+<h4 id="语法-7"><a href="#语法-7" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Lpush 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; LPUSH KEY_NAME VALUE1.. VALUEN</div></pre></td></tr></table></figure>
+<h4 id="可用版本-7"><a href="#可用版本-7" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.0.0</p>
+<h4 id="返回值-7"><a href="#返回值-7" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;执行 LPUSH 命令后，列表的长度。</p>
+<h4 id="实例-8"><a href="#实例-8" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">127.0.0.1:6379&gt; LPUSH list1 <span class="string">"foo"</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">127.0.0.1:6379&gt; LPUSH list1 <span class="string">"bar"</span></div><div class="line">(<span class="built_in">integer</span>) 2</div><div class="line">127.0.0.1:6379&gt; LRANGE list1 0 -1</div><div class="line">1) <span class="string">"bar"</span></div><div class="line">2) <span class="string">"foo"</span></div></pre></td></tr></table></figure>
+<h3 id="9-Redis-Lpushx-命令"><a href="#9-Redis-Lpushx-命令" class="headerlink" title="9.Redis Lpushx 命令"></a>9.Redis Lpushx 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>LPUSHX key value</code> </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>将一个或多个值插入到已存在的列表头部</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Lpushx 将一个或多个值插入到已存在的列表头部，列表不存在时操作无效。</p>
+<h4 id="语法-8"><a href="#语法-8" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Lpushx 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; LPUSHX KEY_NAME VALUE1.. VALUEN</div></pre></td></tr></table></figure>
+<h4 id="可用版本-8"><a href="#可用版本-8" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 2.2.0</p>
+<h4 id="返回值-8"><a href="#返回值-8" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;LPUSHX 命令执行之后，列表的长度。</p>
+<h4 id="实例-9"><a href="#实例-9" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">127.0.0.1:6379&gt; LPUSH list1 <span class="string">"foo"</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">127.0.0.1:6379&gt; LPUSHX list1 <span class="string">"bar"</span></div><div class="line">(<span class="built_in">integer</span>) 2</div><div class="line">127.0.0.1:6379&gt; LPUSHX list2 <span class="string">"bar"</span></div><div class="line">(<span class="built_in">integer</span>) 0</div><div class="line">127.0.0.1:6379&gt; LRANGE list1 0 -1</div><div class="line">1) <span class="string">"bar"</span></div><div class="line">2) <span class="string">"foo"</span></div></pre></td></tr></table></figure>
+<h3 id="10-Redis-Lrange-命令"><a href="#10-Redis-Lrange-命令" class="headerlink" title="10.Redis Lrange 命令"></a>10.Redis Lrange 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>LRANGE key start stop</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>获取列表指定范围内的元素</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其中 0 表示列表的第一个元素， 1 表示列表的第二个元素，以此类推。 你也可以使用负数下标，以 -1 表示列表的最后一个元素， -2 表示列表的倒数第二个元素，以此类推。</p>
+<h4 id="语法-9"><a href="#语法-9" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Lrange 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; LRANGE KEY_NAME START END</div></pre></td></tr></table></figure>
+<h4 id="可用版本-9"><a href="#可用版本-9" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.0.0</p>
+<h4 id="返回值-9"><a href="#返回值-9" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一个列表，包含指定区间内的元素。</p>
+<h4 id="实例-10"><a href="#实例-10" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; LPUSH list1 <span class="string">"foo"</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; LPUSH list1 <span class="string">"bar"</span></div><div class="line">(<span class="built_in">integer</span>) 2</div><div class="line">redis 127.0.0.1:6379&gt; LPUSHX list1 <span class="string">"bar"</span></div><div class="line">(<span class="built_in">integer</span>) 0</div><div class="line">redis 127.0.0.1:6379&gt; LRANGE list1 0 -1</div><div class="line">1) <span class="string">"bar"</span></div><div class="line">2) <span class="string">"bar"</span></div><div class="line">3) <span class="string">"foo"</span></div></pre></td></tr></table></figure>
+<h3 id="11-Redis-Lrem-命令"><a href="#11-Redis-Lrem-命令" class="headerlink" title="11.Redis Lrem 命令"></a>11.Redis Lrem 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>LREM key count value</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>移除列表元素</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Lrem 根据参数 COUNT 的值，移除列表中与参数 VALUE 相等的元素。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;COUNT 的值可以是以下几种：</p>
+<ul>
+<li>count &gt; 0 : 从表头开始向表尾搜索，移除与 VALUE 相等的元素，数量为 COUNT 。</li>
+<li>count &lt; 0 : 从表尾开始向表头搜索，移除与 VALUE 相等的元素，数量为 COUNT 的绝对值。</li>
+<li>count = 0 : 移除表中所有与 VALUE 相等的值。</li>
+</ul>
+<h4 id="语法-10"><a href="#语法-10" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Lrem 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; LREM KEY_NAME COUNT VALUE</div></pre></td></tr></table></figure>
+<h4 id="可用版本-10"><a href="#可用版本-10" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.0.0</p>
+<h4 id="返回值-10"><a href="#返回值-10" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;被移除元素的数量。 列表不存在时返回 0 。</p>
+<h4 id="实例-11"><a href="#实例-11" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; RPUSH mylist <span class="string">"hello"</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; RPUSH mylist <span class="string">"hello"</span></div><div class="line">(<span class="built_in">integer</span>) 2</div><div class="line">redis 127.0.0.1:6379&gt; RPUSH mylist <span class="string">"foo"</span></div><div class="line">(<span class="built_in">integer</span>) 3</div><div class="line">redis 127.0.0.1:6379&gt; RPUSH mylist <span class="string">"hello"</span></div><div class="line">(<span class="built_in">integer</span>) 4</div><div class="line">redis 127.0.0.1:6379&gt; LREM mylist -2 <span class="string">"hello"</span></div><div class="line">(<span class="built_in">integer</span>) 2</div></pre></td></tr></table></figure>
+<h3 id="12-Redis-Lset-命令"><a href="#12-Redis-Lset-命令" class="headerlink" title="12.Redis Lset 命令"></a>12.Redis Lset 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>LSET key index value</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>通过索引设置列表元素的值</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Lset 通过索引来设置元素的值。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当索引参数超出范围，或对一个空列表进行 LSET 时，返回一个错误。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关于列表下标的更多信息，请参考 LINDEX 命令。</p>
+<h4 id="语法-11"><a href="#语法-11" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Lset 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; LSET KEY_NAME INDEX VALUE</div></pre></td></tr></table></figure>
+<h4 id="可用版本-11"><a href="#可用版本-11" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.0.0</p>
+<h4 id="返回值-11"><a href="#返回值-11" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;操作成功返回 ok ，否则返回错误信息。</p>
+<h4 id="实例-12"><a href="#实例-12" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; RPUSH mylist <span class="string">"hello"</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; RPUSH mylist <span class="string">"hello"</span></div><div class="line">(<span class="built_in">integer</span>) 2</div><div class="line">redis 127.0.0.1:6379&gt; RPUSH mylist <span class="string">"foo"</span></div><div class="line">(<span class="built_in">integer</span>) 3</div><div class="line">redis 127.0.0.1:6379&gt; RPUSH mylist <span class="string">"hello"</span></div><div class="line">(<span class="built_in">integer</span>) 4</div><div class="line">redis 127.0.0.1:6379&gt; LSET mylist 0 <span class="string">"bar"</span></div><div class="line">OK</div><div class="line">redis 127.0.0.1:6379&gt; LRANGE mylist 0 -1</div><div class="line">1: <span class="string">"bar"</span></div><div class="line">2) <span class="string">"hello"</span></div><div class="line">3) <span class="string">"foo"</span></div><div class="line">4) <span class="string">"hello"</span></div></pre></td></tr></table></figure>
+<h3 id="13-Redis-Ltrim-命令"><a href="#13-Redis-Ltrim-命令" class="headerlink" title="13.Redis Ltrim 命令"></a>13.Redis Ltrim 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>LTRIM key start stop</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>对一个列表进行修剪(trim)，就是说，让列表只保留指定区间内的元素，不在指定区间之内的元素都将被删除</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Ltrim 对一个列表进行修剪(trim)，就是说，让列表只保留指定区间内的元素，不在指定区间之内的元素都将被删除。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下标 0 表示列表的第一个元素，以 1 表示列表的第二个元素，以此类推。 你也可以使用负数下标，以 -1 表示列表的最后一个元素， -2 表示列表的倒数第二个元素，以此类推。</p>
+<h4 id="语法-12"><a href="#语法-12" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Ltrim 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; LTRIM KEY_NAME START STOP</div></pre></td></tr></table></figure>
+<h4 id="可用版本-12"><a href="#可用版本-12" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.0.0</p>
+<h4 id="返回值-12"><a href="#返回值-12" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;命令执行成功时，返回 ok 。</p>
+<h4 id="实例-13"><a href="#实例-13" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; RPUSH mylist <span class="string">"hello"</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; RPUSH mylist <span class="string">"hello"</span></div><div class="line">(<span class="built_in">integer</span>) 2</div><div class="line">redis 127.0.0.1:6379&gt; RPUSH mylist <span class="string">"foo"</span></div><div class="line">(<span class="built_in">integer</span>) 3</div><div class="line">redis 127.0.0.1:6379&gt; RPUSH mylist <span class="string">"bar"</span></div><div class="line">(<span class="built_in">integer</span>) 4</div><div class="line">redis 127.0.0.1:6379&gt; LTRIM mylist 1 -1</div><div class="line">OK</div><div class="line">redis 127.0.0.1:6379&gt; LRANGE mylist 0 -1</div><div class="line">1) <span class="string">"hello"</span></div><div class="line">2) <span class="string">"foo"</span></div><div class="line">3) <span class="string">"bar"</span></div></pre></td></tr></table></figure>
+<h3 id="14-Redis-Rpop-命令"><a href="#14-Redis-Rpop-命令" class="headerlink" title="14.Redis Rpop 命令"></a>14.Redis Rpop 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>RPOP key</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>移除并获取列表最后一个元素</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Rpop 命令用于移除并返回列表的最后一个元素。</p>
+<h4 id="语法-13"><a href="#语法-13" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Rpop 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; RPOP KEY_NAME</div></pre></td></tr></table></figure>
+<h4 id="可用版本-13"><a href="#可用版本-13" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.0.0</p>
+<h4 id="返回值-13"><a href="#返回值-13" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;列表的最后一个元素。 当列表不存在时，返回 nil 。</p>
+<h4 id="实例-14"><a href="#实例-14" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; RPUSH mylist <span class="string">"hello"</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; RPUSH mylist <span class="string">"hello"</span></div><div class="line">(<span class="built_in">integer</span>) 2</div><div class="line">redis 127.0.0.1:6379&gt; RPUSH mylist <span class="string">"foo"</span></div><div class="line">(<span class="built_in">integer</span>) 3</div><div class="line">redis 127.0.0.1:6379&gt; RPUSH mylist <span class="string">"bar"</span></div><div class="line">(<span class="built_in">integer</span>) 4</div><div class="line">redis 127.0.0.1:6379&gt; RPOP mylist</div><div class="line">OK</div><div class="line">redis 127.0.0.1:6379&gt; LRANGE mylist 0 -1</div><div class="line">1) <span class="string">"hello"</span></div><div class="line">2) <span class="string">"hello"</span></div><div class="line">3) <span class="string">"foo"</span></div></pre></td></tr></table></figure>
+<h3 id="15-Redis-Rpoplpush-命令"><a href="#15-Redis-Rpoplpush-命令" class="headerlink" title="15.Redis Rpoplpush 命令"></a>15.Redis Rpoplpush 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>RPOPLPUSH source destination</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>移除列表的最后一个元素，并将该元素添加到另一个列表并返回</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Rpoplpush 命令用于移除列表的最后一个元素，并将该元素添加到另一个列表并返回。</p>
+<h4 id="语法-14"><a href="#语法-14" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Rpoplpush 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; RPOPLPUSH SOURCE_KEY_NAME DESTINATION_KEY_NAME</div></pre></td></tr></table></figure>
+<h4 id="可用版本-14"><a href="#可用版本-14" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.0.0</p>
+<h4 id="返回值-14"><a href="#返回值-14" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;被弹出的元素。</p>
+<h4 id="实例-15"><a href="#实例-15" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; RPUSH mylist <span class="string">"hello"</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; RPUSH mylist <span class="string">"foo"</span></div><div class="line">(<span class="built_in">integer</span>) 2</div><div class="line">redis 127.0.0.1:6379&gt; RPUSH mylist <span class="string">"bar"</span></div><div class="line">(<span class="built_in">integer</span>) 3</div><div class="line">redis 127.0.0.1:6379&gt; RPOPLPUSH mylist myotherlist</div><div class="line"><span class="string">"bar"</span></div><div class="line">redis 127.0.0.1:6379&gt; LRANGE mylist 0 -1</div><div class="line">1) <span class="string">"hello"</span></div><div class="line">2) <span class="string">"foo"</span></div></pre></td></tr></table></figure>
+<h3 id="16-Redis-Rpush-命令"><a href="#16-Redis-Rpush-命令" class="headerlink" title="16.Redis Rpush 命令"></a>16.Redis Rpush 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>RPUSH key value1 [value2]</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>在列表中添加一个或多个值</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Rpush 命令用于将一个或多个值插入到列表的尾部(最右边)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果列表不存在，一个空列表会被创建并执行 RPUSH 操作。 当列表存在但不是列表类型时，返回一个错误。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意：在 Redis 2.4 版本以前的 RPUSH 命令，都只接受单个 value 值。</p>
+<h4 id="语法-15"><a href="#语法-15" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Rpush 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; RPUSH KEY_NAME VALUE1..VALUEN</div></pre></td></tr></table></figure>
+<h4 id="可用版本-15"><a href="#可用版本-15" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 1.0.0</p>
+<h4 id="返回值-15"><a href="#返回值-15" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;执行 RPUSH 操作后，列表的长度。</p>
+<h4 id="实例-16"><a href="#实例-16" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; RPUSH mylist <span class="string">"hello"</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; RPUSH mylist <span class="string">"foo"</span></div><div class="line">(<span class="built_in">integer</span>) 2</div><div class="line">redis 127.0.0.1:6379&gt; RPUSH mylist <span class="string">"bar"</span></div><div class="line">(<span class="built_in">integer</span>) 3</div><div class="line">redis 127.0.0.1:6379&gt; LRANGE mylist 0 -1</div><div class="line">1) <span class="string">"hello"</span></div><div class="line">2) <span class="string">"foo"</span></div><div class="line">3) <span class="string">"bar"</span></div></pre></td></tr></table></figure>
+<h3 id="17-Redis-Rpushx-命令"><a href="#17-Redis-Rpushx-命令" class="headerlink" title="17.Redis Rpushx 命令"></a>17.Redis Rpushx 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>RPUSHX key value</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>为已存在的列表添加值</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis Rpushx 命令用于将一个或多个值插入到已存在的列表尾部(最右边)。如果列表不存在，操作无效。</p>
+<h4 id="语法-16"><a href="#语法-16" class="headerlink" title="语法"></a>语法</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis Rpushx 命令基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; RPUSHX KEY_NAME VALUE1..VALUEN</div></pre></td></tr></table></figure>
+<h4 id="可用版本-16"><a href="#可用版本-16" class="headerlink" title="可用版本"></a>可用版本</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&gt;= 2.2.0</p>
+<h4 id="返回值-16"><a href="#返回值-16" class="headerlink" title="返回值"></a>返回值</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;执行 Rpushx 操作后，列表的长度。</p>
+<h4 id="实例-17"><a href="#实例-17" class="headerlink" title="实例"></a>实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; RPUSH mylist <span class="string">"hello"</span></div><div class="line">(<span class="built_in">integer</span>) 1</div><div class="line">redis 127.0.0.1:6379&gt; RPUSH mylist <span class="string">"foo"</span></div><div class="line">(<span class="built_in">integer</span>) 2</div><div class="line">redis 127.0.0.1:6379&gt; RPUSHX mylist2 <span class="string">"bar"</span></div><div class="line">(<span class="built_in">integer</span>) 0</div><div class="line">redis 127.0.0.1:6379&gt; LRANGE mylist 0 -1</div><div class="line">1) <span class="string">"hello"</span></div><div class="line">2) <span class="string">"foo"</span></div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/13/Redis/21. Redis 集合(Set)/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          Redis 集合(Set)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/13/Redis/2. Redis 配置文件/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Redis 配置文件</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="Redis/20. Redis 列表(List)" data-title="Redis 列表(List)" data-url="https://hcldirgit.github.io/2017/10/13/Redis/20. Redis 列表(List)/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="Redis 列表(List)">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

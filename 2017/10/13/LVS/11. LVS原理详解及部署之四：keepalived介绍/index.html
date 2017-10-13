@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>LVS原理详解及部署之四：keepalived介绍 | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一、keepalived原理介绍keepalived简介&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Keepalived的功能有点像是两个人互相看着一个工作，如果一个人离开岗位另外一个人就会接替，这个keepalived就是他们之间保持这样“替换机制”的工具。keepalived是一个类似于layer3, 4 &amp;amp; 5交换机制的软件，也就是">
+<meta name="keywords" content="LVS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LVS原理详解及部署之四：keepalived介绍">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/10/13/LVS/11. LVS原理详解及部署之四：keepalived介绍/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="一、keepalived原理介绍keepalived简介&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Keepalived的功能有点像是两个人互相看着一个工作，如果一个人离开岗位另外一个人就会接替，这个keepalived就是他们之间保持这样“替换机制”的工具。keepalived是一个类似于layer3, 4 &amp;amp; 5交换机制的软件，也就是">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-13T10:07:51.771Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LVS原理详解及部署之四：keepalived介绍">
+<meta name="twitter:description" content="一、keepalived原理介绍keepalived简介&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Keepalived的功能有点像是两个人互相看着一个工作，如果一个人离开岗位另外一个人就会接替，这个keepalived就是他们之间保持这样“替换机制”的工具。keepalived是一个类似于layer3, 4 &amp;amp; 5交换机制的软件，也就是">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.43px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.26px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.74px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.48px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.3px;">FTP</a> <a href="/tags/Git/" style="font-size: 10.87px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.74px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.61px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.43px;">Jenkins</a> <a href="/tags/LAMP/" style="font-size: 19.57px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.96px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.52px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.13px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.35px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.3px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.65px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.39px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.74px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 17.83px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.3px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.78px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.3px;">Puppet</a> <a href="/tags/Python/" style="font-size: 14.78px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.52px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.17px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.78px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.91px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 16.09px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.61px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 13.04px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15.22px;">shell</a> <a href="/tags/shell练习/" style="font-size: 18.7px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 13.04px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-LVS/11. LVS原理详解及部署之四：keepalived介绍" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/LVS/11. LVS原理详解及部署之四：keepalived介绍/" class="article-date">
+  	<time datetime="2017-10-13T13:29:40.035Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      LVS原理详解及部署之四：keepalived介绍
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LVS/">LVS</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一、keepalived原理介绍"><a href="#一、keepalived原理介绍" class="headerlink" title="一、keepalived原理介绍"></a>一、keepalived原理介绍</h2><h3 id="keepalived简介"><a href="#keepalived简介" class="headerlink" title="keepalived简介"></a>keepalived简介</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Keepalived的功能有点像是两个人互相看着一个工作，如果一个人离开岗位另外一个人就会接替，这个keepalived就是他们之间保持这样“替换机制”的工具。keepalived是一个类似于layer3, 4 &amp; 5交换机制的软件，也就是我们平时说的第3层、第4层和第5层交换。Keepalived的作用是检测web服务器的状态，如果有一台web服务器死机，或工作出现故障，Keepalived将检测到，并将有故障的web服务器从系统中剔除，当web服务器工作正常后Keepalived自动将web服务器加入到服务器群中，这些工作全部自动完成，不需要人工干涉，需要人工做的只是修复故障的web服务器。</p>
+<a id="more"></a>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Keepalived服务主要有两大用途：heartbeat（高可用）&amp;failover（健康检测）</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Keepalived服务主要截图vrrp来完成这些工作的，以下我就来介绍下VRRP协议是怎样的工作的，那么基本上keepalived的工作原理就是如此。</p>
+<h3 id="VRRP协议（VRRP-Virtual-Router-Redundancy-Protocol，虚拟路由冗余协议）"><a href="#VRRP协议（VRRP-Virtual-Router-Redundancy-Protocol，虚拟路由冗余协议）" class="headerlink" title="VRRP协议（VRRP Virtual Router Redundancy Protocol，虚拟路由冗余协议）"></a>VRRP协议（VRRP Virtual Router Redundancy Protocol，虚拟路由冗余协议）</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>VRRP协议过程简述</strong>：VRRP 将局域网的一组路由器（包括一个Master 即活动路由器和若干个Backup 即备份路由器）组织成一个虚拟路由器，称之为一个备份组。这个虚拟的路由器拥有自己的IP 地址10.100.10.1（这个IP 地址可以和备份组内的某个路由器的接口地址相同，相同的则称为ip拥有者），备份组内的路由器也有自己的IP 地址（如Master的IP 地址为10.100.10.2，Backup 的IP 地址为10.100.10.3）。局域网内的主机仅仅知道这个虚拟路由器的IP 地址10.100.10.1，而并不知道具体的Master 路由器的IP 地址10.100.10.2 以及Backup 路由器的IP 地址10.100.10.3。[1]它们将自己的缺省路由下一跳地址设置为该虚拟路由器的IP 地址10.100.10.1。于是，网络内的主机就通过这个虚拟的路由器来与其它网络进行通信。如果备份组内的Master 路由器坏掉，Backup 路由器将会通过选举策略选出一个新的Master 路由器，继续向网络内的主机提供路由服务。从而实现网络内的主机不间断地与外部网络进行通信。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>VRRP原理</strong>：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一个VRRP路由器有唯一的标识：VRID，范围为0—255该路由器对外表现为唯一的虚拟MAC地址，地址的格式为00-00-5E-00-01-[VRID]主控路由器负责对ARP请求用该MAC地址做应答这样,无论如何切换，保证给终端设备的是唯一一致的IP和MAC地址，减少了切换对终端设备的影响[3]</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;VRRP控制报文只有一种：VRRP通告(advertisement)它使用IP多播数据包进行封装，组地址为224.0.0.18，发布范围只限于同一局域网内这保证了VRID在不同网络中可以重复使用为了减少网络带宽消耗只有主控路由器才可以周期性的发送VRRP通告报文备份路由器在连续三个通告间隔内收不到VRRP或收到优先级为0的通告后启动新的一轮VRRP选举[3]</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在VRRP路由器组中，按优先级选举主控路由器，VRRP协议中优先级范围是0—255若VRRP路由器的IP地址和虚拟路由器的接口IP地址相同，则称该虚拟路由器作VRRP组中的IP地址所有者；IP地址所有者自动具有最高优先级：255优先级0一般用在IP地址所有者主动放弃主控者角色时使用可配置的优先级范围为1—254优先级的配置原则可以依据链路的速度和成本路由器性能和可靠性以及其它管理策略设定主控路由器的选举中，高优先级的虚拟路由器获胜，因此，如果在VRRP组中有IP地址所有者，则它总是作为主控路由的角色出现对于相同优先级的候选路由器，按照IP地址大小顺序选举VRRP还提供了优先级抢占策略，如果配置了该策略，高优先级的备份路由器便会剥夺当前低优先级的主控路由器而成为新的主控路由器[3]</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为了保证VRRP协议的安全性，提供了两种安全认证措施：明文认证和IP头认证明文认证方式要求：在加入一个VRRP路由器组时，必须同时提供相同的VRID和明文密码适合于避免在局域网内的配置错误，但不能防止通过网络监听方式获得密码IP头认证的方式提供了更高的安全性，能够防止报文重放和修改等攻击。</p>
+<h2 id="二、部署keepalived作为web服务器的HA"><a href="#二、部署keepalived作为web服务器的HA" class="headerlink" title="二、部署keepalived作为web服务器的HA"></a>二、部署keepalived作为web服务器的HA</h2><ol>
+<li>部署两台apache web服务器</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">yum install httpd -y </div><div class="line">/etc/init.d/httpd start</div></pre></td></tr></table></figure>
+<ol>
+<li>分别安装keepalived软件</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下载安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">wget http://www.keepalived.org/software/keepalived-1.2.8.tar.gz</div><div class="line">tar -zxf keepalived-1.2.8.tar.gz</div><div class="line"><span class="built_in">cd</span> keepalived-1.2.8</div><div class="line">ll</div><div class="line">./configure --prefix=/usr/<span class="built_in">local</span>/keepalived</div><div class="line">make</div><div class="line">make install</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置keepalived的自启动&amp;拷贝keepalived的执行程序</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">cp /usr/<span class="built_in">local</span>/keepalive/sbin/keepalived/ /usr/sbin/</div><div class="line">cp cp /usr/<span class="built_in">local</span>/keepalived/sbin/keepalived /usr/sbin//usr/<span class="built_in">local</span>/keepalived/sbin/keepalived</div><div class="line">cp /usr/<span class="built_in">local</span>/keepalived/sbin/keepalived /usr/sbin/</div><div class="line">cp /usr/<span class="built_in">local</span>/keepalived/etc/sysconfig/keepalived /etc/sysconfig/</div><div class="line">cp /usr/<span class="built_in">local</span>/keepalived/etc/rc.d/init.d/keepalived /etc/init.d/</div></pre></td></tr></table></figure>
+<ol>
+<li>编辑主web和备web的keepalived配置文件</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;主web服务器的配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">[root@localhost keepalived-1.2.8]<span class="comment"># cat /etc/keepalived.conf </span></div><div class="line">! Configuration File <span class="keyword">for</span> keepalived</div><div class="line">global_defs &#123;</div><div class="line"> notification_email &#123; <span class="comment">#设置报警邮件地址，可多行每行一个。</span></div><div class="line"> 752119102@qq.com</div><div class="line"> &#125;</div><div class="line"> notification_email_from keepalived@localhost <span class="comment">#设置邮件的发送地址</span></div><div class="line"> smtp_server 127.0.0.1 <span class="comment">#设置SMTP server地址</span></div><div class="line"> smtp_connect_timeout 30 <span class="comment">#设置SMTP 超时时间</span></div><div class="line"> router_id LVS_DEVEL <span class="comment">#运行keepalived机器的一个标识</span></div><div class="line">&#125;</div><div class="line">vrrp_instance VI_1 &#123; <span class="comment">#定义一个vrrp实例，不同实例的实例编号不一样。</span></div><div class="line"> state MASTER <span class="comment">#定义在keepalived的角色MASTER表示为主服务器，BACKUP为备服务器。</span></div><div class="line"> interface eth0 <span class="comment">#指定HA检测的网络接口</span></div><div class="line"> virtual_router_id 51 <span class="comment">#虚拟路由标示，同一个实例里的路由标示相同，且唯一。MASTER和BACKUP的路由标识一样，且唯一。</span></div><div class="line"> priority 100 <span class="comment">#定义此服务器在此虚拟路由器中的优先级，优先级大权限高</span></div><div class="line"> advert_int 1 <span class="comment">#检测时间间隔</span></div><div class="line"> authentication &#123; <span class="comment">#设置验证类型和密码，主从的密码必须相同，要不两者不通讯。</span></div><div class="line"> auth_type PASS</div><div class="line"> auth_pass 1111</div><div class="line"> &#125;</div><div class="line"> virtual_ipaddress &#123; <span class="comment">#设置虚拟IP地址，可以设置多个虚拟IP地址。</span></div><div class="line"> 192.168.41.249</div><div class="line"> &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;备web服务器的配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># cat /etc/keepalived.conf</span></div><div class="line">! Configuration File <span class="keyword">for</span> keepalived</div><div class="line">global_defs &#123;</div><div class="line"> notification_email &#123;</div><div class="line"> 752119102@qq.com</div><div class="line"> &#125;</div><div class="line"> notification_email_from keepalive@localhost</div><div class="line"> smtp_server 127.0.0.1</div><div class="line"> smtp_connect_timeout 30</div><div class="line"> router_id LVS_DEVEL</div><div class="line">&#125;</div><div class="line">vrrp_instance VI_1 &#123;</div><div class="line"> state BACKUP</div><div class="line"> interface eth0</div><div class="line"> virtual_router_id 51</div><div class="line"> priority 50</div><div class="line"> advert_int 1</div><div class="line"> authentication &#123;</div><div class="line"> auth_type PASS</div><div class="line"> auth_pass 1111</div><div class="line"> &#125;</div><div class="line"> virtual_ipaddress &#123;</div><div class="line"> 192.168.41.249</div><div class="line"> &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动keepalived服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">/etc/init.d/keepalived start</div><div class="line">/etc/init.d/keepalived stop</div></pre></td></tr></table></figure>
+<ol>
+<li>查看keepalived日志信息</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;主web服务器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">Jan 14 20:27:41 localhost Keepalived_vrrp[20840]: Opening file <span class="string">'/etc/keepalived/keepalived.conf'</span>.</div><div class="line">Jan 14 20:27:41 localhost Keepalived_vrrp[20840]: Configuration is using : 36304 Bytes</div><div class="line">Jan 14 20:27:41 localhost Keepalived_vrrp[20840]: Using LinkWatch kernel netlink reflector...</div><div class="line">Jan 14 20:27:41 localhost Keepalived[20837]: Starting VRRP child process, pid=20840</div><div class="line">Jan 14 20:27:41 localhost Keepalived_vrrp[20840]: VRRP sockpool: [ifindex(2), proto(112), unicast(0), fd(11,12)]</div><div class="line">Jan 14 20:27:42 localhost Keepalived_vrrp[20840]: VRRP_Instance(VI_1) Transition to MASTER STATE</div><div class="line">Jan 14 20:27:43 localhost Keepalived_vrrp[20840]: VRRP_Instance(VI_1) Entering MASTER STATE</div><div class="line">Jan 14 20:27:43 localhost Keepalived_vrrp[20840]: VRRP_Instance(VI_1) setting protocol VIPs.</div><div class="line">Jan 14 20:27:43 localhost Keepalived_vrrp[20840]: VRRP_Instance(VI_1) Sending gratuitous ARPs on eth0 <span class="keyword">for</span> 192.168.41.249</div><div class="line">Jan 14 20:27:43 localhost Keepalived_vrrp[20840]: Netlink reflector reports IP 192.168.41.249 added</div><div class="line">Jan 14 20:27:43 localhost avahi-daemon[3207]: Registering new address record <span class="keyword">for</span> 192.168.41.249 on eth0.</div><div class="line">Jan 14 20:27:43 localhost Keepalived_healthcheckers[20839]: Netlink reflector reports IP 192.168.41.249 added</div><div class="line">Jan 14 20:27:44 localhost avahi-daemon[3207]: Invalid query packet.</div><div class="line">Jan 14 20:27:46 localhost last message repeated 8 <span class="built_in">times</span></div><div class="line">Jan 14 20:27:48 localhost Keepalived_vrrp[20840]: VRRP_Instance(VI_1) Sending gratuitous ARPs on eth0 <span class="keyword">for</span> 192.168.41.249</div><div class="line">Jan 14 20:27:48 localhost avahi-daemon[3207]: Invalid query packet.</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;备web服务器日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Jan 14 19:55:26 localhost Keepalived_vrrp[19423]: Opening file <span class="string">'/etc/keepalived/keepalived.conf'</span>.</div><div class="line">Jan 14 19:55:26 localhost Keepalived_vrrp[19423]: Configuration is using : 36302 Bytes</div><div class="line">Jan 14 19:55:26 localhost Keepalived_vrrp[19423]: Using LinkWatch kernel netlink reflector...</div><div class="line">Jan 14 19:55:26 localhost Keepalived[19420]: Starting VRRP child process, pid=19423</div><div class="line">Jan 14 19:55:26 localhost Keepalived_vrrp[19423]: VRRP_Instance(VI_1) Entering BACKUP STATE</div><div class="line">Jan 14 19:55:26 localhost Keepalived_vrrp[19423]: VRRP sockpool: [ifindex(2), proto(112), unicast(0), fd(11,12)]</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当主web服务器的keepalived停掉后，及主keepalived重新启动时的日志：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">Jan 14 20:25:57 localhost Keepalived_vrrp[19423]: VRRP_Instance(VI_1) Transition to MASTER STATE</div><div class="line">Jan 14 20:25:58 localhost Keepalived_vrrp[19423]: VRRP_Instance(VI_1) Entering MASTER STATE</div><div class="line">Jan 14 20:25:58 localhost Keepalived_vrrp[19423]: VRRP_Instance(VI_1) setting protocol VIPs.</div><div class="line">Jan 14 20:25:58 localhost Keepalived_vrrp[19423]: VRRP_Instance(VI_1) Sending gratuitous ARPs on eth0 <span class="keyword">for</span> 192.168.41.249</div><div class="line">Jan 14 20:25:58 localhost Keepalived_vrrp[19423]: Netlink reflector reports IP 192.168.41.249 added</div><div class="line">Jan 14 20:25:58 localhost Keepalived_healthcheckers[19422]: Netlink reflector reports IP 192.168.41.249 added</div><div class="line">Jan 14 20:26:03 localhost Keepalived_vrrp[19423]: VRRP_Instance(VI_1) Sending gratuitous ARPs on eth0 <span class="keyword">for</span> 192.168.41.249</div><div class="line"><span class="comment">###主keepalived重新启动后</span></div><div class="line">Jan 14 20:27:42 localhost Keepalived_vrrp[19423]: VRRP_Instance(VI_1) Received higher prio advert</div><div class="line">Jan 14 20:27:42 localhost Keepalived_vrrp[19423]: VRRP_Instance(VI_1) Entering BACKUP STATE</div><div class="line">Jan 14 20:27:42 localhost Keepalived_vrrp[19423]: VRRP_Instance(VI_1) removing protocol VIPs.</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;并且通过tcpdump vrrp能够看到两者之间的通讯</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># tcpdump vrrp</span></div><div class="line">tcpdump: verbose output suppressed, use -v or -vv <span class="keyword">for</span> full protocol decode</div><div class="line">listening on eth0, link-type EN10MB (Ethernet), capture size 96 bytes</div><div class="line">20:38:58.657600 IP 192.168.41.33 &gt; vrrp.mcast.net: VRRPv2, Advertisement, vrid 51, prio 100, authtype simple, intvl 1s, length 20</div><div class="line">20:38:59.658287 IP 192.168.41.33 &gt; vrrp.mcast.net: VRRPv2, Advertisement, vrid 51, prio 100, authtype simple, intvl 1s, length 20</div><div class="line">20:39:00.659280 IP 192.168.41.33 &gt; vrrp.mcast.net: VRRPv2, Advertisement, vrid 51, prio 100, authtype simple, intvl 1s, length 20</div><div class="line">20:39:01.660358 IP 192.168.41.33 &gt; vrrp.mcast.net: VRRPv2, Advertisement, vrid 51, prio 100, authtype simple, intvl 1s, length 20</div><div class="line">20:39:02.661203 IP 192.168.41.33 &gt; vrrp.mcast.net: VRRPv2, Advertisement, vrid 51, prio 100, authtype simple, intvl 1s, length 20</div><div class="line">20:39:03.662205 IP 192.168.41.33 &gt; vrrp.mcast.net: VRRPv2, Advertisement, vrid 51, prio 100, authtype simple, intvl 1s, length 20</div><div class="line">20:39:04.663129 IP 192.168.41.33 &gt; vrrp.mcast.net: VRRPv2, Advertisement, vrid 51, prio 100, authtype simple, intvl 1s, length 20</div></pre></td></tr></table></figure>
+<h2 id="三、脚本实现监控httpd服务"><a href="#三、脚本实现监控httpd服务" class="headerlink" title="三、脚本实现监控httpd服务"></a>三、脚本实现监控httpd服务</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;目前keepalived能够实现当我们的主web宕机或者网络出现故障时进行切换，但如果仅是httpd进程出现故障，所以我们就需要写一点实时监控httpd进程状态的脚本，即如果进程出现问题我们就进行切换。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;脚本内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"></div><div class="line"><span class="keyword">while</span> <span class="literal">true</span></div><div class="line"><span class="keyword">do</span></div><div class="line"> httpdpid=`ps -C httpd --no-heading |wc -l`</div><div class="line"> <span class="keyword">if</span> [ <span class="variable">$httpdpid</span> -eq 0 ];<span class="keyword">then</span></div><div class="line"> /etc/init.d/httpd start</div><div class="line"> sleep 5</div><div class="line"> httpdpid=`ps -C httpd --no-heading |wc -l`</div><div class="line"> <span class="keyword">if</span> [ <span class="variable">$httpdpid</span> -eq 0 ];<span class="keyword">then</span></div><div class="line"> /etc/init.d/keepalive stop</div><div class="line"> <span class="keyword">fi</span></div><div class="line"> <span class="keyword">fi</span></div><div class="line"> sleep 5</div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;即当我们的httpd进程被停止了，并且无法重启我们会将keepalived进行停止，让备web服务器进行接管，成为主WEB服务器提供服务。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;到此我们已经能够轻松的部署keepalived让它作为web服务器的HA.</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/13/LVS/5. keepalived 的启动脚本和安装脚本/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          keepalived 的启动脚本和安装脚本 的结合配置文件详解
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/13/LVS/12. LVS原理详解及部署之五：LVS+keepalived实现负载均衡&高可用/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">LVS原理详解及部署之五：LVS+keepalived实现负载均衡&amp;高可用</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="LVS/11. LVS原理详解及部署之四：keepalived介绍" data-title="LVS原理详解及部署之四：keepalived介绍" data-url="https://hcldirgit.github.io/2017/10/13/LVS/11. LVS原理详解及部署之四：keepalived介绍/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="LVS原理详解及部署之四：keepalived介绍">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

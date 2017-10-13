@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>mysql字符集调整总结 | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;字符集是一套符号和编码的规则，不论是在oracle数据库还是在mysql数据库，都存在字符集的选择问题。对于数据库来说，字符集又是比较重要的，因为数据库存储的数据大部分都是各种文字，字符集对于数据库的存储、处理性能以及数据迁移都有重要的影响。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;">
+<meta name="keywords" content="MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql字符集调整总结">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/10/13/MySQL/20.mysql字符集调整总结/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;字符集是一套符号和编码的规则，不论是在oracle数据库还是在mysql数据库，都存在字符集的选择问题。对于数据库来说，字符集又是比较重要的，因为数据库存储的数据大部分都是各种文字，字符集对于数据库的存储、处理性能以及数据迁移都有重要的影响。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-13T12:55:07.206Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mysql字符集调整总结">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;字符集是一套符号和编码的规则，不论是在oracle数据库还是在mysql数据库，都存在字符集的选择问题。对于数据库来说，字符集又是比较重要的，因为数据库存储的数据大部分都是各种文字，字符集对于数据库的存储、处理性能以及数据迁移都有重要的影响。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.43px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.26px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.74px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.48px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.3px;">FTP</a> <a href="/tags/Git/" style="font-size: 10.87px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.74px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.61px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.43px;">Jenkins</a> <a href="/tags/LAMP/" style="font-size: 19.57px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.96px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.52px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.13px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.35px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.3px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.65px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.39px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.74px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 17.83px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.3px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.78px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.3px;">Puppet</a> <a href="/tags/Python/" style="font-size: 14.78px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.52px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.17px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.78px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.91px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 16.09px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.61px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 13.04px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15.22px;">shell</a> <a href="/tags/shell练习/" style="font-size: 18.7px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 13.04px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-MySQL/20.mysql字符集调整总结" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/MySQL/20.mysql字符集调整总结/" class="article-date">
+  	<time datetime="2017-10-13T13:29:40.002Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      mysql字符集调整总结
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;字符集是一套符号和编码的规则，不论是在oracle数据库还是在mysql数据库，都存在字符集的选择问题。对于数据库来说，字符集又是比较重要的，因为数据库存储的数据大部分都是各种文字，字符集对于数据库的存储、处理性能以及数据迁移都有重要的影响。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果在数据库创建阶段没有正确选择字符集，那么可能在后期需要更换字符集，而字符集的更换是代价比较高的操作，也存在一定的风险，所以我们建议在应用开始阶段，就按照需求正确的选择合适的字符集，尽量避免后期不必要的调整。</p>
+<a id="more"></a>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mysql编译安装时，指定字符集的方法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./configure  --with-charset=utf8</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mysql的字符集有4个级别的默认设置：服务器级、数据库级、表级和字段级。分别在不同的地方设置，作用也不相同。</p>
+<h2 id="1、服务器字符集设定，在mysql服务启动的时候确定。"><a href="#1、服务器字符集设定，在mysql服务启动的时候确定。" class="headerlink" title="1、服务器字符集设定，在mysql服务启动的时候确定。"></a>1、服务器字符集设定，在mysql服务启动的时候确定。</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以在my.cnf中设置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[mysql]</div><div class="line"><span class="comment">### 默认字符集为utf8</span></div><div class="line">default-character-set=utf8</div><div class="line">[mysqld]</div><div class="line"><span class="comment">### 默认字符集为utf8</span></div><div class="line">default-character-set=utf8</div><div class="line"><span class="comment">### （设定连接mysql数据库时使用utf8编码，以让mysql数据库为utf8运行）</span></div><div class="line">init_connect=<span class="string">'SET NAMES utf8'</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;或者在启动选项中指定：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysqld --default-character-set=utf8</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果没有特别的指定服务器字符集，默认使用latin1(ISO-8859-1的别名)作为服务器字符集。上面三种设置的方式都只指定了字符集，没有去做校对，我们可以用show variables like ‘char%’;命令查询当前服务器的字符<br>集和校对规则。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">mysql&gt;show variables like <span class="string">'char%'</span>;</div><div class="line">   +--------------------------+----------------------------+</div><div class="line"></div><div class="line">　　| Variable_name | Value |</div><div class="line"></div><div class="line">　　+--------------------------+----------------------------+</div><div class="line"></div><div class="line">　　| character_set_client | utf8 |</div><div class="line"></div><div class="line">　　| character_set_connection | utf8 |</div><div class="line"></div><div class="line">　　| character_set_database | utf8 |</div><div class="line"></div><div class="line">　　| character_set_filesystem | binary |</div><div class="line"></div><div class="line">　　| character_set_results | utf8 |</div><div class="line"></div><div class="line">　　| character_set_server | utf8 |</div><div class="line"></div><div class="line">　　| character_set_system | utf8 |</div><div class="line"></div><div class="line">　　| character_sets_dir | /usr/share/mysql/charsets/ |</div><div class="line"></div><div class="line">　　+--------------------------+----------------------------+</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注：如果增加default-character-set=utf8后，MYSQL启动报错。可以用character_set_server=utf8来取代default-character-set=utf8，就能正常启动了。这是因为MYSQL不同版本识别的问题。</p>
+<h2 id="2、数据库级"><a href="#2、数据库级" class="headerlink" title="2、数据库级"></a>2、数据库级</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;创建数据库时指定字符集</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql&gt;CREATE DATABASE my_db default charset utf8 COLLATE utf8_general_ci;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意后面这句话 “COLLATE utf8_general_ci”,大致意思是在排序时根据utf8编码格式来排序<br>如果指定了数据库编码，那么在这个数据库下创建的所有数据表的默认字符集都会是utf8了</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改MYSQL数据库编码，如果是MYSQL数据库编码不正确，可以在MYSQL执行如下命令:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ALTER DATABASE my_db DEFAULT CHARACTER SET utf8;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以上命令就是将MYSQL的my_db数据库的编码设为utf8</p>
+<h2 id="3、表级"><a href="#3、表级" class="headerlink" title="3、表级"></a>3、表级</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;创建表时指定字符集</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql&gt;create table my_table (name varchar(20) not null default <span class="string">''</span>)<span class="built_in">type</span>=myisam default charset utf8;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这句话就是创建一个表,指定默认字符集为utf8</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改MYSQL表的编码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ALTER TABLE my_table DEFAULT CHARACTER SET utf8;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以上命令就是将一个表my_table的编码改为utf8</p>
+<h2 id="4、字段级"><a href="#4、字段级" class="headerlink" title="4、字段级"></a>4、字段级</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">alter table <span class="built_in">test</span> add column address varchar(110) after stu_id;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在stu_id后增加一个字段address</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">alter table <span class="built_in">test</span> add id int unsigned not Null auto_increment primary key;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改字段的编码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ALTER TABLE `<span class="built_in">test</span>` CHANGE `name` `name` VARCHAR( 45 ) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以上命令就是将MYSQL数据库test表中name的字段编码改为utf8</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在命令行下插入汉字时如下代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">set</span> names utf8;有时候这一句很关键！</div><div class="line">insert into charset values(<span class="string">'王达'</span>);</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意：alter修改的方法不能更新已有记录的字符集，只是对新创建的表和记录生效。对已有记录字符集的调整，需要先将数据导出，经过适当调整后重新导入才可以完全修改编码。</p>
+<h2 id="导出导入的字符调整方法"><a href="#导出导入的字符调整方法" class="headerlink" title="导出导入的字符调整方法"></a>导出导入的字符调整方法</h2><h3 id="导出表结构"><a href="#导出表结构" class="headerlink" title="导出表结构"></a>导出表结构</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysqldump -uroot -pmysql --default-character-set=latin1 -d  my_db&gt; createtab.sql</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;手工修改createtab.sql表结构定义中的字符集为新的字符集</p>
+<h4 id="导出所有记录"><a href="#导出所有记录" class="headerlink" title="导出所有记录"></a>导出所有记录</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysqldump -uroot -pmysql --quick --no-create-info --extended-insert --default-character-set=latin1 --host=localhost  my_db&gt; data.sql</div></pre></td></tr></table></figure>
+<h4 id="打开data-sql，将set-names-latin1修改成set-names-utf8"><a href="#打开data-sql，将set-names-latin1修改成set-names-utf8" class="headerlink" title="打开data.sql，将set names latin1修改成set names utf8"></a>打开data.sql，将set names latin1修改成set names utf8</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">:%s/latin1/utf8/g</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;全文替换</p>
+<h4 id="使用新的字符集创建新的数据库"><a href="#使用新的字符集创建新的数据库" class="headerlink" title="使用新的字符集创建新的数据库"></a>使用新的字符集创建新的数据库</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">create database  mydata  default charset utf8;</div></pre></td></tr></table></figure>
+<h4 id="创建表，执行createtab-sql"><a href="#创建表，执行createtab-sql" class="headerlink" title="创建表，执行createtab.sql"></a>创建表，执行createtab.sql</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql -uroot -pmysql mydata&lt;creattab.sql</div></pre></td></tr></table></figure>
+<h4 id="导入数据"><a href="#导入数据" class="headerlink" title="导入数据"></a>导入数据</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql -uroot -pmysql mydata&lt;data.sql</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意一点就是目标字符集要大于等于源字符集，否则会丢失一部分不支持的汉字数据。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;附：旧数据升级办法</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以原来的字符集为latin1为例，升级成为utf8的字符集。原来的表: old_table (default charset=latin1)，新表：new_table(default charset=utf8)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第一步：导出旧数据</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysqldump --default-character-set=latin1 -hlocalhost -uroot -B my_db --tables old_table &gt; old.sql</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第二步：转换编码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">iconv -t utf8  -f latin1 -c old.sql &gt; new.sql</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在这里，假定原来的数据默认是latin1编码。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第三步：导入</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改old.sql，增加一条sql语句： “SET NAMES utf8;”，保存。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql -hlocalhost -uroot my_db &lt; new.sql</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;大功告成！</p>
+<h2 id="Mysql-collate规则："><a href="#Mysql-collate规则：" class="headerlink" title="Mysql collate规则："></a>Mysql collate规则：</h2><ul>
+<li>*_bin: 表示的是binary case sensitive collation，也就是说是区分大小写的</li>
+<li>*_cs: case sensitive collation，区分大小写</li>
+<li>*_ci: case insensitive collation，不区分大小写</li>
+</ul>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/13/MySQL/31. mysql5.1的RBR和SBR的优缺点/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          mysql5.1的RBR和SBR的优缺点
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/13/MySQL/13. mysql常用操作/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">mysql常用操作</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="MySQL/20.mysql字符集调整总结" data-title="mysql字符集调整总结" data-url="https://hcldirgit.github.io/2017/10/13/MySQL/20.mysql字符集调整总结/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="mysql字符集调整总结">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

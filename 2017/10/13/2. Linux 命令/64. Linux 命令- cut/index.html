@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Linux 命令- cut | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;cut命令用来显示行中的指定部分，删除文件中指定字段。cut经常用来显示文件的内容，类似于下的type命令。">
+<meta name="keywords" content="Linux命令">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 命令- cut">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/10/13/2. Linux 命令/64. Linux 命令- cut/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;cut命令用来显示行中的指定部分，删除文件中指定字段。cut经常用来显示文件的内容，类似于下的type命令。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-13T09:49:40.958Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux 命令- cut">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;cut命令用来显示行中的指定部分，删除文件中指定字段。cut经常用来显示文件的内容，类似于下的type命令。">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.43px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.26px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.74px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.48px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.3px;">FTP</a> <a href="/tags/Git/" style="font-size: 10.87px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.74px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.61px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.43px;">Jenkins</a> <a href="/tags/LAMP/" style="font-size: 19.57px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.96px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.52px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.13px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.35px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.3px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.65px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.39px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.74px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 17.83px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.3px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.78px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.3px;">Puppet</a> <a href="/tags/Python/" style="font-size: 14.78px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.52px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.17px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.78px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.91px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 16.09px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.61px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 13.04px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15.22px;">shell</a> <a href="/tags/shell练习/" style="font-size: 18.7px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 13.04px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-2. Linux 命令/64. Linux 命令- cut" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/2. Linux 命令/64. Linux 命令- cut/" class="article-date">
+  	<time datetime="2017-10-13T13:29:41.611Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Linux 命令- cut
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux命令/">Linux命令</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;cut命令用来显示行中的指定部分，删除文件中指定字段。cut经常用来显示文件的内容，类似于下的type命令。</p>
+<a id="more"></a>
+<h2 id="1-命令格式"><a href="#1-命令格式" class="headerlink" title="1. 命令格式"></a>1. 命令格式</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cut [参数] [file]</div></pre></td></tr></table></figure>
+<h2 id="2-命令功能"><a href="#2-命令功能" class="headerlink" title="2. 命令功能"></a>2. 命令功能</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;cut 命令从文件的每一行剪切字节、字符和字段并将这些字节、字符和字段写至标准输出。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果不指定 File 参数，cut 命令将读取标准输入。必须指定 -b、-c 或 -f 标志之一。</p>
+<h2 id="3-命令参数"><a href="#3-命令参数" class="headerlink" title="3. 命令参数"></a>3. 命令参数</h2><ul>
+<li>-b：仅显示行中指定直接范围的内容；</li>
+<li>-c：仅显示行中指定范围的字符；</li>
+<li>-d：指定字段的分隔符，默认的字段分隔符为“TAB”；</li>
+<li>-f：显示指定字段的内容；</li>
+<li>-n：与“-b”选项连用，不分割多字节字符；</li>
+<li>–complement：补足被选择的字节、字符或字段； </li>
+<li>–out-delimiter=&lt;字段分隔符&gt;：指定输出内容是的字段分割符；</li>
+<li>–help：显示指令的帮助信息</li>
+<li>–version：显示指令的版本信息。</li>
+</ul>
+<h2 id="4-使用实例"><a href="#4-使用实例" class="headerlink" title="4. 使用实例"></a>4. 使用实例</h2><h3 id="实例1：截取文件其中一个字符"><a href="#实例1：截取文件其中一个字符" class="headerlink" title="实例1：截取文件其中一个字符"></a>实例1：截取文件其中一个字符</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cut -c2 /etc/passwd</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># cut -c2 /etc/passwd</span></div><div class="line">o</div><div class="line">i</div><div class="line">a</div><div class="line">d</div><div class="line">p</div><div class="line">y</div><div class="line">h</div><div class="line">a</div><div class="line">a</div><div class="line">p</div><div class="line">a</div><div class="line">t</div><div class="line">o</div><div class="line">y</div><div class="line">y</div><div class="line">b</div><div class="line">o</div><div class="line">s</div><div class="line">o</div><div class="line">s</div><div class="line">h</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;提取第2个字符</p>
+<h3 id="实例2：截取文件多个字符"><a href="#实例2：截取文件多个字符" class="headerlink" title="实例2：截取文件多个字符"></a>实例2：截取文件多个字符</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cut -c2-5,10 /etc/passwd</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># cut -c2-5,10 /etc/passwd</span></div><div class="line">oot:0</div><div class="line"><span class="keyword">in</span>:x:</div><div class="line">aemo2</div><div class="line">dm:x:</div><div class="line">p:x:l</div><div class="line">ync:0</div><div class="line">hutdx</div><div class="line">alt:0</div><div class="line">ail:1</div><div class="line">perax</div><div class="line">ames2</div><div class="line">tp:x5</div><div class="line">obod9</div><div class="line">ysteu</div><div class="line">ystee</div><div class="line">bus::</div><div class="line">olki:</div><div class="line">ss:x5</div><div class="line">ostf:</div><div class="line">shd::</div><div class="line">hron9</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;提取第2、第3、第4、第5和第10个字符</p>
+<h3 id="实例3：提取前4个字符"><a href="#实例3：提取前4个字符" class="headerlink" title="实例3：提取前4个字符"></a>实例3：提取前4个字符</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cut -c-4 /etc/passwd</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># cut -c-4 /etc/passwd</span></div><div class="line">root</div><div class="line">bin:</div><div class="line">daem</div><div class="line">adm:</div><div class="line">lp:x</div><div class="line">sync</div><div class="line">shut</div><div class="line">halt</div><div class="line">mail</div><div class="line">oper</div><div class="line">game</div><div class="line">ftp:</div><div class="line">nobo</div><div class="line">syst</div><div class="line">syst</div><div class="line">dbus</div><div class="line">polk</div><div class="line">tss:</div><div class="line">post</div><div class="line">sshd</div><div class="line">chro</div></pre></td></tr></table></figure>
+<h3 id="实例4：打印从第10个字符开始到结尾"><a href="#实例4：打印从第10个字符开始到结尾" class="headerlink" title="实例4：打印从第10个字符开始到结尾"></a>实例4：打印从第10个字符开始到结尾</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cut -c10- /etc/passwd</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># cut -c5- /etc/passwd</span></div><div class="line">:x:0:0:root:/root:/bin/bash</div><div class="line">x:1:1:bin:/bin:/sbin/nologin</div><div class="line">on:x:2:2:daemon:/sbin:/sbin/nologin</div><div class="line">x:3:4:adm:/var/adm:/sbin/nologin</div><div class="line">:4:7:lp:/var/spool/lpd:/sbin/nologin</div><div class="line">:x:5:0:sync:/sbin:/bin/sync</div><div class="line">down:x:6:0:shutdown:/sbin:/sbin/shutdown</div><div class="line">:x:7:0:halt:/sbin:/sbin/halt</div><div class="line">:x:8:12:mail:/var/spool/mail:/sbin/nologin</div><div class="line">ator:x:11:0:operator:/root:/sbin/nologin</div><div class="line">s:x:12:100:games:/usr/games:/sbin/nologin</div><div class="line">x:14:50:FTP User:/var/ftp:/sbin/nologin</div><div class="line">dy:x:99:99:Nobody:/:/sbin/nologin</div><div class="line">emd-bus-proxy:x:999:997:systemd Bus Proxy:/:/sbin/nologin</div><div class="line">emd-network:x:192:192:systemd Network Management:/:/sbin/nologin</div><div class="line">:x:81:81:System message bus:/:/sbin/nologin</div><div class="line">itd:x:998:996:User <span class="keyword">for</span> polkitd:/:/sbin/nologin</div><div class="line">x:59:59:Account used by the trousers package to sandbox the tcsd daemon:/dev/null:/sbin/nologin</div><div class="line">fix:x:89:89::/var/spool/postfix:/sbin/nologin</div><div class="line">:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin</div><div class="line">ny:x:997:995::/var/lib/chrony:/sbin/nologin</div></pre></td></tr></table></figure>
+<h3 id="实例5：用-f-提取指定字段，-d-指定分隔符"><a href="#实例5：用-f-提取指定字段，-d-指定分隔符" class="headerlink" title="实例5：用 -f 提取指定字段，-d 指定分隔符"></a>实例5：用 -f 提取指定字段，-d 指定分隔符</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cut -f1 -d<span class="string">" "</span> test.txt</div><div class="line">cut -f2,3 -d<span class="string">" "</span> test.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># cat test.txt</span></div><div class="line">No Name Mark Percent</div><div class="line">01 tom 69 91</div><div class="line">02 jack 71 87</div><div class="line">03 alex 68 98</div><div class="line">[root@localhost ~]<span class="comment"># cut -f1 -d" " test.txt</span></div><div class="line">No</div><div class="line">01</div><div class="line">02</div><div class="line">03</div><div class="line">[root@localhost ~]<span class="comment"># cut -f2,3 -d" " test.txt</span></div><div class="line">Name Mark</div><div class="line">tom 69</div><div class="line">jack 71</div><div class="line">alex 68</div></pre></td></tr></table></figure>
+<h3 id="实例6：使用-–complement-提取指定字段之外的列"><a href="#实例6：使用-–complement-提取指定字段之外的列" class="headerlink" title="实例6：使用 –complement 提取指定字段之外的列"></a>实例6：使用 –complement 提取指定字段之外的列</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cut -f2 -d<span class="string">" "</span> --complement test.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># cat test.txt                 </span></div><div class="line">No Name Mark Percent</div><div class="line">01 tom 69 91</div><div class="line">02 jack 71 87</div><div class="line">03 alex 68 98</div><div class="line">[root@localhost ~]<span class="comment"># cut -f2 -d" " --complement test.txt</span></div><div class="line">No Mark Percent</div><div class="line">01 69 91</div><div class="line">02 71 87</div><div class="line">03 68 98</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/13/2. Linux 命令/17. Linux 命令- whereis/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          Linux 命令- whereis
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/13/2. Linux 命令/5. Linux 命令-rmdir/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Linux 命令- rmdir</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="2. Linux 命令/64. Linux 命令- cut" data-title="Linux 命令- cut" data-url="https://hcldirgit.github.io/2017/10/13/2. Linux 命令/64. Linux 命令- cut/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="Linux 命令- cut">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

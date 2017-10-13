@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Linux 命令- grep | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Linux系统中grep命令是一种强大的文本搜索工具，它能使用正则表达式搜索文本，并把匹 配的行打印出来。grep全称是Global Regular Expression Print，表示全局正则表达式版本，它的使用权限是所有用户。">
+<meta name="keywords" content="Linux命令">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 命令- grep">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/10/13/2. Linux 命令/41. Linux 命令- grep/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Linux系统中grep命令是一种强大的文本搜索工具，它能使用正则表达式搜索文本，并把匹 配的行打印出来。grep全称是Global Regular Expression Print，表示全局正则表达式版本，它的使用权限是所有用户。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-13T09:47:06.221Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux 命令- grep">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Linux系统中grep命令是一种强大的文本搜索工具，它能使用正则表达式搜索文本，并把匹 配的行打印出来。grep全称是Global Regular Expression Print，表示全局正则表达式版本，它的使用权限是所有用户。">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.43px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.26px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.74px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.48px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.3px;">FTP</a> <a href="/tags/Git/" style="font-size: 10.87px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.74px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.61px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.43px;">Jenkins</a> <a href="/tags/LAMP/" style="font-size: 19.57px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.96px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.52px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.13px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.35px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.3px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.65px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.39px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.74px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 17.83px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.3px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.78px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.3px;">Puppet</a> <a href="/tags/Python/" style="font-size: 14.78px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.52px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.17px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.78px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.91px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 16.09px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.61px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 13.04px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15.22px;">shell</a> <a href="/tags/shell练习/" style="font-size: 18.7px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 13.04px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-2. Linux 命令/41. Linux 命令- grep" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/2. Linux 命令/41. Linux 命令- grep/" class="article-date">
+  	<time datetime="2017-10-13T13:29:41.288Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Linux 命令- grep
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux命令/">Linux命令</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;Linux系统中grep命令是一种强大的文本搜索工具，它能使用正则表达式搜索文本，并把匹 配的行打印出来。grep全称是Global Regular Expression Print，表示全局正则表达式版本，它的使用权限是所有用户。</p>
+<a id="more"></a>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;grep的工作方式是这样的，它在一个或多个文件中搜索字符串模板。如果模板包括空格，则必须被引用，模板后的所有字符串被看作文件名。搜索的结果被送到标准输出，不影响原文件内容。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;grep可用于shell脚本，因为grep通过返回一个状态值来说明搜索的状态，如果模板搜索成功，则返回0，如果搜索不成功，则返回1，如果搜索的文件不存在，则返回2。我们利用这些返回值就可进行一些自动化的文本处理工作。</p>
+<h2 id="1．命令格式"><a href="#1．命令格式" class="headerlink" title="1．命令格式"></a>1．命令格式</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">grep [option] pattern file</div></pre></td></tr></table></figure>
+<h2 id="2．命令功能"><a href="#2．命令功能" class="headerlink" title="2．命令功能"></a>2．命令功能</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;用于过滤/搜索的特定字符。可使用正则表达式能多种命令配合使用，使用上十分灵活。</p>
+<h2 id="3．命令参数"><a href="#3．命令参数" class="headerlink" title="3．命令参数"></a>3．命令参数</h2><ul>
+<li>-a   –text   #不要忽略二进制的数据。</li>
+<li>-A&lt;显示行数&gt;   –after-context=&lt;显示行数&gt;   #除了显示符合范本样式的那一列之外，并显示该行之后的内容。</li>
+<li>-b   –byte-offset   #在显示符合样式的那一行之前，标示出该行第一个字符的编号。</li>
+<li>-B&lt;显示行数&gt;   –before-context=&lt;显示行数&gt;   #除了显示符合样式的那一行之外，并显示该行之前的内容。</li>
+<li>-c    –count   #计算符合样式的列数。</li>
+<li>-C&lt;显示行数&gt;    –context=&lt;显示行数&gt;或-&lt;显示行数&gt;   #除了显示符合样式的那一行之外，并显示该行之前后的内容。</li>
+<li>-d &lt;动作&gt;      –directories=&lt;动作&gt;   #当指定要查找的是目录而非文件时，必须使用这项参数，否则grep指令将回报信息并停止动作。</li>
+<li>-e&lt;范本样式&gt;  –regexp=&lt;范本样式&gt;   #指定字符串做为查找文件内容的样式。 </li>
+<li>-E      –extended-regexp   #将样式为延伸的普通表示法来使用。   </li>
+<li>-f&lt;规则文件&gt;  –file=&lt;规则文件&gt;   #指定规则文件，其内容含有一个或多个规则样式，让grep查找符合规则条件的文件内容，格式为每行一个规则样式。   </li>
+<li>-F   –fixed-regexp   #将样式视为固定字符串的列表。</li>
+<li>-G   –basic-regexp   #将样式视为普通的表示法来使用。</li>
+<li>-h   –no-filename   #在显示符合样式的那一行之前，不标示该行所属的文件名称。</li>
+<li>-H   –with-filename   #在显示符合样式的那一行之前，表示该行所属的文件名称。</li>
+<li>-i    –ignore-case   #忽略字符大小写的差别。</li>
+<li>-l    –file-with-matches   #列出文件内容符合指定的样式的文件名称。</li>
+<li>-L   –files-without-match   #列出文件内容不符合指定的样式的文件名称。</li>
+<li>-n   –line-number   #在显示符合样式的那一行之前，标示出该行的列数编号。</li>
+<li>-q   –quiet或–silent   #不显示任何信息。</li>
+<li>-r   –recursive   #此参数的效果和指定“-d recurse”参数相同。</li>
+<li>-s   –no-messages   #不显示错误信息。</li>
+<li>-v   –revert-match   #显示不包含匹配文本的所有行。</li>
+<li>-V   –version   #显示版本信息。</li>
+<li>-w   –word-regexp   #只显示全字符合的列。</li>
+<li>-x    –line-regexp   #只显示全列符合的列。</li>
+<li>-y   #此参数的效果和指定“-i”参数相同。</li>
+</ul>
+<h2 id="4．规则表达式"><a href="#4．规则表达式" class="headerlink" title="4．规则表达式"></a>4．规则表达式</h2><h3 id="grep的规则表达式"><a href="#grep的规则表达式" class="headerlink" title="grep的规则表达式:"></a>grep的规则表达式:</h3><ul>
+<li><p>^  #锚定行的开始 如：’^grep’匹配所有以grep开头的行。 </p>
+</li>
+<li><p>$  #锚定行的结束 如：’grep$’匹配所有以grep结尾的行。 </p>
+</li>
+<li><p>.  #匹配一个非换行符的字符 如：’gr.p’匹配gr后接一个任意字符，然后是p。</p>
+</li>
+<li><p>*  #匹配零个或多个先前字符 如：’*grep’匹配所有一个或多个空格后紧跟grep的行。</p>
+</li>
+<li><p>.*   #一起用代表任意字符。</p>
+</li>
+<li><p>[]   #匹配一个指定范围内的字符，如’[Gg]rep’匹配Grep和grep。</p>
+</li>
+<li><p>[^]  #匹配一个不在指定范围内的字符，如：’[^A-FH-Z]rep’匹配不包含A-R和T-Z的一个字母开头，紧跟rep的行。</p>
+</li>
+<li><p>\(..\)  #标记匹配字符，如’\(love\)’，love被标记为1。</p>
+</li>
+<li><p>\&lt;      #锚定单词的开始，如:’\&lt;grep’匹配包含以grep开头的单词的行。</p>
+</li>
+<li><p>\&gt;      #锚定单词的结束，如’grep\&gt;’匹配包含以grep结尾的单词的行。</p>
+</li>
+<li><p>x\{m\}  #重复字符x，m次，如：’0\{5\}’匹配包含5个o的行。</p>
+</li>
+<li><p>x\{m,\}  #重复字符x,至少m次，如：’o\{5,\}’匹配至少有5个o的行。</p>
+</li>
+<li><p>x\{m,n\}  #重复字符x，至少m次，不多于n次，如：’o\{5,10\}’匹配5–10个o的行。</p>
+</li>
+<li><p>\w    #匹配文字和数字字符，也就是[A-Za-z0-9]，如：’G\w*p’匹配以G后跟零个或多个文字或数字字符，然后是p。</p>
+</li>
+<li><p>\W    #\w的反置形式，匹配一个或多个非单词字符，如点号句号等。</p>
+</li>
+<li><p>\b    #单词锁定符，如: ‘\bgrep\b’只匹配grep。</p>
+</li>
+</ul>
+<h3 id="POSIX字符"><a href="#POSIX字符" class="headerlink" title="POSIX字符:"></a>POSIX字符:</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;为了在不同国家的字符编码中保持一至，POSIX(The Portable Operating System Interface)增加了特殊的字符类，如[:alnum:]是[A-Za-z0-9]的另一个写法。要把它们放到[]号内才能成为正则表达式，如[A- Za-z0-9]或[[:alnum:]]。在linux下的grep除fgrep外，都支持POSIX的字符类。</p>
+<ul>
+<li><p>[:alnum:]    #文字数字字符</p>
+</li>
+<li><p>[:alpha:]    #文字字符</p>
+</li>
+<li><p>[:digit:]    #数字字符</p>
+</li>
+<li><p>[:graph:]    #非空字符（非空格、控制字符）</p>
+</li>
+<li><p>[:lower:]    #小写字符</p>
+</li>
+<li><p>[:cntrl:]    #控制字符</p>
+</li>
+<li><p>[:print:]    #非空字符（包括空格）</p>
+</li>
+<li><p>[:punct:]    #标点符号 </p>
+</li>
+<li><p>[:space:]    #所有空白字符（新行，空格，制表符）</p>
+</li>
+<li><p>[:upper:]    #大写字符 </p>
+</li>
+<li><p>[:xdigit:]   #十六进制数字（0-9，a-f，A-F）</p>
+</li>
+</ul>
+<h2 id="5．使用实例"><a href="#5．使用实例" class="headerlink" title="5．使用实例"></a>5．使用实例</h2><h3 id="实例1：查找指定进程"><a href="#实例1：查找指定进程" class="headerlink" title="实例1：查找指定进程"></a>实例1：查找指定进程</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ps -ef|grep svn</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># ps -ef|grep svn</span></div><div class="line">root 4943   1      0  Dec05 ?   00:00:00 svnserve -d -r /opt/svndata/grape/</div><div class="line">root 16867 16838  0 19:53 pts/0    00:00:00 grep svn</div><div class="line">[root@localhost ~]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;第一条记录是查找出的进程；第二条结果是grep进程本身，并非真正要找的进程。</p>
+<h3 id="实例2：查找指定进程个数"><a href="#实例2：查找指定进程个数" class="headerlink" title="实例2：查找指定进程个数"></a>实例2：查找指定进程个数</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ps -ef|grep svn -c</div><div class="line">ps -ef|grep -c svn</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># ps -ef|grep svn -c</span></div><div class="line">2</div><div class="line">[root@localhost ~]<span class="comment"># ps -ef|grep -c svn </span></div><div class="line">2</div><div class="line">[root@localhost ~]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<h3 id="实例3：从文件中读取关键词进行搜索"><a href="#实例3：从文件中读取关键词进行搜索" class="headerlink" title="实例3：从文件中读取关键词进行搜索"></a>实例3：从文件中读取关键词进行搜索</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat test.txt | grep -f test2.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># cat test.txt </span></div><div class="line">hnlinux</div><div class="line">peida.cnblogs.com</div><div class="line">ubuntu</div><div class="line">ubuntu linux</div><div class="line">redhat</div><div class="line">Redhat</div><div class="line">linuxmint</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># cat test2.txt </span></div><div class="line">linux</div><div class="line">Redhat</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># cat test.txt | grep -f test2.txt</span></div><div class="line">hnlinux</div><div class="line">ubuntu linux</div><div class="line">Redhat</div><div class="line">linuxmint</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出test.txt文件中含有从test2.txt文件中读取出的关键词的内容行</p>
+<h3 id="实例4：从文件中读取关键词进行搜索-且显示行号"><a href="#实例4：从文件中读取关键词进行搜索-且显示行号" class="headerlink" title="实例4：从文件中读取关键词进行搜索 且显示行号"></a>实例4：从文件中读取关键词进行搜索 且显示行号</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat test.txt | grep -nf test2.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># cat test.txt </span></div><div class="line">hnlinux</div><div class="line">peida.cnblogs.com</div><div class="line">ubuntu</div><div class="line">ubuntu linux</div><div class="line">redhat</div><div class="line">Redhat</div><div class="line">linuxmint</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># cat test2.txt </span></div><div class="line">linux</div><div class="line">Redhat</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># cat test.txt | grep -nf test2.txt</span></div><div class="line">1:hnlinux</div><div class="line">4:ubuntu linux</div><div class="line">6:Redhat</div><div class="line">7:linuxmint</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出test.txt文件中含有从test2.txt文件中读取出的关键词的内容行，并显示每一行的行号</p>
+<h3 id="实例5：从文件中查找关键词"><a href="#实例5：从文件中查找关键词" class="headerlink" title="实例5：从文件中查找关键词"></a>实例5：从文件中查找关键词</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">grep <span class="string">'linux'</span> test.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># grep 'linux' test.txt </span></div><div class="line">hnlinux</div><div class="line">ubuntu linux</div><div class="line">linuxmint</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># grep -n 'linux' test.txt </span></div><div class="line">1:hnlinux</div><div class="line">4:ubuntu linux</div><div class="line">7:linuxmint</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<h3 id="实例6：从多个文件中查找关键词"><a href="#实例6：从多个文件中查找关键词" class="headerlink" title="实例6：从多个文件中查找关键词"></a>实例6：从多个文件中查找关键词</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">grep <span class="string">'linux'</span> test.txt test2.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># grep -n 'linux' test.txt test2.txt </span></div><div class="line">test.txt:1:hnlinux</div><div class="line">test.txt:4:ubuntu linux</div><div class="line">test.txt:7:linuxmint</div><div class="line">test2.txt:1:linux</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># grep 'linux' test.txt test2.txt </span></div><div class="line">test.txt:hnlinux</div><div class="line">test.txt:ubuntu linux</div><div class="line">test.txt:linuxmint</div><div class="line">test2.txt:linux</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;多文件时，输出查询到的信息内容行时，会把文件的命名在行最前面输出并且加上”:”作为标示符</p>
+<h3 id="实例7：grep不显示本身进程"><a href="#实例7：grep不显示本身进程" class="headerlink" title="实例7：grep不显示本身进程"></a>实例7：grep不显示本身进程</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ps aux|grep \[s]sh</div><div class="line">ps aux | grep ssh | grep -v <span class="string">"grep"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># ps aux|grep ssh</span></div><div class="line">root   2720  0.0  0.0  62656  1212 ?      Ss   Nov02   0:00 /usr/sbin/sshd</div><div class="line">root  16834  0.0  0.0  88088  3288 ?      Ss   19:53   0:00 sshd: root@pts/0 </div><div class="line">root  16901  0.0  0.0  61180   764 pts/0  S+   20:31   0:00 grep ssh</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># ps aux|grep \[s]sh]</span></div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># ps aux|grep \[s]sh</span></div><div class="line">root   2720  0.0  0.0  62656  1212 ?      Ss   Nov02   0:00 /usr/sbin/sshd</div><div class="line">root  16834  0.0  0.0  88088  3288 ?      Ss   19:53   0:00 sshd: root@pts/0 </div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># ps aux | grep ssh | grep -v "grep"</span></div><div class="line">root   2720  0.0  0.0  62656  1212 ?      Ss   Nov02   0:00 /usr/sbin/sshd</div><div class="line">root  16834  0.0  0.0  88088  3288 ?      Ss   19:53   0:00 sshd: root@pts/0</div></pre></td></tr></table></figure>
+<h3 id="实例8：找出已u开头的行内容"><a href="#实例8：找出已u开头的行内容" class="headerlink" title="实例8：找出已u开头的行内容"></a>实例8：找出已u开头的行内容</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat test.txt |grep ^u</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># cat test.txt |grep ^u</span></div><div class="line">ubuntu</div><div class="line">ubuntu linux</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<h3 id="实例9：输出非u开头的行内容"><a href="#实例9：输出非u开头的行内容" class="headerlink" title="实例9：输出非u开头的行内容"></a>实例9：输出非u开头的行内容</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat test.txt |grep ^[^u]</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># cat test.txt |grep ^[^u]</span></div><div class="line">hnlinux</div><div class="line">peida.cnblogs.com</div><div class="line">redhat</div><div class="line">Redhat</div><div class="line">linuxmint</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<h3 id="实例10：输出以hat结尾的行内容"><a href="#实例10：输出以hat结尾的行内容" class="headerlink" title="实例10：输出以hat结尾的行内容"></a>实例10：输出以hat结尾的行内容</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat test.txt |grep hat$</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># cat test.txt |grep hat$</span></div><div class="line">redhat</div><div class="line">Redhat</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<h3 id="实例11："><a href="#实例11：" class="headerlink" title="实例11："></a>实例11：</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># ifconfig eth0|grep "[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;"</span></div><div class="line">          inet addr:192.168.120.204  Bcast:192.168.120.255  Mask:255.255.255.0</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># ifconfig eth0|grep -E "([0-9]&#123;1,3&#125;\.)&#123;3&#125;[0-9]"</span></div><div class="line">          inet addr:192.168.120.204  Bcast:192.168.120.255  Mask:255.255.255.0</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<h3 id="实例12：显示包含ed或者at字符的内容行"><a href="#实例12：显示包含ed或者at字符的内容行" class="headerlink" title="实例12：显示包含ed或者at字符的内容行"></a>实例12：显示包含ed或者at字符的内容行</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat test.txt |grep -E <span class="string">"ed|at"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># cat test.txt |grep -E "peida|com"</span></div><div class="line">peida.cnblogs.com</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># cat test.txt |grep -E "ed|at"</span></div><div class="line">redhat</div><div class="line">Redhat</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<h3 id="实例13：显示当前目录下面以-txt-结尾的文件中的所有包含每个字符串至少有7个连续小写字符的字符串的行"><a href="#实例13：显示当前目录下面以-txt-结尾的文件中的所有包含每个字符串至少有7个连续小写字符的字符串的行" class="headerlink" title="实例13：显示当前目录下面以.txt 结尾的文件中的所有包含每个字符串至少有7个连续小写字符的字符串的行"></a>实例13：显示当前目录下面以.txt 结尾的文件中的所有包含每个字符串至少有7个连续小写字符的字符串的行</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">grep <span class="string">'[a-z]\&#123;7\&#125;'</span> *.txt</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># grep '[a-z]\&#123;7\&#125;' *.txt</span></div><div class="line">test.txt:hnlinux</div><div class="line">test.txt:peida.cnblogs.com</div><div class="line">test.txt:linuxmint</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment">#</span></div></pre></td></tr></table></figure>
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/13/2. Linux 命令/57. Linux 命令- traceroute/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          Linux 命令- traceroute
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/13/2. Linux 命令/72. Linux 命令-vim/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Linux 命令- vim</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="2. Linux 命令/41. Linux 命令- grep" data-title="Linux 命令- grep" data-url="https://hcldirgit.github.io/2017/10/13/2. Linux 命令/41. Linux 命令- grep/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="Linux 命令- grep">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

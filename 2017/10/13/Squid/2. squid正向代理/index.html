@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>squid正向代理 | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;centos 系统自带 squid 包： 1[root@192 ~]# yum install -y squid">
+<meta name="keywords" content="Squid">
+<meta property="og:type" content="article">
+<meta property="og:title" content="squid正向代理">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/10/13/Squid/2. squid正向代理/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;centos 系统自带 squid 包： 1[root@192 ~]# yum install -y squid">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/squid%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86/01.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/squid%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86/02.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/squid%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86/03.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/squid%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86/04.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/squid%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86/05.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/squid%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86/06.png?raw=true">
+<meta property="og:updated_time" content="2017-10-13T13:22:44.995Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="squid正向代理">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;centos 系统自带 squid 包： 1[root@192 ~]# yum install -y squid">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/squid%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86/01.png?raw=true">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.43px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.26px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.74px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.48px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.3px;">FTP</a> <a href="/tags/Git/" style="font-size: 10.87px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.74px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.61px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.43px;">Jenkins</a> <a href="/tags/LAMP/" style="font-size: 19.57px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.96px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.52px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.13px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.35px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.3px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.65px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.39px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.74px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 17.83px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.3px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.78px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.3px;">Puppet</a> <a href="/tags/Python/" style="font-size: 14.78px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.52px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.17px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.78px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.91px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 16.09px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.61px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 13.04px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15.22px;">shell</a> <a href="/tags/shell练习/" style="font-size: 18.7px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 13.04px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Squid/2. squid正向代理" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Squid/2. squid正向代理/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.096Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      squid正向代理
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Squid/">Squid</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;centos 系统自带 squid 包：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># yum install -y squid</span></div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当然也可以源码包编译安装，<a href="http://www.squid-cache.org/" target="_blank" rel="external">Squid官方网站</a>，以下为 squid 编译参数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">./configure --prefix=/usr/<span class="built_in">local</span>/squid \</div><div class="line">--<span class="built_in">disable</span>-dependency-tracking \</div><div class="line">--<span class="built_in">enable</span>-dlmalloc \</div><div class="line">--<span class="built_in">enable</span>-gnuregex \</div><div class="line">--<span class="built_in">disable</span>-carp \</div><div class="line">--<span class="built_in">enable</span>-async-io=240 \</div><div class="line">--with-pthreads \</div><div class="line">--<span class="built_in">enable</span>-storeio=ufs,aufs,diskd,null \</div><div class="line">--<span class="built_in">disable</span>-wccp \</div><div class="line">--<span class="built_in">disable</span>-wccpv2 \</div><div class="line">--<span class="built_in">enable</span>-kill-parent-hack \</div><div class="line">--<span class="built_in">enable</span>-cachemgr-hostname=localhost \</div><div class="line">--<span class="built_in">enable</span>-default-err-language=Simplify_Chinese \</div><div class="line">--with-build-environment=POSIX_V6_ILP32_OFFBIG \</div><div class="line">--with-maxfd=65535 \</div><div class="line">--with-aio \</div><div class="line">--<span class="built_in">disable</span>-poll \</div><div class="line">--<span class="built_in">enable</span>-epoll \</div><div class="line">--<span class="built_in">enable</span>-linux-netfilter \</div><div class="line">--<span class="built_in">enable</span>-large-cache-files \</div><div class="line">--<span class="built_in">disable</span>-ident-lookups \</div><div class="line">--<span class="built_in">enable</span>-default-hostsfile=/etc/hosts \</div><div class="line">--with-dl \</div><div class="line">--with-large-files \</div><div class="line">--<span class="built_in">enable</span>-removal-policies=heap,lru \</div><div class="line">--<span class="built_in">enable</span>-delay-pools \</div><div class="line">--<span class="built_in">enable</span>-snmp \</div><div class="line">--<span class="built_in">disable</span>-internal-dns</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用 centos 自带的 squid 已经满足需求，所以没必要编译安装。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安装完成后，可以查看 squid 版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># squid -v</span></div><div class="line">Squid Cache: Version 3.1.23</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;同时还可以看到 squid 的编译参数。下面配置 squid，来实现正向代理：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># rm -f /etc/squid/squid.conf</span></div><div class="line">[root@192 ~]<span class="comment"># vim /etc/squid/squid.conf</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;不实用默认的配置文件，删除以后重新写入以下配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">http_port 3128</div><div class="line">acl manager proto cache_object</div><div class="line">acl localhost src 127.0.0.1/32 ::1</div><div class="line">acl to_localhost dst 127.0.0.0/8 0.0.0.0/32 ::1</div><div class="line">acl localnet src 10.0.0.0/8     <span class="comment"># RFC1918 possible internal network</span></div><div class="line">acl localnet src 172.16.0.0/12  <span class="comment"># RFC1918 possible internal network</span></div><div class="line">acl localnet src 192.168.0.0/16 <span class="comment"># RFC1918 possible internal network</span></div><div class="line">acl SSL_ports port 443</div><div class="line">acl Safe_ports port 80 8080 <span class="comment"># http</span></div><div class="line">acl Safe_ports port 21 <span class="comment"># ftp</span></div><div class="line">acl Safe_ports port 443 <span class="comment"># https</span></div><div class="line">acl CONNECT method CONNECT</div><div class="line">http_access allow manager localhost</div><div class="line">http_access deny manager</div><div class="line">http_access deny !Safe_ports</div><div class="line">http_access deny CONNECT !SSL_ports</div><div class="line">http_access allow localnet</div><div class="line">http_access allow localhost</div><div class="line">http_access allow all</div><div class="line">cache_dir aufs /data/cache 1024 16 256</div><div class="line">cache_mem 128 MB</div><div class="line">hierarchy_stoplist cgi-bin ?</div><div class="line">coredump_dir /var/spool/squid</div><div class="line">refresh_pattern ^ftp: 1440 20% 10080</div><div class="line">refresh_pattern ^gopher: 1440 0% 1440</div><div class="line">refresh_pattern -i (/cgi-bin/|\?) 0 0% 0</div><div class="line">refresh_pattern \.(jpg|png|gif|mp3|xml) 1440 50% 2880 ignore-reload</div><div class="line">refresh_pattern . 0 20% 4320</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置文件中，第一行的 “http_port 3128” 这个指的是，squid 服务启动后将要监听的端口，也可以是 80 。“cache_dir” 这个用来指定本地磁盘上的缓存目录，后边的1024为大小，单位是 M 具体根据磁盘大小决定。“cache_mem”它用来规定缓存占用内存的大小，即把缓存的东西存到内存里，具体也需要根据机器的内存定，如果只跑 squid 服务，那么留给系统 512M 内存外，其他可以都分给 squid。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置文件保存后，可以先检测一下是否有语法错误：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># squid -kcheck</span></div><div class="line">squid: ERROR: No running copy</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果提示 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">squid: ERROR: No running copy</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这是 squid 还未启动，不过没有关系，显示成这样说明配置文件没有问题了。在启动前还得初始化缓存目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># mkdir /data/cache</span></div><div class="line">[root@192 ~]<span class="comment"># chown -R squid:squid /data/cache</span></div><div class="line">[root@192 ~]<span class="comment"># squid -z</span></div><div class="line">2017/03/30 20:36:42| Creating Swap Directories</div><div class="line">2017/03/30 20:36:42| /data/cache exists</div><div class="line">2017/03/30 20:36:42| Making directories <span class="keyword">in</span> /data/cache/00</div><div class="line">2017/03/30 20:36:42| Making directories <span class="keyword">in</span> /data/cache/01</div><div class="line">2017/03/30 20:36:42| Making directories <span class="keyword">in</span> /data/cache/02</div><div class="line">2017/03/30 20:36:42| Making directories <span class="keyword">in</span> /data/cache/03</div><div class="line">2017/03/30 20:36:42| Making directories <span class="keyword">in</span> /data/cache/04</div><div class="line">2017/03/30 20:36:42| Making directories <span class="keyword">in</span> /data/cache/05</div><div class="line">2017/03/30 20:36:42| Making directories <span class="keyword">in</span> /data/cache/06</div><div class="line">2017/03/30 20:36:42| Making directories <span class="keyword">in</span> /data/cache/07</div><div class="line">2017/03/30 20:36:42| Making directories <span class="keyword">in</span> /data/cache/08</div><div class="line">2017/03/30 20:36:42| Making directories <span class="keyword">in</span> /data/cache/09</div><div class="line">2017/03/30 20:36:42| Making directories <span class="keyword">in</span> /data/cache/0A</div><div class="line">2017/03/30 20:36:42| Making directories <span class="keyword">in</span> /data/cache/0B</div><div class="line">2017/03/30 20:36:42| Making directories <span class="keyword">in</span> /data/cache/0C</div><div class="line">2017/03/30 20:36:42| Making directories <span class="keyword">in</span> /data/cache/0D</div><div class="line">2017/03/30 20:36:42| Making directories <span class="keyword">in</span> /data/cache/0E</div><div class="line">2017/03/30 20:36:42| Making directories <span class="keyword">in</span> /data/cache/0F</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;初始化完成后，就可以启动 squid 了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># /etc/init.d/squid start</span></div><div class="line">正在启动 squid：. [确定]</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看 squid 是否启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># ps aux | grep squid</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/squid%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86/01.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;现在可以在真机上测测看 squid 的正向代理了，需要设置 IE 选项，或者直接用 curl 命令测试：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># curl -xlocalhost:3128 http://www.baidu.com</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/squid%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86/02.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果看到这样一大串，说明 squid 正向代理设置 OK 了，另外也可以观察 squid 对图片的缓存</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># curl -xlocalhost:3128 http://www.aminglinux.com/bbs/static/image/common/logo.png -I</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/squid%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86/03.png?raw=true" alt=""></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># curl -xlocalhost:3128 http://www.aminglinux.com/bbs/static/image/common/logo.png -I</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/squid%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86/04.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;连续访问两次论坛的 logo 图片，可以发现前后两次的不同，其中“X-Cache-Lookup: HIT from 192.168.0.73:3128”显示，该请求已经 HIT ，它直接从本地的3128端口获取了数据。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有时候还有这样的需求，就是想限制某些域名不能通过代理访问，或者说只想代理某几个域名，在 squid.conf 中找到：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">acl CONNECT method CONNECT</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在其下面添加四行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">acl http proto HTTP</div><div class="line">acl good_domain dstdomain .apelearn.com .aminglinux.com</div><div class="line">http_access allow http good_domain</div><div class="line">http_access deny http !good_domain</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其中白名单域名为“.apelearn.com .aminglinux.com”，这里的 . 表示万能匹配。前面可以是任何字符，只需要填写白名单域名即可。重启 squid 再来测测：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># /etc/init.d/squid restart</span></div><div class="line">[root@192 ~]<span class="comment"># curl -xlocalhost:3128 http://www.baidu.com/ -I</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/squid%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86/05.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;访问百度已经变为403了，如果要设置黑名单，道理是一样的</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">acl http proto HTTP</div><div class="line">acl bad_domain dstdomain .sina.com .souhu.com</div><div class="line">http_access allow http !bad_domain</div><div class="line">http_access deny http bad_domain</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;重启 squid 后，测试：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># /etc/init.d/squid restart </span></div><div class="line">[root@192 ~]<span class="comment"># curl -xlocalhost:3128 http://www.sina.com/ -I</span></div><div class="line">[root@192 ~]<span class="comment"># curl -xlocalhost:3128 http://www.baidu.com/ -I</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/squid%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86/06.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;baidu.com 可以访问，而 sina.com 不可以访问了</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/13/Squid/3. squid反向代理/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          squid反向代理
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/13/Squid/15. Squid的防盗链/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Squid的防盗链</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="Squid/2. squid正向代理" data-title="squid正向代理" data-url="https://hcldirgit.github.io/2017/10/13/Squid/2. squid正向代理/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="squid正向代理">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

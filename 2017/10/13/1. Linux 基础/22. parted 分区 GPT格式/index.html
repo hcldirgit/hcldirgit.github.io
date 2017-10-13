@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>parted 分区 GPT 格式 | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;我们讲的fdisk分区工具，它的分区格式为MBR，特点是，最多分4个主分区，磁盘大小不能超过2T。而GPT分区格式，突破了这些限制，它没有主分区、扩展分区、逻辑分区之分，在一块磁盘上最多可以分128个分区出来，支持大于2T的分区，最大卷可达18EB。 相信，随着存储级别的升级，将来的分区格式逐渐会淘汰M">
+<meta name="keywords" content="Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="parted 分区 GPT 格式">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/10/13/1. Linux 基础/22. parted 分区 GPT格式/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;我们讲的fdisk分区工具，它的分区格式为MBR，特点是，最多分4个主分区，磁盘大小不能超过2T。而GPT分区格式，突破了这些限制，它没有主分区、扩展分区、逻辑分区之分，在一块磁盘上最多可以分128个分区出来，支持大于2T的分区，最大卷可达18EB。 相信，随着存储级别的升级，将来的分区格式逐渐会淘汰M">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-13T09:08:30.530Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="parted 分区 GPT 格式">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;我们讲的fdisk分区工具，它的分区格式为MBR，特点是，最多分4个主分区，磁盘大小不能超过2T。而GPT分区格式，突破了这些限制，它没有主分区、扩展分区、逻辑分区之分，在一块磁盘上最多可以分128个分区出来，支持大于2T的分区，最大卷可达18EB。 相信，随着存储级别的升级，将来的分区格式逐渐会淘汰M">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.43px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.26px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.74px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.48px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.3px;">FTP</a> <a href="/tags/Git/" style="font-size: 10.87px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.74px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.61px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.43px;">Jenkins</a> <a href="/tags/LAMP/" style="font-size: 19.57px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.96px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.52px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.13px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.35px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.3px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.65px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.39px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.74px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 17.83px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.3px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.78px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.3px;">Puppet</a> <a href="/tags/Python/" style="font-size: 14.78px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.52px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.17px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.78px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.91px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 16.09px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.61px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 13.04px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15.22px;">shell</a> <a href="/tags/shell练习/" style="font-size: 18.7px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 13.04px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-1. Linux 基础/22. parted 分区 GPT格式" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/1. Linux 基础/22. parted 分区 GPT格式/" class="article-date">
+  	<time datetime="2017-10-13T13:29:40.787Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      parted 分区 GPT 格式
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>我们讲的fdisk分区工具，它的分区格式为MBR，特点是，最多分4个主分区，磁盘大小不能超过2T。而GPT分区格式，突破了这些限制，它没有主分区、扩展分区、逻辑分区之分，在一块磁盘上最多可以分128个分区出来，支持大于2T的分区，最大卷可达18EB。</strong> 相信，随着存储级别的升级，将来的分区格式逐渐会淘汰MBR，而GPT成为主流。</p>
+<a id="more"></a>
+<h2 id="parted-工具常用功能："><a href="#parted-工具常用功能：" class="headerlink" title="parted 工具常用功能："></a>parted 工具常用功能：</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当在命令行输入parted后，进入parted命令的交互模式。输入help会显示帮助信息。下面就简单介绍一下常用的功能</p>
+<ol>
+<li><p><strong>check</strong> 简单检查文件系统。建议用其他命令检查文件系统，比如fsck</p>
+</li>
+<li><p><strong>help</strong> 显示帮助信息</p>
+</li>
+<li><p><strong>mklabel</strong> 创建分区表， 即是使用msdos（MBR）还是使用gpt，或者是其他方式分区表</p>
+</li>
+<li><p><strong>mkfs</strong> 创建文件系统。该命令不支持ext3 格式，因此建议不使用，最好是用parted分好区，然后退出parted交互模式，用其他命令进行分区，比如：mkfs.ext3</p>
+</li>
+<li><p><strong>mkpart</strong> 创建新分区。<br>格式：</p>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkpart PART-TYPE  [FS-TYPE]  START  END</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PART-TYPE 类型主要有primary（主分区）, extended（扩展分区）, logical（逻辑区）. 扩展分区和逻辑分区只对msdos。<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;fs-type   文件系统类型，主要有fs32，NTFS，ext2，ext3等<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;start end 分区的起始和结束位置。</p>
+<ol>
+<li><p><strong>mkpartfs</strong> 建立分区及其文件系统。目前还不支持ext3文件系统，因此不建议使用该功能。最后是分好区后，退出parted，然后用其他命令建立文件系统。</p>
+</li>
+<li><p><strong>print</strong> 输出分区信息。该功能有3个选项，<br>free 显示该盘的所有信息，并显示磁盘剩余空间<br>number 显示指定的分区的信息<br>all 显示所有磁盘信息</p>
+</li>
+<li><p><strong>resize</strong> 调整指定的分区的大小。目前对ext3格式支持不是很好，所以不建议使用该功能。</p>
+</li>
+<li><p><strong>rescue</strong> 恢复不小心删除的分区。如果不小心用parted的rm命令删除了一个分区，那么可以通过rescue功能进行恢复。恢复时需要给出分区的起始和结束的位置。然后parted就会在给定的范围内去寻找，并提示恢复分区。</p>
+</li>
+<li><p><strong>rm</strong> 删除分区。命令格式 rm  number 。如：rm 3 就是将编号为3的分区删除</p>
+</li>
+<li><p><strong>select</strong> 选择设备。当输入parted命令后直接回车进入交互模式是，如果有多块硬盘，需要用select 选择要操作的硬盘。如：select /dev/sdb</p>
+</li>
+<li><p><strong>set</strong> 设置标记。更改指定分区编号的标志。标志通常有如下几种：boot  hidden   raid   lvm 等。<br>boot 为引导分区，hidden 为隐藏分区，raid 软raid，lvm 为逻辑分区。<br>如：set 3  boot  on   设置分区号3 为启动分区<br>注：以上内容为parted常用的功能，由于该工具目前对ext3支持得不是很好，因此有些功能无法应用，比如move（移动分区）和resize等。</p>
+</li>
+</ol>
+<h2 id="parted分区功能事例。"><a href="#parted分区功能事例。" class="headerlink" title="parted分区功能事例。"></a>parted分区功能事例。</h2><ol>
+<li>用命令模式 为/dev/sdb创建gpt类型文件分区表,并分500G分区。然后为该分区创建ext3文件系统。并将该分区挂载在/test文件夹下。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#  parted  /dev/sdb  mklabel     —创建分区表</span></div><div class="line"><span class="comment">#  parted  /dev/sdb  mkpart  ext3  0  500000    —创建500G分区/dev/sdb1</span></div><div class="line"><span class="comment"># mkfs.ext3  /dev/sdb1      —-将分区/dev/sdb1格式化成ext3格式文件系统</span></div><div class="line"><span class="comment"># mount  /dev/sdb1 /test   —将/dev/sdb1 挂载在/test下</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果让系统自动挂载/dev/sdb1 需手工编辑/etc/fstab文件。并在文件末尾添加如下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/dev/sdb1             /<span class="built_in">test</span>                ext3    defaults        0 0</div></pre></td></tr></table></figure>
+<ol>
+<li>创建大小为4G的交互分区。由于已经创建了500G的/dev/sdb1 ,因此再创建的分区为/dev/sdb2</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># parted /dev/sdb mkpart swap 500000 504000 —创建4G分区/dev/sdb2</span></div><div class="line"><span class="comment"># mkswap  /dev/sdb2   —-将/dev/sdb2创建为交换分区</span></div><div class="line"><span class="comment"># swapon /dev/sdb2   —-激活/dev/sdb2</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果让系统自动挂载/dev/sdb2这个交换分区，需手工编辑/etc/fstab文件。并在文件末尾添加如下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/dev/sdb2             swap                swap    defaults        0 0</div></pre></td></tr></table></figure>
+<ol>
+<li>恢复被误删除的分区(也可以参考testdisk命令)。由于parted直接写磁盘，因此一旦不小心删除了某一分区，建议立即用rescue恢复。下面通过事例来理解恢复过程。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># parted /dev/sdb mkpart ext3 504000 514000 —-创建10G分区/dev/sdb3</span></div><div class="line"><span class="comment"># mkfs.ext3 /dev/sdb3  —将/dev/sdb3格式化成ext3文件系统。</span></div><div class="line"><span class="comment"># parted /dev/sdb rm 3 —-删除/dev/sdb3</span></div><div class="line"><span class="comment"># parted /dev/sdb rescue 504000 514000    —依照屏幕提示，输入yes即可恢复被误删除分区</span></div></pre></td></tr></table></figure>
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/13/1. Linux 基础/31. vim的设置详解/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          vim的设置详解
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/13/1. Linux 基础/43.bash_profile和bashrc区别/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">bash_profile和bashrc区别</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="1. Linux 基础/22. parted 分区 GPT格式" data-title="parted 分区 GPT 格式" data-url="https://hcldirgit.github.io/2017/10/13/1. Linux 基础/22. parted 分区 GPT格式/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="parted 分区 GPT 格式">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

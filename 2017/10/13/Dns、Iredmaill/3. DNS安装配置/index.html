@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>DNS安装配置 | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;使用 bind 来搭建 DNS 服务，首先安装 bind 1[root@192 ~]# yum install -y bind">
+<meta name="keywords" content="DNS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DNS安装配置">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/10/13/Dns、Iredmaill/3. DNS安装配置/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;使用 bind 来搭建 DNS 服务，首先安装 bind 1[root@192 ~]# yum install -y bind">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/dns%20%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/01.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/dns%20%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/02.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/dns%20%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/03.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/dns%20%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/04.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/dns%20%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/05.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/dns%20%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/06.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/dns%20%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/07.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/dns%20%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/08.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/dns%20%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/09.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/dns%20%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/10.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/dns%20%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/11.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/dns%20%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/12.png?raw=true">
+<meta property="og:updated_time" content="2017-10-13T10:00:56.843Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="DNS安装配置">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;使用 bind 来搭建 DNS 服务，首先安装 bind 1[root@192 ~]# yum install -y bind">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/dns%20%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/01.png?raw=true">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.43px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.26px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.74px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.48px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.3px;">FTP</a> <a href="/tags/Git/" style="font-size: 10.87px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.74px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.61px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.43px;">Jenkins</a> <a href="/tags/LAMP/" style="font-size: 19.57px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.96px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.52px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.13px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.35px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.3px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.65px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.39px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.74px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 17.83px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.3px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.78px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.3px;">Puppet</a> <a href="/tags/Python/" style="font-size: 14.78px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.52px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.17px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.78px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.91px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 16.09px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.61px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 13.04px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15.22px;">shell</a> <a href="/tags/shell练习/" style="font-size: 18.7px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 13.04px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Dns、Iredmaill/3. DNS安装配置" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Dns、Iredmaill/3. DNS安装配置/" class="article-date">
+  	<time datetime="2017-10-13T13:29:41.971Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      DNS安装配置
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DNS/">DNS</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用 bind 来搭建 DNS 服务，首先安装 bind</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># yum install -y bind</span></div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;备份配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># cp /etc/named.conf /etc/named.conf.bak</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;把默认配置文件清空，然后自定义配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># &gt;/etc/named.conf</span></div><div class="line">[root@192 ~]<span class="comment"># vim /etc/named.conf</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加入如下配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">options &#123;</div><div class="line">    directory <span class="string">"/var/named"</span>;</div><div class="line">&#125;;</div><div class="line">zone <span class="string">"."</span> IN &#123;</div><div class="line">    <span class="built_in">type</span> hint;</div><div class="line">    file <span class="string">"named.ca"</span>;</div><div class="line">&#125;;</div><div class="line">zone <span class="string">"localhost"</span> IN &#123;</div><div class="line">    <span class="built_in">type</span> master;</div><div class="line">    file <span class="string">"localhost.zone"</span>;</div><div class="line">&#125;;</div><div class="line">zone <span class="string">"0.0.127.in-addr.arpa"</span> IN &#123;</div><div class="line">    <span class="built_in">type</span> master;</div><div class="line">    file <span class="string">"named.local"</span>;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;保存配置后，修改其属主</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># chown named /etc/named.conf</span></div><div class="line">[root@192 ~]<span class="comment"># cd /var/named</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;定义根域配置文件，没有 dig 命令先安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 named]<span class="comment"># yum install bind-utils</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 named]<span class="comment"># dig -t NS .&gt;named.ca</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后定义本地域配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 named]<span class="comment"># vim localhost.zone</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加入如下内容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">@            IN     SOA     localhost.   admin.localhost. (</div><div class="line">                                                             2017041101</div><div class="line">                                                             1H</div><div class="line">                                                             10M</div><div class="line">                                                             7D</div><div class="line">                                                             1D</div><div class="line">                                                                 )</div><div class="line">@             IN          NS           localhost.</div><div class="line">localhost.    IN          A            127.0.0.1</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;再定以泛解析配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 named]<span class="comment"># vim named.local</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加入如下内容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$TTL</span> 86400</div><div class="line">@                IN    SOA    localhost.   admin.localhost.  (</div><div class="line">                                                              2017041101</div><div class="line">                                                              1H</div><div class="line">                                                              10M</div><div class="line">                                                              7D</div><div class="line">                                                              1D</div><div class="line">                                                              )</div><div class="line">@                IN    NS             localhost.</div><div class="line">1                IN    PTR            localhost</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;检测配置是否有问题</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 named]<span class="comment"># named-checkconf</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;检测正解析</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@192 named]<span class="comment"># named-checkzone "localhost" /var/named/localhost.zone</span></div><div class="line">/var/named/localhost.zone:2: no TTL specified; using SOA MINTTL instead</div><div class="line">zone localhost/IN: loaded serial 2017041101</div><div class="line">OK</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;检测反解析</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@192 named]<span class="comment"># named-checkzone "0.0.127.in-addr.arpa" /var/named/named.local</span></div><div class="line">zone 0.0.127.in-addr.arpa/IN: loaded serial 2017041101</div><div class="line">OK</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;生成 rndc.key ，如果没有这个 key ， named 是启动不了的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@192 named]<span class="comment"># rndc-confgen -r /dev/urandom -a</span></div><div class="line">wrote key file <span class="string">"/etc/rndc.key"</span></div><div class="line">[root@192 named]<span class="comment"># chown named:named /etc/rndc.key</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动 named 服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@192 named]<span class="comment"># /etc/init.d/named start</span></div><div class="line">启动 named： [确定]</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看是否有 53 端口</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 named]<span class="comment"># netstat -lnp | grep named</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/dns%20%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/01.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先测试正向解析</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/dns%20%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/02.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;接着测试反解析</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/dns%20%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/03.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;现在只是建立了一个本地的域 localhost ，下面增加一个域名（zone）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 named]<span class="comment"># vim /etc/named.conf</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;增加如下内容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">zone <span class="string">"123.com"</span> IN &#123;</div><div class="line">    <span class="built_in">type</span> master;</div><div class="line">    file <span class="string">"123.com.zone"</span>;</div><div class="line">&#125;;</div><div class="line">zone <span class="string">"137.168.192.in-addr.arpa"</span> IN &#123;</div><div class="line">    <span class="built_in">type</span> master;</div><div class="line">    file <span class="string">"192.168.zone"</span>;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;检测是否有问题</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 named]<span class="comment"># named-checkconf</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编辑 zone 文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 named]<span class="comment"># vim /var/named/123.com.zone</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;检测是否出错</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@192 named]<span class="comment"># named-checkzone "123.com" /var/named/123.com.zone</span></div><div class="line">zone 123.com/IN: loaded serial 2017041101</div><div class="line">OK</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编辑反解析文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 named]<span class="comment"># vim /var/named/192.168.zone</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;写入如下内容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$TTL</span> 600</div><div class="line">@          IN     SOA     ns.123.com.     root.123.com. (</div><div class="line">                                                           2017041101</div><div class="line">                                                           1H</div><div class="line">                                                           10M</div><div class="line">                                                           7D</div><div class="line">                                                           1D</div><div class="line">                                                           )</div><div class="line">@          IN     NS       ns.123.com.</div><div class="line">10         IN     PTR      ns.123.com.</div><div class="line">11         IN     PTR      mail.123.com.</div><div class="line">73         IN     PTR      www.123.com.</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;检测是否出错</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@192 named]<span class="comment"># named-checkzone "137.168.192.in-addr.arpa" 192.168.zone</span></div><div class="line">zone 137.168.192.in-addr.arpa/IN: loaded serial 2017041101</div><div class="line">OK</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;重启 named 服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@192 named]<span class="comment"># /etc/init.d/named restart</span></div><div class="line">停止 named：. [确定]</div><div class="line">启动 named： [确定]</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;测试</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 named]<span class="comment"># dig @127.0.0.1 www.123.com</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/dns%20%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/04.png?raw=true" alt=""></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 named]<span class="comment"># dig @127.0.0.1 -x 192.168.137.11</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/dns%20%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/05.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;123.com 的域配置好后，要想使用它必须把系统里面的 DNS 服务器 IP 设定为这台机器的 IP ，但是这样也会带来一个问题，它只能解析 123.com 的域名，其他域名不能解析，这时候需要给它配置 DNS 转发。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 named]<span class="comment"># vim /etc/named.conf</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在 options{} 里面增加</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">forward first;</div><div class="line">forwarders &#123;8.8.8.8;&#125;;</div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/dns%20%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/06.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这两行就是用来配置转发的，该 DNS 服务器不能解析的域名会转发到 8.8.8.8 这个 DNS 服务器上去解析。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;任何服务器都有可能因为某些原因导致不能正常提供服务，所以有必要为 DNS 服务器配置一个备用的，但是这两台服务器需要保证数据的一直性，比如更改主上配置把 www.123.com 解析 IP 更改了，那么备用服务器上也得跟着自动变。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面就是配置主从，首先在从服务器上安装 bind </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@KVM ~]<span class="comment"># yum install -y bind</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后拷贝主上的配置文件到从上，这里主服务器 192.168.0.73 ，从服务器 192.168.0.74</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下操作在主服务器上</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@192 named]<span class="comment"># yum -y install openssh-clients</span></div><div class="line">[root@192 named]<span class="comment"># scp /etc/named.conf 192.168.0.74:/etc/</span></div><div class="line">[root@192 named]<span class="comment"># scp /var/named/localhost.zone 192.168.0.74:/var/named/</span></div><div class="line">[root@192 named]<span class="comment"># scp /var/named/named.local 192.168.0.74:/var/named/</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从服务器上，拷贝过来后，修改一下 /etc/named.conf </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@KVM ~]<span class="comment"># vim /etc/named.conf</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/dns%20%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/07.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改为</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/dns%20%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/08.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从上生成 rndc.key</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@KVM ~]<span class="comment"># rndc-confgen -r /dev/urandom -a</span></div><div class="line">wrote key file <span class="string">"/etc/rndc.key"</span></div><div class="line">[root@KVM ~]<span class="comment"># chown named:named /etc/rndc.key</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从上启动 named </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@KVM ~]<span class="comment"># /etc/init.d/named start</span></div><div class="line">启动 named： [确定]</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动成功后会在 /var/named 下生成一个 slaves 目录，这个目录下会有 192.168.zone 和 123.com.zone 这两个文件，内容是和主上的一样的。</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/dns%20%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/09.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后在从上测试是否可以解析</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@KVM ~]<span class="comment"># dig @127.0.0.1 www.123.com</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/dns%20%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/10.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面测试主从同步</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在主 dns 上更改文件 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 named]<span class="comment"># vim /var/named/123.com.zone</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在最后一行增加</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">123     IN     A     1.1.1.1</div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/dns%20%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/11.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另外需要修改一下 第三行的那个数字串，这个是用来做标记的，只有这个数字变化了，才可以一让从自动跟着变，数字只能是变大，不能减小， 把 2017041101 改成 2017041102</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;重启主 named 服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@192 named]<span class="comment"># /etc/init.d/named restart</span></div><div class="line">停止 named：. [确定]</div><div class="line">启动 named： [确定]</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;经测试发现一个问题：就是从经常会同步特别慢，这是很要命的。所有需要做一个特殊操作，在主上的 /etc/named.conf 中，123.com 的zone 中增加两行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">notify yes;</div><div class="line">also-notify &#123;192.168.0.74;&#125;;</div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/dns%20%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/12.png?raw=true" alt=""></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/13/Dns、Iredmaill/2. DNS介绍/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          DNS介绍
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/13/Dns、Iredmaill/8. DNS服务器(二)：使用bind实现主从DNS服务器数据同步/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">DNS服务器(二)：使用bind实现主从DNS服务器数据同步</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="Dns、Iredmaill/3. DNS安装配置" data-title="DNS安装配置" data-url="https://hcldirgit.github.io/2017/10/13/Dns、Iredmaill/3. DNS安装配置/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="DNS安装配置">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

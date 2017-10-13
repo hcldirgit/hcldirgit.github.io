@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>tomcat常用功能的配置方法 | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="启动内存参数的配置&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;tomcat/bin/catalina.bat 如果是linux 就是 catalina.sh &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;在rem 的后面增加如下参数 1set JAVA_OPTS= -Xms256m -Xmx256">
+<meta name="keywords" content="Tomcat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tomcat常用功能的配置方法">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/10/13/Tomcat/10. tomcat常用功能的配置方法/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="启动内存参数的配置&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;tomcat/bin/catalina.bat 如果是linux 就是 catalina.sh &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;在rem 的后面增加如下参数 1set JAVA_OPTS= -Xms256m -Xmx256">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-13T13:25:16.677Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="tomcat常用功能的配置方法">
+<meta name="twitter:description" content="启动内存参数的配置&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;tomcat/bin/catalina.bat 如果是linux 就是 catalina.sh &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;在rem 的后面增加如下参数 1set JAVA_OPTS= -Xms256m -Xmx256">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.43px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.26px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.74px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.48px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.3px;">FTP</a> <a href="/tags/Git/" style="font-size: 10.87px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.74px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.61px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.43px;">Jenkins</a> <a href="/tags/LAMP/" style="font-size: 19.57px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.96px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.52px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.13px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.35px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.3px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.65px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.39px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.74px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 17.83px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.3px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.78px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.3px;">Puppet</a> <a href="/tags/Python/" style="font-size: 14.78px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.52px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.17px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.78px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.91px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 16.09px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.61px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 13.04px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15.22px;">shell</a> <a href="/tags/shell练习/" style="font-size: 18.7px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 13.04px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Tomcat/10. tomcat常用功能的配置方法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Tomcat/10. tomcat常用功能的配置方法/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.103Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      tomcat常用功能的配置方法
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Tomcat/">Tomcat</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="启动内存参数的配置"><a href="#启动内存参数的配置" class="headerlink" title="启动内存参数的配置"></a>启动内存参数的配置</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;tomcat/bin/catalina.bat 如果是linux 就是 catalina.sh</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在rem 的后面增加如下参数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">set</span> JAVA_OPTS= -Xms256m -Xmx256m -XX:MaxPermSize=64m</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="修改Tomcat的JDK目录"><a href="#修改Tomcat的JDK目录" class="headerlink" title="修改Tomcat的JDK目录"></a>修改Tomcat的JDK目录</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;打开tomcat/bin/catalina.bat</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在最后一个rem后面增加</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">set</span> JAVA_HOME=C:\Program Files\Java\jdk1.6.0</div></pre></td></tr></table></figure>
+<h2 id="增加虚拟目录"><a href="#增加虚拟目录" class="headerlink" title="增加虚拟目录"></a>增加虚拟目录</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;/tomcat/conf/server.xml</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第一行是以前默认存在的，第二行是新增的</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;Context path=<span class="string">""</span> docBase=<span class="string">"ROOT"</span> debug=<span class="string">"0"</span> reloadable=<span class="string">"true"</span>&gt;&lt;/Context&gt;</div><div class="line">&lt;Context path=<span class="string">"/jsp/a"</span> reloadable=<span class="string">"true"</span> docBase=<span class="string">"E:\workplace\www.java2000.net\WebContent"</span> /&gt;</div></pre></td></tr></table></figure>
+<h2 id="GET方式URL乱码问题解决"><a href="#GET方式URL乱码问题解决" class="headerlink" title="GET方式URL乱码问题解决"></a>GET方式URL乱码问题解决</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;打开 tomcat/conf/server.xml</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查找下面这部分，在最后增加一段代码就可以了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;Connector port=<span class="string">"80"</span> maxHttpHeaderSize=<span class="string">"8192"</span></div><div class="line">.................</div><div class="line">URIEncoding=<span class="string">"UTF-8"</span> useBodyEncodingForURI=<span class="string">"true"</span></div><div class="line">...............</div><div class="line">　　/&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其中的UTF-8 请根据你的需要自己修改，比如GBK</p>
+<h2 id="虚拟主机配置文件"><a href="#虚拟主机配置文件" class="headerlink" title="虚拟主机配置文件"></a>虚拟主机配置文件</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;tomcat/conf/server.xml</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 默认的主机 --&gt;</div><div class="line">&lt;Host name=<span class="string">"localhost"</span> appBase=<span class="string">"webapps"</span></div><div class="line">unpackWARs=<span class="string">"true"</span> </div><div class="line">xmlValidation=<span class="string">"false"</span> xmlNamespaceAware=<span class="string">"false"</span>&gt;</div><div class="line">&lt;Context path=<span class="string">""</span> docBase=<span class="string">"ROOT"</span> debug=<span class="string">"0"</span> reloadable=<span class="string">"true"</span>&gt;&lt;/Context&gt;</div><div class="line">...</div><div class="line">&lt;/host&gt;</div><div class="line">&lt;!-- 以下是新增的虚拟主机 --&gt;</div><div class="line">&lt;Host name=<span class="string">"www.java2000.net"</span> appBase=<span class="string">"webapps"</span></div><div class="line">unpackWARs=<span class="string">"true"</span> </div><div class="line">xmlValidation=<span class="string">"false"</span> xmlNamespaceAware=<span class="string">"false"</span>&gt;</div><div class="line">&lt;Context path=<span class="string">""</span> docBase=<span class="string">"d:/www.java2000.net"</span> debug=<span class="string">"0"</span> reloadable=<span class="string">"true"</span>&gt;&lt;/Context&gt;</div><div class="line">&lt;!-- 虚拟目录 --&gt;</div><div class="line">&lt;Context path=<span class="string">"/count"</span> docBase=<span class="string">"d:/counter.java2000.net"</span> debug=<span class="string">"0"</span> reloadable=<span class="string">"true"</span>&gt;&lt;/Context&gt;</div><div class="line">&lt;/Host&gt;</div><div class="line">&lt;Host name=<span class="string">"java2000.net"</span> appBase=<span class="string">"webapps"</span></div><div class="line">unpackWARs=<span class="string">"true"</span> </div><div class="line">xmlValidation=<span class="string">"false"</span> xmlNamespaceAware=<span class="string">"false"</span>&gt;</div><div class="line">&lt;Context path=<span class="string">""</span> docBase=<span class="string">"d:/www.java2000.net"</span> debug=<span class="string">"0"</span> reloadable=<span class="string">"true"</span>&gt;&lt;/Context&gt;</div><div class="line">&lt;Context path=<span class="string">"/count"</span> docBase=<span class="string">"d:/counter.java2000.net"</span> debug=<span class="string">"0"</span> reloadable=<span class="string">"true"</span>&gt;&lt;/Context&gt;</div><div class="line">&lt;/Host&gt;</div></pre></td></tr></table></figure>
+<h2 id="数据源配置"><a href="#数据源配置" class="headerlink" title="数据源配置"></a>数据源配置</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;比较复杂，各个版本都有所不同，请直接查看 <a href="http://java2000.net/p1906，包括tomcat5.0,tomcat5.5x,tomcat6.0的各个版本的配置方法。" target="_blank" rel="external">http://java2000.net/p1906，包括tomcat5.0,tomcat5.5x,tomcat6.0的各个版本的配置方法。</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;更多关于Tomcat的使用，请看参考资料</p>
+<h2 id="Tomcat配置的10个技巧"><a href="#Tomcat配置的10个技巧" class="headerlink" title="Tomcat配置的10个技巧"></a>Tomcat配置的10个技巧</h2><h3 id="1-配置系统管理（Admin-Web-Application）"><a href="#1-配置系统管理（Admin-Web-Application）" class="headerlink" title="1. 配置系统管理（Admin Web Application）"></a>1. 配置系统管理（Admin Web Application）</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;大多数商业化的J2EE服务器都提供一个功能强大的管理界面，且大都采用易于理解的Web应用界面。Tomcat按照自己的方式，同样提供一个成熟的管理 工具，并且丝毫不逊于那些商业化的竞争对手。Tomcat的Admin Web Application最初在4.1版本时出现，当时的功能包括管理context、data source、user和group等。当然也可以管理像初始化参数，user、group、role的多种数据库管理等。在后续的版本中，这些功能将得 到很大的扩展，但现有的功能已经非常实用了。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Admin Web Application被定义在自动部署文件：CATALINA_BASE/webapps/admin.xml 。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;必须编辑这个文件，以确定Context中的docBase参数是绝对路径。也就是说， CATALINA_BASE/webapps/admin.xml 的路径是绝对路径。作为另外一种选择，也可以删除这个自动部署文件，而在server.xml文件中建立一个Admin Web Application的context，效果是一样的。不能管理Admin Web Application这个应用，换而言之，除了删除CATALINA_BASE/webapps/admin.xml ，可能什么都做不了。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果使用UserDatabaseRealm（默认），将需要添加一个user以及一个role到CATALINA_BASE/conf/tomcat-users.xml 文件中。你编辑这个文件，添加一个名叫“admin”的role 到该文件中，如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;role name=“admin”/&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;同样需要有一个用户，并且这个用户的角色是“admin”。象存在的用户那样，添加一个用户（改变密码使其更加安全）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;user name=“admin” password=“deep_dark_secret” roles=“admin”/&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当完成这些步骤后，请重新启动Tomcat，访问<a href="http://localhost:8080/admin，将看到一个登录界面。Admin" target="_blank" rel="external">http://localhost:8080/admin，将看到一个登录界面。Admin</a> Web Application采用基于容器管理的安全机制，并采用了Jakarta Struts框架。一旦作为“admin”角色的用户登录管理界面，将能够使用这个管理界面配置Tomcat。</p>
+<h2 id="2-配置应用管理（Manager-Web-Application）"><a href="#2-配置应用管理（Manager-Web-Application）" class="headerlink" title="2.配置应用管理（Manager Web Application）"></a>2.配置应用管理（Manager Web Application）</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Manager Web Application让你通过一个比Admin Web Application更为简单的用户界面，执行一些简单的Web应用任务。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;　Manager Web Application被被定义在一个自动部署文件中：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;CATALINA_BASE/webapps/manager.xml 。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;必须编辑这个文件，以确保context的docBase参数是绝对路径，也就是说CATALINA_HOME/server/webapps/manager的绝对路径。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果使用的是UserDatabaseRealm，那么需要添加一个角色和一个用户到CATALINA_BASE/conf/tomcat-users.xml文件中。接下来，编辑这个文件，添加一个名为“manager”的角色到该文件中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;role name=“manager”&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;同样需要有一个角色为“manager”的用户。像已经存在的用户那样，添加一个新用户（改变密码使其更加安全）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;user name=“manager” password=“deep_dark_secret” roles=“manager”/&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后重新启动Tomcat，访问<a href="http://localhost/manager/list，将看到一个很朴素的文本型管理界面，或者访问http" target="_blank" rel="external">http://localhost/manager/list，将看到一个很朴素的文本型管理界面，或者访问http</a>: //localhost/manager/html/list，将看到一个HMTL的管理界面。不管是哪种方式都说明你的Manager Web Application现在已经启动了。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Manager application可以在没有系统管理特权的基础上，安装新的Web应用，以用于测试。如果我们有一个新的web应用位于 /home/user/hello下在，并且想把它安装到 /hello下，为了测试这个应用，可以这么做，在第一个文件框中输入“/hello”（作为访问时的path），在第二个文本框中输入“file: /home/user/hello”（作为Config URL）。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Manager application还允许停止、重新启动、移除以及重新部署一个web应用。停止一个应用使其无法被访问，当有用户尝试访问这个被停止的应用时，将 看到一个503的错误——“503 - This application is not currently available”。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;移除一个web应用，只是指从Tomcat的运行拷贝中删除了该应用，如果重新启动Tomcat，被删除的应用将再次出现（也就是说，移除并不是指从硬盘上删除）。</p>
+<h3 id="3-部署一个web应用"><a href="#3-部署一个web应用" class="headerlink" title="3.部署一个web应用"></a>3.部署一个web应用</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有两个办法可以在系统中部署web服务。</p>
+<ul>
+<li>拷贝WAR文件或者web应用文件夹（包括该web的所有内容）到$CATALINA_BASE/webapps目录下。</li>
+<li>为web服务建立一个只包括context内容的XML片断文件，并把该文件放到$CATALINA_BASE/webapps目录下。这个web应用本身可以存储在硬盘上的任何地方。</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果有一个WAR文件，想部署它，则只需要把该文件简单的拷贝到CATALINA_BASE/webapps目录下即可，文件必须以“。war”作 为扩展名。一旦Tomcat监听到这个文件，它将（缺省的）解开该文件包作为一个子目录，并以WAR文件的文件名作为子目录的名字。接下来，Tomcat 将在内存中建立一个context，就好象在server.xml文件里建立一样。当然，其他必需的内容，将从server.xml中的 DefaultContext获得。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;部署web应用的另一种方式是写一个Context XML片断文件，然后把该文件拷贝到CATALINA_BASE/webapps目录下。一个Context片断并非一个完整的XML文件，而只是一个 context元素，以及对该应用的相应描述。这种片断文件就像是从server.xml中切取出来的context元素一样，所以这种片断被命名为 “context片断”。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;举个例子，如果我们想部署一个名叫MyWebApp.war的应用，该应用使用realm作为访问控制方式，我们可以使用下面这个片断：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;!--</div><div class="line">Context fragment <span class="keyword">for</span> deploying MyWebApp.war</div><div class="line">--&gt;</div><div class="line">&lt;Context path=“/demo” docBase=“webapps/MyWebApp.war”</div><div class="line">debug=“0” privileged=“<span class="literal">true</span>”&gt;</div><div class="line">&lt;Realm className=“org.apache.catalina.realm.UserDatabaseRealm”</div><div class="line">resourceName=“UserDatabase”/&gt;</div><div class="line">&lt;/Context&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;把该片断命名为“MyWebApp.xml”，然后拷贝到CATALINA_BASE/webapps目录下。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这种context片断提供了一种便利的方法来部署web应用，不需要编辑server.xml，除非想改变缺省的部署特性，安装一个新的web应用时不需要重启动Tomcat。</p>
+<h3 id="4-配置虚拟主机（Virtual-Hosts）"><a href="#4-配置虚拟主机（Virtual-Hosts）" class="headerlink" title="4.配置虚拟主机（Virtual Hosts）"></a>4.配置虚拟主机（Virtual Hosts）</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关于server.xml中“Host”这个元素，只有在设置虚拟主机的才需要修改。虚拟主机是一种在一个web服务器上服务多个域名的机制，对每个域 名而言，都好象独享了整个主机。实际上，大多数的小型商务网站都是采用虚拟主机实现的，这主要是因为虚拟主机能直接连接到Internet并提供相应的带<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;基于名字的虚拟主机可以被建立在任何web服务器上，建立的方法就是通过在域名服务器（DNS）上建立IP地址的别名，并且告诉web服务器把去往不同域 名的请求分发到相应的网页目录。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在Tomcat中使用虚拟主机，需要设置DNS或主机数据。为了测试，为本地IP设置一个IP别名就足够了，接下来，你需要在server.xml中添加几行内容，如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">&lt;Server port=“8005” shutdown=“SHUTDOWN” debug=“0”&gt;</div><div class="line">&lt;Service name=“Tomcat-Standalone”&gt;</div><div class="line">&lt;Connector className=“org.apache.coyote.tomcat4.CoyoteConnector”</div><div class="line">port=“8080” minProcessors=“5” maxProcessors=“75”</div><div class="line">enableLookups=“<span class="literal">true</span>” redirectPort=“8443”/&gt;</div><div class="line">&lt;Connector className=“org.apache.coyote.tomcat4.CoyoteConnector”</div><div class="line">port=“8443” minProcessors=“5” maxProcessors=“75”</div><div class="line">acceptCount=“10” debug=“0” scheme=“https” secure=“<span class="literal">true</span>”/&gt;</div><div class="line">&lt;Factory className=“org.apache.coyote.tomcat4.CoyoteServerSocketFactory”</div><div class="line">clientAuth=“<span class="literal">false</span>” protocol=“TLS” /&gt;</div><div class="line">&lt;/Connector&gt;</div><div class="line">&lt;Engine name=“Standalone” defaultHost=“localhost” debug=“0”&gt;</div><div class="line">&lt;!-- This Host is the default Host --&gt;</div><div class="line">&lt;Host name=“localhost” debug=“0” appBase=“webapps”</div><div class="line">unpackWARs=“<span class="literal">true</span>” autoDeploy=“<span class="literal">true</span>”&gt;</div><div class="line">&lt;Context path=“” docBase=“ROOT” debug=“0”/&gt;</div><div class="line">&lt;Context path=“/orders” docBase=“/home/ian/orders” debug=“0”</div><div class="line">reloadable=“<span class="literal">true</span>” crossContext=“<span class="literal">true</span>”&gt;</div><div class="line">&lt;/Context&gt;</div><div class="line">&lt;/Host&gt;</div><div class="line">&lt;!-- This Host is the first “Virtual Host”: www.example.com --&gt;</div><div class="line">&lt;Host name=“www.example.com” appBase=“/home/example/webapp”&gt;</div><div class="line">&lt;Context path=“” docBase=“.”/&gt;</div><div class="line">&lt;/Host&gt;</div><div class="line">&lt;/Engine&gt;</div><div class="line">&lt;/Service&gt;</div><div class="line">&lt;/Server&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Tomcat的server.xml文件，在初始状态下，只包括一个虚拟主机，但是它容易被扩充到支持多个虚拟主机。在前面的例子中展示的是一个简单的 server.xml版本，其中粗体部分就是用于添加一个虚拟主机。每一个Host元素必须包括一个或多个context元素，所包含的context元 素中必须有一个是默认的context，这个默认的context的显示路径应该为空（例如，path=“”）。</p>
+<h3 id="5-配置基础验证（Basic-Authentication）"><a href="#5-配置基础验证（Basic-Authentication）" class="headerlink" title="5.配置基础验证（Basic Authentication）"></a>5.配置基础验证（Basic Authentication）</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;容器管理验证方法控制着当用户访问受保护的web应用资源时，如何进行用户的身份鉴别。当一个web应用使用了Basic Authentication（BASIC参数在web.xml文件中auto-method元素中设置），而有用户访问受保护的web应用时， Tomcat将通过HTTP Basic Authentication方式，弹出一个对话框，要求用户输入用户名和密码。在这种验证方法中，所有密码将被以64位的编码方式在网络上传输。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意：使用Basic Authentication通过被认为是不安全的，因为它没有强健的加密方法，除非在客户端和服务器端都使用HTTPS或者其他密码加密码方式（比如， 在一个虚拟私人网络中）。若没有额外的加密方法，网络管理员将能够截获（或滥用）用户的密码。但是，如果是刚开始使用Tomcat，或者你想在你的 web应用中测试一下基于容器的安全管理，Basic Authentication还是非常易于设置和使用的。只需要添加<security-constraint>和<login- config="">两个元素到web应用的web.xml文件中，并且在CATALINA_BASE/conf/tomcat-users.xml 文件中添加适当的<role>和<user>即可，然后重新启动Tomcat。</user></role></login-></security-constraint></p>
+<h3 id="6-配置单点登录（Single-Sign-On）"><a href="#6-配置单点登录（Single-Sign-On）" class="headerlink" title="6.配置单点登录（Single Sign-On）"></a>6.配置单点登录（Single Sign-On）</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一旦设置了realm和验证的方法，就需要进行实际的用户登录处理。一般说来，对用户而言登录系统是一件很麻烦的事情，必须尽量减少用户登录验证的 次数。作为缺省的情况，当用户第一次请求受保护的资源时，每一个web应用都会要求用户登录。如果运行了多个web应用，并且每个应用都需要进行单独的 用户验证，那这看起来就有点像在用户搏斗。用户们不知道怎样才能把多个分离的应用整合成一个单独的系统，所有用户也就不知道他们需要访问多少个不 同的应用，只是很迷惑，为什么总要不停的登录。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Tomcat 4的“single sign-on”特性允许用户在访问同一虚拟主机下所有web应用时，只需登录一次。为了使用这个功能，只需要在Host上添加一个SingleSignOn Valve元素即可，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;Valve className=“org.apache.catalina.authenticator.SingleSignOn”</div><div class="line">debug=“0”/&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在Tomcat初始安装后，server.xml的注释里面包括SingleSignOn Valve配置的例子，只需要去掉注释，即可使用。那么，任何用户只要登录过一个应用，则对于同一虚拟主机下的所有应用同样有效。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用single sign-on valve有一些重要的限制：</p>
+<ul>
+<li>value必须被配置和嵌套在相同的Host元素里，并且所有需要进行单点验证的web应用（必须通过context元素定义）都位于该Host下。</li>
+<li>包括共享用户信息的realm必须被设置在同一级Host中或者嵌套之外。</li>
+<li>不能被context中的realm覆盖。</li>
+<li>使用单点登录的web应用最好使用一个Tomcat的内置的验证方式（被定义在web.xml中的<auth-method>中），这比自定 义的验证方式强，Tomcat内置的的验证方式包括basic、digest、form和client-cert。</auth-method></li>
+<li>如果你使用单点登录，还希望集成一个第三方的web应用到你的网站中来，并且这个新的web应用使用它自己的验证方式，而不使用容器管理安全，那你基本上 就没招了。用户每次登录原来所有应用时需要登录一次，并且在请求新的第三方应用时还得再登录一次。</li>
+<li>单点登录需要使用cookies。</li>
+</ul>
+<h3 id="7-配置用户定制目录（Customized-User-Directores）"><a href="#7-配置用户定制目录（Customized-User-Directores）" class="headerlink" title="7.配置用户定制目录（Customized User Directores）"></a>7.配置用户定制目录（Customized User Directores）</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一些站点允许个别用户在服务器上发布网页。例如，一所大学的学院可能想给每一位学生一个公共区域，或者是一个ISP希望给一些web空间给他的客户，但这又不是虚拟主机。在这种情况下，一个典型的方法就是在用户名前面加一个特殊字符（~），作为每位用户的网站，比如：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<a href="http://www.cs.myuniversity.edu/~username" target="_blank" rel="external">http://www.cs.myuniversity.edu/~username</a> 提供两种方法在主机上映射这些个人网站，主要使用一对特殊的Listener元素。Listener的className属性应该是 org.apache.catalina.startup.UserConfig，userClass属性应该是几个映射类之一。如果电脑系统是 Unix，它将有一个标准的/etc/passwd文件，该文件中的帐号能够被运行中的Tomcat很容易的读取，该文件指定了用户的主目录，使用 PasswdUserDatabase 映射类。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<a href="http://members.mybigisp.com/~username" target="_blank" rel="external">http://members.mybigisp.com/~username</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Tomcat</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;Listener className=“org.apache.catalina.startup.UserConfig”</div><div class="line">directoryName=“public_html”</div><div class="line">userClass=“org.apache.catalina.startup.PasswdUserDatabase”/&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;web文件需要放置在像/home/users/ian/public_html 或者 /users/jbrittain/public_html一样的目录下面。当然你也可以改变public_html 到其他任何子目录下。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;实际上，这个用户目录根本不一定需要位于用户主目录下里面。如果你没有一个密码文件，但你又想把一个用户名映射到公共的像/home一样目录的子目录里面，则可以使用HomesUserDatabase类。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;Listener className=“org.apache.catalina.startup.UserConfig”</div><div class="line">directoryName=“public_html” homeBase=“/home”</div><div class="line">userClass=“org.apache.catalina.startup.HomesUserDatabase”/&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样一来，web文件就可以位于像/home/ian/public_html 或者 /home/jasonb/public_html一样的目录下。这种形式对Windows而言更加有利，你可以使用一个像c:\home这样的目录。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这些Listener元素，如果出现，则必须在Host元素里面，而不能在context元素里面，因为它们都用应用于Host本身。</p>
+<h3 id="8-在Tomcat中使用CGI脚本"><a href="#8-在Tomcat中使用CGI脚本" class="headerlink" title="8.在Tomcat中使用CGI脚本"></a>8.在Tomcat中使用CGI脚本</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Tomcat主要是作为Servlet/JSP容器，但它也有许多传统web服务器的性能。支持通用网关接口（Common Gateway Interface，即CGI）就是其中之一，CGI提供一组方法在响应浏览器请求时运行一些扩展程序。CGI之所以被称为通用，是因为它能在大多数程序 或脚本中被调用，包括：Perl，Python，awk，Unix shell scripting等，甚至包括Java。不会把一个Java应用程序当作CGI来运行，毕竟这样太过原始。一般而言，开发Servlet总 要比CGI具有更好的效率，因为当用户点击一个链接或一个按钮时，不需要从操作系统层开始进行处理。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Tomcat包括一个可选的CGI Servlet，允许你运行遗留下来的CGI脚本。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为了使Tomcat能够运行CGI，必须做的几件事：</p>
+<ul>
+<li>把servlets-cgi.renametojar （在CATALINA_HOME/server/lib/目录下）改名为servlets-cgi.jar。处理CGI的servlet应该位于Tomcat的CLASSPATH下。</li>
+<li>在Tomcat的CATALINA_BASE/conf/web.xml 文件中，把关于<servlet-name> CGI的那段的注释去掉（默认情况下，该段位于第241行）。</servlet-name></li>
+<li>同样，在Tomcat的CATALINA_BASE/conf/web.xml文件中，把关于对CGI进行映射的那段的注释去掉（默认情况下，该段位于第299行）。注意，这段内容指定了HTML链接到CGI脚本的访问方式。</li>
+<li>可以把CGI脚本放置在WEB-INF/cgi 目录下（注意，WEB-INF是一个安全的地方，你可以把一些不想被用户看见或基于安全考虑不想暴露的文件放在此处），或者也可以把CGI脚本放置在 context下的其他目录下，并为CGI Servlet调整cgiPathPrefix初始化参数。这就指定的CGI Servlet的实际位置，且不能与上一步指定的URL重名。</li>
+<li>重新启动Tomcat，你的CGI就可以运行了。</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在Tomcat中，CGI程序缺省放置在WEB-INF/cgi目录下，正如前面所提示的那样，WEB-INF目录受保护的，通过客户端的浏览器无法窥探 到其中内容，所以对于放置含有密码或其他敏感信息的CGI脚本而言，这是一个非常好的地方。为了兼容其他服务器，尽管你也可以把CGI脚本保存在传统的 /cgi-bin目录，但要知道，在这些目录中的文件有可能被网上好奇的冲浪者看到。另外，在Unix中，请确定运行Tomcat的用户有执行CGI脚本 的权限。</p>
+<h3 id="9-改变Tomcat中的JSP编译器（JSP-Compiler）"><a href="#9-改变Tomcat中的JSP编译器（JSP-Compiler）" class="headerlink" title="9.改变Tomcat中的JSP编译器（JSP Compiler）"></a>9.改变Tomcat中的JSP编译器（JSP Compiler）</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在Tomcat 4.1（或更高版本，大概），JSP的编译由包含在Tomcat里面的Ant程序控制器直接执行。这听起来有一点点奇怪，但这正是Ant有意为之的一部 分，有一个API文档指导开发者在没有启动一个新的JVM的情况下，使用Ant。这是使用Ant进行Java开发的一大优势。另外，这也意味着你现在能够 在Ant中使用任何javac支持的编译方式，这里有一个关于Apache Ant使用手册的javac page列表。使用起来是容易的，因为你只需要在<init-param> 元素中定义一个名字叫“compiler”，并且在value中有一个支持编译的编译器名字，示例如下：</init-param></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&lt;servlet&gt;</div><div class="line">&lt;servlet-name&gt;jsp&lt;/servlet-name&gt;</div><div class="line">&lt;servlet-class&gt;</div><div class="line">org.apache.jasper.servlet.JspServlet</div><div class="line">&lt;/servlet-class&gt;</div><div class="line">&lt;init-param&gt;</div><div class="line">&lt;param-name&gt;logVerbosityLevel&lt;/param-name&gt;</div><div class="line">&lt;param-value&gt;WARNING&lt;/param-value&gt;</div><div class="line">&lt;/init-param&gt;</div><div class="line">&lt;init-param&gt;</div><div class="line">&lt;param-name&gt;compiler&lt;/param-name&gt;</div><div class="line">&lt;param-value&gt;jikes&lt;/param-value&gt;</div><div class="line">&lt;/init-param&gt;</div><div class="line">&lt;load-on-startup&gt;3&lt;/load-on-startup&gt;</div><div class="line">&lt;/servlet&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当然，给出的编译器必须已经安装在你的系统中，并且CLASSPATH可能需要设置，那处决于你选择的是何种编译器。</p>
+<h3 id="10-限制特定主机访问（Restricting-Access-to-Specific-Hosts）"><a href="#10-限制特定主机访问（Restricting-Access-to-Specific-Hosts）" class="headerlink" title="10.限制特定主机访问（Restricting Access to Specific Hosts）"></a>10.限制特定主机访问（Restricting Access to Specific Hosts）</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有时，可能想限制对Tomcat web应用的访问，比如，希望只有指定的主机或IP地址可以访问应用。这样一来，就只有那些指定的的客户端可以访问服务的内容了。为了实现这种效 果，Tomcat提供了两个参数供你配置：RemoteHostValve 和RemoteAddrValve。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;通过配置这两个参数，可以让你过滤来自请求的主机或IP地址，并允许或拒绝哪些主机/IP。与之类似的，在Apache的httpd文件里有对每个目录的允许/拒绝指定。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以把Admin Web application设置成只允许本地访问，设置如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;Context path=“/path/to/secret_files” …&gt;</div><div class="line">&lt;Valve className=“org.apache.catalina.valves.RemoteAddrValve”</div><div class="line">allow=“127.0.0.1” deny=“”/&gt;</div><div class="line">&lt;/Context&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果没有给出允许主机的指定，那么与拒绝主机匹配的主机就会被拒绝，除此之外的都是允许的。与之类似，如果没有给出拒绝主机的指定，那么与允许主机匹配的主机就会被允许，除此之外的都是拒绝的。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/13/Tomcat/11. tomcat连接常用数据库的用法/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          tomcat连接常用数据库的用法
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/13/Tomcat/1. tomcat 中 JDK 安装/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">tomcat 中 JDK 安装</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="Tomcat/10. tomcat常用功能的配置方法" data-title="tomcat常用功能的配置方法" data-url="https://hcldirgit.github.io/2017/10/13/Tomcat/10. tomcat常用功能的配置方法/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="tomcat常用功能的配置方法">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

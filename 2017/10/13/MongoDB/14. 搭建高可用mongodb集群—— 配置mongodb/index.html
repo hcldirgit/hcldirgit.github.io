@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>搭建高可用mongodb集群—— 配置mongodb | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;在大数据的时代，传统的关系型数据库要能更高的服务必须要解决高并发读写、海量数据高效存储、高可扩展性和高可用性这些难题。不过就是因为这些问题Nosql诞生了。">
+<meta name="keywords" content="MongoDB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搭建高可用mongodb集群—— 配置mongodb">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/10/13/MongoDB/14. 搭建高可用mongodb集群—— 配置mongodb/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;在大数据的时代，传统的关系型数据库要能更高的服务必须要解决高并发读写、海量数据高效存储、高可扩展性和高可用性这些难题。不过就是因为这些问题Nosql诞生了。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E6%90%AD%E5%BB%BA%E9%AB%98%E5%8F%AF%E7%94%A8mongodb%E9%9B%86%E7%BE%A4%E2%80%94%E2%80%94%20%E9%85%8D%E7%BD%AEmongodb/01.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E6%90%AD%E5%BB%BA%E9%AB%98%E5%8F%AF%E7%94%A8mongodb%E9%9B%86%E7%BE%A4%E2%80%94%E2%80%94%20%E9%85%8D%E7%BD%AEmongodb/02.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E6%90%AD%E5%BB%BA%E9%AB%98%E5%8F%AF%E7%94%A8mongodb%E9%9B%86%E7%BE%A4%E2%80%94%E2%80%94%20%E9%85%8D%E7%BD%AEmongodb/03.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E6%90%AD%E5%BB%BA%E9%AB%98%E5%8F%AF%E7%94%A8mongodb%E9%9B%86%E7%BE%A4%E2%80%94%E2%80%94%20%E9%85%8D%E7%BD%AEmongodb/04.png?raw=true">
+<meta property="og:updated_time" content="2017-10-13T12:48:53.688Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="搭建高可用mongodb集群—— 配置mongodb">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;在大数据的时代，传统的关系型数据库要能更高的服务必须要解决高并发读写、海量数据高效存储、高可扩展性和高可用性这些难题。不过就是因为这些问题Nosql诞生了。">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/%E6%90%AD%E5%BB%BA%E9%AB%98%E5%8F%AF%E7%94%A8mongodb%E9%9B%86%E7%BE%A4%E2%80%94%E2%80%94%20%E9%85%8D%E7%BD%AEmongodb/01.png?raw=true">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.43px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.26px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.74px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.48px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.3px;">FTP</a> <a href="/tags/Git/" style="font-size: 10.87px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.74px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.61px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.43px;">Jenkins</a> <a href="/tags/LAMP/" style="font-size: 19.57px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.96px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.52px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.13px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.35px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.3px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.65px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.39px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.74px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 17.83px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.3px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.78px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.3px;">Puppet</a> <a href="/tags/Python/" style="font-size: 14.78px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.52px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.17px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.78px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.91px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 16.09px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.61px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 13.04px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15.22px;">shell</a> <a href="/tags/shell练习/" style="font-size: 18.7px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 13.04px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-MongoDB/14. 搭建高可用mongodb集群—— 配置mongodb" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/MongoDB/14. 搭建高可用mongodb集群—— 配置mongodb/" class="article-date">
+  	<time datetime="2017-10-13T13:29:41.862Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      搭建高可用mongodb集群—— 配置mongodb
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MongoDB/">MongoDB</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在大数据的时代，传统的关系型数据库要能更高的服务必须要解决高并发读写、海量数据高效存储、高可扩展性和高可用性这些难题。不过就是因为这些问题Nosql诞生了。</p>
+<a id="more"></a>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;NOSQL有这些优势：</p>
+<ul>
+<li><strong>大数据量</strong>，可以通过廉价服务器存储大量的数据，轻松摆脱传统mysql单表存储量级限制。</li>
+<li><strong>高扩展性</strong>，Nosql去掉了关系数据库的关系型特性，很容易横向扩展，摆脱了以往老是纵向扩展的诟病。</li>
+<li><strong>高性能</strong>，Nosql通过简单的key-value方式获取数据，非常快速。还有NoSQL的Cache是记录级的，是一种细粒度的Cache，所以NoSQL在这个层面上来说就要性能高很多。</li>
+<li><strong>灵活的数据模型</strong>，NoSQL无需事先为要存储的数据建立字段，随时可以存储自定义的数据格式。而在关系数据库里，增删字段是一件非常麻烦的事情。如果是非常大数据量的表，增加字段简直就是一个噩梦。</li>
+<li><strong>高可用</strong>，NoSQL在不太影响性能的情况，就可以方便的实现高可用的架构。比如mongodb通过mongos、mongo分片就可以快速配置出高可用配置。</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在nosql数据库里，大部分的查询都是键值对（key、value）的方式。MongoDB是一个介于  关系数据库和非关系数据库之间的产品，是非关系数据库当中最像关系数据库的。支持类似于面向对象的查询语言，几乎可以实现类似关系数据库单表查询的绝大部分功能，而且还支持对数据建立索引。所以这个非常方便，我们可以用sql操作MongoDB，从关系型数据库迁移过来，开发人员学习成本会大大减少。如果再对底层的sql API做一层封装，开发基本可以感觉不到mongodb和关系型数据库的区别。同样MongoDB也是号称自己能够快速搭建一个高可用可扩展的的分布式集群，网上有很多搭建的文章，在我们搭建的时候还需要查找修改很多东西，所以把自己实战的步骤记录下来以备忘。我们看看如何一步一步搭建这个东东。</p>
+<h2 id="一、mongodb单实例。"><a href="#一、mongodb单实例。" class="headerlink" title="一、mongodb单实例。"></a>一、mongodb单实例。</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这种配置只适合简易开发时使用，生产使用不行，因为单节点挂掉整个数据业务全挂，如下图。</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E6%90%AD%E5%BB%BA%E9%AB%98%E5%8F%AF%E7%94%A8mongodb%E9%9B%86%E7%BE%A4%E2%80%94%E2%80%94%20%E9%85%8D%E7%BD%AEmongodb/01.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;虽然不能生产使用，但这个模式可以快速搭建启动，并且能够用mongodb的命令操作数据库。下面列出在linux下安装单节点mongodb的步骤</p>
+<ol>
+<li>建立mongodb测试文件夹</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#存放整个mongodb文件</span></div><div class="line">mkdir -p /data/mongodbtest/single </div><div class="line"></div><div class="line"><span class="comment">#存放mongodb数据文件</span></div><div class="line">mkdir -p /data/mongodbtest/single/data</div><div class="line"></div><div class="line"><span class="comment">#进入mongodb文件夹</span></div><div class="line"><span class="built_in">cd</span>  /data/mongodbtest/single</div></pre></td></tr></table></figure>
+<ol>
+<li>下载mongodb的安装程序包</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">wget http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-2.4.6.tgz</div><div class="line"></div><div class="line"><span class="comment">#解压下载的压缩包  </span></div><div class="line">tar xvzf mongodb-linux-x86_64-2.4.6.tgz</div><div class="line"></div><div class="line"><span class="comment">#进入mongodb程序执行文件夹</span></div><div class="line"><span class="built_in">cd</span> mongodb-linux-x86_64-2.4.6/bin/</div></pre></td></tr></table></figure>
+<ol>
+<li>启动单实例mongodb</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mongod  --dbpath /data/mongodbtest/single/data</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出日志如下，成功！</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[initandlisten] db version v2.4.6</div><div class="line">……..</div><div class="line">[initandlisten] waiting <span class="keyword">for</span> connections on port 27017</div><div class="line">[websvr] admin web console waiting <span class="keyword">for</span> connections on port 28017</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mongodb默认自带提供了web访问接口，通过 IP + 端口的形式可以访问。<a href="http://192.168.0.1:28017/" target="_blank" rel="external">http://192.168.0.1:28017/</a></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E6%90%AD%E5%BB%BA%E9%AB%98%E5%8F%AF%E7%94%A8mongodb%E9%9B%86%E7%BE%A4%E2%80%94%E2%80%94%20%E9%85%8D%E7%BD%AEmongodb/02.png?raw=true" alt=""></p>
+<h2 id="二、主从模式。"><a href="#二、主从模式。" class="headerlink" title="二、主从模式。"></a>二、主从模式。</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用mysql数据库时大家广泛用到，采用双机备份后主节点挂掉了后从节点可以接替主机继续服务。所以这种模式比单节点的高可用性要好很多。</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E6%90%AD%E5%BB%BA%E9%AB%98%E5%8F%AF%E7%94%A8mongodb%E9%9B%86%E7%BE%A4%E2%80%94%E2%80%94%20%E9%85%8D%E7%BD%AEmongodb/03.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面看一下怎么一步步搭建一个mongodb的主从复制节点：</p>
+<ol>
+<li><p>准备两台机器 192.168.0.1 和 192.168.0.2。 192.168.0.1 当作主节点， 192.168.0.2作为从节点。</p>
+</li>
+<li><p>分别下载mongodb安装程序包。在192.168.0.1上建立文件夹 /data/mongodbtest/master，192.168.0.2建立文件夹/data/mongodbtest/slave。</p>
+</li>
+<li><p>在192.168.0.1启动mongodb主节点程序。注意后面的这个 “ –master ”参数，标示主节点。</p>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mongod –dbpath /data/mongodbtest/master –master</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出日志如下，成功！</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[initandlisten] MongoDB starting : pid=18285 port=27017 dbpath=/data/mongodbtest/master master=1</div><div class="line"><span class="comment">#日志显示主节点参数</span></div><div class="line">[initandlisten] options: &#123; dbpath: “/data/mongodbtest/master”, master: <span class="literal">true</span> &#125;</div><div class="line">……..</div><div class="line">[initandlisten] waiting <span class="keyword">for</span> connections on port 27017</div></pre></td></tr></table></figure>
+<ol>
+<li>在192.168.0.2启动mongodb从节点程序。关键配置，指定主节点ip地址和端口 –source 192.168.0.1:27017 和 标示从节点 –source 参数。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mongod –dbpath /data/mongodbtest/slave –slave –<span class="built_in">source</span> 192.168.0.1:27017</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出日志如下，成功！</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[initandlisten] MongoDB starting : pid=17888 port=27017 dbpath=/data/mongodbtest/slave slave=1</div><div class="line">……..</div><div class="line">    <span class="comment">#日志显示从节点参数</span></div><div class="line">[initandlisten] options: &#123; dbpath: “/data/mongodbtest/slave”, slave: <span class="literal">true</span>, <span class="built_in">source</span>: “192.168.0.1:27017″ &#125;</div><div class="line">……..</div><div class="line">[initandlisten] waiting <span class="keyword">for</span> connections on port 27017</div><div class="line">    <span class="comment">#日志显示从节点 从主节点同步复制数据</span></div><div class="line">[replslave] repl: from host:192.168.0.1:27017</div></pre></td></tr></table></figure>
+<ol>
+<li>测试主从复制。</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在主节点上连接到终端：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">mongo 127.0.0.1</div><div class="line"></div><div class="line"><span class="comment">#建立test 数据库。</span></div><div class="line">use <span class="built_in">test</span>;</div><div class="line"></div><div class="line">往testdb表插入数据。</div><div class="line">&gt; db.testdb.insert(&#123;<span class="string">"test1"</span>:<span class="string">"testval1"</span>&#125;)</div><div class="line"></div><div class="line">查询testdb数据看看是否成功。</div><div class="line">&gt; db.testdb.find();</div><div class="line">&#123; <span class="string">"_id"</span> : ObjectId(<span class="string">"5284e5cb1f4eb215b2ecc463"</span>), <span class="string">"test1"</span> : <span class="string">"testval1"</span> &#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以看到主机的同步日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[initandlisten] connection accepted from 192.168.0.2:37285 <span class="comment">#3 (2 connections now open)</span></div><div class="line">[slaveTracking] update local.slaves query: &#123; _id: ObjectId(’5284e6268ed115d6238bdb39′), config: &#123; host: “192.168.0.2:35271″, upgradeNeeded: <span class="literal">true</span> &#125;, ns: “local.oplog.<span class="variable">$main</span>” &#125; update: &#123; <span class="variable">$set</span>: &#123; syncedTo: Timestamp 1384441570000|1 &#125; &#125; nscanned:1 nupdated:1 fastmod:1 keyUpdates:0 locks(micros) w:132015 132ms</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;检查从主机的数据。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mongo 127.0.0.1</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看当前数据库。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&gt; show dbs;</div><div class="line">  <span class="built_in">local</span>   0.203125GB</div><div class="line">  <span class="built_in">test</span>    0.203125GB</div><div class="line"></div><div class="line">use <span class="built_in">test</span>;</div><div class="line">db.testdb.find();</div><div class="line">&#123; <span class="string">"_id"</span> : ObjectId(<span class="string">"5284e5cb1f4eb215b2ecc463"</span>), <span class="string">"test1"</span> : <span class="string">"testval1"</span> &#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查询后数据已经同步过来了。再看看日志，发现从主机确实从主机同步了数据。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Thu Nov 14 23:05:13 [replslave] repl:   checkpoint applied 15 operations</div><div class="line">Thu Nov 14 23:05:13 [replslave] repl:   syncedTo: Nov 14 23:08:10 5284e75a:1</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看服务状态</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt; db.printReplicationInfo();</div><div class="line">          this is a slave, printing slave replication info.</div><div class="line">          <span class="built_in">source</span>:   192.168.0.1:27017</div><div class="line">              syncedTo: Sun Nov 17 2013 16:04:02 GMT+0800 (CST)</div><div class="line">                      = -54 secs ago (-0.01hrs)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;到此主从结构的mongodb搭建好了。</p>
+<h3 id="故障转移测试"><a href="#故障转移测试" class="headerlink" title="故障转移测试"></a>故障转移测试</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;现在两台服务器如果主服务器挂掉了，从服务器可以正常运转吗？</p>
+<ul>
+<li>a、先测试下从服务器可以当成主服务器吗，也就是往从服务器里写能够同步主服务器吗？</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在192.168.0.2上连接mongodb。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mongo 127.0.0.1:27017</div><div class="line">&gt; db.testdb.insert(&#123;<span class="string">"test3"</span>:<span class="string">"testval3"</span>&#125;);</div><div class="line">not master</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以看到 mongodb的从节点是不能提供写操作的，只能提供读操作。</p>
+<ul>
+<li>b、如果从服务器挂掉，主服务器还可以提供服务。如果主服务器挂掉了从服务器能否自动变为可写。</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;测试一下！</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;先杀掉原来的mongodb主服务器。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">kill</span> -3 `ps -ef|grep mongod|grep -v grep|awk <span class="string">'&#123;print $2&#125;'</span>`</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;测试从服务器能否可写。在192.168.0.2上连接mongodb测试。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt; db.testdb.insert(&#123;<span class="string">"test3"</span>:<span class="string">"testval3"</span>&#125;);</div><div class="line">not master</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;看起来从服务器没有自动接替主服务器的功能，只有手工处理了！</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;停止从服务器，在原数据文件启动并添加主服务器标示。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mongod  --dbpath /data/mongodbtest/slave --master</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;等到启动成功（时间有点长）。在192.168.0.2 上 连接</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mongo 192.168.0.2:27017</div><div class="line"></div><div class="line">&gt; db.testdb.find();</div><div class="line">&#123; <span class="string">"_id"</span> : ObjectId(<span class="string">"5288629e9b0318be4b20bd4c"</span>), <span class="string">"test1"</span> : <span class="string">"testval1"</span> &#125;</div><div class="line">&#123; <span class="string">"_id"</span> : ObjectId(<span class="string">"528862d69b0318be4b20bd4d"</span>), <span class="string">"test2"</span> : <span class="string">"testval2"</span> &#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;成功！</p>
+<h3 id="多个从节点"><a href="#多个从节点" class="headerlink" title="多个从节点"></a>多个从节点</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;现在只是一个数据库服务器又提供写又提供读，机器承载会出现瓶颈。大家还记得mysql里的读写分离吗？把20%的写放到主节点，80%的读放到从节点分摊了减少了服务器的负载。但是大部分应用都是读操作带来的压力，一个从节点压力负载不了，可以把一个从节点变成多个节点。那mongodb的一主多从可以支持吗？答案是肯定的。</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E6%90%AD%E5%BB%BA%E9%AB%98%E5%8F%AF%E7%94%A8mongodb%E9%9B%86%E7%BE%A4%E2%80%94%E2%80%94%20%E9%85%8D%E7%BD%AEmongodb/04.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为了方便测试，在192.168.0.2上再建立一个文件夹 /data/mongodbtest/slave1 作为另一个slave服务器。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动slave2服务，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mongod  --dbpath /data/mongodbtest/slave1 --slave  --port 27017 --<span class="built_in">source</span> 192.168.0.1:27017。</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;成功启动后通过mongodb连接测试：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt; db.testdb.find();</div><div class="line">&#123; <span class="string">"_id"</span> : ObjectId(<span class="string">"5288629e9b0318be4b20bd4c"</span>), <span class="string">"test1"</span> : <span class="string">"testval1"</span> &#125;</div><div class="line">&#123; <span class="string">"_id"</span> : ObjectId(<span class="string">"528862d69b0318be4b20bd4d"</span>), <span class="string">"test2"</span> : <span class="string">"testval2"</span> &#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;搭建了这套主从复制系统是不是就很稳健了，其实不然。。。看看这几个问题？</p>
+<ul>
+<li>主节点挂了能否自动切换连接？目前需要手工切换。</li>
+<li>主节点的写压力过大如何解决？</li>
+<li>从节点每个上面的数据都是对数据库全量拷贝，从节点压力会不会过大？</li>
+<li>就算对从节点路由实施路由访问策略能否做到自动扩展？</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;参考：<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<a href="http://www.infoq.com/cn/news/2011/01/nosql-why/" target="_blank" rel="external">NoSQL开篇——为什么要使用NoSQL</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<a href="http://cn.docs.mongodb.org/manual/single/" target="_blank" rel="external">mongodb手册</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/13/MongoDB/5. MongoDB 备份和恢复/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          MongoDB 备份和恢复
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/13/MongoDB/12. MongoDB副本集学习：性能和优化相关/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">MongoDB副本集学习：性能和优化相关</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="MongoDB/14. 搭建高可用mongodb集群—— 配置mongodb" data-title="搭建高可用mongodb集群—— 配置mongodb" data-url="https://hcldirgit.github.io/2017/10/13/MongoDB/14. 搭建高可用mongodb集群—— 配置mongodb/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="搭建高可用mongodb集群—— 配置mongodb">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>squid故障汇总 | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;1、COSS will not function without large file support (off_t is 4 bytes long. Please reconsider recompiling squid with –with-large-files &amp;#160;&amp;#160;&amp;#160">
+<meta name="keywords" content="Squid">
+<meta property="og:type" content="article">
+<meta property="og:title" content="squid故障汇总">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/10/13/Squid/10. squid故障汇总/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;1、COSS will not function without large file support (off_t is 4 bytes long. Please reconsider recompiling squid with –with-large-files &amp;#160;&amp;#160;&amp;#160">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-13T13:23:33.352Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="squid故障汇总">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;1、COSS will not function without large file support (off_t is 4 bytes long. Please reconsider recompiling squid with –with-large-files &amp;#160;&amp;#160;&amp;#160">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.43px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.26px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.74px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.48px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.3px;">FTP</a> <a href="/tags/Git/" style="font-size: 10.87px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.74px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.61px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.43px;">Jenkins</a> <a href="/tags/LAMP/" style="font-size: 19.57px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.96px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.52px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.13px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.35px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.3px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.65px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.39px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.74px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 17.83px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.3px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.78px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.3px;">Puppet</a> <a href="/tags/Python/" style="font-size: 14.78px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.52px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.17px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.78px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.91px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 16.09px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.61px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 13.04px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15.22px;">shell</a> <a href="/tags/shell练习/" style="font-size: 18.7px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 13.04px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Squid/10. squid故障汇总" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Squid/10. squid故障汇总/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.089Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      squid故障汇总
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Squid/">Squid</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;1、COSS will not function without large file support (off_t is 4 bytes long. Please reconsider recompiling squid with –with-large-files</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Bungled squid_webcache.conf 。。。。。。。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;检查是否在编译squid的时候未加入 –with-large-files 选项，如果是，重新加入此选项再编译一次squid</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;2、使用coss缓存格式的时候，squid不断重建cache</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可能原因为maxfullbufs值过低，去掉maxfullbufs限制，让其值为无限</p>
+<a id="more"></a>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;3、日志中有类似如下的内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">2007/03/05 14:46:56| Ready to serve requests.</div><div class="line"></div><div class="line">2007/03/05 14:46:59| clientReadRequest: FD 11 (192.168.1.5:34061) Invalid Request</div><div class="line"></div><div class="line"></div><div class="line">Illegal character <span class="keyword">in</span> hostname; underscores are not allowed</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注释： 无效的字符串，访问地址中不允许下划线。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解决办法 ：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;squid 2.5 中，编译的时候加入如下参数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">--<span class="built_in">enable</span>-underscore</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;允许解析的URL中出现下划线，因为默认squid会认为带下划线的URL地址是非法的，并拒绝访问该地址。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;对于 2.6 版本，编译时没有这个参数，这个参数出现在 squid.conf 的配置文档里，说明是这样的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">allow_underscore New option to allow _ <span class="keyword">in</span> hostnames, replacing the similar build time configure option <span class="keyword">in</span> 2.5 and earlier.</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;具体的在 squid.conf 中的参数，可以在配置文档里搜索一下 allow_underscore，看一下配置文档的具体注释。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;4、squid的cache.log日志中又类似如下的警告：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">WARNING: 100 swapin MD5 mismatches</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个错误是说squid读入一个缓存文件的时候，存储在接口对应的位置的URL不是squid认为应该存储在那里的数据。这可能是swap.state有错误或文件指到了磁盘上错误的块（文件系统有错误）。停止squid应用，删除swap.state然后启动squid，让它通过读取缓存文件来重建缓存记录，如果重建后仍然出现上面的情况，那应该就是文件系统或磁盘有问题了。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;5、日志中出现下面警告：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">Jun 28 11:14:38 localhost squid[27178]: squidaio_queue_request: Syncing pending I/O operations.. (blocking)</div><div class="line"></div><div class="line">Jun 28 11:14:59 localhost squid[27178]: squidaio_queue_request: Synced</div><div class="line"></div><div class="line">Jun 28 11:14:59 localhost squid[27178]: storeAufsOpenDone: (2) No such file or directory</div><div class="line"></div><div class="line">Jun 28 11:14:59 localhost squid[27178]:         /data/squid/cache_webcache1/00/6B/00006B29</div><div class="line"></div><div class="line">Jun 28 11:14:59 localhost squid[27178]: storeAufsOpenDone: (2) No such file or directory</div><div class="line"></div><div class="line">Jun 28 11:14:59 localhost squid[27178]:         /data/squid/cache_webcache1/00/DC/0000DC36</div><div class="line"></div><div class="line">Jun 28 11:14:59 localhost squid[27178]: WARNING: 1 swapin MD5 mismatches</div><div class="line"></div><div class="line">Jun 28 11:14:59 localhost squid[27178]: WARNING: Disk space over <span class="built_in">limit</span>: 18925740 KB &gt; 16777216 KB</div><div class="line"></div><div class="line">Jun 28 11:14:59 localhost squid[27178]: storeAufsOpenDone: (2) No such file or directory</div><div class="line"></div><div class="line">Jun 28 11:14:59 localhost squid[27178]:         /data/squid/cache_webcache2/00/92/0000924F</div><div class="line"></div><div class="line">Jun 28 11:14:59 localhost squid[27178]: storeAufsOpenDone: (2) No such file or directory</div><div class="line"></div><div class="line">Jun 28 11:14:59 localhost squid[27178]:         /data/squid/cache_webcache1/03/6F/00036FB6</div><div class="line"></div><div class="line">Jun 28 11:14:59 localhost squid[27178]: squidaio_queue_request: Async request queue growing uncontrollably!</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解决方法：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;检查配置文件，cache设置为aufs文件系统格式，将此设置改为ufs，重建cache缓存目录</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;6、运行reconfigure的时候出现squid: ERROR: no running copy</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;原因是找不到pid文件，如果不是使用默认的squid.conf作为squid 的设置文件，在用squid目录下sbin/squid进行重新启动等动作的时候要加上-f的参数制定配置文件，同时检查pid文件是否存在，有时候可能错误地配置了pid文件到不存在的目录，或者将pid文件配置到了应用没有权限写入的目录，导致没有创建pid文件，如果pid文件不存在，可以手工创建该pid，然后获取squid的pid并写人pid文件。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;7、squid在压力大的情况下响应非常慢</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;检查是否文件描述符太小，如果是，调整文件描述符限制，重启squid，检查squid运行的文件描述符，如果为调整后的，则在启动脚本处启动squid的地方加入调整文件描述符的命令，否则除此外还需先调整文件描述符限制然后重新编译安装一次squid</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;8、缓存效率下降，查看日志无报错，netstat -na查看连接有比较多的连接为SYN_RE，且多为同一IP过来的连接</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;优化TCP网络</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> 1 &gt; /proc/sys/net/ipv4/tcp_syncookies</div><div class="line"></div><div class="line"><span class="built_in">echo</span> 1 &gt; /proc/sys/net/ipv4/tcp_synack_retries</div><div class="line"></div><div class="line"><span class="built_in">echo</span> 1 &gt; /proc/sys/net/ipv4/tcp_syn_retries</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;9、缓存效率低，网卡输入输出流量差距很小。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先查看系统日志有无squid的报错，如果没有再查看dmesg，看看有无丢包，是否网卡问题，如果没有再查看网关</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用squid的时候网关问题关系重大，如果网关没有配置正确，将可能导致用户访问不了。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;10、日志报如下错误：squid: Could not determine fully qualified hostname. Please set ‘visible_hostname’</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;检查/etc/hosts文件、/etc/sysconfig/network文件、和hostname命令结果，看看三者是否对应，如果不对应，需要修改为对应，并且/etc/hosts文件中对应的配置还需要有合法域名格式</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;/etc/sysconfig/network中的hostname是系统启动时候加载的hostname值，如果此值与/etc/hosts文件中的值不对应并且squid中没有设置visible_hostname选项的话，会导致系统重启后squid不能正常启动。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;11、日志大量报如下错误：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Apr 29 08:28:56 localhost squid[13851]: httpReadReply: Excess data from <span class="string">"HEAD http://192.168.230.1/"</span></div><div class="line"></div><div class="line">Apr 29 08:28:56 localhost squid[13851]: httpReadReply: Excess data from <span class="string">"HEAD http://192.168.230.1/"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这表明服务器返回一个超过squid声明的响应对象最大值的返回值。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;它违反了HTTP协议并导致服务器返回被截断。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;12.runcache发现频繁重启后停止服务:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">:./bin/RunCache Running: squid -sY &gt;&gt; /usr/<span class="built_in">local</span>/squid//var/squid.out 2&gt;&amp;1</div><div class="line"></div><div class="line">./bin/RunCache: line 35: 20000 File size <span class="built_in">limit</span> exceededsquid -NsY <span class="variable">$conf</span> &gt;&gt;<span class="variable">$logdir</span>/squid.out 2&gt;&amp;1</div><div class="line"></div><div class="line">./bin/RunCache: line 35: 20177 File size <span class="built_in">limit</span> exceededsquid -NsY <span class="variable">$conf</span> &gt;&gt;<span class="variable">$logdir</span>/squid.out 2&gt;&amp;1</div><div class="line"></div><div class="line">RunCache: EXITING DUE TO REPEATED, FREQUENT FAILURES</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;故障原因: log超过了ext3文件系统最大支持容量2G导致,解决办法:</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;每天轮循一次日志0 0 <em> </em> * /usr/local/squid/sbin/squid -k rotate</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;13.报错信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">FATAL:  Failed to verify one of the swap directories, Check cache.log</div><div class="line">        <span class="keyword">for</span> details.  Run <span class="string">'squid -z'</span> to create swap directories</div><div class="line">        <span class="keyword">if</span> needed, or <span class="keyword">if</span> running Squid <span class="keyword">for</span> the first time.</div><div class="line">Squid Cache (Version 2.6.STABLE18): Terminated abnormally.</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;未执行squid -z命令需要执行该命令初始化cache目录，假如想观察这个过程 squid -zX</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Creating Swap Directories</div><div class="line">FATAL: Failed to make swap directory /usr/local/squid/var/cache/00:</div><div class="line">    (13) Permission denied</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;确认/usr/local/squid/var/cache目录的所有组成都可被squid.conf给定的用户ID访问</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">WARNING:squidaio_queue_request: WARNING - Queue congestion</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;IO的队列满了, ,重谝一下源代码,加大IO的队列或换一种IO方式。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编译时：–enable-async-io=40 （40，少了）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">helperOpenServers: Starting 5 <span class="string">'dnsserver'</span> processes</div><div class="line">ipcCreate: fork: (12) Cannot allocate memory</div><div class="line">WARNING: Cannot run <span class="string">'/opt/squid/libexec/dnsserver'</span> process.</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;系统内存被耗光，没有内存分配给squid的dns进程</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">FATAL: xcalloc: Unable to allocate 1 blocks of 4108 bytes!</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Squid 开启大内存导致进程内存溢出</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">cache.log</div><div class="line">2009/08/27 20:49:55| HTCP Disabled.</div><div class="line">2009/08/27 20:49:55| sendto FD 17: (1) Operation not permitted</div><div class="line">2009/08/27 20:49:55| ipcCreate: CHILD: hello write <span class="built_in">test</span> failed</div><div class="line">????</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;configure时编译了–enable-icmp参数，去掉即可。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/13/Squid/11. squid内核优化 减轻timewait问题/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          squid内核优化 减轻timewait问题
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/13/Squid/1. squid服务介绍/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">squid服务介绍</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="Squid/10. squid故障汇总" data-title="squid故障汇总" data-url="https://hcldirgit.github.io/2017/10/13/Squid/10. squid故障汇总/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="squid故障汇总">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

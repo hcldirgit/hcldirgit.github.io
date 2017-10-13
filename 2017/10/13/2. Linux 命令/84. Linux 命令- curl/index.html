@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Linux 命令- curl | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;curl是Linux系统命令行下用来简单测试web访问的工具，是一个利用URL规则在命令行下工作的文件传输工具。它支持文件的上传和下载。">
+<meta name="keywords" content="Linux命令">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 命令- curl">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/10/13/2. Linux 命令/84. Linux 命令- curl/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;curl是Linux系统命令行下用来简单测试web访问的工具，是一个利用URL规则在命令行下工作的文件传输工具。它支持文件的上传和下载。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-13T09:51:49.639Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux 命令- curl">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;curl是Linux系统命令行下用来简单测试web访问的工具，是一个利用URL规则在命令行下工作的文件传输工具。它支持文件的上传和下载。">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.43px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.26px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.74px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.48px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.3px;">FTP</a> <a href="/tags/Git/" style="font-size: 10.87px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.74px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.61px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.43px;">Jenkins</a> <a href="/tags/LAMP/" style="font-size: 19.57px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.96px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.52px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.13px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.35px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.3px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.65px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.39px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.74px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 17.83px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.3px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.78px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.3px;">Puppet</a> <a href="/tags/Python/" style="font-size: 14.78px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.52px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.17px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.78px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.91px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 16.09px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.61px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 13.04px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15.22px;">shell</a> <a href="/tags/shell练习/" style="font-size: 18.7px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 13.04px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-2. Linux 命令/84. Linux 命令- curl" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/2. Linux 命令/84. Linux 命令- curl/" class="article-date">
+  	<time datetime="2017-10-13T13:29:41.769Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Linux 命令- curl
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux命令/">Linux命令</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;curl是Linux系统命令行下用来简单测试web访问的工具，是一个利用URL规则在命令行下工作的文件传输工具。它支持文件的上传和下载。</p>
+<a id="more"></a>
+<h2 id="命令参数"><a href="#命令参数" class="headerlink" title="命令参数"></a>命令参数</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;curl命令参数很多。</p>
+<ul>
+<li><p>-a/–append 上传文件时，附加到目标文件</p>
+</li>
+<li><p>-A:随意指定自己这次访问所宣称的自己的浏览器信息</p>
+</li>
+<li><p>-b/–cookie <name=string file=""> cookie字符串或文件读取位置，使用option来把上次的cookie信息追加到http request里面去。</name=string></p>
+</li>
+<li><p>-c/–cookie-jar <file> 操作结束后把cookie写入到这个文件中</file></p>
+</li>
+<li><p>-C/–continue-at <offset>  断点续转</offset></p>
+</li>
+<li><p>-d/–data <data>   HTTP POST方式传送数据</data></p>
+<ul>
+<li>–data-ascii <data>    以ascii的方式post数据</data></li>
+<li>–data-binary <data>    以二进制的方式post数据</data></li>
+<li>–negotiate    使用HTTP身份验证</li>
+<li>–digest    使用数字身份验证</li>
+<li>–disable-eprt    禁止使用EPRT或LPRT</li>
+<li>–disable-epsv    禁止使用EPSV</li>
+</ul>
+</li>
+<li><p>-D/–dump-header <file> 把header信息写入到该文件中</file></p>
+<ul>
+<li>–egd-file <file>  为随机数据(SSL)设置EGD socket路径</file></li>
+<li>–tcp-nodelay     使用TCP_NODELAY选项</li>
+</ul>
+</li>
+<li><p>-e/–referer <url>  指定引用地址</url></p>
+</li>
+<li><p>-F/–form <name=content>   模拟http表单提交数据</name=content></p>
+<ul>
+<li>–form-string <name=string> 模拟http表单提交数据</name=string></li>
+</ul>
+</li>
+<li><p>-G/–get    以get的方式来发送数据</p>
+</li>
+<li><p>-H/–header <header> 指定请求头参数</header></p>
+<ul>
+<li>–ignore-content-length  忽略的HTTP头信息的长度</li>
+</ul>
+</li>
+<li><p>-i/–include     输出时包括protocol头信息</p>
+</li>
+<li><p>-I/–head 仅返回头部信息，使用HEAD请求</p>
+</li>
+<li><p>-k/–insecure  允许不使用证书到SSL站点</p>
+</li>
+<li><p>-K/–config    指定的配置文件读取</p>
+</li>
+<li><p>-l/–list-only   列出ftp目录下的文件名称</p>
+<ul>
+<li>–limit-rate <rate> 设置传输速度</rate></li>
+<li>–local-port<num>  强制使用本地端口号</num></li>
+</ul>
+</li>
+<li><p>-m/–max-time <seconds> 指定处理的最大时长</seconds></p>
+<ul>
+<li>–max-redirs <num>    设置最大读取的目录数</num></li>
+<li>–max-filesize <bytes>  设置最大下载的文件总量</bytes></li>
+</ul>
+</li>
+<li><p>-o/–output <file>   指定输出文件名称</file></p>
+</li>
+<li><p>-O/–remote-name  把输出写到该文件中，保留远程文件的文件名</p>
+</li>
+<li><p>-v/–verbose  小写的v参数，用于打印更多信息，包括发送的请求信息，这在调试脚本是特别有用。</p>
+</li>
+<li><p>-s/–slient 减少输出的信息，比如进度</p>
+</li>
+<li><p>–connect-timeout <seconds> 指定尝试连接的最大时长</seconds></p>
+</li>
+<li><p>-x/–proxy <proxyhost[:port]> 指定代理服务器地址和端口，端口默认为1080</proxyhost[:port]></p>
+</li>
+<li><p>-u/–user <user[:password]>设置服务器的用户和密码</user[:password]></p>
+</li>
+<li><p>-r/–range <range>检索来自HTTP/1.1或FTP服务器字节范围</range></p>
+<ul>
+<li>–range-file 读取（SSL）的随机文件</li>
+</ul>
+</li>
+<li><p>-R/–remote-time   在本地生成文件时，保留远程文件时间</p>
+<ul>
+<li>–retry <num>   指定重试次数</num></li>
+<li>–retry-delay <seconds>   传输出现问题时，设置重试间隔时间</seconds></li>
+<li>–retry-max-time <seconds>  传输出现问题时，设置最大重试时间</seconds></li>
+</ul>
+</li>
+<li><p>-s/–silent  静默模式。不输出任何东西</p>
+</li>
+<li><p>-S/–show-error  显示错误</p>
+<ul>
+<li>–socks4 <host[:port]> 用socks4代理给定主机和端口</host[:port]></li>
+<li>–socks5 <host[:port]> 用socks5代理给定主机和端口</host[:port]></li>
+<li>–stderr <file></file></li>
+</ul>
+</li>
+<li><p>-x/–proxy <host[:port]> 在给定的端口上使用HTTP代理</host[:port]></p>
+</li>
+<li><p>-X/–request <command> 指定什么命令。curl默认的HTTP动词是GET，使用-X参数可以支持其他动词。</p>
+</li>
+<li><p>-T/–upload-file <file> 指定上传文件路径</file></p>
+</li>
+</ul>
+<h2 id="命令功能"><a href="#命令功能" class="headerlink" title="命令功能"></a>命令功能</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;curl命令是一个功能强大的网络工具，它能够通过http、ftp等方式下载文件，也能够上传文件，同时支持HTTPS等众多协议，还支持POST、cookies、认证、从指定偏移处下载部分文件、用户代理字符串、限速、文件大小、进度条等特征。其实curl远不止前面所说的那些功能，大家可以通过man curl阅读手册页获取更多的信息。类似的工具还有wget。curl命令使用了libcurl库来实现，libcurl库常用在C程序中用来处理HTTP请求，curlpp是libcurl的一个C++封装，这几个东西可以用在抓取网页、网络监控等方面的开发，而curl命令可以帮助来解决开发过程中遇到的问题。</p>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><h3 id="1-x指定ip和端口，省略写hosts，方便使用"><a href="#1-x指定ip和端口，省略写hosts，方便使用" class="headerlink" title="1.-x指定ip和端口，省略写hosts，方便使用"></a>1.-x指定ip和端口，省略写hosts，方便使用</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># curl -xip:port www.baidu.com</span></div></pre></td></tr></table></figure>
+<h3 id="2-I可以把当前的内容略掉，只显示状态码，-v可以显示详细过程"><a href="#2-I可以把当前的内容略掉，只显示状态码，-v可以显示详细过程" class="headerlink" title="2.-I可以把当前的内容略掉，只显示状态码，-v可以显示详细过程"></a>2.-I可以把当前的内容略掉，只显示状态码，-v可以显示详细过程</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># curl -Iv http://www.qq.com</span></div></pre></td></tr></table></figure>
+<h3 id="3-u可以指定用户名和密码"><a href="#3-u可以指定用户名和密码" class="headerlink" title="3.-u可以指定用户名和密码"></a>3.-u可以指定用户名和密码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># curl -u user:password http://123.com</span></div></pre></td></tr></table></figure>
+<h3 id="4-O直接下载页面或者对象"><a href="#4-O直接下载页面或者对象" class="headerlink" title="4.-O直接下载页面或者对象"></a>4.-O直接下载页面或者对象</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># curl http://study.lishiming.net/index.heml -O</span></div></pre></td></tr></table></figure>
+<h3 id="5-o自定义名字"><a href="#5-o自定义名字" class="headerlink" title="5.-o自定义名字"></a>5.-o自定义名字</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># curl -o index2 http://study.lishiming.net/index.heml</span></div></pre></td></tr></table></figure>
+<h2 id="使用实例"><a href="#使用实例" class="headerlink" title="使用实例"></a>使用实例</h2><h3 id="实例1：读取网页"><a href="#实例1：读取网页" class="headerlink" title="实例1：读取网页"></a>实例1：读取网页</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl http://www.linuxidc.com</div></pre></td></tr></table></figure>
+<h3 id="实例2：保存网页"><a href="#实例2：保存网页" class="headerlink" title="实例2：保存网页"></a>实例2：保存网页</h3><h4 id="o：将文件保存为命令行中指定的文件名的文件中"><a href="#o：将文件保存为命令行中指定的文件名的文件中" class="headerlink" title="-o：将文件保存为命令行中指定的文件名的文件中"></a>-o：将文件保存为命令行中指定的文件名的文件中</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -o page.html http://www.linuxidc.com.html</div></pre></td></tr></table></figure>
+<h4 id="O：使用URL中默认的文件名保存文件到本地"><a href="#O：使用URL中默认的文件名保存文件到本地" class="headerlink" title="-O：使用URL中默认的文件名保存文件到本地"></a>-O：使用URL中默认的文件名保存文件到本地</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -O http://linuxidc.com.html</div></pre></td></tr></table></figure>
+<h4 id="其他：可以使用-gt-进行输出"><a href="#其他：可以使用-gt-进行输出" class="headerlink" title="其他：可以使用 &gt; 进行输出"></a>其他：可以使用 <code>&gt;</code> 进行输出</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl http://www.linuxidc.com &gt; page.html</div></pre></td></tr></table></figure>
+<h3 id="实例3：使用proxy服务器及其端口：-x"><a href="#实例3：使用proxy服务器及其端口：-x" class="headerlink" title="实例3：使用proxy服务器及其端口：-x"></a>实例3：使用proxy服务器及其端口：-x</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -x 123.45.67.89:1080 -o page.html http://www.linuxidc.com</div></pre></td></tr></table></figure>
+<h3 id="实例4：使用cookie来记录session信息"><a href="#实例4：使用cookie来记录session信息" class="headerlink" title="实例4：使用cookie来记录session信息"></a>实例4：使用cookie来记录session信息</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -x 123.45.67.89:1080 -o page.html -D cookie0001.txt http://www.linuxidc.com</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个option： -D是把http的response里面的cookie信息存到一个特别的文件中去，</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样，当页面被存到page.html的同时，cookie信息也被存到了cookie0001.txt里面了</p>
+<h3 id="实例5：下次访问的时候，使用iption把上次的cookie信息追加到http-request里面去：-b"><a href="#实例5：下次访问的时候，使用iption把上次的cookie信息追加到http-request里面去：-b" class="headerlink" title="实例5：下次访问的时候，使用iption把上次的cookie信息追加到http request里面去：-b"></a>实例5：下次访问的时候，使用iption把上次的cookie信息追加到http request里面去：-b</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -x 123.45.6789:1080 -o page1.html -D cookie0002.txt -b cookie0001.txt http://www.linuxidc.com</div></pre></td></tr></table></figure>
+<h3 id="实例6：浏览器信息"><a href="#实例6：浏览器信息" class="headerlink" title="实例6：浏览器信息"></a>实例6：浏览器信息</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -A <span class="string">"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)"</span> -x 123.45.67.89:1080 -o page.html -D cookie0001.txt http://www.linuxidc.com</div></pre></td></tr></table></figure>
+<h3 id="实例7：referer"><a href="#实例7：referer" class="headerlink" title="实例7：referer"></a>实例7：referer</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -A <span class="string">"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)"</span> -x 123.45.67.89:1080 -e <span class="string">"mail.linuxidc.com"</span> -o page.html -D cookie0001.txt http://www.linuxidc.com</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样就可以骗对方的服务器，你是从mail.linuxidc.com点击某个连接过来的。</p>
+<h3 id="实例8：下载文件"><a href="#实例8：下载文件" class="headerlink" title="实例8：下载文件"></a>实例8：下载文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">curl -o 1.jpg http://cgi2.tky.3web.ne.jp/~zzh/screen1.JPG</div><div class="line">curl -O http://cgi2.tky.3web.ne.jp/~zzh/screen1.JPG</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;-O可以按照服务器上的文件名，自动存在本地</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -O http://cgi2.tky.3web.ne.jp/~zzh/screen[1-10].JPG</div></pre></td></tr></table></figure>
+<h3 id="实例9：批量下载"><a href="#实例9：批量下载" class="headerlink" title="实例9：批量下载"></a>实例9：批量下载</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -O http://cgi2.tky.3web.ne.jp/~&#123;zzh,nick&#125;/[001-201].JPG</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样产生的下载就是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">~zzh/001.JPG</div><div class="line">~zzh/002.JPG</div><div class="line">...</div><div class="line">~zzh/201.JPG</div><div class="line">~nick/001.JPG</div><div class="line">~nick/002.JPG</div><div class="line">...</div><div class="line">~nick/201.JPG</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;自定义文件名的批量下载</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -o <span class="comment">#2_#1.jpg http://cgi2.tky.3web.ne.jp/~&#123;zzh,nick&#125;/[001-201].JPG</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样，自定义出来下载下来的文件名就变成了这样：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;原来：<code>~zzh/001.JPG</code>  –&gt; 下载后： <code>001-zzh.JPG</code>  原来： <code>~nick/001.JPG</code> –&gt; 下载后： <code>001-nick.JPG</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样就不怕文件重名了。</p>
+<h3 id="实例10：断点续传"><a href="#实例10：断点续传" class="headerlink" title="实例10：断点续传"></a>实例10：断点续传</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -c -O http://cgi2.tky.3wb.ne.jp/~zzh/screen1.JPG</div></pre></td></tr></table></figure>
+<h3 id="实例11：使用-r-分块下载"><a href="#实例11：使用-r-分块下载" class="headerlink" title="实例11：使用-r 分块下载"></a>实例11：使用-r 分块下载</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;比如有一个 <code>http://cgi2.tky.2web.ne.jp/~zzh/zhao1.MP3</code> 要下载。就可以用这样的命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">curl -r 0-10240 -o <span class="string">"zhao.part1"</span> http:/cgi2.tky.3web.ne.jp/~zzh/zhao1.MP3 &amp;\</div><div class="line">curl -r 10241-20480 -o <span class="string">"zhao.part1"</span> http:/cgi2.tky.3web.ne.jp/~zzh/zhao1.MP3 &amp;\</div><div class="line">curl -r 20481-40960 -o <span class="string">"zhao.part1"</span> http:/cgi2.tky.3web.ne.jp/~zzh/zhao1.MP3 &amp;\</div><div class="line">curl -r 40961- -o <span class="string">"zhao.part1"</span> http:/cgi2.tky.3web.ne.jp/~zzh/zhao1.MP3</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样就可以分块下载了。不过需要自己把这些破碎的文件合并起来，如果用UNIX或者苹果，用 <code>cat zhao.part* &gt; zhao.MP3</code> 就可以了；如果用的windows 用 <code>copy /b</code> 来解决。</p>
+<h3 id="实例12：使用FTP协议下载"><a href="#实例12：使用FTP协议下载" class="headerlink" title="实例12：使用FTP协议下载"></a>实例12：使用FTP协议下载</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上面都是http协议的下载，其实ftp也一样可以用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -u name:passwd ftp://ip:port/path/file</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;或者</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl ftp://name:passwd@ip:port/path/file</div></pre></td></tr></table></figure>
+<h3 id="实例13：使用-T上传"><a href="#实例13：使用-T上传" class="headerlink" title="实例13：使用-T上传"></a>实例13：使用-T上传</h3><h4 id="向ftp传一个文件："><a href="#向ftp传一个文件：" class="headerlink" title="向ftp传一个文件："></a>向ftp传一个文件：</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -T localfile -u name:passwd ftp://upload_site:port/path/</div></pre></td></tr></table></figure>
+<h4 id="向http服务器上传文件"><a href="#向http服务器上传文件" class="headerlink" title="向http服务器上传文件"></a>向http服务器上传文件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -T localfile http://cgi2.tky.3web.ne.jp/~zzh/abc.cgi</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意，这个时候，使用协议是HTTP的PUT method</p>
+<h3 id="实例14：POST和GET模式"><a href="#实例14：POST和GET模式" class="headerlink" title="实例14：POST和GET模式"></a>实例14：POST和GET模式</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说到PUT，自然还有其它几种methos，POST和GET</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl http://www.linuxidc.com/login.cgi?user=nickwolfe&amp;password=12345</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;POST模式的option是-d</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -d <span class="string">"user=nickwolfe&amp;password=12345"</span> http://www.linuxidc.com/login.cgi</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需要注意的是，POST模式下的文件上传，比如一个HTTP表单，要用curl进行模拟，就该是:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -F upload=@localfile -F nick=go http://cgi2.tky.3web.ne.jp/~zzh/up_file.cgi</div></pre></td></tr></table></figure>
+<h3 id="实例15：http本地证书"><a href="#实例15：http本地证书" class="headerlink" title="实例15：http本地证书"></a>实例15：http本地证书</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -E localcert.pem https://remote_server</div></pre></td></tr></table></figure>
+<h3 id="实例16：使用curl通过dict协议去查字典"><a href="#实例16：使用curl通过dict协议去查字典" class="headerlink" title="实例16：使用curl通过dict协议去查字典"></a>实例16：使用curl通过dict协议去查字典</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl dict://dict.org/d:computer</div></pre></td></tr></table></figure>
+<h3 id="实例17：获取服务端的信息，比如获取web-Server的类型（apache-nginx）以及版本，php的版本等等"><a href="#实例17：获取服务端的信息，比如获取web-Server的类型（apache-nginx）以及版本，php的版本等等" class="headerlink" title="实例17：获取服务端的信息，比如获取web Server的类型（apache/nginx）以及版本，php的版本等等"></a>实例17：获取服务端的信息，比如获取web Server的类型（apache/nginx）以及版本，php的版本等等</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -i http://example.com/</div></pre></td></tr></table></figure>
+<h3 id="实例18：curl指定用户以及密码访问"><a href="#实例18：curl指定用户以及密码访问" class="headerlink" title="实例18：curl指定用户以及密码访问"></a>实例18：curl指定用户以及密码访问</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有时候，访问一个网页时是需要认证的，也就是说需要输入正确的用户名以及密码信息，否则会包401的错误</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -u user:password http://www.linuxidc.com/study/</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样就可以了</p>
+<h3 id="实例19：在linux上使用curl访问网站，指定主机IP"><a href="#实例19：在linux上使用curl访问网站，指定主机IP" class="headerlink" title="实例19：在linux上使用curl访问网站，指定主机IP"></a>实例19：在linux上使用curl访问网站，指定主机IP</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在linux的命令窗口下，无法使用浏览器去浏览网站，但是可以用curl访问html代码。有时，为了指定某个域名的IP，需要写hosts，比较费事。可以临时用curl命令指定一个IP</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl www.example.com -x192.168.0.111:80</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用 <code>-x</code> 选项指定主机IP，这种方法类似与IE设置了一个代理服务器。但有时候（访问https时）这样访问不太好用，可以使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -H <span class="string">"Host:www.abc.com"</span> https://192.168.0.111/aaa.txt</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/13/2. Linux 命令/56. Linux 命令- ping/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          Linux 命令- ping
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/13/2. Linux 命令/51. Linux 命令- at/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Linux 命令- at</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="2. Linux 命令/84. Linux 命令- curl" data-title="Linux 命令- curl" data-url="https://hcldirgit.github.io/2017/10/13/2. Linux 命令/84. Linux 命令- curl/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="Linux 命令- curl">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

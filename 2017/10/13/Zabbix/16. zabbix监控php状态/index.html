@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>zabbix监控php状态 | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;通过nginx调用php-fpm来查询php的状态信息 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;首先，在php的配置文件中添加一行 1vim /usr/local/php/etc/php-fpm.conf 1pm.status_path = /ph">
+<meta name="keywords" content="Zabbix">
+<meta property="og:type" content="article">
+<meta property="og:title" content="zabbix监控php状态">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/10/13/Zabbix/16. zabbix监控php状态/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;通过nginx调用php-fpm来查询php的状态信息 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;首先，在php的配置文件中添加一行 1vim /usr/local/php/etc/php-fpm.conf 1pm.status_path = /ph">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7php%E7%8A%B6%E6%80%81/01.jpeg?raw=true">
+<meta property="og:updated_time" content="2017-10-13T13:27:31.971Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="zabbix监控php状态">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;通过nginx调用php-fpm来查询php的状态信息 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;首先，在php的配置文件中添加一行 1vim /usr/local/php/etc/php-fpm.conf 1pm.status_path = /ph">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7php%E7%8A%B6%E6%80%81/01.jpeg?raw=true">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.43px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.26px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.74px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.48px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.3px;">FTP</a> <a href="/tags/Git/" style="font-size: 10.87px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.74px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.61px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.43px;">Jenkins</a> <a href="/tags/LAMP/" style="font-size: 19.57px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.96px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.52px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.13px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.35px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.3px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.65px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.39px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.74px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 17.83px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.3px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.78px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.3px;">Puppet</a> <a href="/tags/Python/" style="font-size: 14.78px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.52px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.17px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.78px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.91px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 16.09px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.61px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 13.04px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15.22px;">shell</a> <a href="/tags/shell练习/" style="font-size: 18.7px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 13.04px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Zabbix/16. zabbix监控php状态" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Zabbix/16. zabbix监控php状态/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.166Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      zabbix监控php状态
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zabbix/">Zabbix</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;通过nginx调用php-fpm来查询php的状态信息</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先，在php的配置文件中添加一行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim /usr/<span class="built_in">local</span>/php/etc/php-fpm.conf</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pm.status_path = /phpfpmstatus</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;保存后重启php-fpm</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在nginx配置文件中添加代码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">server </div><div class="line">&#123;  </div><div class="line">	listen localhost:80;  </div><div class="line">	server_name localhost;</div><div class="line">location /nginxstatus &#123;  </div><div class="line">	stub_status on;  </div><div class="line">	access_log off;  </div><div class="line">	allow 127.0.0.1;</div><div class="line">	allow 10.6.0.187;   </div><div class="line">	deny all;  </div><div class="line">	&#125;</div><div class="line">location ~ ^/(phpfpmstatus)$ &#123;</div><div class="line">        include fastcgi_params;</div><div class="line">        fastcgi_pass unix:/tmp/php-fcgi.sock;</div><div class="line">        fastcgi_param SCRIPT_FILENAME /usr/<span class="built_in">local</span>/nginx/html<span class="variable">$fastcgi_script_name</span>;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;保存后重启nginx</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后使用<code>curl -s http://localhost/phpfpmstatus</code>查看是否能够获取到php状态信息</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后，在zabbix的脚本目录里面编辑执行脚本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"></div><div class="line"><span class="comment">#monitor php-fpm status from zabbix</span></div><div class="line"><span class="comment">#lincense:GPL</span></div><div class="line"><span class="comment">#mail:admin@huxianglin.cn</span></div><div class="line"><span class="comment">#date:2015.04.15</span></div><div class="line"></div><div class="line"><span class="built_in">source</span> /etc/bashrc &gt;/dev/null 2&gt;&amp;1</div><div class="line"><span class="built_in">source</span> /etc/profile &gt;/dev/null 2&gt;&amp;1</div><div class="line"></div><div class="line">LOG=/usr/<span class="built_in">local</span>/zabbix-2.4.4/scripts/phpfpmstatus.log</div><div class="line">curl -s http://localhost/phpfpmstatus &gt;<span class="variable">$LOG</span></div><div class="line"></div><div class="line"><span class="function"><span class="title">pool</span></span>()&#123;</div><div class="line">	awk <span class="string">'/pool/ &#123;print $NF&#125;'</span> <span class="variable">$LOG</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="title">process_manager</span></span>()&#123;</div><div class="line">	awk <span class="string">'/process manager/ &#123;print $NF&#125;'</span> <span class="variable">$LOG</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="title">start_since</span></span>()&#123;</div><div class="line">	awk <span class="string">'/start since:/ &#123;print $NF&#125;'</span> <span class="variable">$LOG</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="title">accepted_conn</span></span>()&#123;</div><div class="line">        awk <span class="string">'/accepted conn:/ &#123;print $NF&#125;'</span> <span class="variable">$LOG</span></div><div class="line">&#125;</div><div class="line"><span class="function"><span class="title">listen_queue</span></span>()&#123;</div><div class="line">        awk <span class="string">'/^(listen queue:)/ &#123;print $NF&#125;'</span> <span class="variable">$LOG</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="title">max_listen_queue</span></span>()&#123;</div><div class="line">        awk <span class="string">'/max listen queue:/ &#123;print $NF&#125;'</span> <span class="variable">$LOG</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="title">listen_queue_len</span></span>()&#123;</div><div class="line">        awk <span class="string">'/listen queue len:/ &#123;print $NF&#125;'</span> <span class="variable">$LOG</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="title">idle_processes</span></span>()&#123;</div><div class="line">        awk <span class="string">'/idle processes:/ &#123;print $NF&#125;'</span> <span class="variable">$LOG</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="title">active_processes</span></span>()&#123;</div><div class="line">        awk <span class="string">'/^(active processes:)/ &#123;print $NF&#125;'</span> <span class="variable">$LOG</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="title">total_processes</span></span>()&#123;</div><div class="line">        awk <span class="string">'/total processes:/ &#123;print $NF&#125;'</span> <span class="variable">$LOG</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="title">max_active_processes</span></span>()&#123;</div><div class="line">        awk <span class="string">'/max active processes:/ &#123;print $NF&#125;'</span> <span class="variable">$LOG</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="title">max_children_reached</span></span>()&#123;</div><div class="line">        awk <span class="string">'/max children reached:/ &#123;print $NF&#125;'</span> <span class="variable">$LOG</span></div><div class="line">&#125;</div><div class="line"><span class="keyword">case</span> <span class="string">"<span class="variable">$1</span>"</span> <span class="keyword">in</span></div><div class="line">pool)</div><div class="line">	pool</div><div class="line">	;;</div><div class="line">process_manager)</div><div class="line">	process_manager</div><div class="line">	;;</div><div class="line">start_since)</div><div class="line">	start_since</div><div class="line">	;;</div><div class="line">accepted_conn)</div><div class="line">	accepted_conn</div><div class="line">	;;</div><div class="line">listen_queue)</div><div class="line">	listen_queue</div><div class="line">	;;</div><div class="line">max_listen_queue)</div><div class="line">	max_listen_queue</div><div class="line">	;;</div><div class="line">listen_queue_len)</div><div class="line">	listen_queue_len</div><div class="line">	;;</div><div class="line">idle_processes)</div><div class="line">	idle_processes</div><div class="line">	;;</div><div class="line">active_processes)</div><div class="line">	active_processes</div><div class="line">	;;</div><div class="line">total_processes)</div><div class="line">	total_processes</div><div class="line">	;;</div><div class="line">max_active_processes)</div><div class="line">	max_active_processes</div><div class="line">	;;</div><div class="line">max_children_reached)</div><div class="line">	max_children_reached</div><div class="line">	;;</div><div class="line">*)</div><div class="line"><span class="built_in">echo</span> <span class="string">"Usage: <span class="variable">$0</span> &#123;pool|process_manager|start_since|accepted_conn|listen_queue|max_listen_queue|listen_queue_len|idle_processes|active_processes|total_processes|max_active_processes|max_children_reached&#125;"</span></div><div class="line"><span class="keyword">esac</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;保存后退出，修改权限为</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-rwxr-xr-x 1 zabbix zabbix 1770 4月  15 14:50 phpstatus.sh</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后编辑zabbix_agentd.conf文件，在最后添加上下面这段代码，并重启zabbix_agentd服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#to monitor php-fpmstatus</span></div><div class="line">UserParameter=phpfpm.status.pool,/usr/<span class="built_in">local</span>/zabbix-2.4.4/scripts/phpstatus.sh pool</div><div class="line">UserParameter=phpfpm.status.process.manager,/usr/<span class="built_in">local</span>/zabbix-2.4.4/scripts/phpstatus.sh process_manager</div><div class="line">UserParameter=phpfpm.status.start.since,/usr/<span class="built_in">local</span>/zabbix-2.4.4/scripts/phpstatus.sh start_since</div><div class="line">UserParameter=phpfpm.status.accepted.conn,/usr/<span class="built_in">local</span>/zabbix-2.4.4/scripts/phpstatus.sh accepted_conn</div><div class="line">UserParameter=phpfpm.status.listen.queue,/usr/<span class="built_in">local</span>/zabbix-2.4.4/scripts/phpstatus.sh listen_queue</div><div class="line">UserParameter=phpfpm.status.max.listen.queue,/usr/<span class="built_in">local</span>/zabbix-2.4.4/scripts/phpstatus.sh max_listen_queue</div><div class="line">UserParameter=phpfpm.status.listen.queue.len,/usr/<span class="built_in">local</span>/zabbix-2.4.4/scripts/phpstatus.sh listen_queue_len</div><div class="line">UserParameter=phpfpm.status.idle.processes,/usr/<span class="built_in">local</span>/zabbix-2.4.4/scripts/phpstatus.sh idle_processes</div><div class="line">UserParameter=phpfpm.status.active.processes,/usr/<span class="built_in">local</span>/zabbix-2.4.4/scripts/phpstatus.sh active_processes</div><div class="line">UserParameter=phpfpm.status.total.processes,/usr/<span class="built_in">local</span>/zabbix-2.4.4/scripts/phpstatus.sh total_processes</div><div class="line">UserParameter=phpfpm.status.max.active.processes,/usr/<span class="built_in">local</span>/zabbix-2.4.4/scripts/phpstatus.sh max_active_processes</div><div class="line">UserParameter=phpfpm.status.max.children.reached,/usr/<span class="built_in">local</span>/zabbix-2.4.4/scripts/phpstatus.sh max_children_reached</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后就可以在web端配置item监控php状态了</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7php%E7%8A%B6%E6%80%81/01.jpeg?raw=true" alt=""></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/13/Zabbix/17. zabbix监控进程的CPU和内存占用量/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          zabbix监控进程的CPU和内存占用量
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/13/Zabbix/15. zabbix监控nginx状态/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">zabbix监控nginx状态</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="Zabbix/16. zabbix监控php状态" data-title="zabbix监控php状态" data-url="https://hcldirgit.github.io/2017/10/13/Zabbix/16. zabbix监控php状态/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="zabbix监控php状态">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
