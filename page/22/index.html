@@ -23,7 +23,7 @@
     <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
   
   
-    <link rel="icon" href="https://hcldirgit.github.io/images/0.png">
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
   
   <link rel="stylesheet" href="/css/style.css">
   
@@ -56,7 +56,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="https://hcldirgit.github.io/images/0.png" class="js-avatar">
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
 			
 		</a>
 
@@ -142,7 +142,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="https://hcldirgit.github.io/images/0.png" class="js-avatar">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">失落的乐章</h1>
@@ -1383,6 +1383,73 @@
 
 
   
+    <article id="post-MongoDB/13. MongoDB“关于ReplSet成员必须为奇数”的说法，其实成员节点数目可以为偶数的" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/MongoDB/13. MongoDB“关于ReplSet成员必须为奇数”的说法，其实成员节点数目可以为偶数的/" class="article-date">
+  	<time datetime="2017-09-02T18:06:42.752Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/MongoDB/13. MongoDB“关于ReplSet成员必须为奇数”的说法，其实成员节点数目可以为偶数的/">
+        MongoDB“关于ReplSet成员必须为奇数”的说法，其实成员节点数目可以为偶数的
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关于ReplSet成员必须为奇数的情况说明。<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;ReplSet优势：Replica Set是增加冗余及提升MongoDB数据集群性能的有效途径。数据在所有的节点中被复制，并选出一个作为主节点。假如主节点出故障，那么会在其他的节点中票选一个作为新的主节点。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;问题：在MongoDB中同一个RepliSet中的成员数量不能是偶数个。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;假如你使用了偶数个成员，那么当主节点发生故障时那么其它的节点都会变成只读。此时呢，无法选出PRIMARY节点。发生这种情况是因为剩下待选节点的数目不满足票选主节点的规定。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;结论：目前的MongoDB版本中，使用ReplSet机制成员数量必须控制在奇数数目个。</p>
+<hr>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以上是网上的结论，实际做测试发现网上的说法有误！</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;此文章中第二页有提到这个观点：<a href="https://hcldirgit.github.io/2017/08/27/MongoDB/11.%20MongoDB%20Master%EF%BC%9AMongoDB%E2%80%9C%E8%AF%9F%E7%97%85%E2%80%9D%E5%88%86%E6%9E%90/">MongoDB Master：MongoDB“诟病”分析</a></p>
+<hr>
+<hr>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;测试结论：当ReplSet成员是2个时，PRIMARY挂了，的确SECONDARY无法升级为PRIMARY；但是，当ReplSet成员是4个时，PRIMARY挂了，SECONDARY的确是可以升级为PRIMARY的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当然，测试只是针对ReplSet成员为偶数情况；奇数情况是没有问题的。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MongoDB/">MongoDB</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-MongoDB/12. MongoDB副本集学习：性能和优化相关" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1536,73 +1603,6 @@
 </ul>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先获取最多选票的成员(实际上要超过半数)才会成为primary节点，这也说明了为什么当有两个节点的集群中primary节点宕机后，剩下的只能成为secondary，当primary宕掉,此时副本集只剩下一个secondary,它只有1票,不超过总节点数的半数,它不会选举自己为primary。</p>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要想更详细的了解选举细节，参考这篇源码分析的文章：<a href="http://nosql-db.com/topic/514e6d9505c3fa4d47017da6" target="_blank" rel="external">http://nosql-db.com/topic/514e6d9505c3fa4d47017da6</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MongoDB/">MongoDB</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-MongoDB/13. MongoDB“关于ReplSet成员必须为奇数”的说法，其实成员节点数目可以为偶数的" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/MongoDB/13. MongoDB“关于ReplSet成员必须为奇数”的说法，其实成员节点数目可以为偶数的/" class="article-date">
-  	<time datetime="2017-09-02T18:06:42.752Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/MongoDB/13. MongoDB“关于ReplSet成员必须为奇数”的说法，其实成员节点数目可以为偶数的/">
-        MongoDB“关于ReplSet成员必须为奇数”的说法，其实成员节点数目可以为偶数的
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关于ReplSet成员必须为奇数的情况说明。<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;ReplSet优势：Replica Set是增加冗余及提升MongoDB数据集群性能的有效途径。数据在所有的节点中被复制，并选出一个作为主节点。假如主节点出故障，那么会在其他的节点中票选一个作为新的主节点。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;问题：在MongoDB中同一个RepliSet中的成员数量不能是偶数个。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;假如你使用了偶数个成员，那么当主节点发生故障时那么其它的节点都会变成只读。此时呢，无法选出PRIMARY节点。发生这种情况是因为剩下待选节点的数目不满足票选主节点的规定。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;结论：目前的MongoDB版本中，使用ReplSet机制成员数量必须控制在奇数数目个。</p>
-<hr>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以上是网上的结论，实际做测试发现网上的说法有误！</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;此文章中第二页有提到这个观点：<a href="https://hcldirgit.github.io/2017/08/27/MongoDB/11.%20MongoDB%20Master%EF%BC%9AMongoDB%E2%80%9C%E8%AF%9F%E7%97%85%E2%80%9D%E5%88%86%E6%9E%90/">MongoDB Master：MongoDB“诟病”分析</a></p>
-<hr>
-<hr>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;测试结论：当ReplSet成员是2个时，PRIMARY挂了，的确SECONDARY无法升级为PRIMARY；但是，当ReplSet成员是4个时，PRIMARY挂了，SECONDARY的确是可以升级为PRIMARY的。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当然，测试只是针对ReplSet成员为偶数情况；奇数情况是没有问题的。</p>
 
       
     </div>

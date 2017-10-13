@@ -23,7 +23,7 @@
     <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
   
   
-    <link rel="icon" href="https://hcldirgit.github.io/images/0.png">
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
   
   <link rel="stylesheet" href="/css/style.css">
   
@@ -56,7 +56,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="https://hcldirgit.github.io/images/0.png" class="js-avatar">
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
 			
 		</a>
 
@@ -142,7 +142,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="https://hcldirgit.github.io/images/0.png" class="js-avatar">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">失落的乐章</h1>
@@ -918,89 +918,6 @@
 
 
   
-    <article id="post-Zabbix/22. zabbix使用percona zabbix mysql-plugin监控mysql数据库" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Zabbix/22. zabbix使用percona zabbix mysql-plugin监控mysql数据库/" class="article-date">
-  	<time datetime="2017-09-02T18:13:44.863Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Zabbix/22. zabbix使用percona zabbix mysql-plugin监控mysql数据库/">
-        zabbix使用percona zabbix mysql-plugin监控mysql数据库
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;由于zabbix自带的mysql监控模板监控的东西比较少，使用percona zabbix mysql-plugin实现对mysql的监控。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;percona zabbix mysql-plugin是percona发布的一个使用zabbix监控mysql数据库的工具，这款工具比zabbix自带的监控模板要强大的多，毕竟percona是Mysql的一个重要分支，专业做数据库的，所以，采集的数据比较全面。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面开始进入正题，部署mysql的监控。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先，需要安装安装php和php-mysql，因为用到了php脚本，所以在本机上面需要安装php，至于php的安装不是本文讨论的重点</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后，需要去percona官网下载最新版本的percona zabbix mysql-plugin，从1.1版本开始起支持zabbix，包括cacti，nagios也都有接口提供，这里下载的是<a href="https://www.percona.com/downloads/percona-monitoring-plugins/1.1.5/percona-zabbix-templates-1.1.5-1.noarch.rpm" target="_blank" rel="external">percona zabbix mysql-plugin</a></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下载后安装</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rpm -ivh percona-zabbix-templates-1.1.5-1.noarch.rpm</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安装完毕后会产生两个目录，每个目录有两个文件，详细结果如下所示：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@test2 ~]<span class="comment"># ls /var/lib/zabbix/percona/</span></div><div class="line">scripts templates</div><div class="line">[root@test2 ~]<span class="comment"># ls /var/lib/zabbix/percona/scripts/</span></div><div class="line">get_mysql_stats_wrapper.sh ss_get_mysql_stats.php</div><div class="line">[root@test2 ~]<span class="comment"># ls /var/lib/zabbix/percona/templates/</span></div><div class="line">userparameter_percona_mysql.conf zabbix_agent_template_percona_mysql_server_ht_2.0.9-sver1.1.5.xml</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先，需要下载模版文件zabbix_agent_template_percona_mysql_server_ht_2.0.9-sver1.1.5.xml然后将这个模    板文件导入到zabbixweb端的模板中去，然后将配置文    userparameter_percona_mysql.conf放入到zabbix的配置文件目录中，我这的目录    是/usr/local/zabbix-2.4.4/etc/zabbix_agentd.conf.d/</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后修改zabbix_agentd.conf配置文件，将配置文件所在目录添加进去，也就是添加下面这行语句：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Include=/usr/<span class="built_in">local</span>/zabbix-2.4.4/etc/zabbix_agentd.conf.d/*.conf</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后修改脚本，首先修改sh脚本，也就是get_mysql_stats_wrapper.sh这个脚本，将下面这条语句进行修改：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">RES=`HOME=~zabbix mysql -e <span class="string">'SHOW SLAVE STATUS\G'</span> | egrep <span class="string">'(Slave_IO_Running|Slave_SQL_Running):'</span> | awk -F: <span class="string">'&#123;print $2&#125;'</span> | tr <span class="string">'\n'</span> <span class="string">','</span>`</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改为：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">RES=`/usr/<span class="built_in">local</span>/mysql/bin/mysql -uroot -e <span class="string">'SHOW SLAVE STATUS\G'</span> | egrep <span class="string">'(Slave_IO_Running|Slave_SQL_Running):'</span> | awk -F: <span class="string">'&#123;print $2&#125;'</span> | tr <span class="string">'\n'</span> <span class="string">','</span>`</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里Mysql没有设置root密码，可以在这里写入mysql的相应账号密码。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;还有需要注意，在这个脚本中需要调用php来实现监控，所以需要修改php的路径，我的php的路径为/usr/local/php/bin/php，所以将脚本中的那条命令修改成下面这样：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CMD=<span class="string">"/usr/local/php/bin/php -q <span class="variable">$DIR</span>/ss_get_mysql_stats.php --host <span class="variable">$HOST</span> --items gg"</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;之后保存该脚本，并修改权限为755<br>然后修改php脚本文件，修改用户名和密码如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$mysql_user</span> = <span class="string">'root'</span>;</div><div class="line"><span class="variable">$mysql_pass</span> = <span class="string">''</span>;</div><div class="line"><span class="variable">$mysql_port</span> = 3306;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;因为mysqlroot密码是空的，所以这里密码是没有输入的，可以修改成相应的账号密码。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改完之后保存配置并将权限设置为755，然后重启zabbix_agentd，在zabbix_server端添加刚刚我们导入进去的模板，就可以实现mysql的监控了，下面是监控的效果图：</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E4%BD%BF%E7%94%A8percona%20zabbix%20mysql-plugin%E7%9B%91%E6%8E%A7mysql%E6%95%B0%E6%8D%AE%E5%BA%93/01.jpeg?raw=true" alt=""></p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E4%BD%BF%E7%94%A8percona%20zabbix%20mysql-plugin%E7%9B%91%E6%8E%A7mysql%E6%95%B0%E6%8D%AE%E5%BA%93/02.jpeg?raw=true" alt=""></p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E4%BD%BF%E7%94%A8percona%20zabbix%20mysql-plugin%E7%9B%91%E6%8E%A7mysql%E6%95%B0%E6%8D%AE%E5%BA%93/03.jpeg?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;但是貌似这个模板对于单个数据库虽然足够详细，对于数据库集群的监控还是不够给力，需要在其监控脚本的基础上进行修改，使其能够监控到数据库集群的状态信息那就更好了，当然，我这里只做了单个数据库的监控，集群由于没有实际部署，这里也就没有进行演示了，对这方面感兴趣的童鞋们可以自行阅读脚本源代码，对脚本进行修改以便于实现mysql集群的详细监控。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zabbix/">Zabbix</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-Zabbix/21. zabbix使用SNMP V3监控路由器接口流量" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1062,6 +979,89 @@
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样，就可以监控该路由器的G0/0的出入流量了，截图如下：</p>
 <p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E4%BD%BF%E7%94%A8SNMP%20V3%E7%9B%91%E6%8E%A7%E8%B7%AF%E7%94%B1%E5%99%A8%E6%8E%A5%E5%8F%A3%E6%B5%81%E9%87%8F/05.jpeg?raw=true" alt=""></p>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;至此，该教程文档完结，在配置过程中若碰到了一些其他问题可以百度或者谷歌查找资料解决</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zabbix/">Zabbix</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Zabbix/22. zabbix使用percona zabbix mysql-plugin监控mysql数据库" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Zabbix/22. zabbix使用percona zabbix mysql-plugin监控mysql数据库/" class="article-date">
+  	<time datetime="2017-09-02T18:13:44.863Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Zabbix/22. zabbix使用percona zabbix mysql-plugin监控mysql数据库/">
+        zabbix使用percona zabbix mysql-plugin监控mysql数据库
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;由于zabbix自带的mysql监控模板监控的东西比较少，使用percona zabbix mysql-plugin实现对mysql的监控。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;percona zabbix mysql-plugin是percona发布的一个使用zabbix监控mysql数据库的工具，这款工具比zabbix自带的监控模板要强大的多，毕竟percona是Mysql的一个重要分支，专业做数据库的，所以，采集的数据比较全面。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面开始进入正题，部署mysql的监控。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先，需要安装安装php和php-mysql，因为用到了php脚本，所以在本机上面需要安装php，至于php的安装不是本文讨论的重点</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后，需要去percona官网下载最新版本的percona zabbix mysql-plugin，从1.1版本开始起支持zabbix，包括cacti，nagios也都有接口提供，这里下载的是<a href="https://www.percona.com/downloads/percona-monitoring-plugins/1.1.5/percona-zabbix-templates-1.1.5-1.noarch.rpm" target="_blank" rel="external">percona zabbix mysql-plugin</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下载后安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rpm -ivh percona-zabbix-templates-1.1.5-1.noarch.rpm</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安装完毕后会产生两个目录，每个目录有两个文件，详细结果如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@test2 ~]<span class="comment"># ls /var/lib/zabbix/percona/</span></div><div class="line">scripts templates</div><div class="line">[root@test2 ~]<span class="comment"># ls /var/lib/zabbix/percona/scripts/</span></div><div class="line">get_mysql_stats_wrapper.sh ss_get_mysql_stats.php</div><div class="line">[root@test2 ~]<span class="comment"># ls /var/lib/zabbix/percona/templates/</span></div><div class="line">userparameter_percona_mysql.conf zabbix_agent_template_percona_mysql_server_ht_2.0.9-sver1.1.5.xml</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先，需要下载模版文件zabbix_agent_template_percona_mysql_server_ht_2.0.9-sver1.1.5.xml然后将这个模    板文件导入到zabbixweb端的模板中去，然后将配置文    userparameter_percona_mysql.conf放入到zabbix的配置文件目录中，我这的目录    是/usr/local/zabbix-2.4.4/etc/zabbix_agentd.conf.d/</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后修改zabbix_agentd.conf配置文件，将配置文件所在目录添加进去，也就是添加下面这行语句：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Include=/usr/<span class="built_in">local</span>/zabbix-2.4.4/etc/zabbix_agentd.conf.d/*.conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后修改脚本，首先修改sh脚本，也就是get_mysql_stats_wrapper.sh这个脚本，将下面这条语句进行修改：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">RES=`HOME=~zabbix mysql -e <span class="string">'SHOW SLAVE STATUS\G'</span> | egrep <span class="string">'(Slave_IO_Running|Slave_SQL_Running):'</span> | awk -F: <span class="string">'&#123;print $2&#125;'</span> | tr <span class="string">'\n'</span> <span class="string">','</span>`</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">RES=`/usr/<span class="built_in">local</span>/mysql/bin/mysql -uroot -e <span class="string">'SHOW SLAVE STATUS\G'</span> | egrep <span class="string">'(Slave_IO_Running|Slave_SQL_Running):'</span> | awk -F: <span class="string">'&#123;print $2&#125;'</span> | tr <span class="string">'\n'</span> <span class="string">','</span>`</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里Mysql没有设置root密码，可以在这里写入mysql的相应账号密码。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;还有需要注意，在这个脚本中需要调用php来实现监控，所以需要修改php的路径，我的php的路径为/usr/local/php/bin/php，所以将脚本中的那条命令修改成下面这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CMD=<span class="string">"/usr/local/php/bin/php -q <span class="variable">$DIR</span>/ss_get_mysql_stats.php --host <span class="variable">$HOST</span> --items gg"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;之后保存该脚本，并修改权限为755<br>然后修改php脚本文件，修改用户名和密码如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$mysql_user</span> = <span class="string">'root'</span>;</div><div class="line"><span class="variable">$mysql_pass</span> = <span class="string">''</span>;</div><div class="line"><span class="variable">$mysql_port</span> = 3306;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;因为mysqlroot密码是空的，所以这里密码是没有输入的，可以修改成相应的账号密码。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改完之后保存配置并将权限设置为755，然后重启zabbix_agentd，在zabbix_server端添加刚刚我们导入进去的模板，就可以实现mysql的监控了，下面是监控的效果图：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E4%BD%BF%E7%94%A8percona%20zabbix%20mysql-plugin%E7%9B%91%E6%8E%A7mysql%E6%95%B0%E6%8D%AE%E5%BA%93/01.jpeg?raw=true" alt=""></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E4%BD%BF%E7%94%A8percona%20zabbix%20mysql-plugin%E7%9B%91%E6%8E%A7mysql%E6%95%B0%E6%8D%AE%E5%BA%93/02.jpeg?raw=true" alt=""></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E4%BD%BF%E7%94%A8percona%20zabbix%20mysql-plugin%E7%9B%91%E6%8E%A7mysql%E6%95%B0%E6%8D%AE%E5%BA%93/03.jpeg?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;但是貌似这个模板对于单个数据库虽然足够详细，对于数据库集群的监控还是不够给力，需要在其监控脚本的基础上进行修改，使其能够监控到数据库集群的状态信息那就更好了，当然，我这里只做了单个数据库的监控，集群由于没有实际部署，这里也就没有进行演示了，对这方面感兴趣的童鞋们可以自行阅读脚本源代码，对脚本进行修改以便于实现mysql集群的详细监控。</p>
 
       
     </div>

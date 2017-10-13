@@ -23,7 +23,7 @@
     <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
   
   
-    <link rel="icon" href="https://hcldirgit.github.io/images/0.png">
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
   
   <link rel="stylesheet" href="/css/style.css">
   
@@ -56,7 +56,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="https://hcldirgit.github.io/images/0.png" class="js-avatar">
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
 			
 		</a>
 
@@ -142,7 +142,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="https://hcldirgit.github.io/images/0.png" class="js-avatar">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">失落的乐章</h1>
@@ -447,6 +447,67 @@
 
 
   
+    <article id="post-Apache/35. 使apache的日志文件里不记录图片文件" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Apache/35. 使apache的日志文件里不记录图片文件/" class="article-date">
+  	<time datetime="2017-09-02T18:00:30.914Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Apache/35. 使apache的日志文件里不记录图片文件/">
+        使apache的日志文件里不记录图片文件
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;找到:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">LogFormat <span class="string">"%h %l %u %t \"%r\" %&gt;s %b \"%&#123;Referer&#125;i\" \"%&#123;User-Agent&#125;i\""</span> combined</div><div class="line">LogFormat <span class="string">"%h %l %u %t \"%r\" %&gt;s %b"</span> common</div><div class="line">LogFormat <span class="string">"%&#123;Referer&#125;i -&gt; %U"</span> referer</div><div class="line">LogFormat <span class="string">"%&#123;User-agent&#125;i"</span> agent</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;再后面加上图片文件的类型</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">13SetEnvIf Request_URI \.gif$ gif-image</div><div class="line">SetEnvIf Request_URI \.GIF$ gif-image</div><div class="line">SetEnvIf Request_URI \.jpg$ gif-image</div><div class="line">SetEnvIf Request_URI \.JPG$ gif-image</div><div class="line">SetEnvIf Request_URI \.png$ gif-image</div><div class="line">SetEnvIf Request_URI \.js$ gif-image</div><div class="line">SetEnvIf Request_URI \.bmp$ gif-image</div><div class="line">SetEnvIf Request_URI \.css$ gif-image</div><div class="line">SetEnvIf Request_URI \.mid$ gif-image</div><div class="line">SetEnvIf Request_URI \.swf$ gif-image</div><div class="line">SetEnvIf Request_URI \.mmf$ gif-image</div><div class="line">SetEnvIf Request_URI \.wma$ gif-image</div><div class="line">SetEnvIf Request_URI \.midi$ gif-image</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;记日志时</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CustomLog /usr/<span class="built_in">local</span>/apache/logs/access.log combined env=!gif-image</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Apache/34. 让apache记录一个页面的访问时间" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -484,67 +545,6 @@
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;重启apahce即可生效。</p>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;参考文档：<a href="http://man.chinaunix.net/newsoft/ApacheMenual_CN_2.2new/mod/mod_log_config.html" target="_blank" rel="external">http://man.chinaunix.net/newsoft/ApacheMenual_CN_2.2new/mod/mod_log_config.html</a></p>
 
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Apache/35. 使apache的日志文件里不记录图片文件" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Apache/35. 使apache的日志文件里不记录图片文件/" class="article-date">
-  	<time datetime="2017-09-02T18:00:30.914Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Apache/35. 使apache的日志文件里不记录图片文件/">
-        使apache的日志文件里不记录图片文件
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;找到:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">LogFormat <span class="string">"%h %l %u %t \"%r\" %&gt;s %b \"%&#123;Referer&#125;i\" \"%&#123;User-Agent&#125;i\""</span> combined</div><div class="line">LogFormat <span class="string">"%h %l %u %t \"%r\" %&gt;s %b"</span> common</div><div class="line">LogFormat <span class="string">"%&#123;Referer&#125;i -&gt; %U"</span> referer</div><div class="line">LogFormat <span class="string">"%&#123;User-agent&#125;i"</span> agent</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;再后面加上图片文件的类型</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">13SetEnvIf Request_URI \.gif$ gif-image</div><div class="line">SetEnvIf Request_URI \.GIF$ gif-image</div><div class="line">SetEnvIf Request_URI \.jpg$ gif-image</div><div class="line">SetEnvIf Request_URI \.JPG$ gif-image</div><div class="line">SetEnvIf Request_URI \.png$ gif-image</div><div class="line">SetEnvIf Request_URI \.js$ gif-image</div><div class="line">SetEnvIf Request_URI \.bmp$ gif-image</div><div class="line">SetEnvIf Request_URI \.css$ gif-image</div><div class="line">SetEnvIf Request_URI \.mid$ gif-image</div><div class="line">SetEnvIf Request_URI \.swf$ gif-image</div><div class="line">SetEnvIf Request_URI \.mmf$ gif-image</div><div class="line">SetEnvIf Request_URI \.wma$ gif-image</div><div class="line">SetEnvIf Request_URI \.midi$ gif-image</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;记日志时</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CustomLog /usr/<span class="built_in">local</span>/apache/logs/access.log combined env=!gif-image</div></pre></td></tr></table></figure>
       
     </div>
     

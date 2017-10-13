@@ -23,7 +23,7 @@
     <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
   
   
-    <link rel="icon" href="https://hcldirgit.github.io/images/0.png">
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
   
   <link rel="stylesheet" href="/css/style.css">
   
@@ -56,7 +56,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="https://hcldirgit.github.io/images/0.png" class="js-avatar">
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
 			
 		</a>
 
@@ -142,7 +142,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="https://hcldirgit.github.io/images/0.png" class="js-avatar">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">失落的乐章</h1>
@@ -171,80 +171,6 @@
 	</div>
 </nav>
       <div class="body-wrap">
-  
-    <article id="post-Memcached/1. Memcached" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Memcached/1. Memcached/" class="article-date">
-  	<time datetime="2017-09-02T18:04:45.994Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Memcached/1. Memcached/">
-        Memcached
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="1-memcached介绍"><a href="#1-memcached介绍" class="headerlink" title="1.memcached介绍"></a>1.memcached介绍</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是国外社区网站LiveJournal团队开发，通过缓存数据库查询结果，减少数据库访问次数，从而提高动态web站点性能。<a href="http://memcached.org/" target="_blank" rel="external">官方站点</a></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;基于c/s架构，协议简单</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;基于libevent的事件处理</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;自主内存存储处理（slab allowcation)</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;数据过期方式：Lazy Expiration 和 LRU</p>
-<h2 id="2-memcached数据流"><a href="#2-memcached数据流" class="headerlink" title="2.memcached数据流"></a>2.memcached数据流</h2><p><img src="https://github.com/hcldirgit/image/blob/master/memcached/01.png?raw=true" alt=""></p>
-<h2 id="3-slab-allocation"><a href="#3-slab-allocation" class="headerlink" title="3.slab allocation"></a>3.slab allocation</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Slab Allocation的原理——将分配的内存分割成各种尺寸的块（chunk）， 并把尺寸相同的块分成组（chunk的集合），每个chunk集合被称为slab。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Memcached的内存分配以Page为单位，Page默认值为1M，可以在启动时通过-I参数来指定。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Slab是由多个Page组成的，Page按照指定大小切割成多个chunk。其结构如图</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/memcached/02.png?raw=true" alt=""></p>
-<h2 id="4-Growth-factor"><a href="#4-Growth-factor" class="headerlink" title="4.Growth factor"></a>4.Growth factor</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;memcached在启动时通过-f选项可以指定 Growth Factor因子。该值控制chunk大小的差异。默认值为1.25。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;通过memcached-tool查看指定memcached实例的不同slab状态，可以看到各Item所占大小（chunk大小）差距为1.25</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">memcached-tool 127.0.0.1:11211 display</div></pre></td></tr></table></figure>
-<h2 id="5-memcached数据过期方式"><a href="#5-memcached数据过期方式" class="headerlink" title="5.memcached数据过期方式"></a>5.memcached数据过期方式</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Lazy Expiration </p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;memcached 内部不会监视记录是否过期，而是在get时查看记录的时间戳，检查记录是否过期。这种技术被称为lazy（惰性）expiration。因此，memcached不会在过期监视上耗费CPU时间。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;LRU</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;memcached会优先使用已超时的记录的空间，但即使如此，也会发生追加新记录时空间不足的情况，此时就要使用名为Least Recently Used（LRU）机制来分配空间。顾名思义，这是删除“最近最少使用”的记录的机制。因此，当内存空间不足时（无法从slab class获取到新的空间时），就从最近未被使用的记录中搜索，并将其空间分配给新的记录。从缓存的实用角度来看，该模型十分理想。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Memcached/">Memcached</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
   
     <article id="post-Memcached/2. memcached安装" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -382,6 +308,212 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Memcached/">Memcached</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Memcached/1. Memcached" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Memcached/1. Memcached/" class="article-date">
+  	<time datetime="2017-09-02T18:04:45.994Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Memcached/1. Memcached/">
+        Memcached
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-memcached介绍"><a href="#1-memcached介绍" class="headerlink" title="1.memcached介绍"></a>1.memcached介绍</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是国外社区网站LiveJournal团队开发，通过缓存数据库查询结果，减少数据库访问次数，从而提高动态web站点性能。<a href="http://memcached.org/" target="_blank" rel="external">官方站点</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;基于c/s架构，协议简单</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;基于libevent的事件处理</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;自主内存存储处理（slab allowcation)</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;数据过期方式：Lazy Expiration 和 LRU</p>
+<h2 id="2-memcached数据流"><a href="#2-memcached数据流" class="headerlink" title="2.memcached数据流"></a>2.memcached数据流</h2><p><img src="https://github.com/hcldirgit/image/blob/master/memcached/01.png?raw=true" alt=""></p>
+<h2 id="3-slab-allocation"><a href="#3-slab-allocation" class="headerlink" title="3.slab allocation"></a>3.slab allocation</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Slab Allocation的原理——将分配的内存分割成各种尺寸的块（chunk）， 并把尺寸相同的块分成组（chunk的集合），每个chunk集合被称为slab。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Memcached的内存分配以Page为单位，Page默认值为1M，可以在启动时通过-I参数来指定。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Slab是由多个Page组成的，Page按照指定大小切割成多个chunk。其结构如图</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/memcached/02.png?raw=true" alt=""></p>
+<h2 id="4-Growth-factor"><a href="#4-Growth-factor" class="headerlink" title="4.Growth factor"></a>4.Growth factor</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;memcached在启动时通过-f选项可以指定 Growth Factor因子。该值控制chunk大小的差异。默认值为1.25。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;通过memcached-tool查看指定memcached实例的不同slab状态，可以看到各Item所占大小（chunk大小）差距为1.25</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">memcached-tool 127.0.0.1:11211 display</div></pre></td></tr></table></figure>
+<h2 id="5-memcached数据过期方式"><a href="#5-memcached数据过期方式" class="headerlink" title="5.memcached数据过期方式"></a>5.memcached数据过期方式</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Lazy Expiration </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;memcached 内部不会监视记录是否过期，而是在get时查看记录的时间戳，检查记录是否过期。这种技术被称为lazy（惰性）expiration。因此，memcached不会在过期监视上耗费CPU时间。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;LRU</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;memcached会优先使用已超时的记录的空间，但即使如此，也会发生追加新记录时空间不足的情况，此时就要使用名为Least Recently Used（LRU）机制来分配空间。顾名思义，这是删除“最近最少使用”的记录的机制。因此，当内存空间不足时（无法从slab class获取到新的空间时），就从最近未被使用的记录中搜索，并将其空间分配给新的记录。从缓存的实用角度来看，该模型十分理想。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Memcached/">Memcached</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Git/2.  github常见操作和常见错误  错误提示  fatal   remote origin already exists." class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Git/2.  github常见操作和常见错误  错误提示  fatal   remote origin already exists./" class="article-date">
+  	<time datetime="2017-09-02T18:02:06.177Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Git/2.  github常见操作和常见错误  错误提示  fatal   remote origin already exists./">
+        github常见操作和常见错误  错误提示  fatal   remote origin already exists.
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果输入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Git remote add origin git@github.com:djqiang（github帐号名）/gitdemo（项目名）.git</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;提示出错信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">fatal: remote origin already exists.</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解决办法如下：</p>
+<ol>
+<li><p>先输入 <strong>$ git remote rm origin</strong></p>
+</li>
+<li><p>再输入 $ git remote add origin git@github.com:djqiang/gitdemo.git 就不会报错了！</p>
+</li>
+<li><p>如果输入 <strong>$ git remote rm origin</strong> 还是报错的话，error: Could not remove config section ‘remote.origin’. 我们需要修改gitconfig文件的内容</p>
+</li>
+<li><p>找到github的安装路径，我的是C:\Users\ASUS\AppData\Local\GitHub\PortableGit_ca477551eeb4aea0e4ae9fcd3358bd96720bb5c8\etc</p>
+</li>
+<li><p>找到一个名为gitconfig的文件，打开它把里面的[remote “origin”]那一行删掉就好了！</p>
+</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果输入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh -T git@github.com</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;出现错误提示：Permission denied (publickey).因为新生成的key不能加入ssh就会导致连接不上github。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解决办法如下：</p>
+<ol>
+<li><p>先输入$ ssh-agent，再输入$ ssh-add ~/.ssh/id_key，这样就可以了。</p>
+</li>
+<li><p>如果还是不行的话，输入ssh-add ~/.ssh/id_key 命令后出现报错Could not open a connection to your authentication agent.解决方法是key用Git Gui的ssh工具生成，这样生成的时候key就直接保存在ssh中了，不需要再ssh-add命令加入了，其它的user，token等配置都用命令行来做。</p>
+</li>
+<li><p>最好检查一下在你复制id_rsa.pub文件的内容时有没有产生多余的空格或空行，有些编辑器会帮你添加这些的。</p>
+</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果输入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git push origin master</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;提示出错信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">error:failed to push som refs to .......</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解决办法如下：</p>
+<ol>
+<li><p>先输入$ git pull origin master //先把远程服务器github上面的文件拉下来</p>
+</li>
+<li><p>再输入$ git push origin master</p>
+</li>
+<li><p>如果出现报错 fatal: Couldn’t find remote ref master或者fatal: ‘origin’ does not appear to be a git repository以及fatal: Could not read from remote repository.</p>
+</li>
+<li><p>则需要重新输入$ git remote add origingit@github.com:djqiang/gitdemo.git</p>
+</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用git在本地创建一个项目的过程</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">makdir ~/hello-world    //创建一个项目hello-world</div><div class="line"><span class="built_in">cd</span> ~/hello-world       //打开这个项目</div><div class="line">git init             //初始化 </div><div class="line">touch README</div><div class="line">git add README        //更新README文件</div><div class="line">git commit -m <span class="string">'first commit'</span>     //提交更新，并注释信息“first commit” </div><div class="line">git remote add origin git@github.com:defnngj/hello-world.git     //连接远程github项目  </div><div class="line">git push -u origin master     //将本地项目更新到github项目上去</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;gitconfig配置文件</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Git有一个工具被称为git config，它允许你获得和设置配置变量；这些变量可以控制Git的外观和操作的各个方面。这些变量可以被存储在三个不同的位置： </p>
+<ol>
+<li><p>/etc/gitconfig 文件：包含了适用于系统所有用户和所有库的值。如果你传递参数选项’–system’ 给 git config，它将明确的读和写这个文件。 </p>
+</li>
+<li><p>~/.gitconfig 文件 ：具体到你的用户。你可以通过传递–global 选项使Git 读或写这个特定的文件。</p>
+</li>
+<li><p>位于git目录的config文件 (也就是 .git/config) ：无论你当前在用的库是什么，特定指向该单一的库。每个级别重写前一个级别的值。因此，在.git/config中的值覆盖了在/etc/gitconfig中的同一个值。</p>
+</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在Windows系统中，Git在$HOME目录中查找.gitconfig文件（对大多数人来说，位于C:\Documents and Settings\$USER下）。它也会查找/etc/gitconfig，尽管它是相对于Msys 根目录的。这可能是你在Windows中运行安装程序时决定安装Git的任何地方。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置相关信息：</p>
+<ol>
+<li>当你安装Git后首先要做的事情是设置你的用户名称和e-mail地址。这是非常重要的，因为每次Git提交都会使用该信息。它被永远的嵌入到了你的提交中：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">git config --global user.name <span class="string">"John Doe"</span></div><div class="line">git config --global user.email johndoe@example.com</div><div class="line">``` </div><div class="line"></div><div class="line">2. 你的编辑器(Your Editor)</div><div class="line"></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;现在，标识已经设置，可以配置缺省文本编辑器，Git在需要输入一些消息时会使用该文本编辑器。缺省情况下，Git使用系统的缺省编辑器，这通常可能是vi 或者 vim。如果想使用一个不同的文本编辑器，例如Emacs，可以做如下操作：</span></div><div class="line"></div><div class="line">```bash</div><div class="line">git config --global core.editor emacs</div></pre></td></tr></table></figure>
+<ol>
+<li>检查设置(Checking Your Settings)</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果想检查设置，可以使用 git config –list 命令来列出Git可以在该处找到的所有的设置:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git config --list</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;也可以查看Git认为的一个特定的关键字目前的值，使用如下命令 git config {key}:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git config user.name</div></pre></td></tr></table></figure>
+<ol>
+<li>获取帮助(Getting help)</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果当你在使用Git时需要帮助，有三种方法可以获得任何git命令的手册页(manpage)帮助信息:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">help</span> &lt;verb&gt;</div><div class="line">git &lt;verb&gt; --<span class="built_in">help</span></div><div class="line">man git-&lt;verb&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例如，你可以运行如下命令获取对config命令的手册页帮助:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">help</span> config</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Git/">Git</a></li></ul>
 	</div>
 
       
@@ -625,138 +757,6 @@
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以上操作是在git服务器上做的，平时git服务器是不需要开发人员登录修改代码的，它仅仅是充当着一个服务器的角色，就像github一样，平时操作都是在我们自己的pc上做的。</p>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先要把客户端上的公钥放到git服务器上/home/git/.ssh/authorized_keys文件里 git clone git@ip:/data/gitroot/sample.git</p>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;此时就可以在当前目录下生成一个sample的目录，这个就是我们克隆的远程仓库了。进入到这里面，可以开发一些代码，然后push到远程。  </p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Git/">Git</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Git/2.  github常见操作和常见错误  错误提示  fatal   remote origin already exists." class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Git/2.  github常见操作和常见错误  错误提示  fatal   remote origin already exists./" class="article-date">
-  	<time datetime="2017-09-02T18:02:06.177Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Git/2.  github常见操作和常见错误  错误提示  fatal   remote origin already exists./">
-        github常见操作和常见错误  错误提示  fatal   remote origin already exists.
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果输入</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Git remote add origin git@github.com:djqiang（github帐号名）/gitdemo（项目名）.git</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;提示出错信息：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">fatal: remote origin already exists.</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解决办法如下：</p>
-<ol>
-<li><p>先输入 <strong>$ git remote rm origin</strong></p>
-</li>
-<li><p>再输入 $ git remote add origin git@github.com:djqiang/gitdemo.git 就不会报错了！</p>
-</li>
-<li><p>如果输入 <strong>$ git remote rm origin</strong> 还是报错的话，error: Could not remove config section ‘remote.origin’. 我们需要修改gitconfig文件的内容</p>
-</li>
-<li><p>找到github的安装路径，我的是C:\Users\ASUS\AppData\Local\GitHub\PortableGit_ca477551eeb4aea0e4ae9fcd3358bd96720bb5c8\etc</p>
-</li>
-<li><p>找到一个名为gitconfig的文件，打开它把里面的[remote “origin”]那一行删掉就好了！</p>
-</li>
-</ol>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果输入</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh -T git@github.com</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;出现错误提示：Permission denied (publickey).因为新生成的key不能加入ssh就会导致连接不上github。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解决办法如下：</p>
-<ol>
-<li><p>先输入$ ssh-agent，再输入$ ssh-add ~/.ssh/id_key，这样就可以了。</p>
-</li>
-<li><p>如果还是不行的话，输入ssh-add ~/.ssh/id_key 命令后出现报错Could not open a connection to your authentication agent.解决方法是key用Git Gui的ssh工具生成，这样生成的时候key就直接保存在ssh中了，不需要再ssh-add命令加入了，其它的user，token等配置都用命令行来做。</p>
-</li>
-<li><p>最好检查一下在你复制id_rsa.pub文件的内容时有没有产生多余的空格或空行，有些编辑器会帮你添加这些的。</p>
-</li>
-</ol>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果输入</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git push origin master</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;提示出错信息：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">error:failed to push som refs to .......</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解决办法如下：</p>
-<ol>
-<li><p>先输入$ git pull origin master //先把远程服务器github上面的文件拉下来</p>
-</li>
-<li><p>再输入$ git push origin master</p>
-</li>
-<li><p>如果出现报错 fatal: Couldn’t find remote ref master或者fatal: ‘origin’ does not appear to be a git repository以及fatal: Could not read from remote repository.</p>
-</li>
-<li><p>则需要重新输入$ git remote add origingit@github.com:djqiang/gitdemo.git</p>
-</li>
-</ol>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用git在本地创建一个项目的过程</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">makdir ~/hello-world    //创建一个项目hello-world</div><div class="line"><span class="built_in">cd</span> ~/hello-world       //打开这个项目</div><div class="line">git init             //初始化 </div><div class="line">touch README</div><div class="line">git add README        //更新README文件</div><div class="line">git commit -m <span class="string">'first commit'</span>     //提交更新，并注释信息“first commit” </div><div class="line">git remote add origin git@github.com:defnngj/hello-world.git     //连接远程github项目  </div><div class="line">git push -u origin master     //将本地项目更新到github项目上去</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;gitconfig配置文件</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Git有一个工具被称为git config，它允许你获得和设置配置变量；这些变量可以控制Git的外观和操作的各个方面。这些变量可以被存储在三个不同的位置： </p>
-<ol>
-<li><p>/etc/gitconfig 文件：包含了适用于系统所有用户和所有库的值。如果你传递参数选项’–system’ 给 git config，它将明确的读和写这个文件。 </p>
-</li>
-<li><p>~/.gitconfig 文件 ：具体到你的用户。你可以通过传递–global 选项使Git 读或写这个特定的文件。</p>
-</li>
-<li><p>位于git目录的config文件 (也就是 .git/config) ：无论你当前在用的库是什么，特定指向该单一的库。每个级别重写前一个级别的值。因此，在.git/config中的值覆盖了在/etc/gitconfig中的同一个值。</p>
-</li>
-</ol>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在Windows系统中，Git在$HOME目录中查找.gitconfig文件（对大多数人来说，位于C:\Documents and Settings\$USER下）。它也会查找/etc/gitconfig，尽管它是相对于Msys 根目录的。这可能是你在Windows中运行安装程序时决定安装Git的任何地方。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置相关信息：</p>
-<ol>
-<li>当你安装Git后首先要做的事情是设置你的用户名称和e-mail地址。这是非常重要的，因为每次Git提交都会使用该信息。它被永远的嵌入到了你的提交中：</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">git config --global user.name <span class="string">"John Doe"</span></div><div class="line">git config --global user.email johndoe@example.com</div><div class="line">``` </div><div class="line"></div><div class="line">2. 你的编辑器(Your Editor)</div><div class="line"></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;现在，标识已经设置，可以配置缺省文本编辑器，Git在需要输入一些消息时会使用该文本编辑器。缺省情况下，Git使用系统的缺省编辑器，这通常可能是vi 或者 vim。如果想使用一个不同的文本编辑器，例如Emacs，可以做如下操作：</span></div><div class="line"></div><div class="line">```bash</div><div class="line">git config --global core.editor emacs</div></pre></td></tr></table></figure>
-<ol>
-<li>检查设置(Checking Your Settings)</li>
-</ol>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果想检查设置，可以使用 git config –list 命令来列出Git可以在该处找到的所有的设置:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git config --list</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;也可以查看Git认为的一个特定的关键字目前的值，使用如下命令 git config {key}:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git config user.name</div></pre></td></tr></table></figure>
-<ol>
-<li>获取帮助(Getting help)</li>
-</ol>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果当你在使用Git时需要帮助，有三种方法可以获得任何git命令的手册页(manpage)帮助信息:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">help</span> &lt;verb&gt;</div><div class="line">git &lt;verb&gt; --<span class="built_in">help</span></div><div class="line">man git-&lt;verb&gt;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例如，你可以运行如下命令获取对config命令的手册页帮助:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">help</span> config</div></pre></td></tr></table></figure>
 
       
     </div>

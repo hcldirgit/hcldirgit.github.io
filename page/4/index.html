@@ -23,7 +23,7 @@
     <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
   
   
-    <link rel="icon" href="https://hcldirgit.github.io/images/0.png">
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
   
   <link rel="stylesheet" href="/css/style.css">
   
@@ -56,7 +56,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="https://hcldirgit.github.io/images/0.png" class="js-avatar">
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
 			
 		</a>
 
@@ -142,7 +142,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="https://hcldirgit.github.io/images/0.png" class="js-avatar">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">失落的乐章</h1>
@@ -493,6 +493,78 @@
 
 
   
+    <article id="post-Shell/14. while 循环" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Shell/14. while 循环/" class="article-date">
+  	<time datetime="2017-09-02T18:23:14.640Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Shell/14. while 循环/">
+        while 循环
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;while 循环常常用来写死循环的脚本，用于监控某项服务。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 sbin]<span class="comment"># vim while.sh</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加入内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line">a=5</div><div class="line"><span class="keyword">while</span> [ <span class="variable">$a</span> -ge 1 ]</div><div class="line"><span class="keyword">do</span></div><div class="line">    <span class="built_in">echo</span> <span class="variable">$a</span></div><div class="line">    a=$[<span class="variable">$a</span>-1]</div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;while 循环格式也很简单：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">while</span> 条件：<span class="keyword">do</span></div><div class="line">    <span class="built_in">command</span></div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上例脚本的执行结果为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 sbin]<span class="comment"># sh while.sh</span></div></pre></td></tr></table></figure>
+<p><img src="" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另外可以把循环条件拿一个冒号代替，这样可以做到死循环，监控脚本常常这样写：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">while</span> :;<span class="keyword">do</span></div><div class="line">    <span class="built_in">command</span></div><div class="line">    sleep 3</div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面用 while 死循环，来写一个判断系统负载的脚本。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 sbin]<span class="comment"># vim 6.sh</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加入内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="keyword">while</span> :;<span class="keyword">do</span></div><div class="line">    load=`uptime |awk <span class="string">'&#123;print $(NF-2)&#125;'</span>|cut -d. -f1`</div><div class="line">    <span class="keyword">if</span> [ <span class="variable">$load</span> -gt 10 ]</div><div class="line">    <span class="keyword">then</span></div><div class="line">        <span class="built_in">echo</span> <span class="string">"system load is high."</span>|mail -s <span class="string">"system load"</span> 89429541@qq.com</div><div class="line">    <span class="keyword">fi</span></div><div class="line">    sleep 10</div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：uptime 命令是用来查看系统负载的，用 awk 截取倒数第三段，也即是平均 1 分钟的系统负载，然后只取整数部分。如果系统负载高于 10 则发邮件告警。每隔 10 秒检查一次。但是如果系统负载一直高于 10，那么将会出现每隔 10 秒发一次邮件的窘境。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Shell/13. for 循环" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -537,78 +609,6 @@
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;也可以写引用系统命令的执行结果，就像那个 seq 1 5 但是需要用反引号括起来：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 sbin]<span class="comment"># for file in `ls`;do echo $file;done</span></div></pre></td></tr></table></figure>
 <p><img src="https://github.com/hcldirgit/image/blob/master/for%20%E5%BE%AA%E7%8E%AF/03.png?raw=true" alt=""></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Shell/14. while 循环" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Shell/14. while 循环/" class="article-date">
-  	<time datetime="2017-09-02T18:23:14.640Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Shell/14. while 循环/">
-        while 循环
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;while 循环常常用来写死循环的脚本，用于监控某项服务。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 sbin]<span class="comment"># vim while.sh</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加入内容：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line">a=5</div><div class="line"><span class="keyword">while</span> [ <span class="variable">$a</span> -ge 1 ]</div><div class="line"><span class="keyword">do</span></div><div class="line">    <span class="built_in">echo</span> <span class="variable">$a</span></div><div class="line">    a=$[<span class="variable">$a</span>-1]</div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;while 循环格式也很简单：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">while</span> 条件：<span class="keyword">do</span></div><div class="line">    <span class="built_in">command</span></div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上例脚本的执行结果为：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 sbin]<span class="comment"># sh while.sh</span></div></pre></td></tr></table></figure>
-<p><img src="" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另外可以把循环条件拿一个冒号代替，这样可以做到死循环，监控脚本常常这样写：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">while</span> :;<span class="keyword">do</span></div><div class="line">    <span class="built_in">command</span></div><div class="line">    sleep 3</div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面用 while 死循环，来写一个判断系统负载的脚本。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 sbin]<span class="comment"># vim 6.sh</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加入内容：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="keyword">while</span> :;<span class="keyword">do</span></div><div class="line">    load=`uptime |awk <span class="string">'&#123;print $(NF-2)&#125;'</span>|cut -d. -f1`</div><div class="line">    <span class="keyword">if</span> [ <span class="variable">$load</span> -gt 10 ]</div><div class="line">    <span class="keyword">then</span></div><div class="line">        <span class="built_in">echo</span> <span class="string">"system load is high."</span>|mail -s <span class="string">"system load"</span> 89429541@qq.com</div><div class="line">    <span class="keyword">fi</span></div><div class="line">    sleep 10</div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：uptime 命令是用来查看系统负载的，用 awk 截取倒数第三段，也即是平均 1 分钟的系统负载，然后只取整数部分。如果系统负载高于 10 则发邮件告警。每隔 10 秒检查一次。但是如果系统负载一直高于 10，那么将会出现每隔 10 秒发一次邮件的窘境。</p>
 
       
     </div>

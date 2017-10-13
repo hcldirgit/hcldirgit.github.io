@@ -23,7 +23,7 @@
     <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
   
   
-    <link rel="icon" href="https://hcldirgit.github.io/images/0.png">
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
   
   <link rel="stylesheet" href="/css/style.css">
   
@@ -56,7 +56,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="https://hcldirgit.github.io/images/0.png" class="js-avatar">
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
 			
 		</a>
 
@@ -142,7 +142,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="https://hcldirgit.github.io/images/0.png" class="js-avatar">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">失落的乐章</h1>
@@ -171,6 +171,104 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-Zabbix/20. zabbix设置邮件报警" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Zabbix/20. zabbix设置邮件报警/" class="article-date">
+  	<time datetime="2017-09-02T18:13:44.862Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Zabbix/20. zabbix设置邮件报警/">
+        zabbix设置邮件报警
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一、首先安装mailx组件并配置好能够通过三方邮箱发送邮件"><a href="#一、首先安装mailx组件并配置好能够通过三方邮箱发送邮件" class="headerlink" title="一、首先安装mailx组件并配置好能够通过三方邮箱发送邮件"></a>一、首先安装mailx组件并配置好能够通过三方邮箱发送邮件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install mailx</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后编辑mailx的配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vi /etc/mail.rc</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在最末尾添加如下信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">set</span> from=xxxxxx@qq.com smtp=smtp.qq.com</div><div class="line"><span class="built_in">set</span> smtp-auth-user=xxxxxx@qq.com smtp-auth-password=xxxxxx</div><div class="line"><span class="built_in">set</span> smtp-auth=login</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;保存退出后测试邮件是否能够正常发送出去</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> <span class="string">"zabbix test mail"</span> |mail -s <span class="string">"zabbix"</span> xxx@163.com</div></pre></td></tr></table></figure>
+<h2 id="二、配置Zabbix服务端邮件报警"><a href="#二、配置Zabbix服务端邮件报警" class="headerlink" title="二、配置Zabbix服务端邮件报警"></a>二、配置Zabbix服务端邮件报警</h2><h3 id="1、打开Zabbix"><a href="#1、打开Zabbix" class="headerlink" title="1、打开Zabbix"></a>1、打开Zabbix</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;管理-示警媒介类型-创建媒体类型</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E8%AE%BE%E7%BD%AE%E9%82%AE%E4%BB%B6%E6%8A%A5%E8%AD%A6/01.jpeg?raw=true" alt=""></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E8%AE%BE%E7%BD%AE%E9%82%AE%E4%BB%B6%E6%8A%A5%E8%AD%A6/02.jpeg?raw=true" alt=""></p>
+<p>名称：Sendmail<br>类型：脚本<br>脚本名称：sendmail.sh<br>已启用：勾选<br>存档</p>
+<h3 id="2、设置Zabbix用户报警邮箱地址"><a href="#2、设置Zabbix用户报警邮箱地址" class="headerlink" title="2、设置Zabbix用户报警邮箱地址"></a>2、设置Zabbix用户报警邮箱地址</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;管理-用户-Admin (Zabbix Administrator)</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E8%AE%BE%E7%BD%AE%E9%82%AE%E4%BB%B6%E6%8A%A5%E8%AD%A6/03.jpeg?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;切换到示警媒介-添加</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E8%AE%BE%E7%BD%AE%E9%82%AE%E4%BB%B6%E6%8A%A5%E8%AD%A6/04.jpeg?raw=true" alt=""></p>
+<p>类型：Sendmail<br>收件人：xxx@163.com<br>其他默认即可，也可<br>以根据需要设置<br>状态：已启用<br>存档</p>
+<h3 id="3、设置Zabbix触发报警的动作"><a href="#3、设置Zabbix触发报警的动作" class="headerlink" title="3、设置Zabbix触发报警的动作"></a>3、设置Zabbix触发报警的动作</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;组态-动作-创建动作</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E8%AE%BE%E7%BD%AE%E9%82%AE%E4%BB%B6%E6%8A%A5%E8%AD%A6/05.jpeg?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>注意，下面的默认接收人那一栏中需要添加（默认接收人：）这个字段，否则将可能导致邮件中文乱码</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>默认接收人：默认接收人：</code>故障{TRIGGER.STATUS},服务器:{HOSTNAME1}发生: {TRIGGER.NAME}故障!</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>默认信息：</code><br>告警主机:{HOSTNAME1}<br>告警时间:{EVENT.DATE} {EVENT.TIME}<br>告警等级:{TRIGGER.SEVERITY}<br>告警信息: {TRIGGER.NAME}<br>告警项目:{TRIGGER.KEY1}<br>问题详情:{ITEM.NAME}:{ITEM.VALUE}<br>当前状态:{TRIGGER.STATUS}:{ITEM.VALUE1}<br>事件ID:{EVENT.ID}<br>恢复信息：打钩    </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>注意，下面的恢复主旨那一栏中需要添加（恢复主旨：）这个字段，否则将可能导致邮件中文乱码</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>恢复主旨：恢复主旨：</code>恢复{TRIGGER.STATUS}, 服务器:{HOSTNAME1}: {TRIGGER.NAME}已恢复!</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>恢复信息：</code><br>告警主机:{HOSTNAME1}<br>告警时间:{EVENT.DATE} {EVENT.TIME}<br>告警等级:{TRIGGER.SEVERITY}<br>告警信息: {TRIGGER.NAME}<br>告警项目:{TRIGGER.KEY1}<br>问题详情:{ITEM.NAME}:{ITEM.VALUE}<br>当前状态:{TRIGGER.STATUS}:{ITEM.VALUE1}<br>事件ID:{EVENT.ID}<br>已启用：打钩</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E8%AE%BE%E7%BD%AE%E9%82%AE%E4%BB%B6%E6%8A%A5%E8%AD%A6/06.jpeg?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;切换到操作选项</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E8%AE%BE%E7%BD%AE%E9%82%AE%E4%BB%B6%E6%8A%A5%E8%AD%A6/07.jpeg?raw=true" alt=""></p>
+<p>新的<br>操作类型：送出信息<br>送到用户：添加<br>默认信息：打钩<br>选择用户：Admin<br>选择<br>仅送到：Sendmail<br>存档    </p>
+<h3 id="4、添加Zabbix服务端邮件发送脚本"><a href="#4、添加Zabbix服务端邮件发送脚本" class="headerlink" title="4、添加Zabbix服务端邮件发送脚本"></a>4、添加Zabbix服务端邮件发送脚本</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span>/usr/<span class="built_in">local</span>/zabbix-2.4.4/scripts <span class="comment">#进入脚本存放目录</span></div><div class="line">vi sendmail.sh <span class="comment">#编辑，添加以下代码</span></div><div class="line"></div><div class="line"><span class="meta">#!/bin/sh</span></div><div class="line"><span class="comment">#export LANG=zh_CN.UTF-8         #该命令能够解决发送的中文变成了乱码的问题</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$3</span>"</span> | mail -s <span class="string">"<span class="variable">$2</span>"</span><span class="variable">$1</span></div><div class="line">:wq! <span class="comment">#保存退出</span></div><div class="line">chown zabbix.zabbix /usr/<span class="built_in">local</span>/zabbix-2.4.4/scripts/sendmail.sh       <span class="comment">#设置脚本所有者为zabbix用户</span></div><div class="line">chmod +x /usr/<span class="built_in">local</span>/zabbix-2.4.4/scripts/sendmail.sh      <span class="comment">#设置脚本执行权限</span></div></pre></td></tr></table></figure>
+<h3 id="5、设置zabbix-server服务调用脚本的目录"><a href="#5、设置zabbix-server服务调用脚本的目录" class="headerlink" title="5、设置zabbix_server服务调用脚本的目录"></a>5、设置zabbix_server服务调用脚本的目录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim/usr/<span class="built_in">local</span>/zabbix-2.4.4/etc/zabbix_server.conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;进入zabbix_server配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">AlertScriptsPath=/usr/<span class="built_in">local</span>/zabbix-2.4.4/scripts</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;找到上面这一行，将脚本存放目录写到此处</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;保存并重启zabbix_server服务</p>
+<h2 id="三、测试Zabbix报警"><a href="#三、测试Zabbix报警" class="headerlink" title="三、测试Zabbix报警"></a>三、测试Zabbix报警</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关闭Zabbix客户端服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service zabbix_agentd stop</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看xxx@163.com邮箱，会收到报警邮件</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;再开启Zabbix客户端服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service zabbix_agentd start</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看xxx@163.com邮箱，会收到恢复邮件</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用外部邮箱账号发送报警邮件设置完成。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;至此，Zabbix邮件报警设置完成。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zabbix/">Zabbix</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-Zabbix/2. zabbix 服务端安装" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -257,104 +355,6 @@
 <p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/15.png?raw=true" alt="15"></p>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输入帐号密码登录</p>
 <p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85/16.png?raw=true" alt="16"></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zabbix/">Zabbix</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Zabbix/20. zabbix设置邮件报警" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Zabbix/20. zabbix设置邮件报警/" class="article-date">
-  	<time datetime="2017-09-02T18:13:44.862Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Zabbix/20. zabbix设置邮件报警/">
-        zabbix设置邮件报警
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="一、首先安装mailx组件并配置好能够通过三方邮箱发送邮件"><a href="#一、首先安装mailx组件并配置好能够通过三方邮箱发送邮件" class="headerlink" title="一、首先安装mailx组件并配置好能够通过三方邮箱发送邮件"></a>一、首先安装mailx组件并配置好能够通过三方邮箱发送邮件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install mailx</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后编辑mailx的配置文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vi /etc/mail.rc</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在最末尾添加如下信息</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">set</span> from=xxxxxx@qq.com smtp=smtp.qq.com</div><div class="line"><span class="built_in">set</span> smtp-auth-user=xxxxxx@qq.com smtp-auth-password=xxxxxx</div><div class="line"><span class="built_in">set</span> smtp-auth=login</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;保存退出后测试邮件是否能够正常发送出去</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> <span class="string">"zabbix test mail"</span> |mail -s <span class="string">"zabbix"</span> xxx@163.com</div></pre></td></tr></table></figure>
-<h2 id="二、配置Zabbix服务端邮件报警"><a href="#二、配置Zabbix服务端邮件报警" class="headerlink" title="二、配置Zabbix服务端邮件报警"></a>二、配置Zabbix服务端邮件报警</h2><h3 id="1、打开Zabbix"><a href="#1、打开Zabbix" class="headerlink" title="1、打开Zabbix"></a>1、打开Zabbix</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;管理-示警媒介类型-创建媒体类型</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E8%AE%BE%E7%BD%AE%E9%82%AE%E4%BB%B6%E6%8A%A5%E8%AD%A6/01.jpeg?raw=true" alt=""></p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E8%AE%BE%E7%BD%AE%E9%82%AE%E4%BB%B6%E6%8A%A5%E8%AD%A6/02.jpeg?raw=true" alt=""></p>
-<p>名称：Sendmail<br>类型：脚本<br>脚本名称：sendmail.sh<br>已启用：勾选<br>存档</p>
-<h3 id="2、设置Zabbix用户报警邮箱地址"><a href="#2、设置Zabbix用户报警邮箱地址" class="headerlink" title="2、设置Zabbix用户报警邮箱地址"></a>2、设置Zabbix用户报警邮箱地址</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;管理-用户-Admin (Zabbix Administrator)</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E8%AE%BE%E7%BD%AE%E9%82%AE%E4%BB%B6%E6%8A%A5%E8%AD%A6/03.jpeg?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;切换到示警媒介-添加</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E8%AE%BE%E7%BD%AE%E9%82%AE%E4%BB%B6%E6%8A%A5%E8%AD%A6/04.jpeg?raw=true" alt=""></p>
-<p>类型：Sendmail<br>收件人：xxx@163.com<br>其他默认即可，也可<br>以根据需要设置<br>状态：已启用<br>存档</p>
-<h3 id="3、设置Zabbix触发报警的动作"><a href="#3、设置Zabbix触发报警的动作" class="headerlink" title="3、设置Zabbix触发报警的动作"></a>3、设置Zabbix触发报警的动作</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;组态-动作-创建动作</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E8%AE%BE%E7%BD%AE%E9%82%AE%E4%BB%B6%E6%8A%A5%E8%AD%A6/05.jpeg?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>注意，下面的默认接收人那一栏中需要添加（默认接收人：）这个字段，否则将可能导致邮件中文乱码</strong></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>默认接收人：默认接收人：</code>故障{TRIGGER.STATUS},服务器:{HOSTNAME1}发生: {TRIGGER.NAME}故障!</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>默认信息：</code><br>告警主机:{HOSTNAME1}<br>告警时间:{EVENT.DATE} {EVENT.TIME}<br>告警等级:{TRIGGER.SEVERITY}<br>告警信息: {TRIGGER.NAME}<br>告警项目:{TRIGGER.KEY1}<br>问题详情:{ITEM.NAME}:{ITEM.VALUE}<br>当前状态:{TRIGGER.STATUS}:{ITEM.VALUE1}<br>事件ID:{EVENT.ID}<br>恢复信息：打钩    </p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>注意，下面的恢复主旨那一栏中需要添加（恢复主旨：）这个字段，否则将可能导致邮件中文乱码</strong></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>恢复主旨：恢复主旨：</code>恢复{TRIGGER.STATUS}, 服务器:{HOSTNAME1}: {TRIGGER.NAME}已恢复!</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>恢复信息：</code><br>告警主机:{HOSTNAME1}<br>告警时间:{EVENT.DATE} {EVENT.TIME}<br>告警等级:{TRIGGER.SEVERITY}<br>告警信息: {TRIGGER.NAME}<br>告警项目:{TRIGGER.KEY1}<br>问题详情:{ITEM.NAME}:{ITEM.VALUE}<br>当前状态:{TRIGGER.STATUS}:{ITEM.VALUE1}<br>事件ID:{EVENT.ID}<br>已启用：打钩</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E8%AE%BE%E7%BD%AE%E9%82%AE%E4%BB%B6%E6%8A%A5%E8%AD%A6/06.jpeg?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;切换到操作选项</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E8%AE%BE%E7%BD%AE%E9%82%AE%E4%BB%B6%E6%8A%A5%E8%AD%A6/07.jpeg?raw=true" alt=""></p>
-<p>新的<br>操作类型：送出信息<br>送到用户：添加<br>默认信息：打钩<br>选择用户：Admin<br>选择<br>仅送到：Sendmail<br>存档    </p>
-<h3 id="4、添加Zabbix服务端邮件发送脚本"><a href="#4、添加Zabbix服务端邮件发送脚本" class="headerlink" title="4、添加Zabbix服务端邮件发送脚本"></a>4、添加Zabbix服务端邮件发送脚本</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span>/usr/<span class="built_in">local</span>/zabbix-2.4.4/scripts <span class="comment">#进入脚本存放目录</span></div><div class="line">vi sendmail.sh <span class="comment">#编辑，添加以下代码</span></div><div class="line"></div><div class="line"><span class="meta">#!/bin/sh</span></div><div class="line"><span class="comment">#export LANG=zh_CN.UTF-8         #该命令能够解决发送的中文变成了乱码的问题</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$3</span>"</span> | mail -s <span class="string">"<span class="variable">$2</span>"</span><span class="variable">$1</span></div><div class="line">:wq! <span class="comment">#保存退出</span></div><div class="line">chown zabbix.zabbix /usr/<span class="built_in">local</span>/zabbix-2.4.4/scripts/sendmail.sh       <span class="comment">#设置脚本所有者为zabbix用户</span></div><div class="line">chmod +x /usr/<span class="built_in">local</span>/zabbix-2.4.4/scripts/sendmail.sh      <span class="comment">#设置脚本执行权限</span></div></pre></td></tr></table></figure>
-<h3 id="5、设置zabbix-server服务调用脚本的目录"><a href="#5、设置zabbix-server服务调用脚本的目录" class="headerlink" title="5、设置zabbix_server服务调用脚本的目录"></a>5、设置zabbix_server服务调用脚本的目录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim/usr/<span class="built_in">local</span>/zabbix-2.4.4/etc/zabbix_server.conf</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;进入zabbix_server配置文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">AlertScriptsPath=/usr/<span class="built_in">local</span>/zabbix-2.4.4/scripts</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;找到上面这一行，将脚本存放目录写到此处</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;保存并重启zabbix_server服务</p>
-<h2 id="三、测试Zabbix报警"><a href="#三、测试Zabbix报警" class="headerlink" title="三、测试Zabbix报警"></a>三、测试Zabbix报警</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关闭Zabbix客户端服务</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service zabbix_agentd stop</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看xxx@163.com邮箱，会收到报警邮件</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;再开启Zabbix客户端服务</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service zabbix_agentd start</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看xxx@163.com邮箱，会收到恢复邮件</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用外部邮箱账号发送报警邮件设置完成。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;至此，Zabbix邮件报警设置完成。</p>
 
       
     </div>

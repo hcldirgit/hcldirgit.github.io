@@ -23,7 +23,7 @@
     <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
   
   
-    <link rel="icon" href="https://hcldirgit.github.io/images/0.png">
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
   
   <link rel="stylesheet" href="/css/style.css">
   
@@ -56,7 +56,7 @@
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
 			
-			<img lazy-src="https://hcldirgit.github.io/images/0.png" class="js-avatar">
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
 			
 		</a>
 
@@ -142,7 +142,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="https://hcldirgit.github.io/images/0.png" class="js-avatar">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">失落的乐章</h1>
@@ -1164,10 +1164,10 @@
 
 
   
-    <article id="post-MySQL/23. mysql主从复制" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-MySQL/24. mysql主从同步问题集" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/09/03/MySQL/23. mysql主从复制/" class="article-date">
+      <a href="/2017/09/03/MySQL/24. mysql主从同步问题集/" class="article-date">
   	<time datetime="2017-09-02T18:06:42.781Z" itemprop="datePublished">2017-09-03</time>
 </a>
     </div>
@@ -1179,8 +1179,8 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/MySQL/23. mysql主从复制/">
-        mysql 主从复制
+      <a class="article-title" href="/2017/09/03/MySQL/24. mysql主从同步问题集/">
+        mysql 主从同步问题集
         
       </a>
     </h1>
@@ -1191,92 +1191,433 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="mysql复制"><a href="#mysql复制" class="headerlink" title="mysql复制"></a>mysql复制</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MySQL复制支持单向，异步复制。通过一台主服务器将更新写入二进制日志文件，并维护文件的一个索引以跟踪日志循环。这些日志可以记录发送到从服务器的更新。当一个从服务器连接主服务器时，它通知主服务器从服务器在日志中读取的最后一次成功更新的位置。从服务器接收从那时起发生的任何更新，然后封锁并等待主服务器通知新的更新。MySQL主从复制是异步进行的。同步需要版本为5.5,使用google提供的插件来实现。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MySQL主从复制操作很灵活既可以实现整个服务的级别的复制，也可以实现对某个库，甚至某个数据库中的指定的某个对象进行复制。</p>
-<h2 id="MySQL主从复制应用场景"><a href="#MySQL主从复制应用场景" class="headerlink" title="MySQL主从复制应用场景"></a>MySQL主从复制应用场景</h2><ol>
-<li>提高性能。通过一(多)主多从的部署方案，将涉及数据写的操作放在Master端操作，而将数据读的操作分散到众多的Slave当中。降低了Master的负载，提高数据写入的响应效率；多台从服务器提供读，分担了请求，提高了读的效率。</li>
-<li>数据安全。数据复制到Slave节点，即使Master宕机，Slave节点还保存着完整数据。</li>
-<li>数据分析。将数据分析，放在slave上。</li>
-</ol>
-<h2 id="主从复制的原理"><a href="#主从复制的原理" class="headerlink" title="主从复制的原理"></a>主从复制的原理</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MySQL的Replication是一个异步的复制过程，从一个MySQL实例(Master)复制到另一台MySQL实例上。在Master和Slave之间复制的整个过程主要由3个线程完成，其中两个线程（SQL线程和IO线程）在Slave端，另外一个线程(IO线程)在Master端。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要实现主从复制，首先要在Master端打开Binary Log功能。因为整个复制过程实际上    就是Slave从Master上获取二进制日志，然后在自己身上完全按照产生的顺序一次执行日志中记录的各种操作的过程。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;复制的具体过程如下：</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/mysql%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/01.jpeg?raw=true" alt=""></p>
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在InnoDB引擎下发现，Mysql的主从热备存在数据不一致的问题，一些数据没有成功同步到备机。在use databases后，更新的表必须是当前选择的database才同步。譬如连上Mysql服务后操作： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">USE test2; </div><div class="line">UPDATE client SET name=<span class="string">'test'</span> WHERE uid=1;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;数据未能同步到备机，而使用use  test后，才可以成功同步，如下方式： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">USE <span class="built_in">test</span>; </div><div class="line">UPDATE client SET name=<span class="string">'test'</span> WHERE uid=1;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;仔细看Mysql手册，发现同步启动选项中还有玄机，只设置replicate-do-db指定同步数据库还不够，是没有设置replicate-wild-do-table导致的跨库同步问题。Mysql默认是同步指定数据库下的更新操作，若要跨库操作更新同步，就必须指定replicate-wild-do-table参数。下面是Mysql手册中对replicate-do-db和replicate-wild-do-table启动选项的说明： </p>
+<blockquote>
+<p>–replicate-do-db=db_name<br>告诉slave只同步那些缺省数据库是 db_name (也就是用 USE 选中的)的语句。想要指定更多的数据库，只需多次使用该选项，每次指定一个数据库。注意，类似 UPDATE some_db.some_table SET foo=’bar’ 这样的跨库操作语句以及没有选中数据库的操作都不会被同步。如果必须使用跨库操作，要确保使用MySQL 3.23.28或更高，并且使用 –replicate-wild-do-table=db_name.% 选项。请仔细阅读最后面的注意事项。 </p>
+</blockquote>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面是一个不能按照预期工作的例子：如果启动slave时使用 –replicate-do-db=sales 选项，并且在master上执行下列语句，那么这个 UPDATE 语句不会被同步： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">USE prices; </div><div class="line">UPDATE sales.january SET amount=amount+1000;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果需要同步跨库操作，只需使用 –replicate-wild-do-table=db_name.% 选项。这个”只检查缺省数据库”特性的主要原因是因为想要单从一个语句中判断是否要被同步比较困难(例如，使用多表 DELETE 或者 UPDATE，这就跨库了)。不过想要检查是否是缺省数据库却很快。 </p>
+<blockquote>
+<p>–replicate-wild-do-table=db_name.tbl<em>name<br>限制slave只同步那些匹配指定模式的数据表。模式中可以包含通配符 <code>%</code> 和 `</em>`，它们的含义和 LIKE 模式一样。想要指定更多的数据表，只需多次使用该选项，每次指定一个数据表。请仔细阅读最后面的注意事项。 </p>
+</blockquote>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例如： –replicate-wild-do-table=foo%.bar% 会同步所有以 foo 开头的数据库下的以 bar 开头的数据表上的更新操作。 如果匹配模式是 %，则匹配所有的表名，且应用到数据库级语句(CREATE DATABASE, DROP DATABASE,和 ALTER DATABASE)。例如，使用 –replicate-wild-do-table=foo%.% 选项的话，所有匹配 foo% 模式的数据库级操作都会被同步。 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果想要在数据库/表模式中包含原义通配符，需要用反斜杠来转义它们。例如，想要同步 my<em>own%db 数据库下的所有表，但是不想同步 my1ownAABCdb 数据库下的表，就需要转义字符 `</em>`： –replicate-wild-do-table=my\_own\%db。如果是在命令行中使用这个选项，就可能需要两个反斜杠来转义，这依赖于命令行解释器。例如，在 bash shell下，就需要输入： –replicate-wild-do-table=my\\_own\\%db。 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;还存在一些问题 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;不管有没有replicate-wild-do-table选项，更新操作必须是mysql连接已经有选择的数据库了才进行，譬如新建的mysql(新连接是没有默认选择的database的)连接中执行： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">UPDATE test.client SET name=<span class="string">'test'</span> WHERE uid=1;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这条更新无法同步到备机，必须在update前use database操作，该database必须是replicate-wild-do-table中指定的database。 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;保险的解决方式：连接上mysql后，调用mysql_select_db()选择数据库，之后进行的更新操作就可以自动同步了。 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SQL模式匹配 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SQL的模式匹配允许你使用“_”匹配任何单个字符，而“%”匹配任意数目字符(包括零个字符)。在MySQL中，SQL的模式缺省是忽略大小写的。下面显示一些例子。注意在你使用SQL模式时，你不能使用=或!=；而使用LIKE或NOT LIKE比较操作符。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在my.cnf中設定master是錯誤的，你会发现在设置好重启后并没有按照之前的方式来运行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">master-host            = 192.168.10.2 </div><div class="line">master-user            =  repl </div><div class="line">master-password = slavepass </div><div class="line">master-port            = 3306</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;请在mysql下执行底下指令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">mysql&gt;CHANGE MASTER TO </div><div class="line">MASTER_HOST=’192.168.10.2′, </div><div class="line">MASTER_USER=’repl’, </div><div class="line">MASTER_PASSWORD=’slavepass’;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看主从服务状态的指令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mysql&gt; show slave status\G </div><div class="line">mysql&gt; show master status\G </div><div class="line">mysql&gt; show master logs;</div></pre></td></tr></table></figure>
+<hr>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Mysql主从复制碰到(server_errno=1236)解决过程 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;今天上论坛发现新发表的帖子无法正常显示(论坛数据库采用Mysql主从复制进行读写分离方案)，马上想到可能主从复制同步上出现问题，同一时间收到同事消息说数据库的主复制出现故障重启了，这时找到事故原因主数据库重启了会导致从数据库数据复制同步上延后，过一段时间SSH到从数据库上show slave status\G;查看状态显示 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"> Slave_IO_Running: NO </div><div class="line"> Slave_SQL_Running: Yes </div><div class="line">... </div><div class="line"> Last_Errno: 0 </div><div class="line"> Last_Error: </div><div class="line">... </div><div class="line">Seconds_Behind_Master: NULL</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从状态信息来看数据同步没有延后也没有报任何的错误，但Slave_IO_Running: NO显示同步IO进程失败。根据以往经验会先重启一下Slave后在show slave status\G;看一下是否会恢复正常，Slave_IO_Running: NO问题还是没有解决于是查看一下Mysql的错误日志发现： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">090605  9:13:20 [Note] Slave SQL thread initialized, starting replication <span class="keyword">in</span> <span class="built_in">log</span> ‘mysql-bin.000102′ at position 1029244974, relay <span class="built_in">log</span> ‘./xxx-relay-bin.000634′ position: 98 </div><div class="line">090605  9:13:20 [Note] Slave I/O thread: connected to master ’slave163@192.168.0.131:3306′,  replication started <span class="keyword">in</span> <span class="built_in">log</span> ‘mysql-bin.000102′ at position 1029244974 </div><div class="line">090605  9:13:20 [ERROR] Error reading packet from server: Client requested master to start replication from impossible position ( server_errno=1236) </div><div class="line">090605  9:13:20 [ERROR] Got fatal error 1236: ‘Client requested master to start replication from impossible position’ from master when reading data from binary <span class="built_in">log</span> </div><div class="line">090605  9:13:20 [Note] Slave I/O thread exiting, <span class="built_in">read</span> up to <span class="built_in">log</span> ‘mysql-bin.000102′, position 1029244974 </div><div class="line">090605  9:13:52 [Note] Error reading relay <span class="built_in">log</span> event: slave SQL thread was killed</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在网上查了很多资料可能因为mysql-bin.000102日志文件中并没有1029244974这个位置，vi打开mysql-bin.000102日志文件搜索1029244974确实没有搜到内容，但为什么主数据库意外的重启会导致Slave上读取位置的错误，记得以前主数据库也手动重启过，Slave上也没有出现过这种问题。解决方法是使用CHANGE MASTER TO命令就是让Slave跳过mysql-bin.000102日志文件1029244974这个位置直接到下一个日志文件： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">SLAVE STOP; </div><div class="line">CHANGE MASTER TO MASTER_LOG_FILE=<span class="string">'mysql-bin.000103'</span>, MASTER_LOG_POS=0; </div><div class="line">SLAVE START;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;但是这样如果mysql-bin.000102日志文件的内容没有同步完会导致主数据库与从数据库的内容不一致，那何不把位置向前移呢。 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">SLAVE STOP; </div><div class="line">CHANGE MASTER TO MASTER_LOG_FILE=<span class="string">'mysql-bin.000102'</span>, MASTER_LOG_POS=1019244974; </div><div class="line">SLAVE START;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;于是试了一下，果然Slave_IO_Running: YES同步成功跳过了mysql-bin.000102日志文件1029244974这个位置并继续读取下一个位置，这样从数据库也不会丢失数据和主数据库保持数据的一致，如果my.cnf中没有加slave-skip-errors参数跳过一些错误的话，同步位置向前移会导致一些数据重新插入到表中报主键重复错误加上参数就可以成功跳过这些错误了。 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;今天一台数据库的slave报 Slave_IO_Running: No的错误, 登陆上机器执行. </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;slave stop; </div><div class="line">&gt;SET GLOBAL SQL_SLAVE_SKIP_COUNTER=1; </div><div class="line">&gt;slave start;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;看看slave的状态, 依然是Slave_IO_Running: No </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;看看mater错误日志, 发现有一段奇怪的日志如下: </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Got timeout reading communication packets</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;看看master的错误日志, 那就更奇怪了: </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">090430 15:49:38 [Note] Slave I/O thread: connected to master <span class="string">'user@192.16.0.123:3306'</span>,replication started <span class="keyword">in</span> <span class="built_in">log</span> <span class="string">'xxx-bin.000815'</span> at position 3776386 </div><div class="line">090430 15:49:38 [ERROR] Error reading packet from server: Client requested master to start replication from impossible position ( server_errno=1236) </div><div class="line">090430 15:49:38 [ERROR] Got fatal error 1236: <span class="string">'Client requested master to start replication from impossible position'</span> from master when reading data from binary <span class="built_in">log</span> </div><div class="line">090430 15:49:38 [Note] Slave I/O thread exiting, <span class="built_in">read</span> up to <span class="built_in">log</span> <span class="string">'xxx-bin.000815'</span>, position 3776386</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可能是xxx-bin.000815这个文件有问题, 看了一下它的大小，果然没有3776386这个位置，slave读的时候肯定是错误了， 到底为什么会这样就不清楚了。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解决办法就是读取下一个bin-log了 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;slave stop; </div><div class="line">&gt;CHANGE MASTER TO MASTER_LOG_FILE=<span class="string">'xxx-bin.000816'</span>,MASTER_LOG_POS=0; </div><div class="line">&gt;slave start; </div><div class="line">&gt;show slave status\G;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以看到Slave_IO_Running: Yes, 问题解决.</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从库配置文件my2.ini </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">port=3307 </div><div class="line">datadir=”” </div><div class="line">server-id=2</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启用从库日志，这样可以进行链式复制 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">log</span>-slave-updates</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从库是否只读，0表示可读写，1表示只读 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">read</span>-only=1</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;只复制某个表 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">replicate-do-table=tablename</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;只复制某些表(可用匹配符) </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">replicate-wild-do-table=tablename%</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;只复制某个库 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">replicate-do-db=dbname</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;只复制某些库 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">replicte-wild-do-db=dbname%</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;不复制某个表 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">replicate-ignore-table=tablename</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;不复制某些表 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">replicate-wild-ignore-table=tablename%</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;不复制某个库 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">replicate-ignore-db=dbname</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;复制完的sql语句是否立即从中继日志中清除，1表示立即清除 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">relay-log-purge=1</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从服务器主机，用于show slave hosts生成从库清单 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">report-host=hostname</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在从库的数据目录下，有几个和复制相关的文件需要说明一下： </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;*-reloay-bin.* 从主库同步过来的Bin log文件，也叫中继日志 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;master.info 主库帐号信息和同步信息，这里记录了复制用户名和密码，需要保护好权限。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;relay-log.info 跟踪执行同步过来的Bin log的执行情况 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;通过show processlist可以查看主从库用于复制的相关进程(在windows上实际实现为线程)的信息 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">mysql&gt; show processlist\G </div><div class="line">mysql&gt; CHANGE MASTER TO </div><div class="line"> -&gt; MASTER_HOST=<span class="string">'master_host_name'</span>, </div><div class="line"> -&gt; MASTER_USER=<span class="string">'replication_user_name'</span>, </div><div class="line"> -&gt; MASTER_PASSWORD=<span class="string">'replication_password'</span>, </div><div class="line"> -&gt; MASTER_LOG_FILE=<span class="string">'recorded_log_file_name'</span>, </div><div class="line"> -&gt; MASTER_LOG_POS=recorded_log_position; </div><div class="line">```          </div><div class="line"></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;注意：从服务器复制时，会在其数据目录中发现文件master.info和HOSTNAME-relay-log.info。状态文件保存在硬盘上，从服务器关闭时不会丢失。下次从服务器启动时，读取这些文件以确定它已经从主服务器读取了多少二进制日志，以及处理自己的中继日志的程度。不要移除或编辑这些文件，除非你确切知你正在做什么并完全理解其意义。即使这样，最好是使用CHANGE MASTER TO语句。 </span></div><div class="line"></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;为了保证以后binglog及时写入，将主库sync_binlog变量设置1。 </span></div><div class="line"></div><div class="line">----</div><div class="line"></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;MYSQL主从同步时出现”Client requested master to start replication from impossible position”错误的解决方法: </span></div><div class="line"></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;这个错误是因为从服务器请求一个错误的位置而引起的.比如主服务器上的BLIN LOG里没有这个POSITION. </span></div><div class="line"></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;解决原理: </span></div><div class="line"></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;从相关的BIN LOG 里最后一个日志位置,与从服务器上的日志对比,如果LOG里最后位置比错误的位置大,那么,说明中间可能有断点,需要把从服务器的位置向前调,多试几次.如果在LOG里最后的位置比从服务器指出的位置还小,那么只要把从服务器的位置设置成LOG的最后位置就可以了. </span></div><div class="line"></div><div class="line">```bash</div><div class="line">mysqlbinlog mysql-log-bin.000112 &gt;log.sql </div><div class="line">tail -f log.sql </div><div class="line"><span class="comment"># at 568380594 </span></div><div class="line"><span class="comment">#110616  3:10:16 server id 1  end_log_pos 568380757     Query   thread_id=123899        exec_time=0     error_code=0 </span></div><div class="line">use thecheap_topshoppinguscom/*!*/; </div><div class="line">SET TIMESTAMP=1308226216/*!*/; </div><div class="line">DELETE FROM `thecheap_topshoppinguscom`.`zm_sessions` WHERE expiry &lt; 1308224416 </div><div class="line">/*!*/; </div><div class="line">DELIMITER ; </div><div class="line"><span class="comment"># End of log file </span></div><div class="line">ROLLBACK /* added by mysqlbinlog */; </div><div class="line">/*!50003 SET COMPLETION_TYPE=@OLD_COMPLETION_TYPE*/;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;发现这个位置比从服务器上的位置(568397810)还小,只要设置成最后位置,然后启动SLAVE就可以了. </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">CHANGE MASTER TO </div><div class="line">MASTER_LOG_FILE=’mysql-log-bin.000112′, </div><div class="line">MASTER_LOG_POS=568380594;</div></pre></td></tr></table></figure>
+<hr>
+<blockquote>
+<p>–read-only选项<br>该选项让从服务器只允许来自从服务器线程或具有SUPER权限的用户的更新，可以确保从服务器不接受来自客户的更新。在测试过程中遇到了read-only的问题，发现写操作因为read-only这个选项的开启，而不能够成功执行。而通过带super权限的用户执行带修改性质的语句时，是能成功执行的。查找了下资料，才了解read-only的真正含义和用法：<br>–read_only  Make all non-temporary tables read-only, with the exception for replication (slave) threads and users with the SUPER privilege.</p>
+</blockquote>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SUPER privilege : </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;The SUPER privilege enables an account to use CHANGE MASTER TO , KILL or mysqladmin kill to kill threads belonging to other accounts (you can always kill your own threads), PURGE BINARY LOGS , configuration changes using SET GLOBAL to modify global system variables, the mysqladmin debug command, enabling or disabling logging, performing updates even if the read_only system variable is enabled, starting and stopping replication on slave servers, specification of any account in the DEFINER attribute of stored programs and views, and enables you to connect (once) even if the connection limit controlled by the max_connections system variable is reached. </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;To create or alter stored routines if binary logging is enabled, you may also need the SUPER privilege, as described in Section 18.6, “Binary Logging of Stored Programs” . </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;read-only选项：对所有的非临时表进行只读控制。但是有两种情况例外： </p>
 <ol>
-<li>Slave的IO线程连上Master，并请求日志文件指定位置(或从开始的日志)之后的日志的内容。</li>
-<li>Master接收到来自Slave的IO线程请求后，负责复制IO线程根据请求的信息读取指定日志之后的日志信息，返回给Slave端的IO线程。返回信息中除了日志所包含的信息，还包含了包括本次返回的信息在Master端的Binary Log文件的名称和位置。</li>
-<li>Slave的IO线程接受到信息后，将日志内容一次写入Slave端的Relay Log文件(mysql-relay-bin.xxxx)的末端，并将读取到的Master端的bin-log的文件和位置记录到master-info文件中，以便在下一次读取时能够清楚地告诉Master，下次从bin-log哪个位置开始往后的日志内容。</li>
-<li>Slave的SQL线程检测检测到Relay Log中更新内容后，会马上解析该Log文件中的内容，还原成在Master端真实执行时的可执行的SQL语句，并执行这些SQK语句。实际上Master和Slave执行同样的语句。</li>
+<li>对replication threads例外，以保证slave能够正常的进行replication。 </li>
+<li>对于拥有super权限的用户，可以ignore这个选项。 </li>
 </ol>
-<h2 id="Binary-Log-记录方式"><a href="#Binary-Log-记录方式" class="headerlink" title="Binary Log 记录方式"></a>Binary Log 记录方式</h2><h3 id="Row-Level"><a href="#Row-Level" class="headerlink" title="Row Level"></a>Row Level</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Binary Log会记录成每一行数据被修改的形式，然后在Slave端再对相同的数据进行修改。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>优点</strong>：在Row Level模式下，Binnary Log可以不记录执行的Query语句的上下文相关信息，只要记录哪一行修改了，修改成什么样子。Row Level会详细的记录下每一行数据的修改细节，而且不会出现某个特定情况下的存储过程，或Function，以及Trigger的调用和触发无法被正确复制问题。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>缺点</strong>：产生大量的日志内容。</p>
-<h3 id="Statment-Level"><a href="#Statment-Level" class="headerlink" title="Statment Level"></a>Statment Level</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;每一条会修改的SQL语句都会记录到Master的Binnary中。Slave端在复制的时候，SQL线程会解析成和原来Master端执行过相同的SQL语句，并再次执行。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>优点</strong>：首先，解决了Row Level下的缺点，不须要记录每一行的数据变化，减少了Binnary Log日志量，节约了IO成本，提高了性能。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>缺点</strong>：由于它是记录的执行语句，为了让这些语句在Slave端也能正确执行。那么它还必须记录每条语句在执行时的一些相关信息，即上下文信息，以保证所有语句在Slave端被执行的时候能够得到和在Master端执行时相同的结果。另外，由于MySQL发展比较快，很多新功能不断加入，使得MySQL复制遇到了不小的挑战，复制时设计的内容岳父在，越容易出bug。在Statement Level下，目前已发现不少的情况下会造成MySQL的复制问题。主要是在修改数据使用了某些特定的函数货功能后，出现，比如：Sleep()函数在有些版本中就不能正确的复制，在存储过程中使用了last_insert_id()函数，可能会使Slave和Master的到不一致的ID，等等。</p>
-<h3 id="Mixed-Level"><a href="#Mixed-Level" class="headerlink" title="Mixed Level"></a>Mixed Level</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在Mixed模式下，MySQL会根据执行的每一条具体的SQL语句来区分对待记录的日志形式，也就是在Statement和Row之间选择一种。除了MySQL认为通过Statement方式可能造成复制过程中Master和Slave之间产生不一致数据。(如特殊Procedure和Funtion的使用，UUID()函数的使用等特殊情况)时，它会选择ROW的模式来记录变更之外，都会使用Statement方式。</p>
-<h2 id="设置主从"><a href="#设置主从" class="headerlink" title="设置主从"></a>设置主从</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;主从设置的主要步骤是</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SUPER 权限 ： </p>
 <ol>
-<li>修改Master和Slave的my.cnf中的server-id，使之唯一,开启binlog。</li>
-<li>若不停Master时，加入全局锁，记录bin-log文件和bin-log文件的位置，全备要同步的数据库；解除全局锁</li>
-<li>若可以停库时，停止主库，物理备份所需要同步的数据库。</li>
-<li>在Slave端恢复备份的数据。</li>
-<li>用change master在Slave建立与master的联系。</li>
-<li>启动Slave。</li>
-<li>检查Slave的状态。</li>
+<li>可以有change master to, kill其他用户的线程的权限。 </li>
+<li>Purge binary logs 来删除binary log, set global来动态设置变量的权限。 </li>
+<li>执行mysqladmin debug命令，开启或者关闭log，在read-only打开时执行update/insert操作。 </li>
+<li>执行start slave, stop slave. </li>
+<li>当连接数已经达到max_connections的最大值时，也可以连接到server。 </li>
 </ol>
-<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><ol>
-<li>不停主库的建立主从复制。</li>
-</ol>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>第一部分 对主库的操作</strong></p>
+<hr>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mysql 主从同步状态不一致问题</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;方法一：是强制性从某一个点开始同步，会有部分没有同步的数据丢失，后续主服务器上删除记录同步也会有一些错误信息，不会影响使用。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;方法二：是设置’set GLOBAL SQL_SLAVE_SKIP_COUNTER=1;’，但这样做不一定会有效果。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;主从不能同步:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">show slave status;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;报错:Error xxx dosn’t exist</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">show slave status\G:</div><div class="line">Slave_SQL_Running: NO</div><div class="line">Seconds_Behind_Master: NULL</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解决方法:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">stop slave;</div><div class="line"><span class="built_in">set</span> global sql_slave_skip_counter =1 ;</div><div class="line">start slave;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;之后Slave会和Master去同步 主要看:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Slave_IO_Running: Yes</div><div class="line">Slave_SQL_Running: Yes</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Seconds_Behind_Master是否为0，0就是已经同步了</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;还需要做的一些优化与监视:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">show full processlist; //查看mysql当前同步线程号</div><div class="line">skip-name-resolve       //跳过dns名称查询，有助于加快连接及同步的速度</div><div class="line">max_connections=1000    //增大Mysql的连接数目，(默认100)</div><div class="line">max_connect_errors=100 //增大Mysql的错误连接数目,(默认10)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看日志一些命令</p>
 <ol>
-<li>修改主库的文件，开启MySQL的bin-log。（一般安装的时候最好先做好，这样可以不停库。）<br>修改主库的配置文件my.cnf：</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">vim /etc/my.cnf</div><div class="line"></div><div class="line">server-id = 1 <span class="comment"># 设置server-id 确保id为唯一，最好用ip地址，后三位</span></div><div class="line">bin-log=mysql-bin <span class="comment"># 设置 bin-log，这地方可以指定为bin-log的目录？</span></div><div class="line"></div><div class="line">/etc/init.d/mysqld restart</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改完成后，重启mysql</p>
-<ol>
-<li>登录主库，添加从库的同步账号。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mysql –uroot –p</div><div class="line">grant replication slave on *.* to <span class="string">'rep'</span>@<span class="string">'%'</span> identified by <span class="string">'passwd'</span>;</div></pre></td></tr></table></figure>
-<ol>
-<li>对主库进行锁表操作，禁止更新，（为了防止备份时的数据不一致问题）。并查看bin-log的名字和日志的（position）。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">flush tables with <span class="built_in">read</span> lock；</div><div class="line">show master status；</div><div class="line"></div><div class="line">mysql&gt; show master status;</div><div class="line">+------------------+----------+--------------+------------------+</div><div class="line">| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB |</div><div class="line">+------------------+----------+--------------+------------------+</div><div class="line">| mysql-bin.000107 | 38874616 |              |                  |</div><div class="line">+------------------+----------+--------------+------------------+</div><div class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</div><div class="line"></div><div class="line">mysql&gt;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;记录这两个值</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mysql-bin.000107</div><div class="line">38874616</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;取得<code>bin-log</code> 和 <code>position</code></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql -uroot -p<span class="string">'yz11235'</span> -e <span class="string">"show master status"</span> | awk <span class="string">'&#123;if (NR == 2)&#123; print $1 "\n" $2;&#125;&#125;'</span> &gt; temp.txt</div></pre></td></tr></table></figure>
-<ol>
-<li>对主库进行全备份。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysqldump -h hostname -uroot -p’’ -A -B -F | gzip &gt;alldb.sql.gz</div></pre></td></tr></table></figure>
-<ol>
-<li>导出数据库后，进行对数据库表解锁。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">unlock tables</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>第二部分 从库上操作</strong></p>
-<ol>
-<li>在从库上设置my.cnf，设置server-id，和注释bin-log。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">server-id = 2</div><div class="line"><span class="comment"># bin-log = mysql-bin</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;重启 mysql。</p>
-<ol>
-<li>登录从库，并设置从库信息</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">CHANGE MASTER TO </div><div class="line">MASTER_HOST=<span class="string">'10.143.39.174'</span>,</div><div class="line">MASTER_PORT=3306,</div><div class="line">MASTER_USER=<span class="string">'rep'</span>,</div><div class="line">MASTER_PASSWORD=<span class="string">'passwd'</span>,</div><div class="line">MASTER_LOG_FILE=<span class="string">'mysql-bin.000003'</span>,</div><div class="line">MASTER_LOG_POS=151348020,</div><div class="line">MASTER_CONNECT_RETRY=10;</div></pre></td></tr></table></figure>
-<ol>
-<li>启动 从库</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">start slave;</div></pre></td></tr></table></figure>
-<ol>
-<li>查看从库状态，</li>
+<li>show master status\G;<br>在这里主要是看log-bin的文件是否相同。</li>
 </ol>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">show slave status\G;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;观察：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">slave_IO_Running : Yes</div><div class="line">Slave_SQL_Running : Yes</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以上两个为Yes 说明主从已经成功。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Second_behind_master = 0</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这是从库落后主库的秒数。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在这里主要是看:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Slave_IO_Running=Yes</div><div class="line">Slave_SQL_Running=Yes</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果都是Yes,则说明配置成功.</p>
+<ol>
+<li>在master上输入show processlist\G;</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">mysql&gt; SHOW PROCESSLIST\G</div><div class="line">*************************** 1. row ***************************</div><div class="line">Id: 2</div><div class="line">User: root</div><div class="line">Host: localhost:32923</div><div class="line">db: NULL</div><div class="line">Command: Binlog Dump</div><div class="line">Time: 94</div><div class="line">State: Has sent all binlog to slave; waiting <span class="keyword">for</span> binlog to be updated</div><div class="line">Info: NULL</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果出现Command: Binlog Dump,则说明配置成功.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">stop slave    <span class="comment">#停止同步</span></div><div class="line">start slave    <span class="comment">#开始同步，从日志终止的位置开始更新。</span></div><div class="line">SET SQL_LOG_BIN=0|1  <span class="comment">#主机端运行，需要super权限，用来开停日志，随意开停，会造成主机从机数据不一致，造成错误</span></div><div class="line">SET GLOBAL SQL_SLAVE_SKIP_COUNTER=n  <span class="comment"># 客户端运行，用来跳过几个事件，只有当同步进程出现错误而停止的时候才可以执行。</span></div><div class="line">RESET MASTER  <span class="comment">#主机端运行,清除所有的日志，这条命令就是原来的FLUSH MASTER</span></div><div class="line">RESET SLAVE   <span class="comment">#从机运行，清除日志同步位置标志，并重新生成master.info</span></div><div class="line">虽然重新生成了master.info,但是并不起用，最好，将从机的mysql进程重启一下，</div><div class="line">LOAD TABLE tblname FROM MASTER <span class="comment">#从机运行，从主机端重读指定的表的数据，每次只能读取一个，受timeout时间限制，需要调整timeout时间。执行这个命令需要同步账号有 reload和super权限。以及对相应的库有select权限。如果表比较大，要增加net_read_timeout 和 net_write_timeout的值</span></div><div class="line">LOAD DATA FROM MASTER  <span class="comment">#从机执行，从主机端重新读入所有的数据。执行这个命令需要同步账号有reload和super权限。以及对相应的库有select权限。如果表比较大，要增加net_read_timeout 和 net_write_timeout的值</span></div><div class="line">CHANGE MASTER TO master_def_list  <span class="comment">#在线改变一些主机设置，多个用逗号间隔,比如</span></div><div class="line">CHANGE MASTER TO</div><div class="line">  MASTER_HOST=<span class="string">'master2.mysql.com'</span>,</div><div class="line">  MASTER_USER=<span class="string">'replication'</span>,</div><div class="line">  MASTER_PASSWORD=<span class="string">'password'</span></div><div class="line">MASTER_POS_WAIT() <span class="comment">#从机运行</span></div><div class="line">SHOW MASTER STATUS <span class="comment">#主机运行，看日志导出信息</span></div><div class="line">SHOW SLAVE HOSTS <span class="comment">#主机运行，看连入的从机的情况。</span></div><div class="line">SHOW SLAVE STATUS (slave)</div><div class="line">SHOW MASTER LOGS (master)</div><div class="line">SHOW BINLOG EVENTS [ IN <span class="string">'logname'</span> ] [ FROM pos ] [ LIMIT [offset,] rows ]</div><div class="line">PURGE [MASTER] LOGS TO <span class="string">'logname'</span> ; PURGE [MASTER] LOGS BEFORE <span class="string">'date'</span></div></pre></td></tr></table></figure>
+<hr>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;清理binlog日志文件</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;发现放数据库的分区磁盘激增了40多G，一路查看下来，发现配置好主从复制以来到现在的binlog就有40多G，原来根源出在这里，查看了一下 my.cnf，看到binlog的size是1G就做分割，但没有看到删除的配置，在mysql里show了一下variables，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql&gt; show variables like <span class="string">'%log%'</span>;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查到了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">| expire_logs_days                | 0                                     |</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个默认是0，也就是logs不过期，这个是一个global的参数，所以需要执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">set</span> global expire_logs_days=8;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样8天前的log就会被删除了，如果有回复的需要，请做好备份工作，但这样设置还不行，下次重启mysql了，配置又恢复默认了，所以需在my.cnf中设置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">expire_logs_days = 8</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;想要恢愎数据库以前的资料，执行：show binlog events;</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;由于数据量很多，查看起来很麻烦，所以应该适当删除部分可不用的日志。并且如果使用的时间足够长的话，会把我的硬盘空间都给吃掉。</p>
+<ol>
+<li>登录系统，/usr/bin/mysql</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用mysql查看日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">mysql&gt; show binary logs;</div><div class="line">+—————-+———–+</div><div class="line">| Log_name         | File_size |</div><div class="line">+—————-+———–+</div><div class="line">| mysql-bin.000001 | 150462942 |</div><div class="line">| mysql-bin.000002 | 120332942 |</div><div class="line">| mysql-bin.000003 | 141462942 |</div><div class="line">+—————-+———–+</div></pre></td></tr></table></figure>
+<ol>
+<li>删除bin-log(删除mysql-bin.000003之前的而没有包含mysql-bin.000003)</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mysql&gt; purge binary logs to ‘mysql-bin.000003′;</div><div class="line"></div><div class="line">Query OK, 0 rows affected (0.16 sec)</div></pre></td></tr></table></figure>
+<ol>
+<li>查询结果(现在只有一条记录了.)</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">mysql&gt; show binlog events\G</div><div class="line"></div><div class="line">mysql&gt; show binary logs;</div><div class="line">+—————-+———–+</div><div class="line">| Log_name       | File_size |</div><div class="line">+—————-+———–+</div><div class="line">| mysql-bin.000003 |       106 |</div><div class="line">+—————-+———–+</div><div class="line"></div><div class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(删除的其它格式运用!)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">PURGE &#123;MASTER | BINARY&#125; LOGS TO ‘log_name’</div><div class="line">PURGE &#123;MASTER | BINARY&#125; LOGS BEFORE ‘date’</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用于删除列于在指定的日志或日期之前的日志索引中的所有二进制日志，这些日志也会从记录在日志索引文件中的清单中被删除，这样被给定的日志成为第一个。例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">PURGE MASTER LOGS TO ‘mysql-bin.010′;</div><div class="line">PURGE MASTER LOGS BEFORE ‘2008-06-22 13:00:00′;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;清除3天前的 binlog</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">PURGE MASTER LOGS BEFORE DATE_SUB( NOW( ), INTERVAL 3 DAY);</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;BEFORE变量的date自变量可以为’YYYY-MM-DD hh:mm:ss’格式。MASTER和BINARY是同义词。如果您有一个活性的从属服务器，该服务器当前正在读取您正在试图删除的日志之一，则本语句不会起作用，而是会失败，并伴随一个错误。不过，如果从属服务器是休止的，并且您碰巧清理了其想要读取的日志之一，则从属服务器启动后不能复制。当从属服务器正在复制时，本语句可以安全运行。您不需要停止它们。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要清理日志，需按照以下步骤：</p>
+<ol>
+<li>在每个从属服务器上，使用SHOW SLAVE STATUS来检查它正在读取哪个日志。</li>
+<li>使用SHOW MASTER LOGS获得主服务器上的一系列日志。</li>
+<li>在所有的从属服务器中判定最早的日志。这个是目标日志。如果所有的从属服务器是更新的，这是清单上的最后一个日志。</li>
+<li>制作您将要删除的所有日志的备份。</li>
+<li>清理所有的日志，但是不包括目标日志。</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面讲一下怎么从二进制文件恢复数据, 假如不小心执行了drop table xxx_db, 假如你保留了完整的二进制日志的话, 先不要冒汗, 这是可以恢复的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;先看看日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&gt;mysqlbinlog /diskb/bin-logs/xxx_db-bin.000001</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;找到执行create table xxx_db之后和drop table xxx_db之前的position, 假如是20, 1000.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&gt;mysqlbinlog --start-position=<span class="string">"4"</span> --stop-position=<span class="string">"1000"</span> /diskb/bin-logs/xxx_db-bin.000001 | mysql -u root</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;还有一种办法是根据日期来恢复</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&gt;mysqlbinlog --start-datetime=<span class="string">"2010-09-14 0:20:00"</span> --stop-datetim=<span class="string">"2010-09-15 01:25:00"</span> /diskb/bin-logs/xxx_db-bin.000001 | mysql -u root</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果相关的语句不在同一个binlog文件里，则需要从不同的文件来恢复。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果MySQL服务器上有多个要执行的二进制日志，安全的方法是在一个连接中处理它们。下面是一个说明什么是不安全的例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">shell&gt; mysqlbinlog hostname-bin.000001 | mysql <span class="comment"># DANGER!!</span></div><div class="line">shell&gt; mysqlbinlog hostname-bin.000002 | mysql <span class="comment"># DANGER!!</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用与服务器的不同连接来处理二进制日志时，如果第1个日志文件包含一个CREATE TEMPORARY TABLE语句，第2个日志包含一个使用该临时表的语句，则会造成问题。当第1个mysql进程结束时，服务器撤销临时表。当第2个mysql进程想使用该表时，服务器报告 “不知道该表”。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要想避免此类问题，使用一个连接来执行想要处理的所有二进制日志中的内容。下面提供了一种方法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">shell&gt; mysqlbinlog hostname-bin.000001 hostname-bin.000002 | mysql</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;或：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">shell&gt; mysqlbinlog hostname-bin.000001 &gt;  /tmp/statements.sql</div><div class="line">shell&gt; mysqlbinlog hostname-bin.000002 &gt;&gt; /tmp/statements.sql</div><div class="line">shell&gt; mysql -e <span class="string">"source /tmp/statements.sql"</span></div></pre></td></tr></table></figure>
+<hr>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mysql主从重新同步’binlog’日志</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;binlog中有一个位置(position)变量，可用于控制其工作进程。</p>
+<ol>
+<li>从’slave’在某个’position’之后停止同步</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">START SLAVE UNTIL MASTER_LOG_FILE=<span class="string">'xxxxx'</span>, MASTER_LOG_POS=yyyyyy;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注：在执行前要确定从库的同步已停。</p>
+<ol>
+<li>重新从某一’position’后同步数据</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;笔者所碰到的一个现象：在一台繁忙的主库上，其传输过来的语句在从库没有完全得到执行，从而导致一分多钟的数据丢失(这么多年第一次碰到，事后通过分析binlog日志文件才发现，从库的状态居然是正常的)。<br>STOP SLAVE;</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">change master to master_host=<span class="string">'master'</span>,master_user=<span class="string">'user'</span>,master_password=<span class="string">'passwd'</span>,master_log_file=<span class="string">'mysql-bin.file'</span>,master_log_pos=prev_position;</div><div class="line">START SLAVE;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样可以从出问题的时间点靠前一点的’position’开始重新同步’sql‘操作。但这样会报错，因为之前有数据存在了。诸如此类：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Last-Errno: 1062</div><div class="line">Last-Error: Error <span class="string">'Duplicate entry '</span>15386<span class="string">' for key 1'</span> on query. Default database: <span class="string">'db'</span>. Query: <span class="string">'INSERT INTO db.table ( FIELDS ) VALUES ( VALUES )'</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;键重复了，必须跳过才能继续。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">stop slave; <span class="built_in">set</span> global sql_slave_skip_counter=1; start slave;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;或者在’my.cnf’文件中指定该错误跳过，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">--slave-skip-errors=xxx,yyy</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;须重启服务器使其生效。常见问题及操作：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Error: 1062 SQLSTATE: 23000 (ER_DUP_ENTRY) Message: Duplicate entry ‘%s’ <span class="keyword">for</span> key %d</div><div class="line"></div><div class="line">You can skip also other <span class="built_in">type</span> of errors, but again don’t <span class="keyword">do</span> this unless you understand very well what those queries are and what impact they have on your data:</div><div class="line"></div><div class="line">slave-skip-errors=[err_code1,err_code2,...|all]</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;报错相关的更多信息，请参考：<a href="http://dev.mysql.com/doc/refman/5.0/en/error-messages-server.html" target="_blank" rel="external">http://dev.mysql.com/doc/refman/5.0/en/error-messages-server.html</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注：如果’xxx’为’all’的话，则表示跳过所有错误并继续，但这并不是个好的建议。这就很必要将从库设定为只读(read_only)且用非特权用户来访问它。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;官方文档有关于它的(replication-slave)更多参考：<a href="http://dev.mysql.com/doc/refman/5.0/en/replication-options-slave.html" target="_blank" rel="external">http://dev.mysql.com/doc/refman/5.0/en/replication-options-slave.html</a></p>
+<hr>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Q. No argument was provided to –log-bin, and –log-bin-index was not used; so replication may break when this MySQL server acts as a master and has his hostname changed!! Please use ‘–log-bin=mysql-bin’ to avoid this problem.</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;A: 在my.cnf 的[mysqld]中加入 log-bin=mysql-bin</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Q. Neither –relay-log nor –relay-log-index were used; so replication may break when this MySQL server acts as a slave and has his hostname changed!! Please use ‘–relay-log=mysql-relay-bin’ to avoid this problem.</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;A: 在my.cnf 的[mysqld]中加入 relay-log=mysql-relay-bin</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Q. [ERROR] The slave I/O thread stops because master and slave have equal MySQL server ids; these ids must be different for replication to work (or the –replicate-same-server-id option must be used on slave but this does not always make sense; please check the manual before using it).</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;A: 在my.cnf 的[mysqld]中加入 replicate-same-server-id</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Q.[Note] Slave I/O thread: connected to master ‘test@:3306′,replication started in log ‘FIRST’ at position 4</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;[ERROR] Error reading packet from server: Access denied; you need the REPLICATION SLAVE privilege for this operation ( server_errno=1227)</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;A: 可能原来使用过slave链接.需要将mysql库中的master.info删除重新</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Q：如果主服务器正在运行并且不想停止主服务器，怎样配置一个从服务器？</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;A：有多种方法。如果你在某时间点做过主服务器备份并且记录了相应快照的二进制日志名和偏移量(通过SHOW MASTER STATUS命令的输出)，采用下面的步骤： </p>
+<ol>
+<li>确保从服务器分配了一个唯一的服务器ID号。 </li>
+<li>在从服务器上执行下面的语句，为每个选项填入适当的值： </li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">mysql&gt; CHANGE MASTER TO </div><div class="line"> -&gt;MASTER_HOST=<span class="string">'master_host_name'</span>, </div><div class="line"> -&gt;MASTER_USER=<span class="string">'master_user_name'</span>, </div><div class="line"> -&gt;MASTER_PASSWORD=<span class="string">'master_pass'</span>, </div><div class="line"> -&gt;MASTER_LOG_FILE=<span class="string">'recorded_log_file_name'</span>, </div><div class="line"> -&gt;MASTER_LOG_POS=recorded_log_position;</div></pre></td></tr></table></figure>
+<ol>
+<li>在从服务器上执行START SLAVE语句。 </li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果你没有备份主服务器，这里是一个创建备份的快速程序。所有步骤都应该在主服务器主机上执行。 </p>
+<ol>
+<li>发出该语句： </li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql&gt; FLUSH TABLES WITH READ LOCK；</div></pre></td></tr></table></figure>
+<ol>
+<li>仍然加锁时，执行该命令(或它的变体)： </li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">shell&gt; tar zcf /tmp/backup.tar.gz /var/lib/mysql</div></pre></td></tr></table></figure>
+<ol>
+<li>发出该语句并且确保记录了以后用到的输出： </li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql&gt;SHOW MASTER STATUS；</div></pre></td></tr></table></figure>
+<ol>
+<li>释放锁： </li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql&gt; UNLOCK TABLES；</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一个可选择的方法是，转储主服务器的SQL来代替前面步骤中的二进制复制。要这样做，你可以在主服务器上使用mysqldump –master-data，以后装载SQL转储到到你的从服务器。然而，这比进行二进制复制速度慢。 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;不管你使用这两种方法中的那一个，当你有一个快照和记录了日志名与偏移量时，后来根据说明操作。你可以使用相同的快照建立多个从服务器。一旦你拥有主服务器的一个快照，可以等待创建一个从服务器，只要主服务器的二进制日志完整。两个能够等待的时间实际的限制是指在主服务器上保存二进制日志的可用硬盘空间和从服务器同步所用的时间。 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;你也可以使用LOAD DATA FROM MASTER。这是一个方便的语句，它传输一个快照到从服务器并且立即调整日志名和偏移量。将来，LOAD DATA FROM MASTER将成为创建从服务器的推荐方法。然而需要注意，它只工作在MyISAM 表上并且可能长时间持有读锁定。它并不象我们希望的那样高效率地执行。如果你有大表，执行FLUSH TABLES WITH READ LOCK语句后，这时首选方法仍然是在主服务器上制作二进制快照。 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Q：从服务器需要始终连接到主服务器吗？</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;A：不，不需要。从服务器可以宕机或断开连接几个小时甚至几天，重新连接后获得更新信息。例如，你可以在通过拨号的链接上设置主服务器/从服务器关系，其中只是偶尔短时间内进行连接。这意味着，在任何给定时间，从服务器不能保证与主服务器同步除非你执行某些特殊的方法。将来，我们将使用选项来阻塞主服务器直到有一个从服务器同步。</p>
+<hr>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;log-slave-updates #这个参数一定要加上，否则不会给更新的记录些到二进制文件里</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;slave-skip-errors #是跳过错误，继续执行复制操作</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;主服务器上的相关命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">show master status</div><div class="line">show slave hosts</div><div class="line">show logs</div><div class="line">show binlog events</div><div class="line">purge logs to <span class="string">'log_name'</span></div><div class="line">purge logs before <span class="string">'date'</span></div><div class="line">reset master(老版本flush master)</div><div class="line"><span class="built_in">set</span> sql_log_bin=</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从服务器上的相关命令:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">slave start</div><div class="line">slave stop</div><div class="line">SLAVE STOP IO_THREAD //此线程把master段的日志写到本地</div><div class="line">SLAVE start IO_THREAD</div><div class="line">SLAVE STOP SQL_THREAD //此线程把写到本地的日志应用于数据库</div><div class="line">SLAVE start SQL_THREAD</div><div class="line">reset slave</div><div class="line">SET GLOBAL SQL_SLAVE_SKIP_COUNTER</div><div class="line">load data from master</div><div class="line">show slave status(SUPER,REPLICATION CLIENT)</div><div class="line">CHANGE MASTER TO MASTER_HOST=, MASTER_PORT=,MASTER_USER=, MASTER_PASSWORD= //动态改变master信息</div><div class="line">PURGE MASTER [before <span class="string">'date'</span>] 删除master端已同步过的日志</div><div class="line">6.3.1 Master 同步线程状态</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下列出了master的 Binlog Dump 线程 State 字段中最常见的几种状态。如果在master上没有 Binlog Dump 线程，那么同步就没有在运行。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;也就是说，没有slave连接上来。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Sending binlog event to slave</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;事件是由二进制日志构成，一个事件通常由更新语句加上其他信息。线程读取到一个事件并正发送到slave上。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Finished reading one binlog; switching to next binlog</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;读取完了一个二进制日志，正切换到下一个。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Has sent all binlog to slave; waiting for binlog to be updated</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;已经读取完全部未完成更新日志，并且全部都发送到slave了。它处于空闲状态，正等待在master上执行新的更新操作以在二进制日志中产生新<br>的事件，然后读取它们。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Waiting to finalize termination</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当前线程停止了，这个时间很短。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;6.3.2 Slave的I/O线程状态</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下列出了slave的I/O线程 State 字段中最常见的几种状态。从MySQL 4.1.1开始，这个状态在执行 SHOW SLAVE STATUS 语句结果的</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Slave_IO_State 字段也会出现。这意味着可以只执行 SHOW SLAVE STATUS 语句就能了解到更多的信息。</p>
+<p>Connecting to master</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;该线程证尝试连接到master上。</p>
+<p>Checking master version</p>
+<p>确定连接到master后出现的一个短暂的状态。</p>
+<p>Registering slave on master</p>
+<p>确定连接到master后出现的一个短暂的状态。</p>
+<p>Requesting binlog dump</p>
+<p>确定连接到master后出现的一个短暂的状态。该线程向master发送一个请求，告诉它要请求的二进制文件以及开始位置。</p>
+<p>Waiting to reconnect after a failed binlog dump request</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果二进制日志转储(binary log dump)请求失败了(由于连接断开)，该线程在休眠时进入这个状态，并定期重连。重连的时间间隔由 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;–master-connect-retry 选项来指定。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Reconnecting after a failed binlog dump request</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;该线程正尝试重连到master。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Waiting for master to send event</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;已经连接到master，正等待它发送二进制日志。如果master闲置时，这个状态可能会持续较长时间，如果它等待超过 slave_read_timeout 秒<br>，就会发生超时。这时，它就会考虑断开连接，然后尝试重连。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Queueing master event to the relay log</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;已经读取到一个事件，正把它拷贝到中继日志中以备SQL线程处理。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Waiting to reconnect after a failed master event read</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;读日志时发生错误(由于连接断开)。该线程在重连之前休眠 master-connect-retry 秒。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Reconnecting after a failed master event read</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;正尝试重连到master。当连接确定后，状态就变成 Waiting for master to send event。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Waiting for the slave SQL thread to free enough relay log space</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;relay_log_space_limit 的值非零，中继日志的大小总和超过这个值了。I/O线程等待SQL线程先处理中继日志然后删除它们以释放足够的空间<br>。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Waiting for slave mutex on exit</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当前线程停止了，这个时间很短。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;6.3.3 Slave的SQL线程状态</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下列出了slave的SQL线程 State 字段中最常见的几种状态：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Reading event from the relay log</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从中继日志里读到一个事件以备执行。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Has read all relay log; waiting for the slave I/O thread to update it</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;已经处理完中继日志中的全部事件了，正等待I/O线程写入更新的日志。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Waiting for slave mutex on exit</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当前线程停止了，这个时间很短。</p>
+<hr>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;常见的一些问题：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一.从库SLAVE启动问题</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;由于一些错误操作导致 CHANGE MASTER 和 SLAVE 服务无法启动，系统报错如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">*****************************************************************</div><div class="line">Could not initialize master info structure; more error messages can be found <span class="keyword">in</span> the MySQL error <span class="built_in">log</span>.</div><div class="line">*****************************************************************</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;无法初始化master info结构，MySQL错误日志记录了更详细的错误信息。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解决方法：</p>
+<ol>
+<li>查看MySQL错误日志，如：同步的上一个Position是多少，很多情况下无法启动服务是由于mysql识别的同步始终停留在上一个Position上。</li>
+<li>查看master.info和relay-log.info，master.info 记录MASTER相关信息，relay-log.info 记录当前同步日志信息。</li>
+<li>停止myslq服务，删除master.info和relay-log.info。</li>
+<li>启动mysql服务。</li>
+<li>重新CHANGE MASTER，重新启动SLAVE服务。</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;二.主从不能同步</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;show slave status;报错:Error xxx dosn’t exist,且</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">show slave status\G:</div><div class="line">Slave_SQL_Running: NO</div><div class="line">Seconds_Behind_Master: NULL</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解决方法:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">stop slave;</div><div class="line"><span class="built_in">set</span> global sql_slave_skip_counter =1 ;</div><div class="line">start slave;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;之后Slave会和Master去同步 主要看:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Slave_IO_Running: Yes</div><div class="line">Slave_SQL_Running: Yes</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Seconds_Behind_Master是否为0，0就是已经同步了</p>
+<ol>
+<li>还需要做的一些优化与监视:</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">show full processlist; //查看mysql当前同步线程号</div><div class="line">skip-name-resolve       //跳过dns名称查询，有助于加快连接及同步的速度</div><div class="line">max_connections=1000    //增大Mysql的连接数目，(默认100)</div><div class="line">max_connect_errors=100 //增大Mysql的错误连接数目,(默认10)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看日志一些命令</p>
+<ol>
+<li>show master status\G;</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在这里主要是看log-bin的文件是否相同。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">show slave status\G;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在这里主要是看:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Slave_IO_Running=Yes</div><div class="line">Slave_SQL_Running=Yes</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果都是Yes,则说明配置成功.</p>
+<ol>
+<li>在master上输入show processlist\G;</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql&gt; SHOW PROCESSLIST\G</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果出现Command: Binlog Dump,则说明配置成功.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">stop slave    <span class="comment">#停止同步</span></div><div class="line">start slave    <span class="comment">#开始同步，从日志终止的位置开始更新。</span></div><div class="line">SET SQL_LOG_BIN=0|1  <span class="comment">#主机端运行，需要super权限，用来开停日志，随意开停，会造成主机从机数据不一致，造成错误</span></div><div class="line">SET GLOBAL SQL_SLAVE_SKIP_COUNTER=n  <span class="comment"># 客户端运行，用来跳过几个事件，只有当同步进程出现错误而停止的时候才可以执行。</span></div><div class="line">RESET MASTER  <span class="comment">#主机端运行,清除所有的日志，这条命令就是原来的FLUSH MASTER</span></div><div class="line">RESET SLAVE   <span class="comment">#从机运行，清除日志同步位置标志，并重新生成master.info</span></div><div class="line">虽然重新生成了master.info,但是并不起用，最好，将从机的mysql进程重启一下，</div><div class="line">LOAD TABLE tblname FROM MASTER <span class="comment">#从机运行，从主机端重读指定的表的数据，每次只能读取一个，受timeout时间限制，需要调整timeout时间。执行这个命令需要同步账号有 reload和super权限。以及对相应的库有select权限。如果表比较大，要增加net_read_timeout 和 net_write_timeout的值</span></div><div class="line">LOAD DATA FROM MASTER  <span class="comment">#从机执行，从主机端重新读入所有的数据。执行这个命令需要同步账号有reload和super权限。以及对相应的库有select权限。如果表比较大，要增加net_read_timeout 和 net_write_timeout的值</span></div><div class="line">CHANGE MASTER TO master_def_list  <span class="comment">#在线改变一些主机设置，多个用逗号间隔，比如：</span></div><div class="line">CHANGE MASTER TO</div><div class="line">MASTER_HOST=<span class="string">'master2.mycompany.com'</span>,</div><div class="line">MASTER_USER=<span class="string">'replication'</span>,</div><div class="line">MASTER_PASSWORD=<span class="string">'bigs3cret'</span></div><div class="line">MASTER_POS_WAIT() <span class="comment">#从机运行</span></div><div class="line">SHOW MASTER STATUS <span class="comment">#主机运行，看日志导出信息</span></div><div class="line">SHOW SLAVE HOSTS <span class="comment">#主机运行，看连入的从机的情况。</span></div><div class="line">SHOW SLAVE STATUS (slave)</div><div class="line">SHOW MASTER LOGS (master)</div><div class="line">SHOW BINLOG EVENTS [ IN <span class="string">'logname'</span> ] [ FROM pos ] [ LIMIT [offset,] rows ]</div><div class="line">PURGE [MASTER] LOGS TO <span class="string">'logname'</span> ; PURGE [MASTER] LOGS BEFORE <span class="string">'date'</span></div><div class="line">show binlog events; <span class="comment">#查看主库二进制日志文件内容：</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意：</p>
+<ol>
+<li><p>主辅库同步主要是通过二进制日志来实现同步的。</p>
+</li>
+<li><p>在启动辅库的时候必须先把数据同步，并删除日志目录下的：master.info文件。因为master.info记录了上次要连接主库的信息，如果不删除，即使my.cnf里进行了修改，也不起作用，因为读取的还是master.info文件里的信息。</p>
+</li>
+</ol>
+<hr>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;补充：从服务器上my.cnf中的master-*的设置仅在第一次生效，后保存在master.info文件里。</p>
+<hr>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在从服务器上使用show slave status</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Slave_IO_Running,为No,则说明IO_THREAD没有启动，请执行slave start [IO_THREAD]</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Slave_SQL_Running为No则复制出错,查看Last_error字段排除错误后执行slave start [SQL_THREAD]</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看Slave_IO_State字段</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;空 //复制没有启动</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Connecting to master//没有连接上master</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Waiting for master to send event//已经连上</p>
+<hr>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以使用LOAD DATA FROM MASTER语句来建立slave，但有约束条件：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;数据表要全部是MyISAM表，必须有SUPER权限，master的复制用户必须具备RELOAD和SUPER权限。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在master端执行RESET MASTER清除已有的日志变更，此时slave端会因为找不到master日志无法启动IO_THREAD，请清空data目录下</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;relay-log.info,hosname-relay-bin*等文件重新启动mysql</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;中继日志文件默认的文件为hostname-relay-bin.nnn和hostname-relay-bin.index。可用从服务器的–</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;relay-log和–relay-log-index选项修改。在从服务器中还有一个relay-log.info中继信息文件，可用</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;–relay-log-info-file启动选项修改文件名。双机互备则是两个mysql同时配置为master及slave</p>
+<hr>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;主服务器上的相关命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">show master status</div><div class="line">show slave hosts</div><div class="line">show &#123;master|binary&#125; logs</div><div class="line">show binlog events</div><div class="line">purge &#123;master|binary&#125; logs to <span class="string">'log_name'</span></div><div class="line">purge &#123;master|binary&#125; logs before <span class="string">'date'</span></div><div class="line">reset master(老版本flush master)</div><div class="line"><span class="built_in">set</span> sql_log_bin=&#123;0|1&#125;</div></pre></td></tr></table></figure>
+<hr>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从服务器上的相关命令:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">slave start</div><div class="line">slave stop</div><div class="line">SLAVE STOP IO_THREAD //此线程把master段的日志写到本地</div><div class="line">SLAVE start IO_THREAD</div><div class="line">SLAVE STOP SQL_THREAD //此线程把写到本地的日志应用于数据库</div><div class="line">SLAVE start SQL_THREAD</div><div class="line">reset slave</div><div class="line">SET GLOBAL SQL_SLAVE_SKIP_COUNTER</div><div class="line">load data from master</div><div class="line">show slave status(SUPER,REPLICATION CLIENT)</div><div class="line">CHANGE MASTER TO MASTER_HOST=, MASTER_PORT=,MASTER_USER=, MASTER_PASSWORD= //动态改变master信息</div><div class="line">PURGE MASTER [before <span class="string">'date'</span>] 删除master端已同步过的日志</div></pre></td></tr></table></figure>
+<hr>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Mysql的Relay Log无法自动删除</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;发现其数据目录下的relay-log 长期没有删除，已经堆积了几十个relay-log。然而其他作为Slave服务器实例却没有这种情况，综合分析后发现和以下原因有关。</p>
+<ul>
+<li>该实例原先是一个Slave   ——-导致relay-log 和 relay-log.index的存在</li>
+<li>该实例目前已经不是Slave  ——-由于没有了IO-Thread，导致relay-log-purge 没有起作用( 这也是其他Slave实例没有这种情况的原因，因为IO-thread会做自动rotate操作)。</li>
+<li>该实例每天会进行日常备份  ——-Flush logs的存在，导致每天会生成一个relay-log</li>
+<li>该实例没有配置expire-logs-days ——导致flush logs时，也不会做relay-log清除</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;简而言之就是： 一个实例如果之前是Slave，而之后停用了(stop slave)，且没有配置expire-logs-days的情况下，会出现relay-log堆积的情况。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;顺带也和大家分享下MySQL内部Logrotate的机制</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Binary Log rotate机制：</p>
+<ul>
+<li>Rotate：每一条binary log写入完成后，都会判断当前文件是否超过 max_binlog_size，如果超过则自动生成一个binlog file。</li>
+<li>Delete：expire-logs-days 只在 实例启动时 和 flush logs 时判断，如果文件访问时间早于设定值，则purge file。</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Relay Log rotate 机制：</p>
+<ul>
+<li>Rotate：每从Master fetch一个events后，判断当前文件是否超过 max_relay_log_size 如果超过则自动生成一个新的relay-log-file。</li>
+<li>Delete：purge-relay-log 在SQL Thread每执行完一个events时判断，如果该relay-log 已经不再需要则自动删除。</li>
+<li>Delete：expire-logs-days 只在 实例启动时 和 flush logs 时判断，如果文件访问时间早于设定值，则purge file  (同Binlog file)  (注意: expire-logs-days和relaylog的purge没有关系)。</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;因此建议当slave不再使用时，通过reset slave来取消relaylog，以免出现relay-log堆积的情况。</p>
+<hr>
+<p>s&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;lave的主从信息变更引起的错误</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">130311 14:15:46  mysqld started</div><div class="line">130311 14:15:46 [Warning] option <span class="string">'read_rnd_buffer_size'</span>: unsigned value 0 adjusted to 8200</div><div class="line">130311 14:15:47  InnoDB: Started; <span class="built_in">log</span> sequence number 15 2381115047</div><div class="line">130311 14:15:47 [ERROR] Failed to open the relay <span class="built_in">log</span> <span class="string">'./localhost-relay-bin.000037'</span> (relay_log_pos 52474065)</div><div class="line">130311 14:15:47 [ERROR] Could not find target <span class="built_in">log</span> during relay <span class="built_in">log</span> initialization</div><div class="line">130311 14:15:47 [ERROR] Failed to initialize the master info structure</div><div class="line">130311 14:15:47 [Note] /usr/<span class="built_in">local</span>/mysql/libexec/mysqld: ready <span class="keyword">for</span> connections.</div><div class="line">Version: <span class="string">'5.0.87-log'</span>  socket: <span class="string">'/var/tmp/mysql2.sock'</span>  port: 3308  Source distribution</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;由于新的slave改变了服务端口和文件路径，分析应该是由于mysql-relay-bin.index中仍然保存着旧relay日志文件的路径，而这些路径下又找不到合适的文件，因此报错。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;对于这类问题解决起来是比较简单的，重置slave的参照即可。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mysql&gt; reset slave;</div><div class="line">Query OK, 0 rows affected (0.01 sec)</div><div class="line"></div><div class="line">mysql&gt; change master to ....</div><div class="line">ERROR 29 (HY000): File <span class="string">'/data/mysqldata/3306/binlog/mysql-relay-bin.000001'</span> not found (Errcode: 2)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;看来应该还是mysql-relay-bin.index的问题，删除该文件及关联的relay-bin文件。再次配置master：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mysql&gt; change master to ....</div><div class="line">ERROR 1201 (HY000): Could not initialize master info structure; more error messages can be found <span class="keyword">in</span> the MySQL error <span class="built_in">log</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;出现了新的错误，按照提示查看error_log也没发现更多错误信息，error_log中只是显示一条：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">120326 11:14:27 [ERROR] Error reading master configuration</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在操作系统端查看master/slave的配置文件，发现是两个0字节文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">-rw-rw---- 1 mysql mysql     0 Mar 26 11:13 master.info</div><div class="line">-rw-rw---- 1 mysql mysql     0 Mar 26 11:13 relay-log.info</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;会不会是这个原因呢，直接删除这两个文件，然后尝试重新执行change master：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mysql&gt; change master to ....</div><div class="line">Query OK, 0 rows affected (0.00 sec)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;成功，启动slave并查看状态：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">mysql&gt; start slave;</div><div class="line">Query OK, 0 rows affected (0.00 sec)</div><div class="line"></div><div class="line">mysql&gt; show slave status\G</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;故障解决。</p>
+<hr>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;磁盘故障</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Warning: a page <span class="keyword">in</span> the doublewrite buffer is not within space</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;出现此种报错，多为磁盘故障。</p>
+<hr>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;master不能初始化</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;ERROR 1201 (HY000): Could not initialize master解决方法 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">mysql&gt; change master to master_host=<span class="string">'192.168.1.10'</span>,master_user=<span class="string">'replication'</span>,master_password=<span class="string">'123456'</span>,master_log_file=<span class="string">'freeoa_log.000003'</span>,master_log_pos=106;</div><div class="line"></div><div class="line">ERROR 1201 (HY000): Could not initialize master info structure; more error messages can be found <span class="keyword">in</span> the MySQL error <span class="built_in">log</span></div><div class="line"></div><div class="line">mysql&gt; slave stop;</div><div class="line">Query OK, 0 rows affected, 1 warning (0.00 sec)</div><div class="line">mysql&gt; reset slave;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;出现这个问题的原因，应该是以前mysql做过主从。</p>
 
       
     </div>
