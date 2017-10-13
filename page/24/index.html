@@ -335,79 +335,6 @@
 
 
   
-    <article id="post-Nginx/32. nginx代理--根据访问的目录来区分后端的web" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Nginx/32. nginx代理--根据访问的目录来区分后端的web/" class="article-date">
-  	<time datetime="2017-09-02T18:06:42.737Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Nginx/32. nginx代理--根据访问的目录来区分后端的web/">
-        nginx代理--根据访问的目录来区分后端的web
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需求： 当请求的目录是 /aaa/ 则把请求发送到机器a，当请求的目录为/bbb/则把请求发送到机器b，除了目录/aaa/与目录/bbb/外，其他的请求发送到机器b</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置文件内容为：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">upstream aaa.com</div><div class="line">&#123;</div><div class="line">        server 192.168.111.6;</div><div class="line">&#125;</div><div class="line">        upstream bbb.com</div><div class="line">&#123;</div><div class="line">        server 192.168.111.20;</div><div class="line">&#125;</div><div class="line">server &#123;</div><div class="line">        listen 80;</div><div class="line">        server_name li.com;</div><div class="line">        location /aaa/</div><div class="line">        &#123;</div><div class="line">        proxy_pass http://aaa.com/aaa/;</div><div class="line">        proxy_set_header Host <span class="variable">$host</span>;</div><div class="line">        proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;</div><div class="line">        proxy_set_header X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</div><div class="line">        &#125;</div><div class="line">location /bbb/</div><div class="line">        &#123;</div><div class="line">        proxy_pass http://bbb.com/bbb/;</div><div class="line">        proxy_set_header Host <span class="variable">$host</span>;</div><div class="line">        proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;</div><div class="line">        proxy_set_header X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</div><div class="line">        &#125;</div><div class="line">location /</div><div class="line">        &#123;</div><div class="line">        proxy_pass http://bbb.com/;</div><div class="line">        proxy_set_header Host <span class="variable">$host</span>;</div><div class="line">        proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;</div><div class="line">        proxy_set_header X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</div><div class="line">        &#125;</div><div class="line">       &#125;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：</p>
-<ol>
-<li><p>以上配置文件中的 aaa.com 以及 bbb.com 都是自定义的，随便写。</p>
-</li>
-<li><p>upstream 中的server 可以写多个，例如</p>
-</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">upstream aaa.com </div><div class="line">&#123;</div><div class="line">    server 192.168.111.6;</div><div class="line">    server 192.168.111.4;</div><div class="line">    server 192.168.111.5;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<ol>
-<li><p>proxy_pass <a href="http://aaa.com/aaa/" target="_blank" rel="external">http://aaa.com/aaa/</a>  这里必须要加这个目录，不然就访问到根目录了。</p>
-</li>
-<li><p>实际上，上述配置文件中， localtion /bbb/ 部分是可以省略掉的，因为后边的 location /  已经包含了/bbb/，所以即使我们不去定义  localtion /bbb/ 也是会访问到 bbb.com 的。</p>
-</li>
-</ol>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-Nginx/33. Nginx、LVS及HAProxy负载均衡软件的优缺点详解" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -540,6 +467,79 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LVS/">LVS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/haproxy/">haproxy</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Nginx/32. nginx代理--根据访问的目录来区分后端的web" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Nginx/32. nginx代理--根据访问的目录来区分后端的web/" class="article-date">
+  	<time datetime="2017-09-02T18:06:42.737Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Nginx/32. nginx代理--根据访问的目录来区分后端的web/">
+        nginx代理--根据访问的目录来区分后端的web
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需求： 当请求的目录是 /aaa/ 则把请求发送到机器a，当请求的目录为/bbb/则把请求发送到机器b，除了目录/aaa/与目录/bbb/外，其他的请求发送到机器b</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置文件内容为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">upstream aaa.com</div><div class="line">&#123;</div><div class="line">        server 192.168.111.6;</div><div class="line">&#125;</div><div class="line">        upstream bbb.com</div><div class="line">&#123;</div><div class="line">        server 192.168.111.20;</div><div class="line">&#125;</div><div class="line">server &#123;</div><div class="line">        listen 80;</div><div class="line">        server_name li.com;</div><div class="line">        location /aaa/</div><div class="line">        &#123;</div><div class="line">        proxy_pass http://aaa.com/aaa/;</div><div class="line">        proxy_set_header Host <span class="variable">$host</span>;</div><div class="line">        proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;</div><div class="line">        proxy_set_header X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</div><div class="line">        &#125;</div><div class="line">location /bbb/</div><div class="line">        &#123;</div><div class="line">        proxy_pass http://bbb.com/bbb/;</div><div class="line">        proxy_set_header Host <span class="variable">$host</span>;</div><div class="line">        proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;</div><div class="line">        proxy_set_header X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</div><div class="line">        &#125;</div><div class="line">location /</div><div class="line">        &#123;</div><div class="line">        proxy_pass http://bbb.com/;</div><div class="line">        proxy_set_header Host <span class="variable">$host</span>;</div><div class="line">        proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;</div><div class="line">        proxy_set_header X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</div><div class="line">        &#125;</div><div class="line">       &#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：</p>
+<ol>
+<li><p>以上配置文件中的 aaa.com 以及 bbb.com 都是自定义的，随便写。</p>
+</li>
+<li><p>upstream 中的server 可以写多个，例如</p>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">upstream aaa.com </div><div class="line">&#123;</div><div class="line">    server 192.168.111.6;</div><div class="line">    server 192.168.111.4;</div><div class="line">    server 192.168.111.5;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ol>
+<li><p>proxy_pass <a href="http://aaa.com/aaa/" target="_blank" rel="external">http://aaa.com/aaa/</a>  这里必须要加这个目录，不然就访问到根目录了。</p>
+</li>
+<li><p>实际上，上述配置文件中， localtion /bbb/ 部分是可以省略掉的，因为后边的 location /  已经包含了/bbb/，所以即使我们不去定义  localtion /bbb/ 也是会访问到 bbb.com 的。</p>
+</li>
+</ol>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
 	</div>
 
       

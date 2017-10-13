@@ -758,83 +758,6 @@
 
 
   
-    <article id="post-2. Linux 命令/50. Linux 命令- watch" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/2. Linux 命令/50. Linux 命令- watch/" class="article-date">
-  	<time datetime="2017-09-02T17:57:34.275Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/2. Linux 命令/50. Linux 命令- watch/">
-        Linux 命令- watch
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;watch是一个非常实用的命令，基本所有的Linux发行版都带有这个小工具，如同名字一样，watch可以帮你监测一个命令的运行结果，省得你一遍遍的手动运行。在Linux下，watch是周期性的执行下个程序，并全屏显示执行结果。你可以拿他来监测你想要的一切命令的结果变化，比如 tail 一个 log 文件，ls 监测某个文件的大小变化，看你的想象力了！</p>
-<h2 id="1．命令格式"><a href="#1．命令格式" class="headerlink" title="1．命令格式"></a>1．命令格式</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">watch [参数] [命令]</div></pre></td></tr></table></figure>
-<h2 id="2-命令功能"><a href="#2-命令功能" class="headerlink" title="2. 命令功能"></a>2. 命令功能</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以将命令的输出结果输出到标准输出设备，多用于周期性执行命令/定时执行命令</p>
-<h2 id="3．命令参数"><a href="#3．命令参数" class="headerlink" title="3．命令参数"></a>3．命令参数</h2><ul>
-<li>-n或–interval  watch缺省每2秒运行一下程序，可以用-n或-interval来指定间隔的时间。</li>
-<li>-d或–differences  用-d或–differences 选项watch 会高亮显示变化的区域。 而-d=cumulative选项会把变动过的地方(不管最近的那次有没有变动)都高亮显示出来。</li>
-<li>-t 或-no-title  会关闭watch命令在顶部的时间间隔,命令，当前时间的输出。</li>
-<li>-h, –help 查看帮助文档</li>
-</ul>
-<h2 id="4．使用实例"><a href="#4．使用实例" class="headerlink" title="4．使用实例"></a>4．使用实例</h2><h3 id="实例1：每隔一秒高亮显示网络链接数的变化情况"><a href="#实例1：每隔一秒高亮显示网络链接数的变化情况" class="headerlink" title="实例1：每隔一秒高亮显示网络链接数的变化情况"></a>实例1：每隔一秒高亮显示网络链接数的变化情况</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">watch -n 1 -d netstat -ant</div></pre></td></tr></table></figure>
-<h4 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h4><h5 id="其它操作："><a href="#其它操作：" class="headerlink" title="其它操作："></a>其它操作：</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;切换终端： Ctrl+x</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;退出watch：Ctrl+g</p>
-<h3 id="实例2：每隔一秒高亮显示http链接数的变化情况"><a href="#实例2：每隔一秒高亮显示http链接数的变化情况" class="headerlink" title="实例2：每隔一秒高亮显示http链接数的变化情况"></a>实例2：每隔一秒高亮显示http链接数的变化情况</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">watch -n 1 -d <span class="string">'pstree|grep http'</span></div></pre></td></tr></table></figure>
-<h4 id="说明：-1"><a href="#说明：-1" class="headerlink" title="说明："></a>说明：</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;每隔一秒高亮显示http链接数的变化情况。 后面接的命令若带有管道符，需要加’’将命令区域归整。</p>
-<h3 id="实例3：实时查看模拟攻击客户机建立起来的连接数"><a href="#实例3：实时查看模拟攻击客户机建立起来的连接数" class="headerlink" title="实例3：实时查看模拟攻击客户机建立起来的连接数"></a>实例3：实时查看模拟攻击客户机建立起来的连接数</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">watch <span class="string">'netstat -an | grep:21 | \ grep&lt;模拟攻击客户机的IP&gt;| wc -l'</span></div></pre></td></tr></table></figure>
-<h3 id="实例4：监测当前目录中-scf’-的文件的变化"><a href="#实例4：监测当前目录中-scf’-的文件的变化" class="headerlink" title="实例4：监测当前目录中 scf’ 的文件的变化"></a>实例4：监测当前目录中 scf’ 的文件的变化</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">watch -d <span class="string">'ls -l|grep scf'</span></div></pre></td></tr></table></figure>
-<h3 id="实例5：10秒一次输出系统的平均负载"><a href="#实例5：10秒一次输出系统的平均负载" class="headerlink" title="实例5：10秒一次输出系统的平均负载"></a>实例5：10秒一次输出系统的平均负载</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">watch -n 10 <span class="string">'cat /proc/loadavg'</span></div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux命令/">Linux命令</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-2. Linux 命令/11. Linux 命令- nl" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -896,6 +819,83 @@
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明：</strong></p>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;nl -b a -n rz 命令行号默认为六位，要调整位数可以加上参数 -w 3 调整为3位。</p>
 
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux命令/">Linux命令</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-2. Linux 命令/50. Linux 命令- watch" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/2. Linux 命令/50. Linux 命令- watch/" class="article-date">
+  	<time datetime="2017-09-02T17:57:34.275Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/2. Linux 命令/50. Linux 命令- watch/">
+        Linux 命令- watch
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;watch是一个非常实用的命令，基本所有的Linux发行版都带有这个小工具，如同名字一样，watch可以帮你监测一个命令的运行结果，省得你一遍遍的手动运行。在Linux下，watch是周期性的执行下个程序，并全屏显示执行结果。你可以拿他来监测你想要的一切命令的结果变化，比如 tail 一个 log 文件，ls 监测某个文件的大小变化，看你的想象力了！</p>
+<h2 id="1．命令格式"><a href="#1．命令格式" class="headerlink" title="1．命令格式"></a>1．命令格式</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">watch [参数] [命令]</div></pre></td></tr></table></figure>
+<h2 id="2-命令功能"><a href="#2-命令功能" class="headerlink" title="2. 命令功能"></a>2. 命令功能</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以将命令的输出结果输出到标准输出设备，多用于周期性执行命令/定时执行命令</p>
+<h2 id="3．命令参数"><a href="#3．命令参数" class="headerlink" title="3．命令参数"></a>3．命令参数</h2><ul>
+<li>-n或–interval  watch缺省每2秒运行一下程序，可以用-n或-interval来指定间隔的时间。</li>
+<li>-d或–differences  用-d或–differences 选项watch 会高亮显示变化的区域。 而-d=cumulative选项会把变动过的地方(不管最近的那次有没有变动)都高亮显示出来。</li>
+<li>-t 或-no-title  会关闭watch命令在顶部的时间间隔,命令，当前时间的输出。</li>
+<li>-h, –help 查看帮助文档</li>
+</ul>
+<h2 id="4．使用实例"><a href="#4．使用实例" class="headerlink" title="4．使用实例"></a>4．使用实例</h2><h3 id="实例1：每隔一秒高亮显示网络链接数的变化情况"><a href="#实例1：每隔一秒高亮显示网络链接数的变化情况" class="headerlink" title="实例1：每隔一秒高亮显示网络链接数的变化情况"></a>实例1：每隔一秒高亮显示网络链接数的变化情况</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">watch -n 1 -d netstat -ant</div></pre></td></tr></table></figure>
+<h4 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h4><h5 id="其它操作："><a href="#其它操作：" class="headerlink" title="其它操作："></a>其它操作：</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;切换终端： Ctrl+x</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;退出watch：Ctrl+g</p>
+<h3 id="实例2：每隔一秒高亮显示http链接数的变化情况"><a href="#实例2：每隔一秒高亮显示http链接数的变化情况" class="headerlink" title="实例2：每隔一秒高亮显示http链接数的变化情况"></a>实例2：每隔一秒高亮显示http链接数的变化情况</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">watch -n 1 -d <span class="string">'pstree|grep http'</span></div></pre></td></tr></table></figure>
+<h4 id="说明：-1"><a href="#说明：-1" class="headerlink" title="说明："></a>说明：</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;每隔一秒高亮显示http链接数的变化情况。 后面接的命令若带有管道符，需要加’’将命令区域归整。</p>
+<h3 id="实例3：实时查看模拟攻击客户机建立起来的连接数"><a href="#实例3：实时查看模拟攻击客户机建立起来的连接数" class="headerlink" title="实例3：实时查看模拟攻击客户机建立起来的连接数"></a>实例3：实时查看模拟攻击客户机建立起来的连接数</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">watch <span class="string">'netstat -an | grep:21 | \ grep&lt;模拟攻击客户机的IP&gt;| wc -l'</span></div></pre></td></tr></table></figure>
+<h3 id="实例4：监测当前目录中-scf’-的文件的变化"><a href="#实例4：监测当前目录中-scf’-的文件的变化" class="headerlink" title="实例4：监测当前目录中 scf’ 的文件的变化"></a>实例4：监测当前目录中 scf’ 的文件的变化</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">watch -d <span class="string">'ls -l|grep scf'</span></div></pre></td></tr></table></figure>
+<h3 id="实例5：10秒一次输出系统的平均负载"><a href="#实例5：10秒一次输出系统的平均负载" class="headerlink" title="实例5：10秒一次输出系统的平均负载"></a>实例5：10秒一次输出系统的平均负载</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">watch -n 10 <span class="string">'cat /proc/loadavg'</span></div></pre></td></tr></table></figure>
       
     </div>
     

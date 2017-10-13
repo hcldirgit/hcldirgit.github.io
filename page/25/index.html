@@ -502,6 +502,65 @@
 
 
   
+    <article id="post-Nginx/22. nginx禁止指定user_agent" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Nginx/22. nginx禁止指定user_agent/" class="article-date">
+  	<time datetime="2017-09-02T18:06:42.721Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Nginx/22. nginx禁止指定user_agent/">
+        nginx禁止指定user_agent
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;具体配置如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">location / &#123;</div><div class="line"> <span class="keyword">if</span> (<span class="variable">$http_user_agent</span> ~ <span class="string">'curl|baidu|111111'</span>)</div><div class="line">     &#123;</div><div class="line">         <span class="built_in">return</span> 403;</div><div class="line">     &#125;</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;把 ~ 改为 ~* 就是不区分大小写。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LNMP/">LNMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Nginx/21. nginx 访问控制" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -546,65 +605,6 @@
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有时候会根据目录来显示 php 解析</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">location ~ .*(diy|template|attachments|forumdata|attachment|image)/.*\.php$</div><div class="line">&#123;</div><div class="line">    deny all;</div><div class="line">&#125;</div><div class="line">`</div></pre></td></tr></table></figure>
 <p><img src="https://github.com/hcldirgit/image/blob/master/nginx%20%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6/02.png?raw=true" alt=""></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LNMP/">LNMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Nginx/22. nginx禁止指定user_agent" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Nginx/22. nginx禁止指定user_agent/" class="article-date">
-  	<time datetime="2017-09-02T18:06:42.721Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Nginx/22. nginx禁止指定user_agent/">
-        nginx禁止指定user_agent
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;具体配置如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">location / &#123;</div><div class="line"> <span class="keyword">if</span> (<span class="variable">$http_user_agent</span> ~ <span class="string">'curl|baidu|111111'</span>)</div><div class="line">     &#123;</div><div class="line">         <span class="built_in">return</span> 403;</div><div class="line">     &#125;</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;把 ~ 改为 ~* 就是不区分大小写。</p>
 
       
     </div>

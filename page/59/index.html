@@ -233,64 +233,6 @@
 
 
   
-    <article id="post-Shell 练习/29. shell 练习-检测文件改动" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/08/31/Shell 练习/29. shell 练习-检测文件改动/" class="article-date">
-  	<time datetime="2017-08-30T16:07:07.547Z" itemprop="datePublished">2017-08-31</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/31/Shell 练习/29. shell 练习-检测文件改动/">
-        shell 练习-检测文件改动
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>有两台Linux服务器A和B，假如A可以直接ssh到B，不用输入密码。A和B都有一个目录叫做/data/web/ 这下面有很多文件，当然我们不知道具体有几层子目录，假若之前A和B上该目录下的文件都是一模一样的。但现在不确定是否一致了。固需要我们写一个脚本实现这样的功能，检测A机器和B机器/data/web/目录下文件的异同，我们以A机器上的文件作为标准。比如，假若B机器少了一个a.txt文件，那我们应该能够检测出来，或者B机器上的b.txt文件有过改动，我们也应该能够检测出来（B机器上多了文件我们不用考虑）。</p>
-<p>提示： 使用核心命令  md5sum a.txt  算出md5值，去和B机器上的比较。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="comment">#假设A机器到B机器已经做了无密码登录设置</span></div><div class="line">dir=/data/web</div><div class="line"><span class="comment">##假设B机器的IP为192.168.0.100</span></div><div class="line">B_ip=192.168.0.100</div><div class="line">find <span class="variable">$dir</span> -<span class="built_in">type</span> f |xargs md5sum &gt;/tmp/md5.txt</div><div class="line">ssh <span class="variable">$B_ip</span> <span class="string">"find <span class="variable">$dir</span> -type f |xargs md5sum &gt;/tmp/md5_b.txt"</span></div><div class="line">scp <span class="variable">$B_ip</span>:/tmp/md5_b.txt /tmp</div><div class="line"></div><div class="line"><span class="keyword">for</span> f <span class="keyword">in</span> `awk <span class="string">'&#123;print $2&#125;'</span> /tmp/md5.txt`</div><div class="line"><span class="keyword">do</span></div><div class="line">    <span class="keyword">if</span> grep -q <span class="string">"<span class="variable">$f</span>"</span> /tmp/md5_b.txt</div><div class="line">    <span class="keyword">then</span></div><div class="line">        md5_a=`grep <span class="variable">$f</span> /tmp/md5.txt|awk <span class="string">'&#123;print $1&#125;'</span>`</div><div class="line">        md5_b=`grep <span class="variable">$f</span> /tmp/md5_b.txt|awk <span class="string">'&#123;print $1&#125;'</span>`</div><div class="line">        <span class="keyword">if</span> [ <span class="variable">$md5_a</span> != <span class="variable">$md5_b</span> ]</div><div class="line">        <span class="keyword">then</span></div><div class="line">             <span class="built_in">echo</span> <span class="string">"<span class="variable">$f</span> changed."</span></div><div class="line">        <span class="keyword">fi</span></div><div class="line">    <span class="keyword">else</span></div><div class="line">        <span class="built_in">echo</span> <span class="string">"<span class="variable">$f</span> deleted. "</span></div><div class="line">    <span class="keyword">fi</span></div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell练习/">shell练习</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-Shell 练习/30. shell 练习-统计网卡流量" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -323,6 +265,64 @@
 <p>################<br>2017-08-04 01:12<br>eth0 input: 1000bps<br>eth0 output : 200000bps    </p>
 <p>提示：使用sar -n DEV  1 59 这样可以统计一分钟的平均网卡流量，只需要最后面的平均值。另外，注意换算一下，1byt=8bit</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="keyword">while</span> :</div><div class="line"><span class="keyword">do</span></div><div class="line">    DATE=`date +<span class="string">"%Y-%m-%d %H:%M"</span>`</div><div class="line">    LOG_PATH=/tmp/traffic_check/`date +%Y%m`</div><div class="line">    LOG_FILE=<span class="variable">$LOG_PATH</span>/traffic_check_`date +%d`.<span class="built_in">log</span></div><div class="line"></div><div class="line">    [ -d <span class="variable">$LOG_PATH</span>] || mkdir -p <span class="variable">$LOG_PATH</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">" <span class="variable">$DATE</span>"</span> &gt;&gt; <span class="variable">$LOG_FILE</span></div><div class="line">    sar -n DEV 1 59|grep Average|grep eth0|awk <span class="string">'&#123;print "\n",$2,"\t","input:",$5*1000*8,"bps","\t","\n",$2,"\t","output:",$6*1000*8,"bps" &#125;'</span> &gt;&gt; <span class="variable">$LOG_FILE</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">"#####################"</span> &gt;&gt; <span class="variable">$LOG_FILE</span></div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell练习/">shell练习</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Shell 练习/29. shell 练习-检测文件改动" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/08/31/Shell 练习/29. shell 练习-检测文件改动/" class="article-date">
+  	<time datetime="2017-08-30T16:07:07.547Z" itemprop="datePublished">2017-08-31</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/31/Shell 练习/29. shell 练习-检测文件改动/">
+        shell 练习-检测文件改动
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>有两台Linux服务器A和B，假如A可以直接ssh到B，不用输入密码。A和B都有一个目录叫做/data/web/ 这下面有很多文件，当然我们不知道具体有几层子目录，假若之前A和B上该目录下的文件都是一模一样的。但现在不确定是否一致了。固需要我们写一个脚本实现这样的功能，检测A机器和B机器/data/web/目录下文件的异同，我们以A机器上的文件作为标准。比如，假若B机器少了一个a.txt文件，那我们应该能够检测出来，或者B机器上的b.txt文件有过改动，我们也应该能够检测出来（B机器上多了文件我们不用考虑）。</p>
+<p>提示： 使用核心命令  md5sum a.txt  算出md5值，去和B机器上的比较。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="comment">#假设A机器到B机器已经做了无密码登录设置</span></div><div class="line">dir=/data/web</div><div class="line"><span class="comment">##假设B机器的IP为192.168.0.100</span></div><div class="line">B_ip=192.168.0.100</div><div class="line">find <span class="variable">$dir</span> -<span class="built_in">type</span> f |xargs md5sum &gt;/tmp/md5.txt</div><div class="line">ssh <span class="variable">$B_ip</span> <span class="string">"find <span class="variable">$dir</span> -type f |xargs md5sum &gt;/tmp/md5_b.txt"</span></div><div class="line">scp <span class="variable">$B_ip</span>:/tmp/md5_b.txt /tmp</div><div class="line"></div><div class="line"><span class="keyword">for</span> f <span class="keyword">in</span> `awk <span class="string">'&#123;print $2&#125;'</span> /tmp/md5.txt`</div><div class="line"><span class="keyword">do</span></div><div class="line">    <span class="keyword">if</span> grep -q <span class="string">"<span class="variable">$f</span>"</span> /tmp/md5_b.txt</div><div class="line">    <span class="keyword">then</span></div><div class="line">        md5_a=`grep <span class="variable">$f</span> /tmp/md5.txt|awk <span class="string">'&#123;print $1&#125;'</span>`</div><div class="line">        md5_b=`grep <span class="variable">$f</span> /tmp/md5_b.txt|awk <span class="string">'&#123;print $1&#125;'</span>`</div><div class="line">        <span class="keyword">if</span> [ <span class="variable">$md5_a</span> != <span class="variable">$md5_b</span> ]</div><div class="line">        <span class="keyword">then</span></div><div class="line">             <span class="built_in">echo</span> <span class="string">"<span class="variable">$f</span> changed."</span></div><div class="line">        <span class="keyword">fi</span></div><div class="line">    <span class="keyword">else</span></div><div class="line">        <span class="built_in">echo</span> <span class="string">"<span class="variable">$f</span> deleted. "</span></div><div class="line">    <span class="keyword">fi</span></div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure>
       
     </div>
     

@@ -666,6 +666,63 @@
 
 
   
+    <article id="post-Shell 练习/43. shell 练习-打印只有一个数字的行" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/08/31/Shell 练习/43. shell 练习-打印只有一个数字的行/" class="article-date">
+  	<time datetime="2017-08-30T16:07:07.568Z" itemprop="datePublished">2017-08-31</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/31/Shell 练习/43. shell 练习-打印只有一个数字的行/">
+        shell 练习-打印只有一个数字的行
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>如题，把一个文本文档中只有一个数字的行给打印出来。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line">f=/etc/passwd</div><div class="line">line=`wc -l <span class="variable">$f</span>|awk <span class="string">'&#123;print $1&#125;'</span>`</div><div class="line"><span class="keyword">for</span> l <span class="keyword">in</span> `seq 1 <span class="variable">$line</span>`; <span class="keyword">do</span></div><div class="line">     n=`sed -n <span class="string">"<span class="variable">$l</span>"</span>p <span class="variable">$f</span>|grep -o <span class="string">'[0-9]'</span>|wc -l`;</div><div class="line">     <span class="keyword">if</span> [ <span class="variable">$n</span> -eq 1 ]; <span class="keyword">then</span></div><div class="line">        sed -n <span class="string">"<span class="variable">$l</span>"</span>p <span class="variable">$f</span></div><div class="line">     <span class="keyword">fi</span></div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell练习/">shell练习</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Shell 练习/44. shell 练习-日志归档" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -696,63 +753,6 @@
         <p>类似于日志切割，系统有个logrotate程序，可以完成归档。但现在我们要自己写一个shell脚本实现归档。 </p>
 <p>举例： 假如服务的输出日志是1.log，我要求每天归档一个，1.log第二天就变成1.log.1，第三天1.log.2, 第四天 1.log.3  一直到1.log.5</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="keyword">function</span> e_df()</div><div class="line">&#123;</div><div class="line">    [ -f <span class="variable">$1</span> ] &amp;&amp; rm -f <span class="variable">$1</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> `seq 5 -1 2`</div><div class="line"><span class="keyword">do</span></div><div class="line">    i2=$[<span class="variable">$i</span>-1]</div><div class="line">    e_df /data/1.log.<span class="variable">$i</span></div><div class="line">    <span class="keyword">if</span> [ -f /data/1.log.<span class="variable">$i2</span> ]</div><div class="line">    <span class="keyword">then</span></div><div class="line">        mv /data/1.log.<span class="variable">$i2</span> /data/1.log.<span class="variable">$i</span></div><div class="line">    <span class="keyword">fi</span></div><div class="line"><span class="keyword">done</span></div><div class="line"></div><div class="line">e_df /data/1.log.1</div><div class="line">mv /data/1.log  /data/1.log.1</div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell练习/">shell练习</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Shell 练习/43. shell 练习-打印只有一个数字的行" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/08/31/Shell 练习/43. shell 练习-打印只有一个数字的行/" class="article-date">
-  	<time datetime="2017-08-30T16:07:07.568Z" itemprop="datePublished">2017-08-31</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/31/Shell 练习/43. shell 练习-打印只有一个数字的行/">
-        shell 练习-打印只有一个数字的行
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>如题，把一个文本文档中只有一个数字的行给打印出来。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line">f=/etc/passwd</div><div class="line">line=`wc -l <span class="variable">$f</span>|awk <span class="string">'&#123;print $1&#125;'</span>`</div><div class="line"><span class="keyword">for</span> l <span class="keyword">in</span> `seq 1 <span class="variable">$line</span>`; <span class="keyword">do</span></div><div class="line">     n=`sed -n <span class="string">"<span class="variable">$l</span>"</span>p <span class="variable">$f</span>|grep -o <span class="string">'[0-9]'</span>|wc -l`;</div><div class="line">     <span class="keyword">if</span> [ <span class="variable">$n</span> -eq 1 ]; <span class="keyword">then</span></div><div class="line">        sed -n <span class="string">"<span class="variable">$l</span>"</span>p <span class="variable">$f</span></div><div class="line">     <span class="keyword">fi</span></div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure>
       
     </div>
     
