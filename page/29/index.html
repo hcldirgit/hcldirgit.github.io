@@ -178,6 +178,8 @@
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
@@ -378,6 +380,8 @@
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
@@ -461,6 +465,8 @@
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
@@ -523,6 +529,8 @@
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
@@ -569,6 +577,71 @@
 
 
   
+    <article id="post-Linux安全/6. nginx 使用 user_agent 控制客户端访问" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Linux安全/6. nginx 使用 user_agent 控制客户端访问/" class="article-date">
+  	<time datetime="2017-09-02T18:04:46.023Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Linux安全/6. nginx 使用 user_agent 控制客户端访问/">
+        nginx 使用 user_agent 控制客户端访问
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;nginx的日志格式中，有一个字段叫做 $http_user_agent  这个其实是客户端浏览器的一个信息，比如咱们平时使用IE浏览器的话，nginx的日志中会记录类似于这样的信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这一段信息就是 $http_user_agent 了。咱们可以根据这个特点来控制客户端的请求访问。比如，现在有这样一个需求</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;把使用IE 6.0 的客户端禁止访问，我们可以这样做：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在nignx的配置文件中，加入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">location / &#123;</div><div class="line">    <span class="keyword">if</span> (<span class="variable">$http_user_agent</span> ~ <span class="string">'MSIE 6.0'</span>)&#123;</div><div class="line">    <span class="built_in">return</span> 403;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样就能禁止使用IE 6.0的客户端访问服务器。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux安全/">Linux安全</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Linux安全/7. nginx禁止某个IP或者IP段访问站点的设置方法" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -578,6 +651,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -637,69 +712,6 @@
 
 
   
-    <article id="post-Linux安全/6. nginx 使用 user_agent 控制客户端访问" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Linux安全/6. nginx 使用 user_agent 控制客户端访问/" class="article-date">
-  	<time datetime="2017-09-02T18:04:46.023Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Linux安全/6. nginx 使用 user_agent 控制客户端访问/">
-        nginx 使用 user_agent 控制客户端访问
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;nginx的日志格式中，有一个字段叫做 $http_user_agent  这个其实是客户端浏览器的一个信息，比如咱们平时使用IE浏览器的话，nginx的日志中会记录类似于这样的信息：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这一段信息就是 $http_user_agent 了。咱们可以根据这个特点来控制客户端的请求访问。比如，现在有这样一个需求</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;把使用IE 6.0 的客户端禁止访问，我们可以这样做：</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在nignx的配置文件中，加入</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">location / &#123;</div><div class="line">    <span class="keyword">if</span> (<span class="variable">$http_user_agent</span> ~ <span class="string">'MSIE 6.0'</span>)&#123;</div><div class="line">    <span class="built_in">return</span> 403;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样就能禁止使用IE 6.0的客户端访问服务器。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux安全/">Linux安全</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-Linux安全/5. nginx 禁止通过ip访问站点" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -709,6 +721,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -766,6 +780,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -835,138 +851,6 @@
 
 
   
-    <article id="post-Linux安全/2. Linux可插拔认证模块（PAM）的配置文件、工作原理与流程" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Linux安全/2. Linux可插拔认证模块（PAM）的配置文件、工作原理与流程/" class="article-date">
-  	<time datetime="2017-09-02T18:04:46.020Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Linux安全/2. Linux可插拔认证模块（PAM）的配置文件、工作原理与流程/">
-        Linux可插拔认证模块（PAM）的配置文件、工作原理与流程
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PAM的配置文件：</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们注意到，配置文件也放在了在应用接口层中，他与PAM API配合使用，从而达到了在应用中灵活插入所需鉴别模块的目的。他的作用主要是为应用选定具体的鉴别模块，模块间的组合以及规定模块的行为。下面是一个示例配置文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">cat /etc/pam.d/system-auth：</div><div class="line"><span class="comment">#%PAM-1.0</span></div><div class="line"><span class="comment"># This file is auto-generated.</span></div><div class="line"><span class="comment"># User changes will be destroyed the next time authconfig is run.</span></div><div class="line">auth required /lib/security/<span class="variable">$ISA</span>/pam_env.so</div><div class="line">auth sufficient /lib/security/<span class="variable">$ISA</span>/pam_unix.so likeauth nullok</div><div class="line">auth required /lib/security/<span class="variable">$ISA</span>/pam_deny.so</div><div class="line"> </div><div class="line">account required /lib/security/<span class="variable">$ISA</span>/pam_unix.so</div><div class="line">account sufficient /lib/security/<span class="variable">$ISA</span>/pam_succeed_if.so uid &lt; 100 quiet</div><div class="line">account required /lib/security/<span class="variable">$ISA</span>/pam_permit.so</div><div class="line"> </div><div class="line">password requisite /lib/security/<span class="variable">$ISA</span>/pam_cracklib.so retry=3</div><div class="line">password sufficient /lib/security/<span class="variable">$ISA</span>/pam_unix.so nullok use_authtok md5 shadow nis</div><div class="line">password required /lib/security/<span class="variable">$ISA</span>/pam_deny.so</div><div class="line"> </div><div class="line">session required /lib/security/<span class="variable">$ISA</span>/pam_limits.so</div><div class="line">session required /lib/security/<span class="variable">$ISA</span>/pam_unix.so</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们可以看到,配置文件有许多配置项(每行对应一个配置项)组成，每一行又分为四列(每列对应一栏)：</p>
-<h2 id="第一栏-认证鉴别接口类型："><a href="#第一栏-认证鉴别接口类型：" class="headerlink" title="第一栏 认证鉴别接口类型："></a>第一栏 认证鉴别接口类型：</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;指明程序所使用的PAM的认证接口类型，其实对应了刚才所说的四类接口：</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;auth：表示鉴别类接口模块类型用于检查用户和密码，并分配权限；</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这种类型的模块为用户验证提供两方面服务。让应用程序提示用户输入密码或者其他标记，确认用户合法性；通过他的凭证许可权限，设定组成员关系或者其他优先权。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;account：表示账户类接口，主要负责账户合法性检查，确认帐号是否过期，是否有权限登录系统等；</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这种模块执行的是基于非验证的帐号管理。他主要用于限制/允许用户对某个服务的访问时间，当前有效的系统资源（最多可以多少用户），限制用户位置（例如：root只能通过控制台登录）。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;多数情况下auth和account会一起用来对用户登录和使用服务的情况进行限制。这样的限制会更加完    整。比如下面是一个具体的例子：login是一个应用程序。Login要完成两件工作——首先查询用户，然后为用户提供所需的服务，例如提供一个shell程序。通常Login要求用户输入名称和密码进行验证。当用户名输入的时候，系统自然会去比对该用户是否是一个合法用户，是否在存在于本地或者远程的用户数据库中。如果该账号确实存在，那么是否过期。这些个工作是由account接口来负责。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果用户满足上述登录的前提条件，那么他是否具有可登录系统的口令，口令是否过期等。这个工作    就要由auth接口来负责了，他通常会将用户口令信息加密并提供给本地（/etc/shadow）或者远程的(ldap，kerberos等)口令验证方式进行验证。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果用户能够登录成功，证明auth和account的工作已经完成。但整个验证过程并没有完全结束。因为还有一些其他的问题没有得到确认。例如，用户能够在服务器上同时开启多少个窗口登录，用户可以在登录之后使用多少终端多长时间，用户能够访问哪些资源和不能访问哪些资源等等。也就是说登录之后的后续验证和环境定义等还需要其他的接口。这就是我们下面要提到的两组接口：</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;session：会话类接口。实现从用户登录成功到退出的会话控制；</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;处理为用户提供服务之前/后需要做的些事情。包括：开启/关闭交换数据的信息，监视目录等，设置用户会话环境等。也就是说这是在系统正式进行服务提供之前的最后一道关口。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;password：口令类接口。控制用户更改密码的全过程。也就是有些资料所说的升级用户验证标记。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意，上述接口在使用的时候，每行只能指定一种接口类型，如果程序需要多种接口的话，可在多行中分别予以规定。</p>
-<h2 id="第二栏-control-flag控制位："><a href="#第二栏-control-flag控制位：" class="headerlink" title="第二栏 control_flag控制位："></a>第二栏 control_flag控制位：</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;规定如何处理PAM模块鉴别认证的结果，简而言之就是鉴别认证成功或者失败之后会发生什么事，如何进行控制。单个应用程序可以调用多种底层模块，通常称为“堆叠”。对应于某程序按照配置文件中出现顺序执行的所有模块成为“堆”，堆中的各模块的地位与出错时的处理方式由control_flag栏的取值决定，他的四种可能的取值分别为required、Requisite、sufficient或_optional：</p>
-<ul>
-<li><p>required：表示该行以及所涉及模块的成功是用户通过鉴别的必要条件。换句话说，只有当对应于应用程序的所有带 required标记的模块全部成功后，该程序才能通过鉴别。同时，如果任何带required标记的模块出现了错误，PAM并不立刻将错误消息返回给应用程序，而是在所有模块都调用完毕后才将错误消息返回调用他的程序。 反正说白了，就是必须将所有的模块都执行一次，其中任何一个模块验证出错，验证都会继续进行，并在执行完成之后才返回错误信息。这样做的目的就是不让用户知道自己被哪个模块拒绝，通过一种隐蔽的方式来保护系统服务。就像设置防火墙规则的时候将拒绝类的规则都设置为drop一样，以致于用户在访问网络不成功的时候无法准确判断到底是被拒绝还是目标网络不可达。</p>
-</li>
-<li><p>requisite：与required相仿，只有带此标记的模块返回成功后，用户才能通过鉴别。不同之处在于其一旦失败就不再执行堆中后面的其他模块，并且鉴别过程到此结束，同时也会立即返回错误信息。与上面的required相比，似乎要显得更光明正大一些。</p>
-</li>
-<li><p>sufficient：表示该行以及所涉及模块验证成功是用户通过鉴别的充分条件。也就是说只要标记为    sufficient的模块一旦验证成功，那么PAM便立即向应用程序返回成功结果而不必尝试任何其他模块。即便后面的层叠模块使用了requisite或者required控制标志也是一样。当标记为sufficient的模块失败时，sufficient模块会当做 optional对待。因此拥有sufficient 标志位的配置项在执行验证出错的时候并不会导致整个验证失败，但执行验证成功之时则大门敞开。所以该控制位的使用务必慎重。</p>
-</li>
-<li><p>optional：他表示即便该行所涉及的模块验证失败用户仍能通过认证。在PAM体系中，带有该标记的模块失败后将继续处理下一模块。也就是说即使本行指定的模块验证失败，也允许用户享受应用程序提供的服务。使用该标志，PAM框架会忽略这个模块产生的验证错误，继续顺序执行下一个层叠模块。</p>
-</li>
-<li><p>include：表示在验证过程中调用其他的PAM配置文件。在RHEL系统中有相当多的应用通过完整调用/etc/pam.d/system-auth来实现认证而不需要重新逐一去写配置项。这也就意味着在很多时候只要用户能够登录系统，针对绝大多数的应用程序也能同时通过认证。</p>
-</li>
-</ul>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另外还有一种比较复杂的格式为value = action的语法来设置控制标志，标志之间会以空格分开。格式如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">value1 = action1 value2 = action2 ……</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其中value可以是下列Linux PAM库的返回值：</p>
-<blockquote>
-<p>success、open_err、symbol_err、service_err、 system_err、buf_err、perm_denied、auth_err、cred_insufficient、authinfo_unavail、user_unknown、maxtries、new_authtok_reqd、acct_expired、 session_err、cred_unavail、cred_expired、cred_err、no_module_data、conv_err、 authtok_err、authtok_recover_err、authtok_lock_busy、authtok_disable_aging、 try_again、ignore、abort、authtok_expired、module_unknown、bad_item和default。</p>
-</blockquote>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;最后一个(default)能够用来设置上面的返回值无法表达的行为。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;actionN可以是一个非负整数或者是下面的记号之一：ignore、ok、done、bad、die和reset。如果是非负整数J，就表示需要忽略后面J个同样类型的模块。通过这种方式，系统管理者可以更加灵活地设置层叠模块，模块的层叠路径由单个模块的反应决定。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关于这几个记号的详细解释：</p>
-<ul>
-<li><p>ignore：如果使用层叠模块，那么这个模块的返回值将被忽略，不会被应用程序知道。</p>
-</li>
-<li><p>bad：他表示这个返回码应该被看作是模块验证失败的标志。如果这个模块是层叠模块的第一个验证失败的模块，那么他的状态值就是整个层叠模块验证的状态值和结果。</p>
-</li>
-<li><p>die：终止层叠模块验证过程，立刻返回到应用程序。</p>
-</li>
-<li><p>ok：告诉PAM这个模块的返回值将直接作为所有层叠模块的返回值。也就是说，如果这个模块前面的模块返回状态是PAM_SUCCESS，那这个返回值就会覆盖前面的返回状态。注意：如果前面的模块的返回状态表示模块验证失败，那么不能使用这个返回值再加以覆盖。</p>
-</li>
-<li><p>done：终止后续层叠模块的验证，把控制权立刻交回应用程序。</p>
-</li>
-<li><p>reset：清除所有层叠模块的返回状态，从下一个层叠模块重新开始验证。</p>
-</li>
-</ul>
-<h2 id="第三栏-module-path即所使用模块的全路径名称。"><a href="#第三栏-module-path即所使用模块的全路径名称。" class="headerlink" title="第三栏 module_path即所使用模块的全路径名称。"></a>第三栏 module_path即所使用模块的全路径名称。</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以Red Hat Enterprise Linux（RHEL）为例，值得注意的是在i368/i686和x86_64系统中模块的全路径名称是不一样的。所以当有的时候用户将一些PAM的配置文件从原来系统复制到新的系统时，如果两种系统架构不同，那么不修改模块路径名称则可能导致PAM报错。</p>
-<h2 id="第四栏-options用于向特定模块传递相关的选项，然后由模块分析解释这些选项。"><a href="#第四栏-options用于向特定模块传递相关的选项，然后由模块分析解释这些选项。" class="headerlink" title="第四栏 options用于向特定模块传递相关的选项，然后由模块分析解释这些选项。"></a>第四栏 options用于向特定模块传递相关的选项，然后由模块分析解释这些选项。</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;比如使用此栏打开模块调试模式，或向某模块传递诸如超时值之类的参数等。另外他还用于支持下文所述的口令映射技术。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果任一栏出现错误或某模块没有找到，那么所在行被忽略并将其作为严重错误进行记录。</p>
-<h2 id="PAM的工作原理与流程："><a href="#PAM的工作原理与流程：" class="headerlink" title="PAM的工作原理与流程："></a>PAM的工作原理与流程：</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以RHEL系统为例，当pam安装之后有两大部分：在/lib/security目录下的各种pam模块以    及/etc/pam.d和/etc/pam.d目录下的针对各种服务和应用已经定义好的pam配置文件。当某一个有认证需求的应用程序需要验证的时候，一般在应用程序中就会定义负责对其认证的PAM配置文件。以    vsftpd为例，在它的配置文件/etc/vsftpd/vsftpd.conf中就有这样一行定义：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pam_service_name=vsftpd</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;表示登录FTP服务器的时候进行认证是根据/etc/pam.d/vsftpd文件定义的内容进行。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;那么，当程序需要认证的时候已经找到相关的pam配置文件，认证过程是如何进行的？下面我们将通过解读/etc/pam.d/system-auth文件予以说明。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先要声明一点的是：system-auth是一个非常重要的pam配置文件，主要负责用户登录系统的认证工作。而且该文件不仅仅只是负责用户登录系统认证，其它的程序和服务通过include接口也可以调用到它，从而节省了很多重新自定义配置的工作。所以应该说该文件是系统安全的总开关和核心的pam配置文件。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面是/etc/pam.d/system-auth文件的全部内容：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">grep -v ^<span class="comment"># /etc/pam.d/system-auth</span></div><div class="line">auth required pam_env.so</div><div class="line">auth sufficient pam_unix.so nullok try_first_pass</div><div class="line">auth requisite pam_succeed_if.so uid &gt;= 500 quiet</div><div class="line">auth required pam_deny.so</div><div class="line">  </div><div class="line">account required pam_unix.so</div><div class="line">account sufficient pam_succeed_if.so uid &lt; 500 quiet</div><div class="line">account required pam_permit.so</div><div class="line">  </div><div class="line">password requisite pam_cracklib.so try_first_pass retry=3</div><div class="line">password sufficient pam_unix.so md5 shadow nullok try_first_pass use_authtok</div><div class="line">password required pam_deny.so</div><div class="line">  </div><div class="line">session optional pam_keyinit.so revoke</div><div class="line">session required pam_limits.so</div><div class="line">session [success=1 default=ignore] pam_succeed_if.so service <span class="keyword">in</span> crond quiet use_uid</div><div class="line">session required pam_unix.so</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第一部分表示，当用户登录的时候，首先会通过auth类接口对用户身份进行识别和密码认证。所以在该过程中验证会经过几个带auth的配置项。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其中的第一步是通过pam_env.so模块来定义用户登录之后的环境变量， pam_env.so允许设置和更改用户登录时候的环境变量，默认情况下，若没有特别指定配置文件，将依    据/etc/security/pam_env.conf进行用户登录之后环境变量的设置。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后通过pam_unix.so模块来提示用户输入密码，并将用户密码与/etc/shadow中记录的密码信息进行对比，如果密码比对结果正确则允许用户登录，而且该配置项的使用的是“sufficient”控制位，即表示只要该配置项的验证通过，用户即可完全通过认证而不用再去走下面的认证项。不过在特殊情况下，用户允许使用空密码登录系统，例如当将某个用户在/etc/shadow中的密码字段删除之后，该用户可以只输入用户名直接登录系统。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面的配置项中，通过pam_succeed_if.so对用户的登录条件做一些限制，表示允许uid大于500的用户在通过密码验证的情况下登录，在Linux系统中，一般系统用户的uid都在500之内，所以该项即表示允许使用useradd命令以及默认选项建立的普通用户直接由本地控制台登录系统。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;最后通过pam_deny.so模块对所有不满足上述任意条件的登录请求直接拒绝，pam_deny.so是一个特殊的模块，该模块返回值永远为否，类似于大多数安全机制的配置准则，在所有认证规则走完之后，对不匹配任何规则的请求直接拒绝。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第二部分的三个配置项主要表示通过account账户类接口来识别账户的合法性以及登录权限。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第一行仍然使用pam_unix.so模块来声明用户需要通过密码认证。第二行承认了系统中uid小于500的系统用户的合法性。之后对所有类型的用户登录请求都开放控制台。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第三部分会通过password口另类接口来确认用户使用的密码或者口令的合法性。第一行配置项表示需要的情况下将调用pam_cracklib来验证用户密码复杂度。如果用户输入密码不满足复杂度要求或者密码错，最多将在三次这种错误之后直接返回密码错误的提示，否则期间任何一次正确的密码验证都允许登录。需要指出的是，pam_cracklib.so是一个常用的控制密码复杂度的pam模块，关于其用法举例我们会在之后详细介绍。之后带pam_unix.so和pam_deny.so的两行配置项的意思与之前类似。都表示需要通过密码认证并对不符合上述任何配置项要求的登录请求直接予以拒绝。不过用户如果执行的操作是单纯的登录，则这部分配置是不起作用的。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第四部分主要将通过session会话类接口为用户初始化会话连接。其中几个比较重要的地方包括，使用pam_keyinit.so表示当用户登录的时候为其建立相应的密钥环，并在用户登出的时候予以撤销。不过该行配置的控制位使用的是optional，表示这并非必要条件。之后通过pam_limits.so限制用户登录时的会话连接资源，相关pam_limit.so配置文件是/etc/security/limits.conf，默认情况下对每个登录用户都没有限制。关于该模块的配置方法在后面也会详细介绍。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可见，不同应用程序通过配置文件在认证过程中调用不同的pam模块来定制具体的认证流程。其中我们不难看出，其实可以根据实际的需要对pam的配置文件进行修改以满足不同的认证需求，例如下面的例子：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#%PAM-1.0</span></div><div class="line"><span class="comment"># This file is auto-generated.</span></div><div class="line"><span class="comment"># User changes will be destroyed the next time authconfig is run.</span></div><div class="line">auth required pam_env.so</div><div class="line">auth required pam_tally.so onerr=fail deny=5</div><div class="line">auth sufficient pam_unix.so nullok try_first_pass</div><div class="line">auth requisite pam_succeed_if.so uid &gt;= 500 quiet</div><div class="line">auth required pam_deny.so</div><div class="line"> </div><div class="line">account required pam_unix.so</div><div class="line">account sufficient pam_succeed_if.so uid &lt; 500 quiet</div><div class="line">account required pam_permit.so</div><div class="line"> </div><div class="line">password requisite pam_cracklib.so try_first_pass retry=3 minlen=10 lcredit=-1 ucredit=-1 dcredit=-1 ocredit=-1 difok=6</div><div class="line">password requisite pam_passwdqc.so use_first_pass enforce=everyone</div><div class="line">password sufficient pam_unix.so md5 remember=6 shadow nullok try_first_pass use_authtok</div><div class="line">password required pam_deny.so</div><div class="line"> </div><div class="line">session optional pam_keyinit.so revoke</div><div class="line">session required pam_limits.so</div><div class="line">session [success=1 default=ignore] pam_succeed_if.so service <span class="keyword">in</span> crond quiet use_uid</div><div class="line">session required pam_unix.so</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在其中就增加了对用户密码修改时复杂度的限制，用户多次错误输入密码之后的锁定限制以及用户使用密码历史等限制选项。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;所以我们通过对上述system-auth配置文件的修改，模块的增加和选项的变化，从很大的程度上增加了用户登录验证的安全性要求。我们会在之后的文章中对该配置进行详细说明。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另外也一定需要注意，在整个的PAM配置文件当中，配置项以及模块调用的逻辑顺序非常关键。因为PAM是按照配置项的先后顺序来进行验证。错误的模块调用顺序很可能导致严重的安全问题甚至系统错误。所以对PAM配置进行修改的时候务必要考虑这一点。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux安全/">Linux安全</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-Linux安全/3. Web 应用程序常见漏洞 CSRF 的入侵检测与防范" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -976,6 +860,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -1110,6 +996,140 @@
 
 
   
+    <article id="post-Linux安全/2. Linux可插拔认证模块（PAM）的配置文件、工作原理与流程" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Linux安全/2. Linux可插拔认证模块（PAM）的配置文件、工作原理与流程/" class="article-date">
+  	<time datetime="2017-09-02T18:04:46.020Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Linux安全/2. Linux可插拔认证模块（PAM）的配置文件、工作原理与流程/">
+        Linux可插拔认证模块（PAM）的配置文件、工作原理与流程
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PAM的配置文件：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们注意到，配置文件也放在了在应用接口层中，他与PAM API配合使用，从而达到了在应用中灵活插入所需鉴别模块的目的。他的作用主要是为应用选定具体的鉴别模块，模块间的组合以及规定模块的行为。下面是一个示例配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">cat /etc/pam.d/system-auth：</div><div class="line"><span class="comment">#%PAM-1.0</span></div><div class="line"><span class="comment"># This file is auto-generated.</span></div><div class="line"><span class="comment"># User changes will be destroyed the next time authconfig is run.</span></div><div class="line">auth required /lib/security/<span class="variable">$ISA</span>/pam_env.so</div><div class="line">auth sufficient /lib/security/<span class="variable">$ISA</span>/pam_unix.so likeauth nullok</div><div class="line">auth required /lib/security/<span class="variable">$ISA</span>/pam_deny.so</div><div class="line"> </div><div class="line">account required /lib/security/<span class="variable">$ISA</span>/pam_unix.so</div><div class="line">account sufficient /lib/security/<span class="variable">$ISA</span>/pam_succeed_if.so uid &lt; 100 quiet</div><div class="line">account required /lib/security/<span class="variable">$ISA</span>/pam_permit.so</div><div class="line"> </div><div class="line">password requisite /lib/security/<span class="variable">$ISA</span>/pam_cracklib.so retry=3</div><div class="line">password sufficient /lib/security/<span class="variable">$ISA</span>/pam_unix.so nullok use_authtok md5 shadow nis</div><div class="line">password required /lib/security/<span class="variable">$ISA</span>/pam_deny.so</div><div class="line"> </div><div class="line">session required /lib/security/<span class="variable">$ISA</span>/pam_limits.so</div><div class="line">session required /lib/security/<span class="variable">$ISA</span>/pam_unix.so</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们可以看到,配置文件有许多配置项(每行对应一个配置项)组成，每一行又分为四列(每列对应一栏)：</p>
+<h2 id="第一栏-认证鉴别接口类型："><a href="#第一栏-认证鉴别接口类型：" class="headerlink" title="第一栏 认证鉴别接口类型："></a>第一栏 认证鉴别接口类型：</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;指明程序所使用的PAM的认证接口类型，其实对应了刚才所说的四类接口：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;auth：表示鉴别类接口模块类型用于检查用户和密码，并分配权限；</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这种类型的模块为用户验证提供两方面服务。让应用程序提示用户输入密码或者其他标记，确认用户合法性；通过他的凭证许可权限，设定组成员关系或者其他优先权。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;account：表示账户类接口，主要负责账户合法性检查，确认帐号是否过期，是否有权限登录系统等；</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这种模块执行的是基于非验证的帐号管理。他主要用于限制/允许用户对某个服务的访问时间，当前有效的系统资源（最多可以多少用户），限制用户位置（例如：root只能通过控制台登录）。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;多数情况下auth和account会一起用来对用户登录和使用服务的情况进行限制。这样的限制会更加完    整。比如下面是一个具体的例子：login是一个应用程序。Login要完成两件工作——首先查询用户，然后为用户提供所需的服务，例如提供一个shell程序。通常Login要求用户输入名称和密码进行验证。当用户名输入的时候，系统自然会去比对该用户是否是一个合法用户，是否在存在于本地或者远程的用户数据库中。如果该账号确实存在，那么是否过期。这些个工作是由account接口来负责。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果用户满足上述登录的前提条件，那么他是否具有可登录系统的口令，口令是否过期等。这个工作    就要由auth接口来负责了，他通常会将用户口令信息加密并提供给本地（/etc/shadow）或者远程的(ldap，kerberos等)口令验证方式进行验证。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果用户能够登录成功，证明auth和account的工作已经完成。但整个验证过程并没有完全结束。因为还有一些其他的问题没有得到确认。例如，用户能够在服务器上同时开启多少个窗口登录，用户可以在登录之后使用多少终端多长时间，用户能够访问哪些资源和不能访问哪些资源等等。也就是说登录之后的后续验证和环境定义等还需要其他的接口。这就是我们下面要提到的两组接口：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;session：会话类接口。实现从用户登录成功到退出的会话控制；</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;处理为用户提供服务之前/后需要做的些事情。包括：开启/关闭交换数据的信息，监视目录等，设置用户会话环境等。也就是说这是在系统正式进行服务提供之前的最后一道关口。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;password：口令类接口。控制用户更改密码的全过程。也就是有些资料所说的升级用户验证标记。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意，上述接口在使用的时候，每行只能指定一种接口类型，如果程序需要多种接口的话，可在多行中分别予以规定。</p>
+<h2 id="第二栏-control-flag控制位："><a href="#第二栏-control-flag控制位：" class="headerlink" title="第二栏 control_flag控制位："></a>第二栏 control_flag控制位：</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;规定如何处理PAM模块鉴别认证的结果，简而言之就是鉴别认证成功或者失败之后会发生什么事，如何进行控制。单个应用程序可以调用多种底层模块，通常称为“堆叠”。对应于某程序按照配置文件中出现顺序执行的所有模块成为“堆”，堆中的各模块的地位与出错时的处理方式由control_flag栏的取值决定，他的四种可能的取值分别为required、Requisite、sufficient或_optional：</p>
+<ul>
+<li><p>required：表示该行以及所涉及模块的成功是用户通过鉴别的必要条件。换句话说，只有当对应于应用程序的所有带 required标记的模块全部成功后，该程序才能通过鉴别。同时，如果任何带required标记的模块出现了错误，PAM并不立刻将错误消息返回给应用程序，而是在所有模块都调用完毕后才将错误消息返回调用他的程序。 反正说白了，就是必须将所有的模块都执行一次，其中任何一个模块验证出错，验证都会继续进行，并在执行完成之后才返回错误信息。这样做的目的就是不让用户知道自己被哪个模块拒绝，通过一种隐蔽的方式来保护系统服务。就像设置防火墙规则的时候将拒绝类的规则都设置为drop一样，以致于用户在访问网络不成功的时候无法准确判断到底是被拒绝还是目标网络不可达。</p>
+</li>
+<li><p>requisite：与required相仿，只有带此标记的模块返回成功后，用户才能通过鉴别。不同之处在于其一旦失败就不再执行堆中后面的其他模块，并且鉴别过程到此结束，同时也会立即返回错误信息。与上面的required相比，似乎要显得更光明正大一些。</p>
+</li>
+<li><p>sufficient：表示该行以及所涉及模块验证成功是用户通过鉴别的充分条件。也就是说只要标记为    sufficient的模块一旦验证成功，那么PAM便立即向应用程序返回成功结果而不必尝试任何其他模块。即便后面的层叠模块使用了requisite或者required控制标志也是一样。当标记为sufficient的模块失败时，sufficient模块会当做 optional对待。因此拥有sufficient 标志位的配置项在执行验证出错的时候并不会导致整个验证失败，但执行验证成功之时则大门敞开。所以该控制位的使用务必慎重。</p>
+</li>
+<li><p>optional：他表示即便该行所涉及的模块验证失败用户仍能通过认证。在PAM体系中，带有该标记的模块失败后将继续处理下一模块。也就是说即使本行指定的模块验证失败，也允许用户享受应用程序提供的服务。使用该标志，PAM框架会忽略这个模块产生的验证错误，继续顺序执行下一个层叠模块。</p>
+</li>
+<li><p>include：表示在验证过程中调用其他的PAM配置文件。在RHEL系统中有相当多的应用通过完整调用/etc/pam.d/system-auth来实现认证而不需要重新逐一去写配置项。这也就意味着在很多时候只要用户能够登录系统，针对绝大多数的应用程序也能同时通过认证。</p>
+</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另外还有一种比较复杂的格式为value = action的语法来设置控制标志，标志之间会以空格分开。格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">value1 = action1 value2 = action2 ……</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其中value可以是下列Linux PAM库的返回值：</p>
+<blockquote>
+<p>success、open_err、symbol_err、service_err、 system_err、buf_err、perm_denied、auth_err、cred_insufficient、authinfo_unavail、user_unknown、maxtries、new_authtok_reqd、acct_expired、 session_err、cred_unavail、cred_expired、cred_err、no_module_data、conv_err、 authtok_err、authtok_recover_err、authtok_lock_busy、authtok_disable_aging、 try_again、ignore、abort、authtok_expired、module_unknown、bad_item和default。</p>
+</blockquote>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;最后一个(default)能够用来设置上面的返回值无法表达的行为。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;actionN可以是一个非负整数或者是下面的记号之一：ignore、ok、done、bad、die和reset。如果是非负整数J，就表示需要忽略后面J个同样类型的模块。通过这种方式，系统管理者可以更加灵活地设置层叠模块，模块的层叠路径由单个模块的反应决定。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关于这几个记号的详细解释：</p>
+<ul>
+<li><p>ignore：如果使用层叠模块，那么这个模块的返回值将被忽略，不会被应用程序知道。</p>
+</li>
+<li><p>bad：他表示这个返回码应该被看作是模块验证失败的标志。如果这个模块是层叠模块的第一个验证失败的模块，那么他的状态值就是整个层叠模块验证的状态值和结果。</p>
+</li>
+<li><p>die：终止层叠模块验证过程，立刻返回到应用程序。</p>
+</li>
+<li><p>ok：告诉PAM这个模块的返回值将直接作为所有层叠模块的返回值。也就是说，如果这个模块前面的模块返回状态是PAM_SUCCESS，那这个返回值就会覆盖前面的返回状态。注意：如果前面的模块的返回状态表示模块验证失败，那么不能使用这个返回值再加以覆盖。</p>
+</li>
+<li><p>done：终止后续层叠模块的验证，把控制权立刻交回应用程序。</p>
+</li>
+<li><p>reset：清除所有层叠模块的返回状态，从下一个层叠模块重新开始验证。</p>
+</li>
+</ul>
+<h2 id="第三栏-module-path即所使用模块的全路径名称。"><a href="#第三栏-module-path即所使用模块的全路径名称。" class="headerlink" title="第三栏 module_path即所使用模块的全路径名称。"></a>第三栏 module_path即所使用模块的全路径名称。</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以Red Hat Enterprise Linux（RHEL）为例，值得注意的是在i368/i686和x86_64系统中模块的全路径名称是不一样的。所以当有的时候用户将一些PAM的配置文件从原来系统复制到新的系统时，如果两种系统架构不同，那么不修改模块路径名称则可能导致PAM报错。</p>
+<h2 id="第四栏-options用于向特定模块传递相关的选项，然后由模块分析解释这些选项。"><a href="#第四栏-options用于向特定模块传递相关的选项，然后由模块分析解释这些选项。" class="headerlink" title="第四栏 options用于向特定模块传递相关的选项，然后由模块分析解释这些选项。"></a>第四栏 options用于向特定模块传递相关的选项，然后由模块分析解释这些选项。</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;比如使用此栏打开模块调试模式，或向某模块传递诸如超时值之类的参数等。另外他还用于支持下文所述的口令映射技术。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果任一栏出现错误或某模块没有找到，那么所在行被忽略并将其作为严重错误进行记录。</p>
+<h2 id="PAM的工作原理与流程："><a href="#PAM的工作原理与流程：" class="headerlink" title="PAM的工作原理与流程："></a>PAM的工作原理与流程：</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以RHEL系统为例，当pam安装之后有两大部分：在/lib/security目录下的各种pam模块以    及/etc/pam.d和/etc/pam.d目录下的针对各种服务和应用已经定义好的pam配置文件。当某一个有认证需求的应用程序需要验证的时候，一般在应用程序中就会定义负责对其认证的PAM配置文件。以    vsftpd为例，在它的配置文件/etc/vsftpd/vsftpd.conf中就有这样一行定义：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pam_service_name=vsftpd</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;表示登录FTP服务器的时候进行认证是根据/etc/pam.d/vsftpd文件定义的内容进行。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;那么，当程序需要认证的时候已经找到相关的pam配置文件，认证过程是如何进行的？下面我们将通过解读/etc/pam.d/system-auth文件予以说明。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先要声明一点的是：system-auth是一个非常重要的pam配置文件，主要负责用户登录系统的认证工作。而且该文件不仅仅只是负责用户登录系统认证，其它的程序和服务通过include接口也可以调用到它，从而节省了很多重新自定义配置的工作。所以应该说该文件是系统安全的总开关和核心的pam配置文件。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面是/etc/pam.d/system-auth文件的全部内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">grep -v ^<span class="comment"># /etc/pam.d/system-auth</span></div><div class="line">auth required pam_env.so</div><div class="line">auth sufficient pam_unix.so nullok try_first_pass</div><div class="line">auth requisite pam_succeed_if.so uid &gt;= 500 quiet</div><div class="line">auth required pam_deny.so</div><div class="line">  </div><div class="line">account required pam_unix.so</div><div class="line">account sufficient pam_succeed_if.so uid &lt; 500 quiet</div><div class="line">account required pam_permit.so</div><div class="line">  </div><div class="line">password requisite pam_cracklib.so try_first_pass retry=3</div><div class="line">password sufficient pam_unix.so md5 shadow nullok try_first_pass use_authtok</div><div class="line">password required pam_deny.so</div><div class="line">  </div><div class="line">session optional pam_keyinit.so revoke</div><div class="line">session required pam_limits.so</div><div class="line">session [success=1 default=ignore] pam_succeed_if.so service <span class="keyword">in</span> crond quiet use_uid</div><div class="line">session required pam_unix.so</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第一部分表示，当用户登录的时候，首先会通过auth类接口对用户身份进行识别和密码认证。所以在该过程中验证会经过几个带auth的配置项。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其中的第一步是通过pam_env.so模块来定义用户登录之后的环境变量， pam_env.so允许设置和更改用户登录时候的环境变量，默认情况下，若没有特别指定配置文件，将依    据/etc/security/pam_env.conf进行用户登录之后环境变量的设置。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后通过pam_unix.so模块来提示用户输入密码，并将用户密码与/etc/shadow中记录的密码信息进行对比，如果密码比对结果正确则允许用户登录，而且该配置项的使用的是“sufficient”控制位，即表示只要该配置项的验证通过，用户即可完全通过认证而不用再去走下面的认证项。不过在特殊情况下，用户允许使用空密码登录系统，例如当将某个用户在/etc/shadow中的密码字段删除之后，该用户可以只输入用户名直接登录系统。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面的配置项中，通过pam_succeed_if.so对用户的登录条件做一些限制，表示允许uid大于500的用户在通过密码验证的情况下登录，在Linux系统中，一般系统用户的uid都在500之内，所以该项即表示允许使用useradd命令以及默认选项建立的普通用户直接由本地控制台登录系统。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;最后通过pam_deny.so模块对所有不满足上述任意条件的登录请求直接拒绝，pam_deny.so是一个特殊的模块，该模块返回值永远为否，类似于大多数安全机制的配置准则，在所有认证规则走完之后，对不匹配任何规则的请求直接拒绝。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第二部分的三个配置项主要表示通过account账户类接口来识别账户的合法性以及登录权限。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第一行仍然使用pam_unix.so模块来声明用户需要通过密码认证。第二行承认了系统中uid小于500的系统用户的合法性。之后对所有类型的用户登录请求都开放控制台。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第三部分会通过password口另类接口来确认用户使用的密码或者口令的合法性。第一行配置项表示需要的情况下将调用pam_cracklib来验证用户密码复杂度。如果用户输入密码不满足复杂度要求或者密码错，最多将在三次这种错误之后直接返回密码错误的提示，否则期间任何一次正确的密码验证都允许登录。需要指出的是，pam_cracklib.so是一个常用的控制密码复杂度的pam模块，关于其用法举例我们会在之后详细介绍。之后带pam_unix.so和pam_deny.so的两行配置项的意思与之前类似。都表示需要通过密码认证并对不符合上述任何配置项要求的登录请求直接予以拒绝。不过用户如果执行的操作是单纯的登录，则这部分配置是不起作用的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第四部分主要将通过session会话类接口为用户初始化会话连接。其中几个比较重要的地方包括，使用pam_keyinit.so表示当用户登录的时候为其建立相应的密钥环，并在用户登出的时候予以撤销。不过该行配置的控制位使用的是optional，表示这并非必要条件。之后通过pam_limits.so限制用户登录时的会话连接资源，相关pam_limit.so配置文件是/etc/security/limits.conf，默认情况下对每个登录用户都没有限制。关于该模块的配置方法在后面也会详细介绍。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可见，不同应用程序通过配置文件在认证过程中调用不同的pam模块来定制具体的认证流程。其中我们不难看出，其实可以根据实际的需要对pam的配置文件进行修改以满足不同的认证需求，例如下面的例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#%PAM-1.0</span></div><div class="line"><span class="comment"># This file is auto-generated.</span></div><div class="line"><span class="comment"># User changes will be destroyed the next time authconfig is run.</span></div><div class="line">auth required pam_env.so</div><div class="line">auth required pam_tally.so onerr=fail deny=5</div><div class="line">auth sufficient pam_unix.so nullok try_first_pass</div><div class="line">auth requisite pam_succeed_if.so uid &gt;= 500 quiet</div><div class="line">auth required pam_deny.so</div><div class="line"> </div><div class="line">account required pam_unix.so</div><div class="line">account sufficient pam_succeed_if.so uid &lt; 500 quiet</div><div class="line">account required pam_permit.so</div><div class="line"> </div><div class="line">password requisite pam_cracklib.so try_first_pass retry=3 minlen=10 lcredit=-1 ucredit=-1 dcredit=-1 ocredit=-1 difok=6</div><div class="line">password requisite pam_passwdqc.so use_first_pass enforce=everyone</div><div class="line">password sufficient pam_unix.so md5 remember=6 shadow nullok try_first_pass use_authtok</div><div class="line">password required pam_deny.so</div><div class="line"> </div><div class="line">session optional pam_keyinit.so revoke</div><div class="line">session required pam_limits.so</div><div class="line">session [success=1 default=ignore] pam_succeed_if.so service <span class="keyword">in</span> crond quiet use_uid</div><div class="line">session required pam_unix.so</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在其中就增加了对用户密码修改时复杂度的限制，用户多次错误输入密码之后的锁定限制以及用户使用密码历史等限制选项。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;所以我们通过对上述system-auth配置文件的修改，模块的增加和选项的变化，从很大的程度上增加了用户登录验证的安全性要求。我们会在之后的文章中对该配置进行详细说明。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另外也一定需要注意，在整个的PAM配置文件当中，配置项以及模块调用的逻辑顺序非常关键。因为PAM是按照配置项的先后顺序来进行验证。错误的模块调用顺序很可能导致严重的安全问题甚至系统错误。所以对PAM配置进行修改的时候务必要考虑这一点。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux安全/">Linux安全</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/28/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/27/">27</a><a class="page-number" href="/page/28/">28</a><span class="page-number current">29</span><a class="page-number" href="/page/30/">30</a><a class="page-number" href="/page/31/">31</a><span class="space">&hellip;</span><a class="page-number" href="/page/63/">63</a><a class="extend next" rel="next" href="/page/30/">Next &raquo;</a>
@@ -1130,11 +1150,13 @@
 </footer>
     </div>
     
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
 
 <script>
 	var yiliaConfig = {
-		fancybox: ,
-		mathjax: ,
+		fancybox: true,
+		mathjax: true,
 		animate: true,
 		isHome: true,
 		isPost: false,
@@ -1146,6 +1168,26 @@
 </script>
 <script src="/js/main.js"></script>
 
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
 
 
   </div>

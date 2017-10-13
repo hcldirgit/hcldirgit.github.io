@@ -178,6 +178,8 @@
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
@@ -241,6 +243,8 @@
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
@@ -297,6 +301,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -358,6 +364,8 @@
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
@@ -405,6 +413,65 @@
 
 
   
+    <article id="post-Shell 练习/37. shell 练习-用户交互脚本" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/08/31/Shell 练习/37. shell 练习-用户交互脚本/" class="article-date">
+  	<time datetime="2017-08-30T16:07:07.563Z" itemprop="datePublished">2017-08-31</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/31/Shell 练习/37. shell 练习-用户交互脚本/">
+        shell 练习-用户交互脚本
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>写一个脚本，执行后，打印一行提示“Please input a number:”，要求用户输入数值，然后打印出该数值，然后再次要求用户输入数值。直到用户输入”end”停止。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="keyword">while</span> :</div><div class="line"><span class="keyword">do</span></div><div class="line">        <span class="built_in">read</span> -p <span class="string">"Please input a number:(end for exit) "</span> n</div><div class="line">        num=` <span class="built_in">echo</span> <span class="variable">$n</span> |sed -r <span class="string">'s/[0-9]//g'</span>|wc -c `</div><div class="line">        <span class="keyword">if</span> [ <span class="variable">$n</span> == <span class="string">"end"</span> ]</div><div class="line">                <span class="keyword">then</span></div><div class="line">                        <span class="built_in">exit</span></div><div class="line">                <span class="keyword">elif</span> [ <span class="variable">$num</span> -ne 1  ]</div><div class="line">                        <span class="keyword">then</span></div><div class="line">                        <span class="built_in">echo</span> <span class="string">"what you input is not a number!Try again!"</span></div><div class="line">                <span class="keyword">else</span></div><div class="line">                        <span class="built_in">echo</span> <span class="string">"your input number is: <span class="variable">$n</span>"</span></div><div class="line">        <span class="keyword">fi</span></div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell练习/">shell练习</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Shell 练习/36. shell 练习-脚本传参" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -414,6 +481,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -469,63 +538,6 @@
 
 
   
-    <article id="post-Shell 练习/37. shell 练习-用户交互脚本" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/08/31/Shell 练习/37. shell 练习-用户交互脚本/" class="article-date">
-  	<time datetime="2017-08-30T16:07:07.563Z" itemprop="datePublished">2017-08-31</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/31/Shell 练习/37. shell 练习-用户交互脚本/">
-        shell 练习-用户交互脚本
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>写一个脚本，执行后，打印一行提示“Please input a number:”，要求用户输入数值，然后打印出该数值，然后再次要求用户输入数值。直到用户输入”end”停止。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="keyword">while</span> :</div><div class="line"><span class="keyword">do</span></div><div class="line">        <span class="built_in">read</span> -p <span class="string">"Please input a number:(end for exit) "</span> n</div><div class="line">        num=` <span class="built_in">echo</span> <span class="variable">$n</span> |sed -r <span class="string">'s/[0-9]//g'</span>|wc -c `</div><div class="line">        <span class="keyword">if</span> [ <span class="variable">$n</span> == <span class="string">"end"</span> ]</div><div class="line">                <span class="keyword">then</span></div><div class="line">                        <span class="built_in">exit</span></div><div class="line">                <span class="keyword">elif</span> [ <span class="variable">$num</span> -ne 1  ]</div><div class="line">                        <span class="keyword">then</span></div><div class="line">                        <span class="built_in">echo</span> <span class="string">"what you input is not a number!Try again!"</span></div><div class="line">                <span class="keyword">else</span></div><div class="line">                        <span class="built_in">echo</span> <span class="string">"your input number is: <span class="variable">$n</span>"</span></div><div class="line">        <span class="keyword">fi</span></div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell练习/">shell练习</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-Shell 练习/35. shell 练习-被3整除" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -535,6 +547,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -592,6 +606,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -660,6 +676,8 @@
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
@@ -716,6 +734,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -785,11 +805,13 @@
 </footer>
     </div>
     
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
 
 <script>
 	var yiliaConfig = {
-		fancybox: ,
-		mathjax: ,
+		fancybox: true,
+		mathjax: true,
 		animate: true,
 		isHome: true,
 		isPost: false,
@@ -801,6 +823,26 @@
 </script>
 <script src="/js/main.js"></script>
 
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
 
 
   </div>

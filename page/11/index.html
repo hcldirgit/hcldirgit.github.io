@@ -178,6 +178,8 @@
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
@@ -387,6 +389,8 @@
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
@@ -477,6 +481,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -717,6 +723,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -1016,6 +1024,8 @@
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
@@ -1265,6 +1275,8 @@
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
@@ -1315,67 +1327,6 @@
 
 
   
-    <article id="post-Samba/4. samba同时用匿名和用户登录" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Samba/4. samba同时用匿名和用户登录/" class="article-date">
-  	<time datetime="2017-09-02T18:11:54.057Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Samba/4. samba同时用匿名和用户登录/">
-        samba同时用匿名和用户登录
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关于同时使用匿名和用户登录，配置文件如下，已经验证成功：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">[global]</div><div class="line">        workgroup = WORKGROUP</div><div class="line">        server string = Samba Server Version %v</div><div class="line">        <span class="built_in">log</span> file = /var/<span class="built_in">log</span>/samba/<span class="built_in">log</span>.%m</div><div class="line">        max <span class="built_in">log</span> size = 50</div><div class="line">        security = user</div><div class="line">        passdb backend = tdbsam</div><div class="line">        load printers = yes</div><div class="line">        cups iptions = raw</div><div class="line">        map to guest = bad user</div><div class="line">        guest account = nobody</div><div class="line">        encrypt password = yes</div><div class="line">        smb passwd file = /etc/samba/smbpasswd</div><div class="line"></div><div class="line">[public]</div><div class="line">        comment = public</div><div class="line">        path = /data/pub/public</div><div class="line">        browseable = yes</div><div class="line">        guest ok = yes</div><div class="line">        writable = yes</div><div class="line">        printable = no</div><div class="line">        create mask = 0644</div><div class="line">        directory mask = 0755</div><div class="line"></div><div class="line">[project]</div><div class="line">        comment = project</div><div class="line">        path = /data/pub/project</div><div class="line">        browseable = yes</div><div class="line">        public = no</div><div class="line">        guest ok = no</div><div class="line">        writeable = yes</div><div class="line">        force user = root</div><div class="line">        printable = no</div><div class="line">        create mask = 0644</div><div class="line">        directory mask = 0755</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意：需要手动创建 /data/pub/public 和 /data/pub/project 目录，为了顺利完成试验，需要提前先改成 777 权限。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另外还需创建用户：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># useradd testuser</span></div><div class="line">[root@192 ~]<span class="comment"># pdbedit -a testuser</span></div></pre></td></tr></table></figure>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Samba/">Samba</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-Samba/5. samba中文乱码的问题" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1385,6 +1336,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -1446,6 +1399,69 @@
 
 
   
+    <article id="post-Samba/4. samba同时用匿名和用户登录" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Samba/4. samba同时用匿名和用户登录/" class="article-date">
+  	<time datetime="2017-09-02T18:11:54.057Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Samba/4. samba同时用匿名和用户登录/">
+        samba同时用匿名和用户登录
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关于同时使用匿名和用户登录，配置文件如下，已经验证成功：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">[global]</div><div class="line">        workgroup = WORKGROUP</div><div class="line">        server string = Samba Server Version %v</div><div class="line">        <span class="built_in">log</span> file = /var/<span class="built_in">log</span>/samba/<span class="built_in">log</span>.%m</div><div class="line">        max <span class="built_in">log</span> size = 50</div><div class="line">        security = user</div><div class="line">        passdb backend = tdbsam</div><div class="line">        load printers = yes</div><div class="line">        cups iptions = raw</div><div class="line">        map to guest = bad user</div><div class="line">        guest account = nobody</div><div class="line">        encrypt password = yes</div><div class="line">        smb passwd file = /etc/samba/smbpasswd</div><div class="line"></div><div class="line">[public]</div><div class="line">        comment = public</div><div class="line">        path = /data/pub/public</div><div class="line">        browseable = yes</div><div class="line">        guest ok = yes</div><div class="line">        writable = yes</div><div class="line">        printable = no</div><div class="line">        create mask = 0644</div><div class="line">        directory mask = 0755</div><div class="line"></div><div class="line">[project]</div><div class="line">        comment = project</div><div class="line">        path = /data/pub/project</div><div class="line">        browseable = yes</div><div class="line">        public = no</div><div class="line">        guest ok = no</div><div class="line">        writeable = yes</div><div class="line">        force user = root</div><div class="line">        printable = no</div><div class="line">        create mask = 0644</div><div class="line">        directory mask = 0755</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意：需要手动创建 /data/pub/public 和 /data/pub/project 目录，为了顺利完成试验，需要提前先改成 777 权限。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另外还需创建用户：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># useradd testuser</span></div><div class="line">[root@192 ~]<span class="comment"># pdbedit -a testuser</span></div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Samba/">Samba</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Samba/3. samba 用户密码的几种方式对比" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1455,6 +1471,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -1540,6 +1558,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -1665,11 +1685,13 @@
 </footer>
     </div>
     
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
 
 <script>
 	var yiliaConfig = {
-		fancybox: ,
-		mathjax: ,
+		fancybox: true,
+		mathjax: true,
 		animate: true,
 		isHome: true,
 		isPost: false,
@@ -1681,6 +1703,26 @@
 </script>
 <script src="/js/main.js"></script>
 
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
 
 
   </div>

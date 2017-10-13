@@ -168,23 +168,25 @@
 </nav>
       <div class="body-wrap">
   
-    <article id="post-Shell/7. shell脚本编程" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Shell/6. date 命令" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/09/03/Shell/7. shell脚本编程/" class="article-date">
+      <a href="/2017/09/03/Shell/6. date 命令/" class="article-date">
   	<time datetime="2017-09-02T18:23:14.635Z" itemprop="datePublished">2017-09-03</time>
 </a>
     </div>
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Shell/7. shell脚本编程/">
-        shell脚本编程
+      <a class="article-title" href="/2017/09/03/Shell/6. date 命令/">
+        date命令
         
       </a>
     </h1>
@@ -195,112 +197,71 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="1-shell脚本是什么"><a href="#1-shell脚本是什么" class="headerlink" title="1.shell脚本是什么"></a>1.shell脚本是什么</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;它是一种脚本语言，并非编程语言</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以使用一些逻辑判断、循环等语法</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以自定义子函数</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是系统命令的集合</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;shell脚本可以实现自动化运维，大大增加我们的工作效率</p>
-<h2 id="2-shell脚本结构以及执行方法"><a href="#2-shell脚本结构以及执行方法" class="headerlink" title="2.shell脚本结构以及执行方法"></a>2.shell脚本结构以及执行方法</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;开头行指定bash路径: #! /bin/bash</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以#开头的行作为解释说明</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;脚本的名字以.sh结尾，用于区分这是一个shell脚本</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;执行方式有两种：chmod +x 1.sh; ./1.sh 如果没有执行权限可以 bash 1.sh </p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;bash -x 1.sh 可以查看脚本执行过程</p>
-<h2 id="3-学会date命令的用法"><a href="#3-学会date命令的用法" class="headerlink" title="3.学会date命令的用法"></a>3.学会date命令的用法</h2><ul>
-<li>date  +%Y-%m-%d, date +%y-%m-%d 年月日</li>
-<li>date  +%H:%M:%S = date +%T 时间</li>
-<li>date +%s  时间戳</li>
-<li>date -d @1434248742</li>
-<li>date -d “+1day”一天后date -d “-1day”一天前</li>
-<li>date -d  “-1month” 一月前</li>
-<li>date -d  “-1min” 一分钟前</li>
-<li>date +%w, date +%W 星期</li>
-</ul>
-<h2 id="4-shell脚本中的变量"><a href="#4-shell脚本中的变量" class="headerlink" title="4.shell脚本中的变量"></a>4.shell脚本中的变量</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当脚本中使用某个字符串较频繁并且字符串长度很长时就应该使用变量代替<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用条件语句时，常常使用变量    if [ $a -gt 1 ]; then … ; fi</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;引用某个命令的结果时，用变量替代   n=<code>wc -l 1.txt</code></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;写和用户交互的脚本时，变量也是必不可少的  read -p “Input a number: “ n; echo $n   如果没写这个n，可以直接使用$REPLY</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;内置变量 $0, $1, $2…    $0表示脚本本身，$1 第一个参数，$2 第二个 ….       $#表示参数个数</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;数学运算a=1;b=2; c=$(($a+$b))或者$[$a+$b]</p>
-<h2 id="5-shell中的逻辑判断"><a href="#5-shell中的逻辑判断" class="headerlink" title="5.shell中的逻辑判断"></a>5.shell中的逻辑判断</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;格式1：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> 条件 ; <span class="keyword">then</span> 语句; <span class="keyword">fi</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;格式2：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> 条件; <span class="keyword">then</span> 语句; <span class="keyword">else</span> 语句; <span class="keyword">fi</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;格式3：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> …; <span class="keyword">then</span> … ;<span class="keyword">elif</span> …; <span class="keyword">then</span> …; <span class="keyword">else</span> …; <span class="keyword">fi</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;逻辑判断表达式：if [ $a -gt $b ]; if [ $a -lt 5 ]; if [ $b -eq 10 ]等 -gt (&gt;); -lt(&lt;); -ge(&gt;=); -le(&lt;=);-eq(==); -ne(!=) 注意到处都是空格</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以使用 &amp;&amp; || 结合多个条件</p>
-<h2 id="6-if-判断文件、目录属性"><a href="#6-if-判断文件、目录属性" class="headerlink" title="6.if 判断文件、目录属性"></a>6.if 判断文件、目录属性</h2><ul>
-<li>[ -f file ]判断是否是普通文件，且存在 </li>
-<li>[ -d file ] 判断是否是目录，且存在</li>
-<li>[ -e file ] 判断文件或目录是否存在</li>
-<li>[ -r file ] 判断文件是否可读</li>
-<li>[ -w file ] 判断文件是否可写</li>
-<li>[ -x file ] 判断文件是否可执行</li>
-<li>[ -s file ] 判断文件大小是否非0</li>
-<li>[ -c file ] 判断文件是否为字符特殊文件，且存在</li>
-<li>[ -b file ] 判断文件是否为块特殊文件，且存在</li>
-<li>[ -t file ] 判断文件是否为描述符（默认为1）指定的设备为终端</li>
-<li>[ -L file ] 判断制定的是否为符号链接</li>
-<li>[ “$a” = “$b” ] 判断 $a 和 $b 是否相等</li>
-<li>[ -n “$var” ] 判断 $var 变量是否有值</li>
-<li>[ -z  ] 判断变量是否存在值</li>
-<li>[!    ] 测试条件的否定符号</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">[ -a FILE ] 如果 FILE 存在则为真。 </div><div class="line">[ -b FILE ] 如果 FILE 存在且是一个块特殊文件则为真。 </div><div class="line">[ -c FILE ] 如果 FILE 存在且是一个字特殊文件则为真。 </div><div class="line">[ -d FILE ] 如果 FILE 存在且是一个目录则为真。 </div><div class="line">[ -e FILE ] 如果 FILE 存在则为真。 </div><div class="line">[ -f FILE ] 如果 FILE 存在且是一个普通文件则为真。 </div><div class="line">[ -g FILE ] 如果 FILE 存在且已经设置了SGID则为真。 </div><div class="line">[ -h FILE ] 如果 FILE 存在且是一个符号连接则为真。 </div><div class="line">[ -k FILE ] 如果 FILE 存在且已经设置了粘制位则为真。 </div><div class="line">[ -p FILE ] 如果 FILE 存在且是一个名字管道(F如果O)则为真。 </div><div class="line">[ -r FILE ] 如果 FILE 存在且是可读的则为真。 </div><div class="line">[ -s FILE ] 如果 FILE 存在且大小不为0则为真。 </div><div class="line">[ -t FD ] 如果文件描述符 FD 打开且指向一个终端则为真。 </div><div class="line">[ -u FILE ] 如果 FILE 存在且设置了SUID (<span class="built_in">set</span> user ID)则为真。 </div><div class="line">[ -w FILE ] 如果 FILE 如果 FILE 存在且是可写的则为真。 </div><div class="line">[ -x FILE ] 如果 FILE 存在且是可执行的则为真。 </div><div class="line">[ -O FILE ] 如果 FILE 存在且属有效用户ID则为真。 </div><div class="line">[ -G FILE ] 如果 FILE 存在且属有效用户组则为真。 </div><div class="line">[ -L FILE ] 如果 FILE 存在且是一个符号连接则为真。 </div><div class="line">[ -N FILE ] 如果 FILE 存在 and has been mod如果ied since it was last <span class="built_in">read</span>则为真。 </div><div class="line">[ -S FILE ] 如果 FILE 存在且是一个套接字则为真。 </div><div class="line">[ FILE1 -nt FILE2 ] 如果 FILE1 has been changed more recently than FILE2, or 如果 FILE1 exists and FILE2 does not则为真。 </div><div class="line">[ FILE1 -ot FILE2 ] 如果 FILE1 比 FILE2 要老, 或者 FILE2 存在且 FILE1 不存在则为真。 </div><div class="line">[ FILE1 -ef FILE2 ] 如果 FILE1 和 FILE2 指向相同的设备和节点号则为真。 </div><div class="line">[ -o OPTIONNAME ] 如果 shell选项 “OPTIONNAME” 开启则为真。 </div><div class="line">[ -z STRING ] “STRING” 的长度为零则为真。 </div><div class="line">[ -n STRING ] or [ STRING ] “STRING” 的长度为非零 non-zero则为真。 </div><div class="line">[ STRING1 == STRING2 ] 如果2个字符串相同。 “=” may be used instead of “==” <span class="keyword">for</span> strict POSIX compliance则为真。 </div><div class="line">[ STRING1 != STRING2 ] 如果字符串不相等则为真。 </div><div class="line">[ STRING1 &lt; STRING2 ] 如果 “STRING1” sorts before “STRING2” lexicographically <span class="keyword">in</span> the current locale则为真。 </div><div class="line">[ STRING1 &gt; STRING2 ] 如果 “STRING1” sorts after “STRING2” lexicographically <span class="keyword">in</span> the current locale则为真。 </div><div class="line">[ ARG1 OP ARG2 ] “OP” is one of -eq, -ne, -lt, -le, -gt or -ge. These arithmetic binary operators <span class="built_in">return</span> <span class="literal">true</span> <span class="keyword">if</span> “ARG1” is equal to, not equal to, less than, less than or equal to, greater than, or greater than or equal to “ARG2”, respectively. “ARG1” and “ARG2” are integers.</div></pre></td></tr></table></figure>
-<h2 id="7-if-判断一些特殊用法"><a href="#7-if-判断一些特殊用法" class="headerlink" title="7.if 判断一些特殊用法"></a>7.if 判断一些特殊用法</h2><ul>
-<li>if [ -z $a ]  这个表示当变量a的值为空时会怎么样</li>
-<li>if grep -q ‘123’ 1.txt; then  表示如果1.txt中含有’123’的行时会怎么样</li>
-<li>if [ ! -e file ]; then 表示文件不存在时会怎么样</li>
-<li>if (($a<1)); 1="" then="" …等同于="" if="" [="" $a="" -lt="" ];="" then…="" ]="" 中不能使用<,="">,==,!=,&gt;=,&lt;=这样的符号</1));></li>
-</ul>
-<h2 id="8-shell中的case判断"><a href="#8-shell中的case判断" class="headerlink" title="8.shell中的case判断"></a>8.shell中的case判断</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;格式： </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">case</span>  变量名 <span class="keyword">in</span> </div><div class="line">    value1)</div><div class="line">        <span class="built_in">command</span></div><div class="line">        ;;</div><div class="line">    value2)</div><div class="line">        <span class="built_in">command</span></div><div class="line">        ;;</div><div class="line">    *)</div><div class="line">        commond</div><div class="line">        ;;</div><div class="line"><span class="keyword">esac</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在case程序中，可以在条件中使用|，表示或的意思， 比如    </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">2|3) </div><div class="line">    <span class="built_in">command</span></div><div class="line">    ;;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当变量为2或者3时，执行该部分命令。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;案例：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="built_in">read</span> -p <span class="string">"Please input a number: "</span> n</div><div class="line"><span class="keyword">if</span> [ -z <span class="variable">$n</span> ]</div><div class="line"><span class="keyword">then</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">"Please input a number."</span></div><div class="line">    <span class="built_in">exit</span> 1</div><div class="line"><span class="keyword">fi</span></div><div class="line">n1=`<span class="built_in">echo</span> <span class="variable">$n</span>|sed <span class="string">'s/[-0-9]//g'</span>`</div><div class="line"><span class="keyword">if</span> [ ! -z <span class="variable">$n1</span> ]</div><div class="line"><span class="keyword">then</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">"Please input a number."</span></div><div class="line">    <span class="built_in">exit</span> 1</div><div class="line"><span class="comment">#elif [ $n -lt 0 ] || [ $n -gt 100 ]</span></div><div class="line"><span class="comment">#then</span></div><div class="line"><span class="comment">#    echo "The number range is 0-100."</span></div><div class="line"><span class="comment">#    exit 1</span></div><div class="line"><span class="keyword">fi</span></div><div class="line"><span class="keyword">if</span> [ <span class="variable">$n</span> -lt 60 ]</div><div class="line"><span class="keyword">then</span></div><div class="line">    tag=1</div><div class="line"><span class="keyword">elif</span> [ <span class="variable">$n</span> -ge 60 ] &amp;amp;&amp;amp; [ <span class="variable">$n</span> -lt 80 ]</div><div class="line"><span class="keyword">then</span></div><div class="line">    tag=2</div><div class="line"><span class="keyword">elif</span> [ <span class="variable">$n</span> -ge 80 ] &amp;amp;&amp;amp; [ <span class="variable">$n</span> -lt 90 ]</div><div class="line"><span class="keyword">then</span></div><div class="line">    tag=3</div><div class="line"><span class="keyword">elif</span> [ <span class="variable">$n</span> -ge 90 ] &amp;amp;&amp;amp; [ <span class="variable">$n</span> -le 100 ]</div><div class="line"><span class="keyword">then</span></div><div class="line">    tag=4</div><div class="line"><span class="keyword">else</span></div><div class="line">    tag=0</div><div class="line"><span class="keyword">fi</span></div><div class="line"><span class="keyword">case</span> <span class="variable">$tag</span> <span class="keyword">in</span></div><div class="line">    1)</div><div class="line">        <span class="built_in">echo</span> <span class="string">"不及格"</span></div><div class="line">        ;;</div><div class="line">    2)</div><div class="line">        <span class="built_in">echo</span> <span class="string">"及格"</span></div><div class="line">        ;;</div><div class="line">    3|4)</div><div class="line">        <span class="built_in">echo</span> <span class="string">"优秀"</span></div><div class="line">        ;;</div><div class="line">    *)</div><div class="line">        <span class="built_in">echo</span> <span class="string">"The number range is 0-100."</span></div><div class="line">        ;;</div><div class="line"><span class="keyword">esac</span></div></pre></td></tr></table></figure>
-<h2 id="9-shell脚本中的循环"><a href="#9-shell脚本中的循环" class="headerlink" title="9.shell脚本中的循环"></a>9.shell脚本中的循环</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;for循环语法结构: </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>  变量名 <span class="keyword">in</span> 条件; <span class="keyword">do</span> … <span class="keyword">done</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;案例1：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line">sum=0</div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> `seq 1 100`</div><div class="line"><span class="keyword">do</span></div><div class="line">    sum=$[<span class="variable">$sum</span>+<span class="variable">$i</span>]</div><div class="line">    <span class="built_in">echo</span> <span class="variable">$i</span></div><div class="line"><span class="keyword">done</span></div><div class="line"><span class="built_in">echo</span> <span class="variable">$sum</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;案例2：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="built_in">cd</span> /etc/</div><div class="line"><span class="keyword">for</span> a <span class="keyword">in</span> `ls /etc/`</div><div class="line"><span class="keyword">do</span></div><div class="line">    <span class="keyword">if</span> [ -d <span class="variable">$a</span> ]</div><div class="line">    <span class="keyword">then</span></div><div class="line">        ls -d <span class="variable">$a</span></div><div class="line">    <span class="keyword">fi</span></div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;案例3：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line">n=`wc -l 1.txt |awk <span class="string">'&#123;print $1&#125;'</span>`</div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> `seq 1 <span class="variable">$n</span>`</div><div class="line"><span class="keyword">do</span></div><div class="line">    sed -n <span class="string">"<span class="variable">$i</span>"</span>p 1.txt</div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;while 循环语法结构: </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">while</span> 条件; <span class="keyword">do</span> … <span class="keyword">done</span> 死循环用:表示</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;案例1：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="keyword">while</span> :</div><div class="line"><span class="keyword">do</span></div><div class="line">    load=`w|head -1|awk -F <span class="string">'load average: '</span> <span class="string">'&#123;print $2&#125;'</span>|cut -d. -f1`</div><div class="line">    <span class="keyword">if</span> [ <span class="variable">$load</span> -gt 10 ]</div><div class="line">    <span class="keyword">then</span></div><div class="line">        top|mail -s <span class="string">"load is high: <span class="variable">$load</span>"</span> [email]asldkfls@11.com[/email]</div><div class="line">    <span class="keyword">fi</span></div><div class="line">    sleep 30</div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;案例2：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="keyword">while</span> :</div><div class="line"><span class="keyword">do</span></div><div class="line">    <span class="built_in">read</span> -p <span class="string">"Please input a number: "</span> n</div><div class="line">    <span class="keyword">if</span> [ -z <span class="variable">$n</span> ]</div><div class="line">    <span class="keyword">then</span></div><div class="line">        <span class="built_in">echo</span> <span class="string">"你需要输入东西"</span></div><div class="line">        <span class="built_in">continue</span></div><div class="line">    <span class="keyword">fi</span></div><div class="line">    n1=`<span class="built_in">echo</span> <span class="variable">$n</span>|sed <span class="string">'s/[-0-9]//g'</span>`</div><div class="line">    <span class="keyword">if</span> [ ! -z <span class="variable">$n1</span> ]</div><div class="line">    <span class="keyword">then</span></div><div class="line">        <span class="built_in">echo</span> <span class="string">"你只能输入一个纯数字"</span></div><div class="line">        <span class="built_in">continue</span></div><div class="line">    <span class="keyword">fi</span></div><div class="line">    <span class="built_in">break</span></div><div class="line"><span class="keyword">done</span></div><div class="line"><span class="built_in">echo</span> <span class="variable">$n</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;break直接结束本层循环; </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> `seq 1 5`</div><div class="line"><span class="keyword">do</span></div><div class="line">    <span class="built_in">echo</span> <span class="variable">$i</span></div><div class="line">    <span class="keyword">if</span> [ <span class="variable">$i</span> == 3 ]</div><div class="line">    <span class="keyword">then</span></div><div class="line">        <span class="built_in">break</span></div><div class="line">    <span class="keyword">fi</span></div><div class="line">    <span class="built_in">echo</span> <span class="variable">$i</span></div><div class="line"><span class="keyword">done</span></div><div class="line"><span class="built_in">echo</span> aaaaaaa</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;continue忽略continue之下的代码，直接进行下一次循环 </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> `seq 1 5`</div><div class="line"><span class="keyword">do</span></div><div class="line">    <span class="built_in">echo</span> <span class="variable">$i</span></div><div class="line">    <span class="keyword">if</span> [ <span class="variable">$i</span> == 3 ]</div><div class="line">    <span class="keyword">then</span></div><div class="line">        <span class="built_in">continue</span></div><div class="line">    <span class="keyword">fi</span></div><div class="line">    <span class="built_in">echo</span> <span class="variable">$i</span></div><div class="line"><span class="keyword">done</span></div><div class="line"><span class="built_in">echo</span> <span class="variable">$i</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;exit 直接退出shell</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> `seq 1 5`</div><div class="line"><span class="keyword">do</span></div><div class="line">    <span class="built_in">echo</span> <span class="variable">$i</span></div><div class="line">    <span class="keyword">if</span> [ <span class="variable">$i</span> == 3 ]</div><div class="line">    <span class="keyword">then</span></div><div class="line">        <span class="built_in">exit</span></div><div class="line">    <span class="keyword">fi</span></div><div class="line">    <span class="built_in">echo</span> <span class="variable">$i</span></div><div class="line"><span class="keyword">done</span></div><div class="line"><span class="built_in">echo</span> aaaaaaa</div></pre></td></tr></table></figure>
-<h2 id="10-shell中的函数"><a href="#10-shell中的函数" class="headerlink" title="10.shell中的函数"></a>10.shell中的函数</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;函数就是把一段代码整理到了一个小单元中，并给这个小单元起一个名字，当用到这段代码时直接调用这个小单元的名字即可。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;格式: </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">function</span> <span class="function"><span class="title">f_name</span></span>() &#123;</div><div class="line">    <span class="built_in">command</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;函数必须要放在最前面</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;案例1：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="function"><span class="title">input</span></span>() &#123;</div><div class="line">    <span class="built_in">echo</span> <span class="variable">$1</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;案例2：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="function"><span class="title">sum</span></span>() &#123;</div><div class="line">    s=$[<span class="variable">$1</span>+<span class="variable">$2</span>]</div><div class="line">    <span class="built_in">echo</span> <span class="variable">$s</span></div><div class="line">&#125;</div><div class="line">sum 1 2</div></pre></td></tr></table></figure>
-<p>案例3：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="function"><span class="title">ip</span></span>() &#123;</div><div class="line">    ifconfig |grep -A1 <span class="string">"<span class="variable">$1</span> "</span> |tail -1 |awk <span class="string">'&#123;print $2&#125;'</span>|awk -F<span class="string">':'</span> <span class="string">'&#123;print $2&#125;'</span></div><div class="line">&#125;</div><div class="line"><span class="built_in">read</span> -p <span class="string">"Please input the eth name: "</span> e</div><div class="line">myip=`ip <span class="variable">$e</span>`</div><div class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$e</span> address is <span class="variable">$myip</span>"</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;函数里可以export 全局变量</p>
-<h2 id="11-shell练习题"><a href="#11-shell练习题" class="headerlink" title="11.shell练习题"></a>11.shell练习题</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编写shell脚本，计算1-100的和；</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line">sum=0</div><div class="line"><span class="keyword">for</span>((i=1;i&lt;=100;i++));<span class="keyword">do</span></div><div class="line">    sum=$((i+sum))</div><div class="line"><span class="keyword">done</span></div><div class="line"><span class="built_in">echo</span> <span class="variable">$sum</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编写shell脚本，要求输入一个数字，然后计算出从1到输入数字的和，要求，如果输入的数字小于1，则重新输入，直到输入正确的数字为止；</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="built_in">read</span> -p <span class="string">"Enter a num:"</span> num</div><div class="line">sum=0</div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> $(seq <span class="variable">$num</span>)</div><div class="line"><span class="keyword">do</span></div><div class="line">    sum=$((sum+i))</div><div class="line"><span class="keyword">done</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"Sum is <span class="variable">$sum</span>"</span></div></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line">n=0</div><div class="line"><span class="keyword">while</span> [ <span class="variable">$i</span> -lt 1 ]</div><div class="line"><span class="keyword">do</span></div><div class="line">    <span class="built_in">read</span> -p <span class="string">"Enter a num:"</span> i</div><div class="line"><span class="keyword">done</span></div><div class="line">sum=0</div><div class="line"><span class="keyword">for</span> n <span class="keyword">in</span> `seq 1 <span class="variable">$i</span>`</div><div class="line"><span class="keyword">do</span></div><div class="line">    sum=$[<span class="variable">$sum</span>+<span class="variable">$n</span>]</div><div class="line"><span class="keyword">done</span></div><div class="line"><span class="built_in">echo</span> <span class="variable">$sum</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编写shell脚本，把/root/目录下的所有目录（只需要一级）拷贝到/tmp/目录下；</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="built_in">cd</span> /root</div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> `ls`</div><div class="line"><span class="keyword">do</span></div><div class="line">    <span class="keyword">if</span> [ -d <span class="variable">$i</span> ]</div><div class="line">    <span class="keyword">then</span></div><div class="line">        cp -r <span class="variable">$i</span> /tmp/</div><div class="line">    <span class="keyword">fi</span></div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编写shell脚本，批量建立用户user_00, user_01, … user_100并且所有用户同属于users组；</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line">groupadd users</div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> `seq 0 9`</div><div class="line"><span class="keyword">do</span></div><div class="line">    useradd -g users user_0<span class="variable">$i</span></div><div class="line"><span class="keyword">done</span></div><div class="line"></div><div class="line"><span class="keyword">for</span> j <span class="keyword">in</span> `seq 10 100`</div><div class="line"><span class="keyword">do</span></div><div class="line">    useradd -g user_<span class="variable">$j</span></div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编写shell脚本，截取文件test.log中包含关键词 ‘abc’ 的行中的第一列（假设分隔符为 ”:” ），然后把截取的数字排序（假设第一列为数字），然后打印出重复次数超过10次的列；</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line">awk -F<span class="string">':'</span> <span class="string">'$0~/abc/ &#123;print $1&#125;'</span> test.log &gt; /tmp/1.txt</div><div class="line">sort -n /tmp/1.txt |uniq -c | sort -n &gt; /tmp/2.txt</div><div class="line">awk <span class="string">'$1&gt;10 &#123;print $2&#125;'</span> /tmp/2.txt</div></pre></td></tr></table></figure>
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;date 在脚本中用得很多，那必须得学会这个命令，下面是 date 的几种用法：</p>
+<ol>
+<li>输出四位的年、月、日，格式 2017.04.27</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 sbin]<span class="comment"># date +%Y-%m-%d</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/date%20%E5%91%BD%E4%BB%A4/01.png?raw=true" alt=""></p>
+<ol>
+<li>输出两位的年、月、日，格式17-04-27</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 sbin]<span class="comment"># date +%y-%m-%d</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/date%20%E5%91%BD%E4%BB%A4/02.png?raw=true" alt=""></p>
+<ol>
+<li>另外一种输出年、月、日的方式</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 sbin]<span class="comment"># date +%F</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/date%20%E5%91%BD%E4%BB%A4/03.png?raw=true" alt=""></p>
+<ol>
+<li>输出时间，格式 02：05：31</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 sbin]<span class="comment"># date +%H:%M:%S</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/date%20%E5%91%BD%E4%BB%A4/04.png?raw=true" alt=""></p>
+<ol>
+<li>另外一种输出时间的方式，格式同 4</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 sbin]<span class="comment"># date +%T</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/date%20%E5%91%BD%E4%BB%A4/05.png?raw=true" alt=""></p>
+<ol>
+<li>时间戳</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 sbin]<span class="comment"># date +%s</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/date%20%E5%91%BD%E4%BB%A4/06.png?raw=true" alt=""></p>
+<ol>
+<li>根据时间戳反向推测时间</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 sbin]<span class="comment"># date -d @1493232796</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/date%20%E5%91%BD%E4%BB%A4/07.png?raw=true" alt=""></p>
+<ol>
+<li>一天后</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 sbin]<span class="comment"># date -d "+1day"</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/date%20%E5%91%BD%E4%BB%A4/08.png?raw=true" alt=""></p>
+<ol>
+<li>一天前</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 sbin]<span class="comment"># date -d "-1day"</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/date%20%E5%91%BD%E4%BB%A4/09.png?raw=true" alt=""></p>
+<ol>
+<li>一月前</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 sbin]<span class="comment"># date -d "-1month"</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/date%20%E5%91%BD%E4%BB%A4/10.png?raw=true" alt=""></p>
+<ol>
+<li>一分钟前</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 sbin]<span class="comment"># date -d "-1min"</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/date%20%E5%91%BD%E4%BB%A4/11.png?raw=true" alt=""></p>
+<ol>
+<li>星期</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;小写 w 表示周几</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 sbin]<span class="comment"># date +%w</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/date%20%E5%91%BD%E4%BB%A4/12.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;大写 W 表示本年的第几周</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 sbin]<span class="comment"># date +%W</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/date%20%E5%91%BD%E4%BB%A4/13.png?raw=true" alt=""></p>
 
       
     </div>
@@ -339,6 +300,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -417,6 +380,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -509,6 +474,8 @@
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
@@ -578,6 +545,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -688,6 +657,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -811,6 +782,8 @@
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
@@ -876,6 +849,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -997,6 +972,8 @@
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
@@ -1087,6 +1064,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -1179,11 +1158,13 @@
 </footer>
     </div>
     
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
 
 <script>
 	var yiliaConfig = {
-		fancybox: ,
-		mathjax: ,
+		fancybox: true,
+		mathjax: true,
 		animate: true,
 		isHome: true,
 		isPost: false,
@@ -1195,6 +1176,26 @@
 </script>
 <script src="/js/main.js"></script>
 
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
 
 
   </div>

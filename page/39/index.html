@@ -178,6 +178,8 @@
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
@@ -241,6 +243,76 @@
 
 
   
+    <article id="post-Apache/19. Apache 用户认证" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Apache/19. Apache 用户认证/" class="article-date">
+  	<time datetime="2017-09-02T18:00:30.897Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Apache/19. Apache 用户认证/">
+        Apache 用户认证
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有时候，需要给一些特殊的访问设置一个用户认证机制，增加安全。为了使 WEB 服务器更安全，需要将一些特定用户才能访问的目录设置用户认证，例如：网站后台登陆地址 ，可以再设置一层用户认证。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># vim /usr/local/apache2/conf/extra/httpd-vhosts.conf</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在对应的虚拟主机配置中加入如下配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;Directory /data/www/admin.php&gt;</div><div class="line"> AllowOverride AuthConfig</div><div class="line"> AuthName <span class="string">"自定义的"</span></div><div class="line"> AuthType Basic</div><div class="line"> AuthUserFile /data/.htpasswd</div><div class="line"> require valid-user</div><div class="line"> &lt;/Directory&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：首先指定要对哪个目录进行验证， AuthName 自定义，AuthUserFile 指定用户密码文件在哪里。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># /usr/local/apache2/bin/htpasswd -cm /data/.htpasswd yanyi</span></div><div class="line">New password: </div><div class="line">Re-type new password: </div><div class="line">Adding password <span class="keyword">for</span> user yanyi</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这一步是要创建进行验证的用户，<strong>第一次要加个 -c 选项，目的就是为了创建 /data/.htpasswd 密码文件，回车后要输入要设定的密码就 ok 了。</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后重启 apache 服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># /usr/local/apache2/bin/apachectl -t</span></div><div class="line">Syntax OK</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;先检查配置是否正确</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># /usr/local/apache2/bin/apachectl graceful</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里 graceful 相当于 reload 配置。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Apache/2. Apache 的 httpd.conf 详解" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -250,6 +322,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -447,74 +521,6 @@
 
 
   
-    <article id="post-Apache/19. Apache 用户认证" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Apache/19. Apache 用户认证/" class="article-date">
-  	<time datetime="2017-09-02T18:00:30.897Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Apache/19. Apache 用户认证/">
-        Apache 用户认证
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有时候，需要给一些特殊的访问设置一个用户认证机制，增加安全。为了使 WEB 服务器更安全，需要将一些特定用户才能访问的目录设置用户认证，例如：网站后台登陆地址 ，可以再设置一层用户认证。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># vim /usr/local/apache2/conf/extra/httpd-vhosts.conf</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在对应的虚拟主机配置中加入如下配置：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;Directory /data/www/admin.php&gt;</div><div class="line"> AllowOverride AuthConfig</div><div class="line"> AuthName <span class="string">"自定义的"</span></div><div class="line"> AuthType Basic</div><div class="line"> AuthUserFile /data/.htpasswd</div><div class="line"> require valid-user</div><div class="line"> &lt;/Directory&gt;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：首先指定要对哪个目录进行验证， AuthName 自定义，AuthUserFile 指定用户密码文件在哪里。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># /usr/local/apache2/bin/htpasswd -cm /data/.htpasswd yanyi</span></div><div class="line">New password: </div><div class="line">Re-type new password: </div><div class="line">Adding password <span class="keyword">for</span> user yanyi</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这一步是要创建进行验证的用户，<strong>第一次要加个 -c 选项，目的就是为了创建 /data/.htpasswd 密码文件，回车后要输入要设定的密码就 ok 了。</strong></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后重启 apache 服务</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># /usr/local/apache2/bin/apachectl -t</span></div><div class="line">Syntax OK</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;先检查配置是否正确</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># /usr/local/apache2/bin/apachectl graceful</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里 graceful 相当于 reload 配置。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-Apache/18. LAMP安装 Discuz！" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -524,6 +530,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -611,6 +619,8 @@
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
@@ -675,6 +685,8 @@
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
@@ -736,73 +748,6 @@
 
 
   
-    <article id="post-Apache/14. apache的扩展模块安装" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Apache/14. apache的扩展模块安装/" class="article-date">
-  	<time datetime="2017-09-02T18:00:30.893Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Apache/14. apache的扩展模块安装/">
-        apache的扩展模块安装
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个用到了apache的扩展工具  apxs</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在使用这个功能之前，请先确认是否已经加载了 mod_so 模块，方法是：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/<span class="built_in">local</span>/apache2/bin/httpd -l</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在列出的内容中，如果有 mod_so 那么说明已经加载了该模块。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面，举个例子来演示一下，如何编译安装扩展模块，例如，我想增加  mod_status.so 这个模块</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/<span class="built_in">local</span>/apache2/bin/apxs -i -a -c mod_status.c</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;请注意，这里的mod_status.c 的路径一定要写对了，不然会报错，一般情况下，这个C文件在你的源码包下，比如：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/<span class="built_in">local</span>/src/httpd-2.0.59/modules/generators/mod_status.c</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编译的结果类似这样：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">/usr/<span class="built_in">local</span>/services/apache-2.0.59/build/libtool --silent --mode=compile gcc -prefer-pic -DAP_HAVE_DESIGNATED_INITIALIZER -DLINUX=2 -D_REENTRANT -D_GNU_SOURCE -g -O2 -pthread -I/usr/<span class="built_in">local</span>/services/apache-2.0.59/include -I/usr/<span class="built_in">local</span>/services/apache-2.0.59/include -I/usr/<span class="built_in">local</span>/services/apache-2.0.59/include -c -o /root/httpd-2.0.64/modules/generators/mod_status.lo /root/httpd-2.0.64/modules/generators/mod_status.c &amp;&amp; touch /root/httpd-2.0.64/modules/generators/mod_status.slo</div><div class="line">/usr/<span class="built_in">local</span>/services/apache-2.0.59/build/libtool --silent --mode=link gcc -o /root/httpd-2.0.64/modules/generators/mod_status.la -rpath /usr/<span class="built_in">local</span>/services/apache-2.0.59/modules -module -avoid-version /root/httpd-2.0.64/modules/generators/mod_status.lo</div><div class="line">/usr/<span class="built_in">local</span>/services/apache-2.0.59/build/instdso.sh SH_LIBTOOL=<span class="string">'/usr/local/services/apache-2.0.59/build/libtool'</span> /root/httpd-2.0.64/modules/generators/mod_status.la /usr/<span class="built_in">local</span>/services/apache-2.0.59/modules</div><div class="line">/usr/<span class="built_in">local</span>/services/apache-2.0.59/build/libtool --mode=install cp /root/httpd-2.0.64/modules/generators/mod_status.la /usr/<span class="built_in">local</span>/services/apache-2.0.59/modules/</div><div class="line">cp /root/httpd-2.0.64/modules/generators/.libs/mod_status.so /usr/<span class="built_in">local</span>/services/apache-2.0.59/modules/mod_status.so</div><div class="line">cp /root/httpd-2.0.64/modules/generators/.libs/mod_status.lai /usr/<span class="built_in">local</span>/services/apache-2.0.59/modules/mod_status.la</div><div class="line">cp /root/httpd-2.0.64/modules/generators/.libs/mod_status.a /usr/<span class="built_in">local</span>/services/apache-2.0.59/modules/mod_status.a</div><div class="line">ranlib /usr/<span class="built_in">local</span>/services/apache-2.0.59/modules/mod_status.a</div><div class="line">chmod 644 /usr/<span class="built_in">local</span>/services/apache-2.0.59/modules/mod_status.a</div><div class="line">PATH=<span class="string">"<span class="variable">$PATH</span>:/sbin"</span> ldconfig -n /usr/<span class="built_in">local</span>/services/apache-2.0.59/modules</div><div class="line">----------------------------------------------------------------------</div><div class="line">Libraries have been installed <span class="keyword">in</span>:</div><div class="line"> /usr/<span class="built_in">local</span>/services/apache-2.0.59/modules</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;完成后，请看提示 Libraries have been installed in:  模块就会安装到这里了。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-Apache/15. apache的两种工作模式详解" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -812,6 +757,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -907,6 +854,75 @@
 
 
   
+    <article id="post-Apache/14. apache的扩展模块安装" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Apache/14. apache的扩展模块安装/" class="article-date">
+  	<time datetime="2017-09-02T18:00:30.893Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Apache/14. apache的扩展模块安装/">
+        apache的扩展模块安装
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个用到了apache的扩展工具  apxs</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在使用这个功能之前，请先确认是否已经加载了 mod_so 模块，方法是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/<span class="built_in">local</span>/apache2/bin/httpd -l</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在列出的内容中，如果有 mod_so 那么说明已经加载了该模块。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面，举个例子来演示一下，如何编译安装扩展模块，例如，我想增加  mod_status.so 这个模块</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/<span class="built_in">local</span>/apache2/bin/apxs -i -a -c mod_status.c</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;请注意，这里的mod_status.c 的路径一定要写对了，不然会报错，一般情况下，这个C文件在你的源码包下，比如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/<span class="built_in">local</span>/src/httpd-2.0.59/modules/generators/mod_status.c</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编译的结果类似这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">/usr/<span class="built_in">local</span>/services/apache-2.0.59/build/libtool --silent --mode=compile gcc -prefer-pic -DAP_HAVE_DESIGNATED_INITIALIZER -DLINUX=2 -D_REENTRANT -D_GNU_SOURCE -g -O2 -pthread -I/usr/<span class="built_in">local</span>/services/apache-2.0.59/include -I/usr/<span class="built_in">local</span>/services/apache-2.0.59/include -I/usr/<span class="built_in">local</span>/services/apache-2.0.59/include -c -o /root/httpd-2.0.64/modules/generators/mod_status.lo /root/httpd-2.0.64/modules/generators/mod_status.c &amp;&amp; touch /root/httpd-2.0.64/modules/generators/mod_status.slo</div><div class="line">/usr/<span class="built_in">local</span>/services/apache-2.0.59/build/libtool --silent --mode=link gcc -o /root/httpd-2.0.64/modules/generators/mod_status.la -rpath /usr/<span class="built_in">local</span>/services/apache-2.0.59/modules -module -avoid-version /root/httpd-2.0.64/modules/generators/mod_status.lo</div><div class="line">/usr/<span class="built_in">local</span>/services/apache-2.0.59/build/instdso.sh SH_LIBTOOL=<span class="string">'/usr/local/services/apache-2.0.59/build/libtool'</span> /root/httpd-2.0.64/modules/generators/mod_status.la /usr/<span class="built_in">local</span>/services/apache-2.0.59/modules</div><div class="line">/usr/<span class="built_in">local</span>/services/apache-2.0.59/build/libtool --mode=install cp /root/httpd-2.0.64/modules/generators/mod_status.la /usr/<span class="built_in">local</span>/services/apache-2.0.59/modules/</div><div class="line">cp /root/httpd-2.0.64/modules/generators/.libs/mod_status.so /usr/<span class="built_in">local</span>/services/apache-2.0.59/modules/mod_status.so</div><div class="line">cp /root/httpd-2.0.64/modules/generators/.libs/mod_status.lai /usr/<span class="built_in">local</span>/services/apache-2.0.59/modules/mod_status.la</div><div class="line">cp /root/httpd-2.0.64/modules/generators/.libs/mod_status.a /usr/<span class="built_in">local</span>/services/apache-2.0.59/modules/mod_status.a</div><div class="line">ranlib /usr/<span class="built_in">local</span>/services/apache-2.0.59/modules/mod_status.a</div><div class="line">chmod 644 /usr/<span class="built_in">local</span>/services/apache-2.0.59/modules/mod_status.a</div><div class="line">PATH=<span class="string">"<span class="variable">$PATH</span>:/sbin"</span> ldconfig -n /usr/<span class="built_in">local</span>/services/apache-2.0.59/modules</div><div class="line">----------------------------------------------------------------------</div><div class="line">Libraries have been installed <span class="keyword">in</span>:</div><div class="line"> /usr/<span class="built_in">local</span>/services/apache-2.0.59/modules</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;完成后，请看提示 Libraries have been installed in:  模块就会安装到这里了。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Apache/13. apache的server status 功能" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -916,6 +932,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -985,6 +1003,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -1088,11 +1108,13 @@
 </footer>
     </div>
     
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
 
 <script>
 	var yiliaConfig = {
-		fancybox: ,
-		mathjax: ,
+		fancybox: true,
+		mathjax: true,
 		animate: true,
 		isHome: true,
 		isPost: false,
@@ -1104,6 +1126,26 @@
 </script>
 <script src="/js/main.js"></script>
 
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
 
 
   </div>

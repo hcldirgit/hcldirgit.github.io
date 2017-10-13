@@ -168,23 +168,25 @@
 </nav>
       <div class="body-wrap">
   
-    <article id="post-1. Linux 基础/66. Linux日志文件总管-logrotate" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-1. Linux 基础/36. Linux解压大于4G的压缩包" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/09/03/1. Linux 基础/66. Linux日志文件总管-logrotate/" class="article-date">
+      <a href="/2017/09/03/1. Linux 基础/36. Linux解压大于4G的压缩包/" class="article-date">
   	<time datetime="2017-09-02T17:55:11.337Z" itemprop="datePublished">2017-09-03</time>
 </a>
     </div>
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/1. Linux 基础/66. Linux日志文件总管-logrotate/">
-        Linux日志总管-logrotate
+      <a class="article-title" href="/2017/09/03/1. Linux 基础/36. Linux解压大于4G的压缩包/">
+        Linux解压大于4G的压缩包
         
       </a>
     </h1>
@@ -195,53 +197,12 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;日志文件包含了关于系统中发生的事件的有用信息，在排障过程中或者系统性能分析时经常被用到。对于忙碌的服务器，日志文件大小会增长极快，服务器会很快消耗磁盘空间，这成了个问题。除此之外，处理一个单个的庞大日志文件也常常是件十分棘手的事。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;logrotate是个十分有用的工具，它可以自动对日志进行截断（或轮循）、压缩以及删除旧的日志文件。例如，可以设置logrotate，让/var/log/foo日志文件每30天轮循，并删除超过6个月的日志。配置完后，logrotate的运作完全自动化，不必进行任何进一步的人为干预。另外，旧日志也可以通过电子邮件发送。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;主流Linux发行版上都默认安装有logrotate包，如果出于某种原因，logrotate没有出现在里头，可以使用apt-get或yum命令来安装。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在Debian或Ubuntu上：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># apt-get install logrotate cron</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在Fedora，CentOS或RHEL上：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># yum install logrotate crontabs</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;logrotate的配置文件是/etc/logrotate.conf，通常不需要对它进行修改。日志文件的轮循设置在独立的配置文件中，它（们）放在/etc/logrotate.d/目录下。</p>
-<h2 id="样例一"><a href="#样例一" class="headerlink" title="样例一"></a>样例一</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在第一个样例中，我们将创建一个10MB的日志文件/var/log/log-file。我们将展示怎样使用logrotate来管理该日志文件。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从创建一个日志文件开始，然后在其中填入一个10MB的随机比特流数据。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># touch /var/log/log-file</span></div><div class="line"><span class="comment"># head -c 10M &lt; /dev/urandom &gt; /var/log/log-file</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;由于现在日志文件已经准备好，将配置logrotate来轮循该日志文件。让我们为该文件创建一个配置文件。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vim /etc/logrotate.d/log-file</span></div><div class="line"></div><div class="line">/var/<span class="built_in">log</span>/<span class="built_in">log</span>-file &#123;</div><div class="line"> monthly</div><div class="line"> rotate 5</div><div class="line"> compress</div><div class="line"> delaycompress</div><div class="line"> missingok</div><div class="line"> notifempty</div><div class="line"> create 644 root root</div><div class="line"> postrotate</div><div class="line"> /usr/bin/killall -HUP rsyslogd</div><div class="line"> endscript</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <strong>说明</strong></p>
-<ul>
-<li><strong>monthly</strong> : 日志文件将按月轮循。其它可用值为‘daily’，‘weekly’或者‘yearly’。</li>
-<li><strong>rotate 5</strong> : 一次将存储5个归档日志。对于第六个归档，时间最久的归档将被删除。</li>
-<li><strong>compress</strong> : 在轮循任务完成后，已轮循的归档将使用gzip进行压缩。</li>
-<li><strong>delaycompress</strong> : 总是与compress选项一起用，delaycompress选项指示logrotate不要将最近的归档压缩，压缩将在下一次轮循周期进行。这在你或任何软件仍然需要读取最新归档时很有用。</li>
-<li><strong>missingok</strong> : 在日志轮循期间，任何错误将被忽略，例如“文件无法找到”之类的错误。</li>
-<li><strong>notifempty</strong> : 如果日志文件为空，轮循不会进行。</li>
-<li><strong>create 644 root root</strong> : 以指定的权限创建全新的日志文件，同时logrotate也会重命名原始日志文件。</li>
-<li><strong>postrotate/endscript</strong> : 在所有其它指令完成后，postrotate和endscript里面指定的命令将被执行。在这种情况下，rsyslogd 进程将立即再次读取其配置并继续运行。</li>
-</ul>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上面的模板是通用的，而配置参数则根据需求进行调整，不是所有的参数都是必要的。</p>
-<h2 id="样例二"><a href="#样例二" class="headerlink" title="样例二"></a>样例二</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在本例中，只想要轮循一个日志文件，然而日志文件大小可以增长到50MB。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vim /etc/logrotate.d/log-file</span></div><div class="line"></div><div class="line">/var/<span class="built_in">log</span>/<span class="built_in">log</span>-file &#123;</div><div class="line"> size=50M</div><div class="line"> rotate 5</div><div class="line"> create 644 root root</div><div class="line"> postrotate</div><div class="line"> /usr/bin/killall -HUP rsyslogd</div><div class="line"> endscript</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
-<h2 id="样例三"><a href="#样例三" class="headerlink" title="样例三"></a>样例三</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;想要让旧日志文件以创建日期命名，这可以通过添加dateext常熟实现。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vim /etc/logrotate.d/log-file</span></div><div class="line"></div><div class="line">/var/<span class="built_in">log</span>/<span class="built_in">log</span>-file &#123;</div><div class="line"> monthly</div><div class="line"> rotate 5</div><div class="line"> dateext</div><div class="line"> create 644 root root</div><div class="line"> postrotate</div><div class="line"> /usr/bin/killall -HUP rsyslogd</div><div class="line"> endscript</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这将让归档文件在它们的文件名中包含日期信息。</p>
-<h2 id="排障"><a href="#排障" class="headerlink" title="排障"></a>排障</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里提供了一些logrotate设置的排障提示。</p>
-<h3 id="1-手动运行logrotate"><a href="#1-手动运行logrotate" class="headerlink" title="1. 手动运行logrotate"></a>1. 手动运行logrotate</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <strong>logrotate</strong> 可以在任何时候从命令行手动调用。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要调用为/etc/lograte.d/下配置的所有日志调用 <strong>logrotate</strong> ：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># logrotate /etc/logrotate.conf</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要为某个特定的配置调用logrotate：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># logrotate /etc/logrotate.d/log-file</span></div></pre></td></tr></table></figure>
-<h3 id="2-演练"><a href="#2-演练" class="headerlink" title="2. 演练"></a>2. 演练</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;排障过程中的最佳选择是使用‘-d’选项以预演方式运行logrotate。要进行验证，不用实际轮循任何日志文件，可以模拟演练日志轮循并显示其输出。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># logrotate -d /etc/logrotate.d/log-file</span></div></pre></td></tr></table></figure>
-<p><img src="https://github.com/hcldirgit/image/blob/master/linux%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E6%80%BB%E7%AE%A1-logrotate/01.jpeg?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;正如从上面的输出结果可以看到的，logrotate判断该轮循是不必要的。如果文件的时间小于一天，这就会发生了。</p>
-<h3 id="3-强制轮循"><a href="#3-强制轮循" class="headerlink" title="3. 强制轮循"></a>3. 强制轮循</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;即使轮循条件没有满足，我们也可以通过使用‘-f’选项来强制logrotate轮循日志文件，‘-v’参数提供了详细的输出。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># logrotate -vf /etc/logrotate.d/log-file</span></div><div class="line"></div><div class="line">reading config file /etc/logrotate.d/<span class="built_in">log</span>-file</div><div class="line"> reading config info <span class="keyword">for</span> /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file</div><div class="line">  </div><div class="line"> Handling 1 logs</div><div class="line">  </div><div class="line"> rotating pattern: /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file forced from <span class="built_in">command</span> line (5 rotations)</div><div class="line"> empty <span class="built_in">log</span> files are rotated, old logs are removed</div><div class="line"> considering <span class="built_in">log</span> /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file</div><div class="line"> <span class="built_in">log</span> needs rotating</div><div class="line"> rotating <span class="built_in">log</span> /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file, <span class="built_in">log</span>-&gt;rotateCount is 5</div><div class="line"> dateext suffix <span class="string">'-20140916'</span></div><div class="line"> glob pattern <span class="string">'-[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'</span></div><div class="line"> renaming /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file.5.gz to /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file.6.gz (rotatecount 5, logstart 1, i 5),</div><div class="line"> old <span class="built_in">log</span> /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file.5.gz does not exist</div><div class="line"> renaming /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file.4.gz to /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file.5.gz (rotatecount 5, logstart 1, i 4),</div><div class="line"> old <span class="built_in">log</span> /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file.4.gz does not exist</div><div class="line"> . . .</div><div class="line"> renaming /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file.0.gz to /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file.1.gz (rotatecount 5, logstart 1, i 0),</div><div class="line"> old <span class="built_in">log</span> /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file.0.gz does not exist</div><div class="line"> <span class="built_in">log</span> /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file.6.gz doesn<span class="string">'t exist -- won'</span>t try to dispose of it</div><div class="line"> renaming /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file to /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file.1</div><div class="line"> creating new /var/<span class="built_in">log</span>/<span class="built_in">log</span>-file mode = 0644 uid = 0 gid = 0</div><div class="line"> running postrotate script</div><div class="line"> compressing <span class="built_in">log</span> with: /bin/gzip</div></pre></td></tr></table></figure>
-<h3 id="4-Logrotate的记录日志"><a href="#4-Logrotate的记录日志" class="headerlink" title="4. Logrotate的记录日志"></a>4. Logrotate的记录日志</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;logrotate自身的日志通常存放于/var/lib/logrotate/status目录。如果处于排障目的，我们想要logrotate记录到任何指定的文件，我们可以指定像下面这样从命令行指定。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># logrotate -vf –s /var/log/logrotate-status /etc/logrotate.d/log-file</span></div></pre></td></tr></table></figure>
-<h3 id="5-Logrotate定时任务"><a href="#5-Logrotate定时任务" class="headerlink" title="5. Logrotate定时任务"></a>5. Logrotate定时任务</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;logrotate需要的cron任务应该在安装时就自动创建了，我把cron文件的内容贴出来，以供大家参考。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># cat /etc/cron.daily/logrotate</span></div><div class="line"></div><div class="line"><span class="meta">#!/bin/sh</span></div><div class="line"> </div><div class="line"> <span class="comment"># Clean non existent log file entries from status file</span></div><div class="line"> <span class="built_in">cd</span> /var/lib/logrotate</div><div class="line"> <span class="built_in">test</span> -e status || touch status</div><div class="line"> head -1 status &gt; status.clean</div><div class="line"> sed <span class="string">'s/"//g'</span> status | <span class="keyword">while</span> <span class="built_in">read</span> logfile date</div><div class="line"> <span class="keyword">do</span></div><div class="line"> [ -e <span class="string">"<span class="variable">$logfile</span>"</span> ] &amp;&amp; <span class="built_in">echo</span> <span class="string">"\"<span class="variable">$logfile</span>\" <span class="variable">$date</span>"</span></div><div class="line"> <span class="keyword">done</span> &gt;&gt; status.clean</div><div class="line"> mv status.clean status</div><div class="line">  </div><div class="line"> <span class="built_in">test</span> -x /usr/sbin/logrotate || <span class="built_in">exit</span> 0</div><div class="line"> /usr/sbin/logrotate /etc/logrotate.conf</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;小结一下，logrotate工具对于防止因庞大的日志文件而耗尽存储空间是十分有用的。配置完毕后，进程是全自动的，可以长时间在不需要人为干预下运行。本教程重点关注几个使用logrotate的几个基本样例，你也可以定制它以满足你的需求。</p>
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Linux下不支持解压大于4G的zip压缩包。解决办法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">wget -c http://packages.sw.be/p7zip/p7zip-9.13-1.el5.rf.i386.rpm</div><div class="line">wget -c http://packages.sw.be/p7zip/p7zip-plugins-9.13-1.el5.rf.i386.rpm</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下载完成后安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">rpm -ivh p7zip-9.13-1.el5.rf.i386.rpm</div><div class="line">rpm -ivh p7zip-plugins-9.13-1.el5.rf.i386.rpm</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解压命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">7z x 123.zip</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -280,6 +241,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -346,6 +309,8 @@
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
@@ -407,6 +372,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -478,6 +445,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -558,6 +527,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -647,6 +618,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -805,6 +778,8 @@
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
@@ -859,71 +834,6 @@
 
 
   
-    <article id="post-1. Linux 基础/21. Linux 系统下查看raid信息，以及磁盘信息" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/1. Linux 基础/21. Linux 系统下查看raid信息，以及磁盘信息/" class="article-date">
-  	<time datetime="2017-09-02T17:55:11.329Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/1. Linux 基础/21. Linux 系统下查看raid信息，以及磁盘信息/">
-        Linux 系统下查看raid信息，以及磁盘信息
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有时想知道服务器上有几块磁盘，如果没有做raid，则可以简单使用fdisk -l  就可以看到。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;但是做了raid呢，这样就看不出来了。那么如何查看服务器上做了raid？</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;软件raid：只能通过Linux系统本身来查看<br>　<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat /proc/mdstat</div></pre></td></tr></table></figure></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以看到raid级别，状态等信息。<br>　<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;硬件raid： 最佳的办法是通过已安装的raid厂商的管理工具来查看，有cmdline，也有图形界面。如Adaptec公司的硬件卡就可以通过下面的命令进行查看：<br>　<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># /usr/dpt/raidutil -L all</span></div></pre></td></tr></table></figure></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;可以看到非常详细的信息。<br>　<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当然更多情况是没有安装相应的管理工具，只能依靠Linux本身的话一般我知道的是两种方式：<br>　<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># dmesg |grep -i raid</span></div><div class="line">　</div><div class="line"><span class="comment"># cat /proc/scsi/scsi</span></div></pre></td></tr></table></figure></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;显示的信息差不多，raid的厂商，型号，级别，但无法查看各块硬盘的信息。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如下信息作为案例， 命令为  </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># fdisk -l </span></div><div class="line">Disk /dev/sda: 145.9 GB, 145999527936 bytes</div><div class="line">255 heads, 63 sectors/track, 17750 cylinders</div><div class="line">Units = cylinders of 16065 * 512 = 8225280 bytes</div><div class="line"></div><div class="line">   Device Boot      Start         End      Blocks   Id  System</div><div class="line">/dev/sda1   *           1          13      104391   83  Linux</div><div class="line">/dev/sda2              14       17750   142472452+  8e  Linux LVM</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># cat /proc/scsi/scsi</span></div><div class="line"></div><div class="line">Attached devices:</div><div class="line">Host: scsi0 Channel: 00 Id: 00 Lun: 00</div><div class="line">  Vendor: SEAGATE  Model:  ST3146356SS      Rev: HS09</div><div class="line">  Type:   Direct-Access                    ANSI SCSI revision: 05</div><div class="line">Host: scsi0 Channel: 00 Id: 01 Lun: 00</div><div class="line">  Vendor: SEAGATE  Model: ST3146356SS      Rev: HS09</div><div class="line">  Type:   Direct-Access                    ANSI SCSI revision: 05</div><div class="line">Host: scsi0 Channel: 01 Id: 00 Lun: 00</div><div class="line">  Vendor: Dell     Model: VIRTUAL DISK     Rev: 1028</div><div class="line">  Type:   Direct-Access                    ANSI SCSI revision: 05</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;通过以上信息可以看出，该服务器有两块磁盘。品牌是希捷的，磁盘代号为 ST3146356SS，如果你熟悉细节磁盘的代号命名规则，你会轻易判定该磁盘大小为146G 。再根据fdisk 得出的结果可以判定，该服务器是拿两块146G的硬盘做的raid1.</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-1. Linux 基础/63. rc.local自启动学习" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -933,6 +843,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -1088,6 +1000,73 @@
 
 
   
+    <article id="post-1. Linux 基础/21. Linux 系统下查看raid信息，以及磁盘信息" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/1. Linux 基础/21. Linux 系统下查看raid信息，以及磁盘信息/" class="article-date">
+  	<time datetime="2017-09-02T17:55:11.329Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/1. Linux 基础/21. Linux 系统下查看raid信息，以及磁盘信息/">
+        Linux 系统下查看raid信息，以及磁盘信息
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有时想知道服务器上有几块磁盘，如果没有做raid，则可以简单使用fdisk -l  就可以看到。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;但是做了raid呢，这样就看不出来了。那么如何查看服务器上做了raid？</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;软件raid：只能通过Linux系统本身来查看<br>　<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat /proc/mdstat</div></pre></td></tr></table></figure></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以看到raid级别，状态等信息。<br>　<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;硬件raid： 最佳的办法是通过已安装的raid厂商的管理工具来查看，有cmdline，也有图形界面。如Adaptec公司的硬件卡就可以通过下面的命令进行查看：<br>　<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># /usr/dpt/raidutil -L all</span></div></pre></td></tr></table></figure></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;可以看到非常详细的信息。<br>　<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当然更多情况是没有安装相应的管理工具，只能依靠Linux本身的话一般我知道的是两种方式：<br>　<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># dmesg |grep -i raid</span></div><div class="line">　</div><div class="line"><span class="comment"># cat /proc/scsi/scsi</span></div></pre></td></tr></table></figure></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;显示的信息差不多，raid的厂商，型号，级别，但无法查看各块硬盘的信息。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如下信息作为案例， 命令为  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># fdisk -l </span></div><div class="line">Disk /dev/sda: 145.9 GB, 145999527936 bytes</div><div class="line">255 heads, 63 sectors/track, 17750 cylinders</div><div class="line">Units = cylinders of 16065 * 512 = 8225280 bytes</div><div class="line"></div><div class="line">   Device Boot      Start         End      Blocks   Id  System</div><div class="line">/dev/sda1   *           1          13      104391   83  Linux</div><div class="line">/dev/sda2              14       17750   142472452+  8e  Linux LVM</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># cat /proc/scsi/scsi</span></div><div class="line"></div><div class="line">Attached devices:</div><div class="line">Host: scsi0 Channel: 00 Id: 00 Lun: 00</div><div class="line">  Vendor: SEAGATE  Model:  ST3146356SS      Rev: HS09</div><div class="line">  Type:   Direct-Access                    ANSI SCSI revision: 05</div><div class="line">Host: scsi0 Channel: 00 Id: 01 Lun: 00</div><div class="line">  Vendor: SEAGATE  Model: ST3146356SS      Rev: HS09</div><div class="line">  Type:   Direct-Access                    ANSI SCSI revision: 05</div><div class="line">Host: scsi0 Channel: 01 Id: 00 Lun: 00</div><div class="line">  Vendor: Dell     Model: VIRTUAL DISK     Rev: 1028</div><div class="line">  Type:   Direct-Access                    ANSI SCSI revision: 05</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;通过以上信息可以看出，该服务器有两块磁盘。品牌是希捷的，磁盘代号为 ST3146356SS，如果你熟悉细节磁盘的代号命名规则，你会轻易判定该磁盘大小为146G 。再根据fdisk 得出的结果可以判定，该服务器是拿两块146G的硬盘做的raid1.</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/51/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/50/">50</a><a class="page-number" href="/page/51/">51</a><span class="page-number current">52</span><a class="page-number" href="/page/53/">53</a><a class="page-number" href="/page/54/">54</a><span class="space">&hellip;</span><a class="page-number" href="/page/63/">63</a><a class="extend next" rel="next" href="/page/53/">Next &raquo;</a>
@@ -1108,11 +1087,13 @@
 </footer>
     </div>
     
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
 
 <script>
 	var yiliaConfig = {
-		fancybox: ,
-		mathjax: ,
+		fancybox: true,
+		mathjax: true,
 		animate: true,
 		isHome: true,
 		isPost: false,
@@ -1124,6 +1105,26 @@
 </script>
 <script src="/js/main.js"></script>
 
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
 
 
   </div>

@@ -178,6 +178,8 @@
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
@@ -259,6 +261,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -363,6 +367,8 @@
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
@@ -419,75 +425,6 @@
 
 
   
-    <article id="post-Nginx/14. nginx用户认证" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Nginx/14. nginx用户认证/" class="article-date">
-  	<time datetime="2017-09-02T18:06:42.712Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Nginx/14. nginx用户认证/">
-        nginx用户认证
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;nginx 如何做用户认证，首先需要安装 apache ，也可以使用 yum install -y httpd 安装。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lnmp ~]<span class="comment"># yum install -y httpd</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后生成密码文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@lnmp ~]<span class="comment"># htpasswd -c -m /usr/local/nginx/conf/.htpasswd yanyi</span></div><div class="line">New password: </div><div class="line">Re-type new password: </div><div class="line">Adding password <span class="keyword">for</span> user yanyi</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样就添加了 yanyi 用户，第一次添加需要加 -c 参数，第二次添加时不需要 -c 参数。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在 nginx 虚拟主机配置文件中添加</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">location ~ .*admin\.php$ &#123;</div><div class="line">    auth_basic <span class="string">"yanyi auth"</span>;</div><div class="line">    auth_basic_user_file /usr/<span class="built_in">local</span>/nginx/conf/.htpasswd;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样就会把请求 admin 访问给限制了，只有输入用户名和密码才可以继续访问。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这是会出现无法解析 PHP 的情况，把 php 的相关文件复制上来即可</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/nginx%E7%94%A8%E6%88%B7%E8%AE%A4%E8%AF%81/01.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用 curl 命令验证</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lnmp www]<span class="comment"># curl -x127.0.0.1:80 -uyanyi:123456 123.com/admin.php</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;参数 -u 后面跟用户名和密码</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LNMP/">LNMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-Nginx/13. LNMP安装 Discuz！" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -497,6 +434,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -572,6 +511,77 @@
 
 
   
+    <article id="post-Nginx/14. nginx用户认证" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Nginx/14. nginx用户认证/" class="article-date">
+  	<time datetime="2017-09-02T18:06:42.712Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Nginx/14. nginx用户认证/">
+        nginx用户认证
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;nginx 如何做用户认证，首先需要安装 apache ，也可以使用 yum install -y httpd 安装。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lnmp ~]<span class="comment"># yum install -y httpd</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后生成密码文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@lnmp ~]<span class="comment"># htpasswd -c -m /usr/local/nginx/conf/.htpasswd yanyi</span></div><div class="line">New password: </div><div class="line">Re-type new password: </div><div class="line">Adding password <span class="keyword">for</span> user yanyi</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样就添加了 yanyi 用户，第一次添加需要加 -c 参数，第二次添加时不需要 -c 参数。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在 nginx 虚拟主机配置文件中添加</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">location ~ .*admin\.php$ &#123;</div><div class="line">    auth_basic <span class="string">"yanyi auth"</span>;</div><div class="line">    auth_basic_user_file /usr/<span class="built_in">local</span>/nginx/conf/.htpasswd;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样就会把请求 admin 访问给限制了，只有输入用户名和密码才可以继续访问。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这是会出现无法解析 PHP 的情况，把 php 的相关文件复制上来即可</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/nginx%E7%94%A8%E6%88%B7%E8%AE%A4%E8%AF%81/01.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用 curl 命令验证</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lnmp www]<span class="comment"># curl -x127.0.0.1:80 -uyanyi:123456 123.com/admin.php</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;参数 -u 后面跟用户名和密码</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LNMP/">LNMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Nginx/12. LNMP常见的502错误" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -581,6 +591,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -677,6 +689,8 @@
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
@@ -747,6 +761,8 @@
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
@@ -803,6 +819,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -895,6 +913,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -1178,11 +1198,13 @@
 </footer>
     </div>
     
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
 
 <script>
 	var yiliaConfig = {
-		fancybox: ,
-		mathjax: ,
+		fancybox: true,
+		mathjax: true,
 		animate: true,
 		isHome: true,
 		isPost: false,
@@ -1194,6 +1216,26 @@
 </script>
 <script src="/js/main.js"></script>
 
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
 
 
   </div>

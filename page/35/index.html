@@ -178,6 +178,8 @@
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
@@ -252,6 +254,8 @@
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
@@ -315,6 +319,8 @@
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
@@ -377,6 +383,8 @@
   
   <div class="article-inner">
     
+      <input type="hidden" class="isFancy" />
+    
     
       <header class="article-header">
         
@@ -435,6 +443,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -497,6 +507,75 @@
 
 
   
+    <article id="post-Apache/51. apache限制某个目录下的php文件没有执行权限" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Apache/51. apache限制某个目录下的php文件没有执行权限/" class="article-date">
+  	<time datetime="2017-09-02T18:00:30.929Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Apache/51. apache限制某个目录下的php文件没有执行权限/">
+        apache限制某个目录下的php文件没有执行权限
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为了安全期间，有时我们需要限制网站下的某些目录对于php脚本不能执行。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有两种方法可以参考：</p>
+<ol>
+<li>使用.htaccess 文件限制</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在要限制php执行的目录下，创建.htaccess文件，加入内容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php_flag engine off</div></pre></td></tr></table></figure>
+<ol>
+<li>使用apache的配置文件httpd.conf<br>在相关的虚拟主机段，加入 </li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;Directory /data/www/data/&gt;</div><div class="line">  php_admin_flag engine off </div><div class="line">  &lt;filesmatch <span class="string">"(.*)php"</span>&gt;</div><div class="line">    Order deny,allow</div><div class="line">    Deny from all</div><div class="line">    Allow from 127.0.0.1 </div><div class="line">  &lt;/filesmatch&gt;</div><div class="line">&lt;/Directory&gt;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Apache/52. http协议的状态码—400,401,403,404,500,502,503,301,302等常见网页错误代码" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -506,6 +585,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -764,73 +845,6 @@
 
 
   
-    <article id="post-Apache/51. apache限制某个目录下的php文件没有执行权限" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Apache/51. apache限制某个目录下的php文件没有执行权限/" class="article-date">
-  	<time datetime="2017-09-02T18:00:30.929Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Apache/51. apache限制某个目录下的php文件没有执行权限/">
-        apache限制某个目录下的php文件没有执行权限
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为了安全期间，有时我们需要限制网站下的某些目录对于php脚本不能执行。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有两种方法可以参考：</p>
-<ol>
-<li>使用.htaccess 文件限制</li>
-</ol>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在要限制php执行的目录下，创建.htaccess文件，加入内容</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php_flag engine off</div></pre></td></tr></table></figure>
-<ol>
-<li>使用apache的配置文件httpd.conf<br>在相关的虚拟主机段，加入 </li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;Directory /data/www/data/&gt;</div><div class="line">  php_admin_flag engine off </div><div class="line">  &lt;filesmatch <span class="string">"(.*)php"</span>&gt;</div><div class="line">    Order deny,allow</div><div class="line">    Deny from all</div><div class="line">    Allow from 127.0.0.1 </div><div class="line">  &lt;/filesmatch&gt;</div><div class="line">&lt;/Directory&gt;</div></pre></td></tr></table></figure>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-Apache/50. apache 限制指定user_agent" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -840,6 +854,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -893,63 +909,6 @@
 
 
   
-    <article id="post-Apache/5. apache编译安装参数说明" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Apache/5. apache编译安装参数说明/" class="article-date">
-  	<time datetime="2017-09-02T18:00:30.927Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Apache/5. apache编译安装参数说明/">
-        apache编译安装参数说明
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;apache编译安装参数说明</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">./configure <span class="comment">#配置源代码树</span></div><div class="line">--prefix=/usr/<span class="built_in">local</span>/apache2 <span class="comment">#体系无关文件的顶级安装目录prefix ，也就apache的安装目录。如果没有指定PREFIX，默认会装到/usr/local/apache2。</span></div><div class="line">--<span class="built_in">enable</span>-module=so <span class="comment">#打开 so 模块，so 模块是用来提 dso 支持的 apache 核心模块</span></div><div class="line">--<span class="built_in">enable</span>-deflate=shared <span class="comment">#支持网页压缩</span></div><div class="line">--<span class="built_in">enable</span>-expires=shared <span class="comment">#支持 http 控制</span></div><div class="line">--<span class="built_in">enable</span>-rewrite=shared <span class="comment">#支持 url 重写</span></div><div class="line">--<span class="built_in">enable</span>-cache <span class="comment">#支持缓存</span></div><div class="line">--<span class="built_in">enable</span>-file-cache <span class="comment">#支持文件缓存</span></div><div class="line">--<span class="built_in">enable</span>-mem-cache <span class="comment">#支持记忆缓存</span></div><div class="line">--<span class="built_in">enable</span>-disk-cache <span class="comment">#支持磁盘缓存</span></div><div class="line">--<span class="built_in">enable</span>-static-support <span class="comment">#支持静态连接(默认为动态连接)</span></div><div class="line">--<span class="built_in">enable</span>-static-htpasswd <span class="comment">#使用静态连接编译 htpasswd - 管理用于基本认证的用户文件</span></div><div class="line">--<span class="built_in">enable</span>-static-htdigest <span class="comment">#使用静态连接编译 htdigest - 管理用于摘要认证的用户文件 </span></div><div class="line">--<span class="built_in">enable</span>-static-rotatelogs <span class="comment">#使用静态连接编译 rotatelogs - 滚动 apache 日志的管道日志程序 </span></div><div class="line">--<span class="built_in">enable</span>-static-logresolve <span class="comment">#使用静态连接编译 logresolve - 解析 apache 日志中的ip地址为主机名</span></div><div class="line">--<span class="built_in">enable</span>-static-htdbm <span class="comment">#使用静态连接编译 htdbm - 操作 dbm 密码数据库 </span></div><div class="line">--<span class="built_in">enable</span>-static-ab <span class="comment">#使用静态连接编译 ab - apache http 服务器性能测试工具</span></div><div class="line">--<span class="built_in">enable</span>-static-checkgid <span class="comment">#使用静态连接编译 checkgid </span></div><div class="line">--<span class="built_in">disable</span>-cgid <span class="comment">#禁止用一个外部 cgi 守护进程执行cgi脚本</span></div><div class="line">--<span class="built_in">disable</span>-cgi <span class="comment">#禁止编译 cgi 版本的 PHP</span></div><div class="line">--<span class="built_in">disable</span>-userdir <span class="comment">#禁止用户从自己的主目录中提供页面</span></div><div class="line">--with-mpm=worker <span class="comment"># 让apache以worker方式运行</span></div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-Apache/49. apache 禁止解析 php" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -959,6 +918,8 @@
     </div>
   
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -1009,6 +970,65 @@
 
 
   
+    <article id="post-Apache/5. apache编译安装参数说明" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Apache/5. apache编译安装参数说明/" class="article-date">
+  	<time datetime="2017-09-02T18:00:30.927Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Apache/5. apache编译安装参数说明/">
+        apache编译安装参数说明
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;apache编译安装参数说明</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">./configure <span class="comment">#配置源代码树</span></div><div class="line">--prefix=/usr/<span class="built_in">local</span>/apache2 <span class="comment">#体系无关文件的顶级安装目录prefix ，也就apache的安装目录。如果没有指定PREFIX，默认会装到/usr/local/apache2。</span></div><div class="line">--<span class="built_in">enable</span>-module=so <span class="comment">#打开 so 模块，so 模块是用来提 dso 支持的 apache 核心模块</span></div><div class="line">--<span class="built_in">enable</span>-deflate=shared <span class="comment">#支持网页压缩</span></div><div class="line">--<span class="built_in">enable</span>-expires=shared <span class="comment">#支持 http 控制</span></div><div class="line">--<span class="built_in">enable</span>-rewrite=shared <span class="comment">#支持 url 重写</span></div><div class="line">--<span class="built_in">enable</span>-cache <span class="comment">#支持缓存</span></div><div class="line">--<span class="built_in">enable</span>-file-cache <span class="comment">#支持文件缓存</span></div><div class="line">--<span class="built_in">enable</span>-mem-cache <span class="comment">#支持记忆缓存</span></div><div class="line">--<span class="built_in">enable</span>-disk-cache <span class="comment">#支持磁盘缓存</span></div><div class="line">--<span class="built_in">enable</span>-static-support <span class="comment">#支持静态连接(默认为动态连接)</span></div><div class="line">--<span class="built_in">enable</span>-static-htpasswd <span class="comment">#使用静态连接编译 htpasswd - 管理用于基本认证的用户文件</span></div><div class="line">--<span class="built_in">enable</span>-static-htdigest <span class="comment">#使用静态连接编译 htdigest - 管理用于摘要认证的用户文件 </span></div><div class="line">--<span class="built_in">enable</span>-static-rotatelogs <span class="comment">#使用静态连接编译 rotatelogs - 滚动 apache 日志的管道日志程序 </span></div><div class="line">--<span class="built_in">enable</span>-static-logresolve <span class="comment">#使用静态连接编译 logresolve - 解析 apache 日志中的ip地址为主机名</span></div><div class="line">--<span class="built_in">enable</span>-static-htdbm <span class="comment">#使用静态连接编译 htdbm - 操作 dbm 密码数据库 </span></div><div class="line">--<span class="built_in">enable</span>-static-ab <span class="comment">#使用静态连接编译 ab - apache http 服务器性能测试工具</span></div><div class="line">--<span class="built_in">enable</span>-static-checkgid <span class="comment">#使用静态连接编译 checkgid </span></div><div class="line">--<span class="built_in">disable</span>-cgid <span class="comment">#禁止用一个外部 cgi 守护进程执行cgi脚本</span></div><div class="line">--<span class="built_in">disable</span>-cgi <span class="comment">#禁止编译 cgi 版本的 PHP</span></div><div class="line">--<span class="built_in">disable</span>-userdir <span class="comment">#禁止用户从自己的主目录中提供页面</span></div><div class="line">--with-mpm=worker <span class="comment"># 让apache以worker方式运行</span></div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/34/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/33/">33</a><a class="page-number" href="/page/34/">34</a><span class="page-number current">35</span><a class="page-number" href="/page/36/">36</a><a class="page-number" href="/page/37/">37</a><span class="space">&hellip;</span><a class="page-number" href="/page/63/">63</a><a class="extend next" rel="next" href="/page/36/">Next &raquo;</a>
@@ -1029,11 +1049,13 @@
 </footer>
     </div>
     
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
 
 <script>
 	var yiliaConfig = {
-		fancybox: ,
-		mathjax: ,
+		fancybox: true,
+		mathjax: true,
 		animate: true,
 		isHome: true,
 		isPost: false,
@@ -1045,6 +1067,26 @@
 </script>
 <script src="/js/main.js"></script>
 
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
 
 
   </div>
