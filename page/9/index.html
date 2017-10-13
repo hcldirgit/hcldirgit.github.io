@@ -106,6 +106,8 @@
 				        
 							<li><a href="/archives">所有文章</a></li>
 				        
+							<li><a href="/tags">静心阅读</a></li>
+				        
 						</ul>
 					</nav>
 					<nav class="header-nav">
@@ -155,6 +157,8 @@
 		        
 					<li><a href="/archives">所有文章</a></li>
 		        
+					<li><a href="/tags">静心阅读</a></li>
+		        
 		        <div class="clearfix"></div>
 				</ul>
 			</nav>
@@ -168,10 +172,10 @@
 </nav>
       <div class="body-wrap">
   
-    <article id="post-Tomcat/3. tomcat配置和优化" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Tomcat/2. tomcat 安装" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/09/03/Tomcat/3. tomcat配置和优化/" class="article-date">
+      <a href="/2017/09/03/Tomcat/2. tomcat 安装/" class="article-date">
   	<time datetime="2017-09-02T18:13:44.845Z" itemprop="datePublished">2017-09-03</time>
 </a>
     </div>
@@ -183,8 +187,8 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Tomcat/3. tomcat配置和优化/">
-        tomcat配置和优化
+      <a class="article-title" href="/2017/09/03/Tomcat/2. tomcat 安装/">
+        tomcat 安装
         
       </a>
     </h1>
@@ -195,23 +199,21 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;tomcat 的安装步骤非常简单，但是还需要学会如何去做简单的配置。tomcat 默认启动的是 8080，如果想修改成 80，则需要修改 sercer.xml 文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 src]<span class="comment"># vim /usr/local/tomcat/conf/server.xml</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;找到</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/tomcat%E9%85%8D%E7%BD%AE%E5%92%8C%E4%BC%98%E5%8C%96/01.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改为</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/tomcat%E9%85%8D%E7%BD%AE%E5%92%8C%E4%BC%98%E5%8C%96/02.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;找到  下一行插入新的  内容如下</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;Host name=<span class="string">"www.123.com"</span> appBase=<span class="string">"/data/tomcatweb"</span></div><div class="line">unpackWARs=<span class="string">"false"</span> autoDeploy=<span class="string">"true"</span></div><div class="line">xmlValidation=<span class="string">"false"</span> xmlNamespaceAware=<span class="string">"false"</span>&gt;</div><div class="line">&lt;Context path=<span class="string">""</span> docBase=<span class="string">""</span> debug=<span class="string">"0"</span> reloadable=<span class="string">"true"</span> crossContext=<span class="string">"true"</span>/&gt;</div><div class="line">&lt;/Host&gt;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;保存后，重启 tomcat</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@192 src]<span class="comment"># service tomcat stop</span></div><div class="line">[root@192 src]<span class="comment"># service tomcat start</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;该脚本并不支持 restart ，所以只能先 stop 然后再 start 。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面测试 jsp 解析</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 src]<span class="comment"># vim /data/tomcatweb/111.jsp</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;内容如下</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;html&gt;&lt;body&gt;&lt;center&gt;</div><div class="line">    Now time is: &lt;%=new java.util.Date()%&gt;</div><div class="line">&lt;/center&gt;&lt;/body&gt;&lt;/html&gt;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后访问，看结果</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@192 src]<span class="comment"># curl -xlocalhost:80 www.123.com/111.jsp</span></div><div class="line">&lt;html&gt;&lt;body&gt;&lt;center&gt;</div><div class="line"> Now time is: Sat Apr 01 21:42:44 CST 2017</div><div class="line">&lt;/center&gt;&lt;/body&gt;&lt;/html&gt;</div></pre></td></tr></table></figure>
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<a href="http://tomcat.apache.org/" target="_blank" rel="external">tomcat 官网</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下载</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># cd /usr/local/src</span></div><div class="line">[root@192 src]<span class="comment"># wget https://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/tomcat-9/v9.0.0.M19/bin/apache-tomcat-9.0.0.M19.tar.gz</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解压</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@192 src]<span class="comment"># tar zxf apache-tomcat-9.0.0.M19.tar.gz </span></div><div class="line">[root@192 src]<span class="comment"># mv apache-tomcat-9.0.0.M19 /usr/local/tomcat</span></div><div class="line">[root@192 src]<span class="comment"># cp -pv /usr/local/tomcat/bin/catalina.sh /etc/init.d/tomcat</span></div><div class="line"><span class="string">"/usr/local/tomcat/bin/catalina.sh"</span> -&gt; <span class="string">"/etc/init.d/tomcat"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编辑配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 src]<span class="comment"># vim /etc/init.d/tomcat</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从第二行加如下配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#chkconfig: 2345 63 37</span></div><div class="line"><span class="comment">#description: tomcat server init script</span></div><div class="line"><span class="comment">#Source Function Library</span></div><div class="line">./etc/init.d/<span class="built_in">functions</span></div><div class="line">JAVA_HOME=/usr/<span class="built_in">local</span>/jdk1.8.0_111</div><div class="line">CATALINA_HOME=/usr/<span class="built_in">local</span>/tomcat</div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/tomcat%20%E5%AE%89%E8%A3%85/01.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;保存该文件，然后把 tomcat 加入服务列表里面。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[root@192 src]<span class="comment"># chmod 755 /etc/init.d/tomcat</span></div><div class="line">[root@192 src]<span class="comment"># chkconfig --add tomcat</span></div><div class="line">[root@192 src]<span class="comment"># chkconfig tomcat on</span></div><div class="line">[root@192 src]<span class="comment"># service tomcat start</span></div><div class="line">/etc/init.d/tomcat: line 5: ./etc/init.d/<span class="built_in">functions</span>: Permission denied</div><div class="line">Using CATALINA_BASE: /usr/<span class="built_in">local</span>/tomcat</div><div class="line">Using CATALINA_HOME: /usr/<span class="built_in">local</span>/tomcat</div><div class="line">Using CATALINA_TMPDIR: /usr/<span class="built_in">local</span>/tomcat/temp</div><div class="line">Using JRE_HOME: /usr/<span class="built_in">local</span>/jdk1.8.0_111</div><div class="line">Using CLASSPATH: /usr/<span class="built_in">local</span>/tomcat/bin/bootstrap.jar:/usr/<span class="built_in">local</span>/tomcat/bin/tomcat-juli.jar</div><div class="line">Tomcat started.</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;检测是否启动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 src]<span class="comment"># ps aux | grep tomcat</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在浏览器上输入 <a href="http://192.168.0.73:8080" target="_blank" rel="external">http://192.168.0.73:8080</a> 可以看到 tomcat 的欢迎页。</p>
 
       
     </div>

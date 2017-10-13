@@ -106,6 +106,8 @@
 				        
 							<li><a href="/archives">所有文章</a></li>
 				        
+							<li><a href="/tags">静心阅读</a></li>
+				        
 						</ul>
 					</nav>
 					<nav class="header-nav">
@@ -155,6 +157,8 @@
 		        
 					<li><a href="/archives">所有文章</a></li>
 		        
+					<li><a href="/tags">静心阅读</a></li>
+		        
 		        <div class="clearfix"></div>
 				</ul>
 			</nav>
@@ -167,6 +171,156 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-Redis/15. 征服 Redis" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Redis/15. 征服 Redis/" class="article-date">
+  	<time datetime="2017-09-02T18:09:22.885Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Redis/15. 征服 Redis/">
+        征服 Redis
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一、Redis简要介绍"><a href="#一、Redis简要介绍" class="headerlink" title="一、Redis简要介绍"></a>一、Redis简要介绍</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>Redis</strong> —— <strong>RE</strong>mote <strong>DI</strong>ctionary <strong>S</strong>erver，可以直接理解为远程字典服务，也就是基于Key-Value模式Memcached+Database Persistence。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果真要把Redis与Memcached进行对比，参考下图：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E5%BE%81%E6%9C%8DRedis/01%20-%20%E5%89%AF%E6%9C%AC.jpeg?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用Memcached，让我感触颇深的是Object Size的问题，由于SQL未作优化直接映射对象，导致缓存对象大于1MB，Memcached就抛了异常。而Redis默认缓存对象512MB，最大支持1GB。至少在缓存对象时，可以有更大的伸缩空间了！</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;此外，是数据类型。Memcached比较简单，而Redis可以支持更多复杂的数据类型，如HASH、SET、SortedSet等等。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>PS:Memcached</strong>是在<strong>Server端</strong>实现的<strong>Sharding</strong>，<strong>Redis</strong>没有对应的实现，据说3.0系列开始支持。</p>
+<h2 id="二、安装"><a href="#二、安装" class="headerlink" title="二、安装"></a>二、安装</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis装起来，实在是过于简单，让我几乎“无从下手”。因为连“configure”文件都不需要，你只需要做个“make”就好。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在这里<a href="https://code.google.com/archive/p/redis/downloads" target="_blank" rel="external">下载Redis最新版</a>，这里用Redis 2.4.16</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下载&amp;解压：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">wget http://redis.googlecode.com/files/redis-2.4.16.tar.gz  </div><div class="line">tar zxvf redis-2.4.16.tar.gz</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis可以解压至任何目录，一个make安装即可获得执行、配置文件。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安装（这里将redis解压到/opt/目录下）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /opt/redis-2.4.16  </div><div class="line">make</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;make之后，我们会得到以下可执行文件：</p>
+<ul>
+<li><strong>redis-server</strong>：Redis服务器的daemon启动程序</li>
+<li><strong>redis-cli</strong>：Redis命令行操作工具。或者通过telnet进行纯文本协议操作</li>
+<li><strong>redis-benchmark</strong>：Redis性能测试工具，测试Redis在你的系统及你的配置下的读写性能</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上述文件位于src目录下。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我习惯性的执行了make install，貌似我需要的可执行文件，安装到了/usr/local/bin：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;引用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">make install</div><div class="line"><span class="built_in">cd</span> src &amp;&amp; make install</div><div class="line">make[1]: Entering directory `/opt/software/redis-2.4.16/src<span class="string">'</span></div><div class="line"><span class="string">MAKE hiredis</span></div><div class="line"><span class="string">make[2]: Entering directory `/opt/software/redis-2.4.16/deps/hiredis'</span></div><div class="line">make[2]: Nothing to be <span class="keyword">done</span> <span class="keyword">for</span> `static<span class="string">'.</span></div><div class="line"><span class="string">make[2]: Leaving directory `/opt/software/redis-2.4.16/deps/hiredis'</span></div><div class="line">MAKE linenoise</div><div class="line">make[2]: Entering directory `/opt/software/redis-2.4.16/deps/linenoise<span class="string">'</span></div><div class="line"><span class="string">make[2]: “linenoise_example”是最新的。</span></div><div class="line"><span class="string">make[2]: Leaving directory `/opt/software/redis-2.4.16/deps/linenoise'</span></div><div class="line">MAKE hiredis</div><div class="line">make[2]: Entering directory `/opt/software/redis-2.4.16/deps/hiredis<span class="string">'</span></div><div class="line"><span class="string">make[2]: Nothing to be done for `static'</span>.</div><div class="line">make[2]: Leaving directory `/opt/software/redis-2.4.16/deps/hiredis<span class="string">'</span></div><div class="line"><span class="string">    LINK redis-benchmark</span></div><div class="line"><span class="string">    LINK redis-cli</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">Hint: To run '</span>make <span class="built_in">test</span><span class="string">' is a good idea ;)</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">mkdir -p /usr/local/bin</span></div><div class="line"><span class="string">cp -pf redis-server /usr/local/bin</span></div><div class="line"><span class="string">cp -pf redis-benchmark /usr/local/bin</span></div><div class="line"><span class="string">cp -pf redis-cli /usr/local/bin</span></div><div class="line"><span class="string">cp -pf redis-check-dump /usr/local/bin</span></div><div class="line"><span class="string">cp -pf redis-check-aof /usr/local/bin</span></div><div class="line"><span class="string">make[1]: Leaving directory `/opt/software/redis-2.4.16/src'</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样，就不用我拷贝文件了。意外收获！</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;此外，还会得到一个默认的配置文件——redis.conf。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;最好，把它拷贝到固定的目录下，例如：/etc/redis/目录下！</p>
+<ol>
+<li>mkdir /etc/redis  </li>
+<li>cp redis.conf /etc/redis     </li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后，我们就可以在任何路径下，直接启动Redis了！</p>
+<h2 id="三、运行"><a href="#三、运行" class="headerlink" title="三、运行"></a>三、运行</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;运行Redis：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis-server /etc/redis/redis.conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;引用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[1958] 13 Aug 16:18:24 * Server started, Redis version 2.4.16</div><div class="line">[1958] 13 Aug 16:18:24 <span class="comment"># WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.</span></div><div class="line">[1958] 13 Aug 16:18:24 * The server is now ready to accept connections on port 6379</div><div class="line">[1958] 13 Aug 16:18:24 - 0 clients connected (0 slaves), 717544 bytes <span class="keyword">in</span> use</div></pre></td></tr></table></figure>
+<h2 id="四、测试"><a href="#四、测试" class="headerlink" title="四、测试"></a>四、测试</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;通过客户端命令<strong>redis-cli</strong>访问Redis</p>
+<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># redis-cli  </span></div><div class="line">    redis&gt; <span class="built_in">set</span> name zlex  </div><div class="line">    OK  </div><div class="line">    redis&gt; get name   </div><div class="line">    <span class="string">"zlex"</span> </div><div class="line">``` </div><div class="line"></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;进行数据测试：</span></div><div class="line"></div><div class="line">```bash</div><div class="line">redis-benchmark -l</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个测试会一直进行下去，直到你Ctrl+C：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">====== PING (inline) ======</div><div class="line">10000 requests completed <span class="keyword">in</span> 0.12 seconds</div><div class="line">50 parallel clients</div><div class="line">3 bytes payload</div><div class="line">keep alive: 1</div><div class="line"></div><div class="line">99.31% &lt;= 1 milliseconds</div><div class="line">99.53% &lt;= 2 milliseconds</div><div class="line">99.64% &lt;= 3 milliseconds</div><div class="line">99.70% &lt;= 4 milliseconds</div><div class="line">99.74% &lt;= 5 milliseconds</div><div class="line">99.78% &lt;= 6 milliseconds</div><div class="line">99.82% &lt;= 7 milliseconds</div><div class="line">99.84% &lt;= 8 milliseconds</div><div class="line">99.86% &lt;= 9 milliseconds</div><div class="line">99.89% &lt;= 10 milliseconds</div><div class="line">99.91% &lt;= 11 milliseconds</div><div class="line">99.93% &lt;= 12 milliseconds</div><div class="line">99.96% &lt;= 13 milliseconds</div><div class="line">99.98% &lt;= 14 milliseconds</div><div class="line">100.00% &lt;= 15 milliseconds</div><div class="line">81300.81 requests per second</div><div class="line"></div><div class="line">====== PING ======</div><div class="line">10000 requests completed <span class="keyword">in</span> 0.12 seconds</div><div class="line">50 parallel clients</div><div class="line">3 bytes payload</div><div class="line">keep alive: 1</div><div class="line"></div><div class="line">99.96% &lt;= 1 milliseconds</div><div class="line">100.00% &lt;= 1 milliseconds</div><div class="line">84033.61 requests per second</div><div class="line"></div><div class="line">^CET (10 keys): 26200.00</div></pre></td></tr></table></figure>
+<h2 id="五、关闭"><a href="#五、关闭" class="headerlink" title="五、关闭"></a>五、关闭</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;也可通过客户端命令<strong>redis-cli</strong>完成<strong>Redis</strong>关闭操作:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis-cli shutdown</div></pre></td></tr></table></figure>
+<h3 id="引用-1"><a href="#引用-1" class="headerlink" title="引用"></a>引用</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">[2639] 13 Aug 16:35:35 <span class="comment"># User requested shutdown...</span></div><div class="line">[2639] 13 Aug 16:35:35 * Saving the final RDB snapshot before exiting.</div><div class="line">[2639] 13 Aug 16:36:49 * DB saved on disk</div><div class="line">[2639] 13 Aug 16:36:49 <span class="comment"># Redis is now ready to exit, bye bye...</span></div><div class="line">``` </div><div class="line"></div><div class="line"><span class="comment">## 六、调优</span></div><div class="line"><span class="comment">### 1./etc/sysctl.conf</span></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;前面启动Redis时，看到如下警告：</span></div><div class="line"></div><div class="line"><span class="comment">### 引用</span></div><div class="line"></div><div class="line">```bash</div><div class="line">[1958] 13 Aug 16:18:24 <span class="comment"># WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需要修改<strong>/etc/sysctl.conf</strong>文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim /etc/sysctl.conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;末尾追加<strong>vm.overcommit_memory = 1</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后执行<strong>sysctl vm.overcommit_memory=1</strong>，使之生效：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sysctl vm.overcommit_memory=1  </div><div class="line">vm.overcommit_memory = 1</div></pre></td></tr></table></figure>
+<h3 id="2-proc-sys-vm-overcommit-memory"><a href="#2-proc-sys-vm-overcommit-memory" class="headerlink" title="2./proc/sys/vm/overcommit_memory"></a>2./proc/sys/vm/overcommit_memory</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为了调整内存分配策略，需要配置<strong>/proc/sys/vm/overcommit_memory</strong></p>
+<ul>
+<li>0， 表示内核将检查是否有足够的可用内存供应用进程使用；如果有足够的可用内存，内存申请允许；否则，内存申请失败，并把错误返回给应用进程。</li>
+<li>1， 表示内核允许分配所有的物理内存，而不管当前的内存状态如何。</li>
+<li>2， 表示内核允许分配超过所有物理内存和交换空间总和的内存</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认为0，如果内存情况比较紧张的话，设为1：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> 1 &gt; /proc/sys/vm/overcommit_memory</div></pre></td></tr></table></figure>
+<h3 id="3-redis-conf"><a href="#3-redis-conf" class="headerlink" title="3.redis.conf"></a>3.redis.conf</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;前面启动Redis后，总是在命令行里不断跳着各种日志，很麻烦。即便通过“&amp;”，领其后台运行，也无济于事。这就需要修改<strong>redis.conf</strong>，以Daemo模式运行！</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>redis.conf</strong>参数：</p>
+<ul>
+<li>daemonize：是否以后台daemon方式运行</li>
+<li>pidfile：pid文件位置</li>
+<li>port：监听的端口号</li>
+<li>timeout：请求超时时间</li>
+<li>loglevel：log信息级别</li>
+<li>logfile：log文件位置</li>
+<li>databases：开启数据库的数量</li>
+<li>save <em> </em>：保存快照的频率，第一个<em>表示多长时间（秒级），第三个</em>表示执行多少次写操作。在一定时间内执行一定数量的写操作时，自动保存快照。可设置多个条件。</li>
+<li>rdbcompression：是否使用压缩</li>
+<li>dbfilename：数据快照文件名（只是文件名，不包括目录）</li>
+<li>dir：数据快照的保存目录（这个是目录）</li>
+<li>appendonly：是否开启appendonlylog，开启的话每次写操作会记一条log，这会提高数据抗风险能力，但影响效率。</li>
+<li>appendfsync：appendonlylog如何同步到磁盘（三个选项，分别是每次写都强制调用fsync、每秒启用一次fsync、不调用fsync等待系统自己同步）</li>
+<li>slaveof <masterip> <masterport> ：主从配置，在redis-slave上配置master的ip port，即可。</masterport></masterip></li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例如，我们可以修改为如下方式：</p>
+<h4 id="引用-2"><a href="#引用-2" class="headerlink" title="引用"></a>引用</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">daemonize yes <span class="comment">#守护进程模式</span></div><div class="line">save 60 1000 <span class="comment">#当时间间隔超过60秒，或存储超过1000条记录时，进行持久化。</span></div><div class="line">maxmemory 256mb <span class="comment">#分配256MB内存</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>PS：切记，一定要设定maxmemmory，且配置大小要小于物理内存，留有足够的内存供系统使用。</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;公司一同学的Redis，某期间数据暴涨，导致内存吃紧，SWAP加剧，直接宕机。就是因为没有设置<strong>maxmemmory</strong>。</p>
+<h2 id="七、集群配置"><a href="#七、集群配置" class="headerlink" title="七、集群配置"></a>七、集群配置</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;把鸡蛋都放在一个篮子里是件危险的事情。首先，要做好主备。其次，如果可以做一致性哈希，可以起到负载均衡的作用。</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E5%BE%81%E6%9C%8DRedis/02%20-%20%E5%89%AF%E6%9C%AC.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置Master-Slave，只需要在Slave上配置Master节点IP Port： </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里的Master IP 为192.168.133.139 端口位6379，配置redis.conf：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">slaveof 192.168.133.139 6379</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>PS：为了两个Redis Server可以互访，需要注释掉bind 127.0.0.1</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;依次启动Master，Slave：</p>
+<h4 id="Master"><a href="#Master" class="headerlink" title="Master"></a>Master</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line">[7651] 17 Aug 19:08:07 * Server started, Redis version 2.4.16</div><div class="line">[7651] 17 Aug 19:08:07 * DB loaded from disk: 0 seconds</div><div class="line">[7651] 17 Aug 19:08:07 * The server is now ready to accept connections on port 6379</div><div class="line">[7651] 17 Aug 19:08:08 * Slave ask <span class="keyword">for</span> synchronization</div><div class="line">[7651] 17 Aug 19:08:08 * Starting BGSAVE <span class="keyword">for</span> SYNC</div><div class="line">[7651] 17 Aug 19:08:08 * Background saving started by pid 7652</div><div class="line">[7652] 17 Aug 19:08:08 * DB saved on disk</div><div class="line">[7651] 17 Aug 19:08:08 * Background saving terminated with success</div><div class="line">[7651] 17 Aug 19:08:08 * Synchronization with slave succeeded</div><div class="line">``` </div><div class="line"> </div><div class="line"><span class="comment">#### Slave</span></div><div class="line"></div><div class="line">```bash</div><div class="line">[7572] 17 Aug 19:07:39 * Server started, Redis version 2.4.16</div><div class="line">[7572] 17 Aug 19:07:39 * DB loaded from disk: 0 seconds</div><div class="line">[7572] 17 Aug 19:07:39 * The server is now ready to accept connections on port 6379</div><div class="line">[7572] 17 Aug 19:07:39 * Connecting to MASTER...</div><div class="line">[7572] 17 Aug 19:08:08 * MASTER &lt;-&gt; SLAVE sync started: SYNC sent</div><div class="line">[7572] 17 Aug 19:08:08 * MASTER &lt;-&gt; SLAVE sync: receiving 10 bytes from master</div><div class="line">[7572] 17 Aug 19:08:08 * MASTER &lt;-&gt; SLAVE sync: Loading DB <span class="keyword">in</span> memory</div><div class="line">[7572] 17 Aug 19:08:08 * MASTER &lt;-&gt; SLAVE sync: Finished with success</div><div class="line">``` </div><div class="line"></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;看到上述日志，就说明Master-Slave已经连通。</span></div><div class="line"> </div><div class="line"></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;简单测试，Master写，Slave读：</span></div><div class="line"> </div><div class="line"><span class="comment">#### Master写</span></div><div class="line"></div><div class="line">```bash</div><div class="line">telnet 192.168.133.139 6379</div><div class="line">Trying 192.168.133.139...</div><div class="line">Connected to 192.168.133.139.</div><div class="line">Escape character is <span class="string">'^]'</span>.</div><div class="line"><span class="built_in">set</span> name snowolf</div><div class="line">+OK</div><div class="line">``` </div><div class="line"> </div><div class="line"><span class="comment">#### Slave读 </span></div><div class="line"></div><div class="line">```bash</div><div class="line">telnet 192.168.133.140 6379</div><div class="line">Trying 192.168.133.140...</div><div class="line">Connected to 192.168.133.140.</div><div class="line">Escape character is <span class="string">'^]'</span>.</div><div class="line">get name</div><div class="line"><span class="variable">$7</span></div><div class="line">snowolf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;搞定！</p>
+<h2 id="八、主从备份"><a href="#八、主从备份" class="headerlink" title="八、主从备份"></a>八、主从备份</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在从服务器上执行下列命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#备份  </span></div><div class="line">redis-cli save  </div><div class="line"></div><div class="line"><span class="comment">#关闭redis服务器  </span></div><div class="line">redis-cli shutdown</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后，拷贝数据目录下的rdb文件。</p>
+<h2 id="九、系统服务"><a href="#九、系统服务" class="headerlink" title="九、系统服务"></a>九、系统服务</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;习惯了通过service启动一切服务，当然，这跟我生产环境部署有关，通常只分配给用于部署的账户操作service命令的权限。主要是为了确保系统安全。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;参考之前写的Memcached的系统服务文件，改造一个Redis版本！</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;新建文件，并赋予权限： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div></pre></td><td class="code"><pre><div class="line">touch /etc/init.d/redis-server  </div><div class="line">chmod +x /etc/init.d/redis-server  </div><div class="line">``` </div><div class="line"></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;编辑**/etc/init.d/redis-server**，键入如下内容： </span></div><div class="line"></div><div class="line">```bash</div><div class="line"><span class="meta">#!/bin/bash  </span></div><div class="line"><span class="comment">#  </span></div><div class="line"><span class="comment"># redis    Startup script for redis processes  </span></div><div class="line"><span class="comment">#  </span></div><div class="line"><span class="comment"># author: snowolf  </span></div><div class="line"><span class="comment">#  </span></div><div class="line"><span class="comment"># processname: redis  </span></div><div class="line"></div><div class="line">redis_path=<span class="string">"/usr/local/bin/redis-server"</span>  </div><div class="line">redis_conf=<span class="string">"/etc/redis/redis.conf"</span>  </div><div class="line">redis_pid=<span class="string">"/var/run/redis.pid"</span>  </div><div class="line"></div><div class="line"><span class="comment"># Source function library.  </span></div><div class="line">. /etc/rc.d/init.d/<span class="built_in">functions</span>  </div><div class="line"></div><div class="line">[ -x <span class="variable">$redis_path</span> ] || <span class="built_in">exit</span> 0  </div><div class="line"></div><div class="line">RETVAL=0  </div><div class="line">prog=<span class="string">"redis"</span>  </div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># Start daemons.  </span></div><div class="line"><span class="function"><span class="title">start</span></span>() &#123;  </div><div class="line">    <span class="keyword">if</span> [ -e <span class="variable">$redis_pid</span> -a ! -z <span class="variable">$redis_pid</span> ];<span class="keyword">then</span>  </div><div class="line">        <span class="built_in">echo</span> <span class="variable">$prog</span><span class="string">" already running...."</span>  </div><div class="line">        <span class="built_in">exit</span> 1  </div><div class="line">    <span class="keyword">fi</span>  </div><div class="line">    </div><div class="line">    <span class="built_in">echo</span> -n $<span class="string">"Starting <span class="variable">$prog</span> "</span>  </div><div class="line">    <span class="comment"># Single instance for all caches  </span></div><div class="line">    <span class="variable">$redis_path</span> <span class="variable">$redis_conf</span>  </div><div class="line">    RETVAL=$?  </div><div class="line">    [ <span class="variable">$RETVAL</span> -eq 0 ] &amp;&amp; &#123;  </div><div class="line">        touch /var/lock/subsys/<span class="variable">$prog</span>  </div><div class="line">        success $<span class="string">"<span class="variable">$prog</span>"</span>  </div><div class="line">    &#125;  </div><div class="line">    <span class="built_in">echo</span>  </div><div class="line">    <span class="built_in">return</span> <span class="variable">$RETVAL</span>  </div><div class="line">&#125;  </div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># Stop daemons.  </span></div><div class="line"><span class="function"><span class="title">stop</span></span>() &#123;  </div><div class="line">    <span class="built_in">echo</span> -n $<span class="string">"Stopping <span class="variable">$prog</span> "</span>  </div><div class="line">    killproc -d 10 <span class="variable">$redis_path</span>  </div><div class="line">    <span class="built_in">echo</span>  </div><div class="line">    [ <span class="variable">$RETVAL</span> = 0 ] &amp;&amp; rm -f <span class="variable">$redis_pid</span> /var/lock/subsys/<span class="variable">$prog</span>  </div><div class="line"></div><div class="line">    RETVAL=$?  </div><div class="line">    <span class="built_in">return</span> <span class="variable">$RETVAL</span>  </div><div class="line">&#125;  </div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># See how we were called.  </span></div><div class="line"><span class="keyword">case</span> <span class="string">"<span class="variable">$1</span>"</span> <span class="keyword">in</span>  </div><div class="line">    start)  </div><div class="line">        start  </div><div class="line">        ;;  </div><div class="line">    stop)  </div><div class="line">        stop  </div><div class="line">        ;;  </div><div class="line">    status)  </div><div class="line">        status <span class="variable">$prog</span>  </div><div class="line">        RETVAL=$?  </div><div class="line">        ;;  </div><div class="line">    restart)  </div><div class="line">        stop  </div><div class="line">        start  </div><div class="line">        ;;  </div><div class="line">    condrestart)  </div><div class="line">        <span class="keyword">if</span> <span class="built_in">test</span> <span class="string">"x`pidof redis`"</span> != x; <span class="keyword">then</span>  </div><div class="line">            stop  </div><div class="line">            start  </div><div class="line">        <span class="keyword">fi</span>  </div><div class="line">        ;;  </div><div class="line">    *)  </div><div class="line">        <span class="built_in">echo</span> $<span class="string">"Usage: <span class="variable">$0</span> &#123;start|stop|status|restart|condrestart&#125;"</span>  </div><div class="line">        <span class="built_in">exit</span> 1  </div><div class="line"><span class="keyword">esac</span>  </div><div class="line"><span class="built_in">exit</span> <span class="variable">$RETVAL</span>  </div><div class="line">``` </div><div class="line"> </div><div class="line"><span class="comment">#### 引用</span></div><div class="line"></div><div class="line">```bash</div><div class="line"><span class="comment"># service redis-server restart</span></div><div class="line">Stopping redis                                             [失败]</div><div class="line">Starting redis                                             [确定]</div><div class="line"><span class="comment"># service redis-server status </span></div><div class="line">redis (pid  14965) 正在运行...</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;非常方便！</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/">Redis</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-Redis/16. 超强、超详细Redis数据库入门教程" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -528,156 +682,6 @@
 
 
   
-    <article id="post-Redis/15. 征服 Redis" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Redis/15. 征服 Redis/" class="article-date">
-  	<time datetime="2017-09-02T18:09:22.885Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Redis/15. 征服 Redis/">
-        征服 Redis
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="一、Redis简要介绍"><a href="#一、Redis简要介绍" class="headerlink" title="一、Redis简要介绍"></a>一、Redis简要介绍</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>Redis</strong> —— <strong>RE</strong>mote <strong>DI</strong>ctionary <strong>S</strong>erver，可以直接理解为远程字典服务，也就是基于Key-Value模式Memcached+Database Persistence。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果真要把Redis与Memcached进行对比，参考下图：</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/%E5%BE%81%E6%9C%8DRedis/01%20-%20%E5%89%AF%E6%9C%AC.jpeg?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用Memcached，让我感触颇深的是Object Size的问题，由于SQL未作优化直接映射对象，导致缓存对象大于1MB，Memcached就抛了异常。而Redis默认缓存对象512MB，最大支持1GB。至少在缓存对象时，可以有更大的伸缩空间了！</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;此外，是数据类型。Memcached比较简单，而Redis可以支持更多复杂的数据类型，如HASH、SET、SortedSet等等。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>PS:Memcached</strong>是在<strong>Server端</strong>实现的<strong>Sharding</strong>，<strong>Redis</strong>没有对应的实现，据说3.0系列开始支持。</p>
-<h2 id="二、安装"><a href="#二、安装" class="headerlink" title="二、安装"></a>二、安装</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis装起来，实在是过于简单，让我几乎“无从下手”。因为连“configure”文件都不需要，你只需要做个“make”就好。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在这里<a href="https://code.google.com/archive/p/redis/downloads" target="_blank" rel="external">下载Redis最新版</a>，这里用Redis 2.4.16</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下载&amp;解压：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">wget http://redis.googlecode.com/files/redis-2.4.16.tar.gz  </div><div class="line">tar zxvf redis-2.4.16.tar.gz</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis可以解压至任何目录，一个make安装即可获得执行、配置文件。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安装（这里将redis解压到/opt/目录下）：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /opt/redis-2.4.16  </div><div class="line">make</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;make之后，我们会得到以下可执行文件：</p>
-<ul>
-<li><strong>redis-server</strong>：Redis服务器的daemon启动程序</li>
-<li><strong>redis-cli</strong>：Redis命令行操作工具。或者通过telnet进行纯文本协议操作</li>
-<li><strong>redis-benchmark</strong>：Redis性能测试工具，测试Redis在你的系统及你的配置下的读写性能</li>
-</ul>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上述文件位于src目录下。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我习惯性的执行了make install，貌似我需要的可执行文件，安装到了/usr/local/bin：</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;引用</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">make install</div><div class="line"><span class="built_in">cd</span> src &amp;&amp; make install</div><div class="line">make[1]: Entering directory `/opt/software/redis-2.4.16/src<span class="string">'</span></div><div class="line"><span class="string">MAKE hiredis</span></div><div class="line"><span class="string">make[2]: Entering directory `/opt/software/redis-2.4.16/deps/hiredis'</span></div><div class="line">make[2]: Nothing to be <span class="keyword">done</span> <span class="keyword">for</span> `static<span class="string">'.</span></div><div class="line"><span class="string">make[2]: Leaving directory `/opt/software/redis-2.4.16/deps/hiredis'</span></div><div class="line">MAKE linenoise</div><div class="line">make[2]: Entering directory `/opt/software/redis-2.4.16/deps/linenoise<span class="string">'</span></div><div class="line"><span class="string">make[2]: “linenoise_example”是最新的。</span></div><div class="line"><span class="string">make[2]: Leaving directory `/opt/software/redis-2.4.16/deps/linenoise'</span></div><div class="line">MAKE hiredis</div><div class="line">make[2]: Entering directory `/opt/software/redis-2.4.16/deps/hiredis<span class="string">'</span></div><div class="line"><span class="string">make[2]: Nothing to be done for `static'</span>.</div><div class="line">make[2]: Leaving directory `/opt/software/redis-2.4.16/deps/hiredis<span class="string">'</span></div><div class="line"><span class="string">    LINK redis-benchmark</span></div><div class="line"><span class="string">    LINK redis-cli</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">Hint: To run '</span>make <span class="built_in">test</span><span class="string">' is a good idea ;)</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">mkdir -p /usr/local/bin</span></div><div class="line"><span class="string">cp -pf redis-server /usr/local/bin</span></div><div class="line"><span class="string">cp -pf redis-benchmark /usr/local/bin</span></div><div class="line"><span class="string">cp -pf redis-cli /usr/local/bin</span></div><div class="line"><span class="string">cp -pf redis-check-dump /usr/local/bin</span></div><div class="line"><span class="string">cp -pf redis-check-aof /usr/local/bin</span></div><div class="line"><span class="string">make[1]: Leaving directory `/opt/software/redis-2.4.16/src'</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样，就不用我拷贝文件了。意外收获！</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;此外，还会得到一个默认的配置文件——redis.conf。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;最好，把它拷贝到固定的目录下，例如：/etc/redis/目录下！</p>
-<ol>
-<li>mkdir /etc/redis  </li>
-<li>cp redis.conf /etc/redis     </li>
-</ol>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后，我们就可以在任何路径下，直接启动Redis了！</p>
-<h2 id="三、运行"><a href="#三、运行" class="headerlink" title="三、运行"></a>三、运行</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;运行Redis：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis-server /etc/redis/redis.conf</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;引用</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[1958] 13 Aug 16:18:24 * Server started, Redis version 2.4.16</div><div class="line">[1958] 13 Aug 16:18:24 <span class="comment"># WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.</span></div><div class="line">[1958] 13 Aug 16:18:24 * The server is now ready to accept connections on port 6379</div><div class="line">[1958] 13 Aug 16:18:24 - 0 clients connected (0 slaves), 717544 bytes <span class="keyword">in</span> use</div></pre></td></tr></table></figure>
-<h2 id="四、测试"><a href="#四、测试" class="headerlink" title="四、测试"></a>四、测试</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;通过客户端命令<strong>redis-cli</strong>访问Redis</p>
-<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># redis-cli  </span></div><div class="line">    redis&gt; <span class="built_in">set</span> name zlex  </div><div class="line">    OK  </div><div class="line">    redis&gt; get name   </div><div class="line">    <span class="string">"zlex"</span> </div><div class="line">``` </div><div class="line"></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;进行数据测试：</span></div><div class="line"></div><div class="line">```bash</div><div class="line">redis-benchmark -l</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个测试会一直进行下去，直到你Ctrl+C：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">====== PING (inline) ======</div><div class="line">10000 requests completed <span class="keyword">in</span> 0.12 seconds</div><div class="line">50 parallel clients</div><div class="line">3 bytes payload</div><div class="line">keep alive: 1</div><div class="line"></div><div class="line">99.31% &lt;= 1 milliseconds</div><div class="line">99.53% &lt;= 2 milliseconds</div><div class="line">99.64% &lt;= 3 milliseconds</div><div class="line">99.70% &lt;= 4 milliseconds</div><div class="line">99.74% &lt;= 5 milliseconds</div><div class="line">99.78% &lt;= 6 milliseconds</div><div class="line">99.82% &lt;= 7 milliseconds</div><div class="line">99.84% &lt;= 8 milliseconds</div><div class="line">99.86% &lt;= 9 milliseconds</div><div class="line">99.89% &lt;= 10 milliseconds</div><div class="line">99.91% &lt;= 11 milliseconds</div><div class="line">99.93% &lt;= 12 milliseconds</div><div class="line">99.96% &lt;= 13 milliseconds</div><div class="line">99.98% &lt;= 14 milliseconds</div><div class="line">100.00% &lt;= 15 milliseconds</div><div class="line">81300.81 requests per second</div><div class="line"></div><div class="line">====== PING ======</div><div class="line">10000 requests completed <span class="keyword">in</span> 0.12 seconds</div><div class="line">50 parallel clients</div><div class="line">3 bytes payload</div><div class="line">keep alive: 1</div><div class="line"></div><div class="line">99.96% &lt;= 1 milliseconds</div><div class="line">100.00% &lt;= 1 milliseconds</div><div class="line">84033.61 requests per second</div><div class="line"></div><div class="line">^CET (10 keys): 26200.00</div></pre></td></tr></table></figure>
-<h2 id="五、关闭"><a href="#五、关闭" class="headerlink" title="五、关闭"></a>五、关闭</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;也可通过客户端命令<strong>redis-cli</strong>完成<strong>Redis</strong>关闭操作:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis-cli shutdown</div></pre></td></tr></table></figure>
-<h3 id="引用-1"><a href="#引用-1" class="headerlink" title="引用"></a>引用</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">[2639] 13 Aug 16:35:35 <span class="comment"># User requested shutdown...</span></div><div class="line">[2639] 13 Aug 16:35:35 * Saving the final RDB snapshot before exiting.</div><div class="line">[2639] 13 Aug 16:36:49 * DB saved on disk</div><div class="line">[2639] 13 Aug 16:36:49 <span class="comment"># Redis is now ready to exit, bye bye...</span></div><div class="line">``` </div><div class="line"></div><div class="line"><span class="comment">## 六、调优</span></div><div class="line"><span class="comment">### 1./etc/sysctl.conf</span></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;前面启动Redis时，看到如下警告：</span></div><div class="line"></div><div class="line"><span class="comment">### 引用</span></div><div class="line"></div><div class="line">```bash</div><div class="line">[1958] 13 Aug 16:18:24 <span class="comment"># WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需要修改<strong>/etc/sysctl.conf</strong>文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim /etc/sysctl.conf</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;末尾追加<strong>vm.overcommit_memory = 1</strong></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后执行<strong>sysctl vm.overcommit_memory=1</strong>，使之生效：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sysctl vm.overcommit_memory=1  </div><div class="line">vm.overcommit_memory = 1</div></pre></td></tr></table></figure>
-<h3 id="2-proc-sys-vm-overcommit-memory"><a href="#2-proc-sys-vm-overcommit-memory" class="headerlink" title="2./proc/sys/vm/overcommit_memory"></a>2./proc/sys/vm/overcommit_memory</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为了调整内存分配策略，需要配置<strong>/proc/sys/vm/overcommit_memory</strong></p>
-<ul>
-<li>0， 表示内核将检查是否有足够的可用内存供应用进程使用；如果有足够的可用内存，内存申请允许；否则，内存申请失败，并把错误返回给应用进程。</li>
-<li>1， 表示内核允许分配所有的物理内存，而不管当前的内存状态如何。</li>
-<li>2， 表示内核允许分配超过所有物理内存和交换空间总和的内存</li>
-</ul>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认为0，如果内存情况比较紧张的话，设为1：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> 1 &gt; /proc/sys/vm/overcommit_memory</div></pre></td></tr></table></figure>
-<h3 id="3-redis-conf"><a href="#3-redis-conf" class="headerlink" title="3.redis.conf"></a>3.redis.conf</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;前面启动Redis后，总是在命令行里不断跳着各种日志，很麻烦。即便通过“&amp;”，领其后台运行，也无济于事。这就需要修改<strong>redis.conf</strong>，以Daemo模式运行！</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>redis.conf</strong>参数：</p>
-<ul>
-<li>daemonize：是否以后台daemon方式运行</li>
-<li>pidfile：pid文件位置</li>
-<li>port：监听的端口号</li>
-<li>timeout：请求超时时间</li>
-<li>loglevel：log信息级别</li>
-<li>logfile：log文件位置</li>
-<li>databases：开启数据库的数量</li>
-<li>save <em> </em>：保存快照的频率，第一个<em>表示多长时间（秒级），第三个</em>表示执行多少次写操作。在一定时间内执行一定数量的写操作时，自动保存快照。可设置多个条件。</li>
-<li>rdbcompression：是否使用压缩</li>
-<li>dbfilename：数据快照文件名（只是文件名，不包括目录）</li>
-<li>dir：数据快照的保存目录（这个是目录）</li>
-<li>appendonly：是否开启appendonlylog，开启的话每次写操作会记一条log，这会提高数据抗风险能力，但影响效率。</li>
-<li>appendfsync：appendonlylog如何同步到磁盘（三个选项，分别是每次写都强制调用fsync、每秒启用一次fsync、不调用fsync等待系统自己同步）</li>
-<li>slaveof <masterip> <masterport> ：主从配置，在redis-slave上配置master的ip port，即可。</masterport></masterip></li>
-</ul>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例如，我们可以修改为如下方式：</p>
-<h4 id="引用-2"><a href="#引用-2" class="headerlink" title="引用"></a>引用</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">daemonize yes <span class="comment">#守护进程模式</span></div><div class="line">save 60 1000 <span class="comment">#当时间间隔超过60秒，或存储超过1000条记录时，进行持久化。</span></div><div class="line">maxmemory 256mb <span class="comment">#分配256MB内存</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>PS：切记，一定要设定maxmemmory，且配置大小要小于物理内存，留有足够的内存供系统使用。</strong></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;公司一同学的Redis，某期间数据暴涨，导致内存吃紧，SWAP加剧，直接宕机。就是因为没有设置<strong>maxmemmory</strong>。</p>
-<h2 id="七、集群配置"><a href="#七、集群配置" class="headerlink" title="七、集群配置"></a>七、集群配置</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;把鸡蛋都放在一个篮子里是件危险的事情。首先，要做好主备。其次，如果可以做一致性哈希，可以起到负载均衡的作用。</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/%E5%BE%81%E6%9C%8DRedis/02%20-%20%E5%89%AF%E6%9C%AC.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置Master-Slave，只需要在Slave上配置Master节点IP Port： </p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里的Master IP 为192.168.133.139 端口位6379，配置redis.conf：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">slaveof 192.168.133.139 6379</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>PS：为了两个Redis Server可以互访，需要注释掉bind 127.0.0.1</strong></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;依次启动Master，Slave：</p>
-<h4 id="Master"><a href="#Master" class="headerlink" title="Master"></a>Master</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line">[7651] 17 Aug 19:08:07 * Server started, Redis version 2.4.16</div><div class="line">[7651] 17 Aug 19:08:07 * DB loaded from disk: 0 seconds</div><div class="line">[7651] 17 Aug 19:08:07 * The server is now ready to accept connections on port 6379</div><div class="line">[7651] 17 Aug 19:08:08 * Slave ask <span class="keyword">for</span> synchronization</div><div class="line">[7651] 17 Aug 19:08:08 * Starting BGSAVE <span class="keyword">for</span> SYNC</div><div class="line">[7651] 17 Aug 19:08:08 * Background saving started by pid 7652</div><div class="line">[7652] 17 Aug 19:08:08 * DB saved on disk</div><div class="line">[7651] 17 Aug 19:08:08 * Background saving terminated with success</div><div class="line">[7651] 17 Aug 19:08:08 * Synchronization with slave succeeded</div><div class="line">``` </div><div class="line"> </div><div class="line"><span class="comment">#### Slave</span></div><div class="line"></div><div class="line">```bash</div><div class="line">[7572] 17 Aug 19:07:39 * Server started, Redis version 2.4.16</div><div class="line">[7572] 17 Aug 19:07:39 * DB loaded from disk: 0 seconds</div><div class="line">[7572] 17 Aug 19:07:39 * The server is now ready to accept connections on port 6379</div><div class="line">[7572] 17 Aug 19:07:39 * Connecting to MASTER...</div><div class="line">[7572] 17 Aug 19:08:08 * MASTER &lt;-&gt; SLAVE sync started: SYNC sent</div><div class="line">[7572] 17 Aug 19:08:08 * MASTER &lt;-&gt; SLAVE sync: receiving 10 bytes from master</div><div class="line">[7572] 17 Aug 19:08:08 * MASTER &lt;-&gt; SLAVE sync: Loading DB <span class="keyword">in</span> memory</div><div class="line">[7572] 17 Aug 19:08:08 * MASTER &lt;-&gt; SLAVE sync: Finished with success</div><div class="line">``` </div><div class="line"></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;看到上述日志，就说明Master-Slave已经连通。</span></div><div class="line"> </div><div class="line"></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;简单测试，Master写，Slave读：</span></div><div class="line"> </div><div class="line"><span class="comment">#### Master写</span></div><div class="line"></div><div class="line">```bash</div><div class="line">telnet 192.168.133.139 6379</div><div class="line">Trying 192.168.133.139...</div><div class="line">Connected to 192.168.133.139.</div><div class="line">Escape character is <span class="string">'^]'</span>.</div><div class="line"><span class="built_in">set</span> name snowolf</div><div class="line">+OK</div><div class="line">``` </div><div class="line"> </div><div class="line"><span class="comment">#### Slave读 </span></div><div class="line"></div><div class="line">```bash</div><div class="line">telnet 192.168.133.140 6379</div><div class="line">Trying 192.168.133.140...</div><div class="line">Connected to 192.168.133.140.</div><div class="line">Escape character is <span class="string">'^]'</span>.</div><div class="line">get name</div><div class="line"><span class="variable">$7</span></div><div class="line">snowolf</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;搞定！</p>
-<h2 id="八、主从备份"><a href="#八、主从备份" class="headerlink" title="八、主从备份"></a>八、主从备份</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在从服务器上执行下列命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#备份  </span></div><div class="line">redis-cli save  </div><div class="line"></div><div class="line"><span class="comment">#关闭redis服务器  </span></div><div class="line">redis-cli shutdown</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后，拷贝数据目录下的rdb文件。</p>
-<h2 id="九、系统服务"><a href="#九、系统服务" class="headerlink" title="九、系统服务"></a>九、系统服务</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;习惯了通过service启动一切服务，当然，这跟我生产环境部署有关，通常只分配给用于部署的账户操作service命令的权限。主要是为了确保系统安全。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;参考之前写的Memcached的系统服务文件，改造一个Redis版本！</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;新建文件，并赋予权限： </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div></pre></td><td class="code"><pre><div class="line">touch /etc/init.d/redis-server  </div><div class="line">chmod +x /etc/init.d/redis-server  </div><div class="line">``` </div><div class="line"></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;编辑**/etc/init.d/redis-server**，键入如下内容： </span></div><div class="line"></div><div class="line">```bash</div><div class="line"><span class="meta">#!/bin/bash  </span></div><div class="line"><span class="comment">#  </span></div><div class="line"><span class="comment"># redis    Startup script for redis processes  </span></div><div class="line"><span class="comment">#  </span></div><div class="line"><span class="comment"># author: snowolf  </span></div><div class="line"><span class="comment">#  </span></div><div class="line"><span class="comment"># processname: redis  </span></div><div class="line"></div><div class="line">redis_path=<span class="string">"/usr/local/bin/redis-server"</span>  </div><div class="line">redis_conf=<span class="string">"/etc/redis/redis.conf"</span>  </div><div class="line">redis_pid=<span class="string">"/var/run/redis.pid"</span>  </div><div class="line"></div><div class="line"><span class="comment"># Source function library.  </span></div><div class="line">. /etc/rc.d/init.d/<span class="built_in">functions</span>  </div><div class="line"></div><div class="line">[ -x <span class="variable">$redis_path</span> ] || <span class="built_in">exit</span> 0  </div><div class="line"></div><div class="line">RETVAL=0  </div><div class="line">prog=<span class="string">"redis"</span>  </div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># Start daemons.  </span></div><div class="line"><span class="function"><span class="title">start</span></span>() &#123;  </div><div class="line">    <span class="keyword">if</span> [ -e <span class="variable">$redis_pid</span> -a ! -z <span class="variable">$redis_pid</span> ];<span class="keyword">then</span>  </div><div class="line">        <span class="built_in">echo</span> <span class="variable">$prog</span><span class="string">" already running...."</span>  </div><div class="line">        <span class="built_in">exit</span> 1  </div><div class="line">    <span class="keyword">fi</span>  </div><div class="line">    </div><div class="line">    <span class="built_in">echo</span> -n $<span class="string">"Starting <span class="variable">$prog</span> "</span>  </div><div class="line">    <span class="comment"># Single instance for all caches  </span></div><div class="line">    <span class="variable">$redis_path</span> <span class="variable">$redis_conf</span>  </div><div class="line">    RETVAL=$?  </div><div class="line">    [ <span class="variable">$RETVAL</span> -eq 0 ] &amp;&amp; &#123;  </div><div class="line">        touch /var/lock/subsys/<span class="variable">$prog</span>  </div><div class="line">        success $<span class="string">"<span class="variable">$prog</span>"</span>  </div><div class="line">    &#125;  </div><div class="line">    <span class="built_in">echo</span>  </div><div class="line">    <span class="built_in">return</span> <span class="variable">$RETVAL</span>  </div><div class="line">&#125;  </div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># Stop daemons.  </span></div><div class="line"><span class="function"><span class="title">stop</span></span>() &#123;  </div><div class="line">    <span class="built_in">echo</span> -n $<span class="string">"Stopping <span class="variable">$prog</span> "</span>  </div><div class="line">    killproc -d 10 <span class="variable">$redis_path</span>  </div><div class="line">    <span class="built_in">echo</span>  </div><div class="line">    [ <span class="variable">$RETVAL</span> = 0 ] &amp;&amp; rm -f <span class="variable">$redis_pid</span> /var/lock/subsys/<span class="variable">$prog</span>  </div><div class="line"></div><div class="line">    RETVAL=$?  </div><div class="line">    <span class="built_in">return</span> <span class="variable">$RETVAL</span>  </div><div class="line">&#125;  </div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># See how we were called.  </span></div><div class="line"><span class="keyword">case</span> <span class="string">"<span class="variable">$1</span>"</span> <span class="keyword">in</span>  </div><div class="line">    start)  </div><div class="line">        start  </div><div class="line">        ;;  </div><div class="line">    stop)  </div><div class="line">        stop  </div><div class="line">        ;;  </div><div class="line">    status)  </div><div class="line">        status <span class="variable">$prog</span>  </div><div class="line">        RETVAL=$?  </div><div class="line">        ;;  </div><div class="line">    restart)  </div><div class="line">        stop  </div><div class="line">        start  </div><div class="line">        ;;  </div><div class="line">    condrestart)  </div><div class="line">        <span class="keyword">if</span> <span class="built_in">test</span> <span class="string">"x`pidof redis`"</span> != x; <span class="keyword">then</span>  </div><div class="line">            stop  </div><div class="line">            start  </div><div class="line">        <span class="keyword">fi</span>  </div><div class="line">        ;;  </div><div class="line">    *)  </div><div class="line">        <span class="built_in">echo</span> $<span class="string">"Usage: <span class="variable">$0</span> &#123;start|stop|status|restart|condrestart&#125;"</span>  </div><div class="line">        <span class="built_in">exit</span> 1  </div><div class="line"><span class="keyword">esac</span>  </div><div class="line"><span class="built_in">exit</span> <span class="variable">$RETVAL</span>  </div><div class="line">``` </div><div class="line"> </div><div class="line"><span class="comment">#### 引用</span></div><div class="line"></div><div class="line">```bash</div><div class="line"><span class="comment"># service redis-server restart</span></div><div class="line">Stopping redis                                             [失败]</div><div class="line">Starting redis                                             [确定]</div><div class="line"><span class="comment"># service redis-server status </span></div><div class="line">redis (pid  14965) 正在运行...</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;非常方便！</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/">Redis</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-Redis/14. 为什么使用 Redis及其产品定位" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -741,124 +745,6 @@
 <li>当需要除key/value之外的更多数据类型支持时，使用Redis更合适。</li>
 <li>当存储的数据不能被剔除时，使用Redis更合适。</li>
 </ol>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/">Redis</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Redis/12. 几点建议，让Redis在你的系统中发挥更大作用" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Redis/12. 几点建议，让Redis在你的系统中发挥更大作用/" class="article-date">
-  	<time datetime="2017-09-02T18:09:22.883Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Redis/12. 几点建议，让Redis在你的系统中发挥更大作用/">
-        几点建议，让Redis在你的系统中发挥更大作用
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis在很多方面与其他数据库解决方案不同：它使用内存提供主存储支持，而仅使用硬盘做持久性的存储；它的数据模型非常独特，用的是单线程。另一个大区别在于，你可以在开发环境中使用Redis的功能，但却不需要转到Redis。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;转向Redis当然也是可取的，许多开发者从一开始就把Redis作为首选数据库；但设想如果你的开发环境已经搭建好，应用已经在上面运行了，那么更换数据库框架显然不那么容易。另外在一些需要大容量数据集的应用，Redis也并不适合，因为它的数据集不会超过系统可用的内存。所以如果你有大数据应用，而且主要是读取访问模式，那么Redis并不是正确的选择。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然而我喜欢Redis的一点就是你可以把它融入到你的系统中来，这就能够解决很多问题，比如那些你现有的数据库处理起来感到缓慢的任务。这些你就可以通过Redis来进行优化，或者为应用创建些新的功能。在本文中，我就想探讨一些怎样将Redis加入到现有的环境中，并利用它的原语命令等功能来解决传统环境中碰到的一些常见问题。在这些例子中，Redis都不是作为首选数据库。</p>
-<h2 id="显示最新的项目列表"><a href="#显示最新的项目列表" class="headerlink" title="显示最新的项目列表"></a>显示最新的项目列表</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面这个语句常用来显示最新项目，随着数据多了，查询毫无疑问会越来越慢。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT * FROM foo WHERE ... ORDER BY time DESC LIMIT 10</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在Web应用中，“列出最新的回复”之类的查询非常普遍，这通常会带来可扩展性问题。这令人沮丧，因为项目本来就是按这个顺序被创建的，但要输出这个顺序却不得不进行排序操作。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;类似的问题就可以用Redis来解决。比如说，我们的一个Web应用想要列出用户贴出的最新20条评论。在最新的评论边上我们有一个“显示全部”的链接，点击后就可以获得更多的评论。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们假设数据库中的每条评论都有一个唯一的递增的ID字段。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们可以使用分页来制作主页和评论页，使用Redis的模板：</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;每次新评论发表时，我们会将它的ID添加到一个Redis列表：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">LPUSH latest.comments &lt;ID&gt;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们将列表裁剪为指定长度，因此Redis只需要保存最新的5000条评论：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">LTRIM latest.comments 0 5000</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;每次我们需要获取最新评论的项目范围时，我们调用一个函数来完成（使用伪代码）：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">FUNCTION get_latest_comments(start,num_items): </div><div class="line">    id_list = redis.lrange(&amp;quot;latest.comments&amp;quot;,start,start+num_items-1) </div><div class="line">    IF id_list.length &amp;lt; num_items </div><div class="line">         id_list = SQL_DB(&amp;quot;SELECT ... ORDER BY time LIMIT ...&amp;quot;) </div><div class="line">    END </div><div class="line">    RETURN id_list </div><div class="line">END</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里我们做的很简单。在Redis中我们的最新ID使用了常驻缓存，这是一直更新的。但是我们做了限制不能超过5000个ID，因此我们的获取ID函数会一直询问Redis。只有在start/count参数超出了这个范围的时候，才需要去访问数据库。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们的系统不会像传统方式那样“刷新”缓存，Redis实例中的信息永远是一致的。SQL数据库（或是硬盘上的其他类型数据库）只是在用户需要获取“很远”的数据时才会被触发，而主页或第一个评论页是不会麻烦到硬盘上的数据库了。</p>
-<h2 id="删除与过滤"><a href="#删除与过滤" class="headerlink" title="删除与过滤"></a>删除与过滤</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们可以使用LREM来删除评论。如果删除操作非常少，另一个选择是直接跳过评论条目的入口，报告说该评论已经不存在。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有些时候你想要给不同的列表附加上不同的过滤器。如果过滤器的数量受到限制，你可以简单的为每个不同的过滤器使用不同的Redis列表。毕竟每个列表只有5000条项目，但Redis却能够使用非常少的内存来处理几百万条项目。</p>
-<h2 id="排行榜相关"><a href="#排行榜相关" class="headerlink" title="排行榜相关"></a>排行榜相关</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另一个很普遍的需求是各种数据库的数据并非存储在内存中，因此在按得分排序以及实时更新这些几乎每秒钟都需要更新的功能上数据库的性能不够理想。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;典型的比如那些在线游戏的排行榜，比如一个Facebook的游戏，根据得分你通常想要：</p>
-<ul>
-<li>列出前100名高分选手<br>-列出某用户当前的全球排名</li>
-</ul>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这些操作对于Redis来说小菜一碟，即使你有几百万个用户，每分钟都会有几百万个新的得分。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;模式是这样的，每次获得新得分时，我们用这样的代码：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ZADD leaderboard &lt;score&gt; &lt;username&gt;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;你可能用userID来取代username，这取决于你是怎么设计的。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;得到前100名高分用户很简单：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ZREVRANGE leaderboard 0 99。</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用户的全球排名也相似，只需要：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ZRANK leaderboard &lt;username&gt;。</div></pre></td></tr></table></figure>
-<h2 id="按照用户投票和时间排序"><a href="#按照用户投票和时间排序" class="headerlink" title="按照用户投票和时间排序"></a>按照用户投票和时间排序</h2><p>排行榜的一种常见变体模式就像Reddit或Hacker News用的那样，新闻按照类似下面的公式根据得分来排序：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">score = points / time^alpha</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;因此用户的投票会相应的把新闻挖出来，但时间会按照一定的指数将新闻埋下去。下面是我们的模式，当然算法由你决定。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;模式是这样的，开始时先观察那些可能是最新的项目，例如首页上的1000条新闻都是候选者，因此我们先忽视掉其他的，这实现起来很简单。</p>
-<ul>
-<li>每次新的新闻贴上来后，我们将ID添加到列表中，使用LPUSH + LTRIM，确保只取出最新的1000条项目。</li>
-<li>有一项后台任务获取这个列表，并且持续的计算这1000条新闻中每条新闻的最终得分。计算结果由ZADD命令按照新的顺序填充生成列表，老新闻则被清除。这里的关键思路是排序工作是由后台任务来完成的。</li>
-</ul>
-<h2 id="过期项目处理"><a href="#过期项目处理" class="headerlink" title="过期项目处理"></a>过期项目处理</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另一种常用的项目排序是按照时间排序。我们使用unix时间作为得分即可。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;模式如下：</p>
-<ul>
-<li>每次有新项目添加到我们的非Redis数据库时，我们把它加入到排序集合中。这时我们用的是时间属性，current_time和time_to_live。</li>
-<li>另一项后台任务使用ZRANGE…SCORES查询排序集合，取出最新的10个项目。如果发现unix时间已经过期，则在数据库中删除条目。</li>
-</ul>
-<h2 id="计数"><a href="#计数" class="headerlink" title="计数"></a>计数</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis是一个很好的计数器，这要感谢INCRBY和其他相似命令。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我相信你曾许多次想要给数据库加上新的计数器，用来获取统计或显示新信息，但是最后却由于写入敏感而不得不放弃它们。<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;好了，现在使用Redis就不需要再担心了。有了原子递增（atomic increment），你可以放心的加上各种计数，用GETSET重置，或者是让它们过期。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例如这样操作：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">INCR user:&lt;id&gt; EXPIRE </div><div class="line">user:&lt;id&gt; 60</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;你可以计算出最近用户在页面间停顿不超过60秒的页面浏览量，当计数达到比如20时，就可以显示出某些条幅提示，或是其它你想显示的东西。</p>
-<h2 id="特定时间内的特定项目"><a href="#特定时间内的特定项目" class="headerlink" title="特定时间内的特定项目"></a>特定时间内的特定项目</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另一项对于其他数据库很难，但Redis做起来却轻而易举的事就是统计在某段特点时间里有多少特定用户访问了某个特定资源。比如我想要知道某些特定的注册用户或IP地址，他们到底有多少访问了某篇文章。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;每次我获得一次新的页面浏览时我只需要这样做：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SADD page:day1:&lt;page_id&gt; &lt;user_id&gt;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当然你可能想用unix时间替换day1，比如time()-(time()%3600*24)等等。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;想知道特定用户的数量吗？只需要使用SCARD page:day1:<page_id>。</page_id></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需要测试某个特定用户是否访问了这个页面？SISMEMBER page:day1:<page_id>。</page_id></p>
-<h2 id="实时分析正在发生的情况，用于数据统计与防止垃圾邮件等"><a href="#实时分析正在发生的情况，用于数据统计与防止垃圾邮件等" class="headerlink" title="实时分析正在发生的情况，用于数据统计与防止垃圾邮件等"></a>实时分析正在发生的情况，用于数据统计与防止垃圾邮件等</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们只做了几个例子，但如果你研究Redis的命令集，并且组合一下，就能获得大量的实时分析方法，有效而且非常省力。使用Redis原语命令，更容易实施垃圾邮件过滤系统或其他实时跟踪系统。</p>
-<h2 id="Pub-Sub"><a href="#Pub-Sub" class="headerlink" title="Pub/Sub"></a>Pub/Sub</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis的Pub/Sub非常非常简单，运行稳定并且快速。支持模式匹配，能够实时订阅与取消频道。</p>
-<h2 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;你应该已经注意到像list push和list pop这样的Redis命令能够很方便的执行队列操作了，但能做的可不止这些：比如Redis还有list pop的变体命令，能够在列表为空时阻塞队列。</p>
-<h2 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis的缓存部分值得写一篇新文章，我这里只是简单的说一下。Redis能够替代memcached，让你的缓存从只能存储数据变得能够更新数据，因此你不再需要每次都重新生成数据了。</p>
-<h2 id="Redis可以解决你的问题！"><a href="#Redis可以解决你的问题！" class="headerlink" title="Redis可以解决你的问题！"></a>Redis可以解决你的问题！</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;现在你就可以用上Redis，让用户感到更轻松，让你的系统变得不再复杂，让你的网站反应更快。你不需要改变现有的数据库结构，使用Redis给你的框架带来新的东西，来完成那些从前认为不可能做到/很难做到的，或是成本太高的任务。</p>
 
       
     </div>
@@ -1020,6 +906,124 @@
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;不时的从 reddit.home.page 有序集合中删除过旧的新闻也是为了让我们的系统总是工作在有限的新闻集合之上。</p>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;更新有序集合的scores</p>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;结束这篇指南之前还有最后一个小贴士。有序集合scores可以在任何时候更新。只要用 ZADD 对有序集合内的元素操作就会更新它的score（和位置），时间复杂度是O(log(N))，因此即使大量更新，有序集合也是合适的。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/">Redis</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Redis/12. 几点建议，让Redis在你的系统中发挥更大作用" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Redis/12. 几点建议，让Redis在你的系统中发挥更大作用/" class="article-date">
+  	<time datetime="2017-09-02T18:09:22.883Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Redis/12. 几点建议，让Redis在你的系统中发挥更大作用/">
+        几点建议，让Redis在你的系统中发挥更大作用
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis在很多方面与其他数据库解决方案不同：它使用内存提供主存储支持，而仅使用硬盘做持久性的存储；它的数据模型非常独特，用的是单线程。另一个大区别在于，你可以在开发环境中使用Redis的功能，但却不需要转到Redis。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;转向Redis当然也是可取的，许多开发者从一开始就把Redis作为首选数据库；但设想如果你的开发环境已经搭建好，应用已经在上面运行了，那么更换数据库框架显然不那么容易。另外在一些需要大容量数据集的应用，Redis也并不适合，因为它的数据集不会超过系统可用的内存。所以如果你有大数据应用，而且主要是读取访问模式，那么Redis并不是正确的选择。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然而我喜欢Redis的一点就是你可以把它融入到你的系统中来，这就能够解决很多问题，比如那些你现有的数据库处理起来感到缓慢的任务。这些你就可以通过Redis来进行优化，或者为应用创建些新的功能。在本文中，我就想探讨一些怎样将Redis加入到现有的环境中，并利用它的原语命令等功能来解决传统环境中碰到的一些常见问题。在这些例子中，Redis都不是作为首选数据库。</p>
+<h2 id="显示最新的项目列表"><a href="#显示最新的项目列表" class="headerlink" title="显示最新的项目列表"></a>显示最新的项目列表</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面这个语句常用来显示最新项目，随着数据多了，查询毫无疑问会越来越慢。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT * FROM foo WHERE ... ORDER BY time DESC LIMIT 10</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在Web应用中，“列出最新的回复”之类的查询非常普遍，这通常会带来可扩展性问题。这令人沮丧，因为项目本来就是按这个顺序被创建的，但要输出这个顺序却不得不进行排序操作。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;类似的问题就可以用Redis来解决。比如说，我们的一个Web应用想要列出用户贴出的最新20条评论。在最新的评论边上我们有一个“显示全部”的链接，点击后就可以获得更多的评论。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们假设数据库中的每条评论都有一个唯一的递增的ID字段。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们可以使用分页来制作主页和评论页，使用Redis的模板：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;每次新评论发表时，我们会将它的ID添加到一个Redis列表：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">LPUSH latest.comments &lt;ID&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们将列表裁剪为指定长度，因此Redis只需要保存最新的5000条评论：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">LTRIM latest.comments 0 5000</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;每次我们需要获取最新评论的项目范围时，我们调用一个函数来完成（使用伪代码）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">FUNCTION get_latest_comments(start,num_items): </div><div class="line">    id_list = redis.lrange(&amp;quot;latest.comments&amp;quot;,start,start+num_items-1) </div><div class="line">    IF id_list.length &amp;lt; num_items </div><div class="line">         id_list = SQL_DB(&amp;quot;SELECT ... ORDER BY time LIMIT ...&amp;quot;) </div><div class="line">    END </div><div class="line">    RETURN id_list </div><div class="line">END</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里我们做的很简单。在Redis中我们的最新ID使用了常驻缓存，这是一直更新的。但是我们做了限制不能超过5000个ID，因此我们的获取ID函数会一直询问Redis。只有在start/count参数超出了这个范围的时候，才需要去访问数据库。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们的系统不会像传统方式那样“刷新”缓存，Redis实例中的信息永远是一致的。SQL数据库（或是硬盘上的其他类型数据库）只是在用户需要获取“很远”的数据时才会被触发，而主页或第一个评论页是不会麻烦到硬盘上的数据库了。</p>
+<h2 id="删除与过滤"><a href="#删除与过滤" class="headerlink" title="删除与过滤"></a>删除与过滤</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们可以使用LREM来删除评论。如果删除操作非常少，另一个选择是直接跳过评论条目的入口，报告说该评论已经不存在。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有些时候你想要给不同的列表附加上不同的过滤器。如果过滤器的数量受到限制，你可以简单的为每个不同的过滤器使用不同的Redis列表。毕竟每个列表只有5000条项目，但Redis却能够使用非常少的内存来处理几百万条项目。</p>
+<h2 id="排行榜相关"><a href="#排行榜相关" class="headerlink" title="排行榜相关"></a>排行榜相关</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另一个很普遍的需求是各种数据库的数据并非存储在内存中，因此在按得分排序以及实时更新这些几乎每秒钟都需要更新的功能上数据库的性能不够理想。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;典型的比如那些在线游戏的排行榜，比如一个Facebook的游戏，根据得分你通常想要：</p>
+<ul>
+<li>列出前100名高分选手<br>-列出某用户当前的全球排名</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这些操作对于Redis来说小菜一碟，即使你有几百万个用户，每分钟都会有几百万个新的得分。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;模式是这样的，每次获得新得分时，我们用这样的代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ZADD leaderboard &lt;score&gt; &lt;username&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;你可能用userID来取代username，这取决于你是怎么设计的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;得到前100名高分用户很简单：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ZREVRANGE leaderboard 0 99。</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用户的全球排名也相似，只需要：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ZRANK leaderboard &lt;username&gt;。</div></pre></td></tr></table></figure>
+<h2 id="按照用户投票和时间排序"><a href="#按照用户投票和时间排序" class="headerlink" title="按照用户投票和时间排序"></a>按照用户投票和时间排序</h2><p>排行榜的一种常见变体模式就像Reddit或Hacker News用的那样，新闻按照类似下面的公式根据得分来排序：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">score = points / time^alpha</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;因此用户的投票会相应的把新闻挖出来，但时间会按照一定的指数将新闻埋下去。下面是我们的模式，当然算法由你决定。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;模式是这样的，开始时先观察那些可能是最新的项目，例如首页上的1000条新闻都是候选者，因此我们先忽视掉其他的，这实现起来很简单。</p>
+<ul>
+<li>每次新的新闻贴上来后，我们将ID添加到列表中，使用LPUSH + LTRIM，确保只取出最新的1000条项目。</li>
+<li>有一项后台任务获取这个列表，并且持续的计算这1000条新闻中每条新闻的最终得分。计算结果由ZADD命令按照新的顺序填充生成列表，老新闻则被清除。这里的关键思路是排序工作是由后台任务来完成的。</li>
+</ul>
+<h2 id="过期项目处理"><a href="#过期项目处理" class="headerlink" title="过期项目处理"></a>过期项目处理</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另一种常用的项目排序是按照时间排序。我们使用unix时间作为得分即可。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;模式如下：</p>
+<ul>
+<li>每次有新项目添加到我们的非Redis数据库时，我们把它加入到排序集合中。这时我们用的是时间属性，current_time和time_to_live。</li>
+<li>另一项后台任务使用ZRANGE…SCORES查询排序集合，取出最新的10个项目。如果发现unix时间已经过期，则在数据库中删除条目。</li>
+</ul>
+<h2 id="计数"><a href="#计数" class="headerlink" title="计数"></a>计数</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis是一个很好的计数器，这要感谢INCRBY和其他相似命令。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我相信你曾许多次想要给数据库加上新的计数器，用来获取统计或显示新信息，但是最后却由于写入敏感而不得不放弃它们。<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;好了，现在使用Redis就不需要再担心了。有了原子递增（atomic increment），你可以放心的加上各种计数，用GETSET重置，或者是让它们过期。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例如这样操作：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">INCR user:&lt;id&gt; EXPIRE </div><div class="line">user:&lt;id&gt; 60</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;你可以计算出最近用户在页面间停顿不超过60秒的页面浏览量，当计数达到比如20时，就可以显示出某些条幅提示，或是其它你想显示的东西。</p>
+<h2 id="特定时间内的特定项目"><a href="#特定时间内的特定项目" class="headerlink" title="特定时间内的特定项目"></a>特定时间内的特定项目</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另一项对于其他数据库很难，但Redis做起来却轻而易举的事就是统计在某段特点时间里有多少特定用户访问了某个特定资源。比如我想要知道某些特定的注册用户或IP地址，他们到底有多少访问了某篇文章。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;每次我获得一次新的页面浏览时我只需要这样做：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SADD page:day1:&lt;page_id&gt; &lt;user_id&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当然你可能想用unix时间替换day1，比如time()-(time()%3600*24)等等。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;想知道特定用户的数量吗？只需要使用SCARD page:day1:<page_id>。</page_id></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需要测试某个特定用户是否访问了这个页面？SISMEMBER page:day1:<page_id>。</page_id></p>
+<h2 id="实时分析正在发生的情况，用于数据统计与防止垃圾邮件等"><a href="#实时分析正在发生的情况，用于数据统计与防止垃圾邮件等" class="headerlink" title="实时分析正在发生的情况，用于数据统计与防止垃圾邮件等"></a>实时分析正在发生的情况，用于数据统计与防止垃圾邮件等</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们只做了几个例子，但如果你研究Redis的命令集，并且组合一下，就能获得大量的实时分析方法，有效而且非常省力。使用Redis原语命令，更容易实施垃圾邮件过滤系统或其他实时跟踪系统。</p>
+<h2 id="Pub-Sub"><a href="#Pub-Sub" class="headerlink" title="Pub/Sub"></a>Pub/Sub</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis的Pub/Sub非常非常简单，运行稳定并且快速。支持模式匹配，能够实时订阅与取消频道。</p>
+<h2 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;你应该已经注意到像list push和list pop这样的Redis命令能够很方便的执行队列操作了，但能做的可不止这些：比如Redis还有list pop的变体命令，能够在列表为空时阻塞队列。</p>
+<h2 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis的缓存部分值得写一篇新文章，我这里只是简单的说一下。Redis能够替代memcached，让你的缓存从只能存储数据变得能够更新数据，因此你不再需要每次都重新生成数据了。</p>
+<h2 id="Redis可以解决你的问题！"><a href="#Redis可以解决你的问题！" class="headerlink" title="Redis可以解决你的问题！"></a>Redis可以解决你的问题！</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;现在你就可以用上Redis，让用户感到更轻松，让你的系统变得不再复杂，让你的网站反应更快。你不需要改变现有的数据库结构，使用Redis给你的框架带来新的东西，来完成那些从前认为不可能做到/很难做到的，或是成本太高的任务。</p>
 
       
     </div>

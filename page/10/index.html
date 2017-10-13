@@ -106,6 +106,8 @@
 				        
 							<li><a href="/archives">所有文章</a></li>
 				        
+							<li><a href="/tags">静心阅读</a></li>
+				        
 						</ul>
 					</nav>
 					<nav class="header-nav">
@@ -154,6 +156,8 @@
 					<li><a href="/">主页</a></li>
 		        
 					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/tags">静心阅读</a></li>
 		        
 		        <div class="clearfix"></div>
 				</ul>
@@ -441,65 +445,6 @@
 
 
   
-    <article id="post-Squid/15. Squid的防盗链" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Squid/15. Squid的防盗链/" class="article-date">
-  	<time datetime="2017-09-02T18:13:44.833Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Squid/15. Squid的防盗链/">
-        Squid的防盗链
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有了Varnish防盗链，自然也要有Squid的防盗链。原理都一样，对Referer进行判断，当然网上有所谓的终极解决方案还对cookies进行判断的，这里还是只讨论Referer这种。在Squid里就是在配置文件添加acl控制，在squid.conf中的acl段添加如下配置:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">acl has_referer referer_regex .</div><div class="line">acl allow_referer referer_regex -i baidu\.com</div><div class="line">acl allow_referer referer_regex -i google\.com</div><div class="line">acl allow_referer referer_regex -i yahoo\.cn</div><div class="line">acl allow_referer referer_regex -i google\.cn</div><div class="line"> </div><div class="line">http_access allow !has_referer</div><div class="line">http_access deny !allow_referer</div><div class="line">deny_info http://img1.test.com/images/noposter.jpg allow_referer</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解释一下，has_referer匹配Referer存在，然后利用!has_referer来匹配没有Referer即直接访问的请求，这部分请求不予做防盗链处理，allow。allow_referer即允许使用源站资源的网站，然后利用!allow_referer来匹配不在允许列表的网站，这些不允许的Referer过来的请求就返回deny_info的内容</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Squid/">Squid</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-Squid/14. 删除squid缓存" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -565,6 +510,65 @@
 <li>清除文件名为zhangyan.jpg的所有缓存：</li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./clear_squid_cache.sh zhangyan.jpg</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Squid/">Squid</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Squid/15. Squid的防盗链" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Squid/15. Squid的防盗链/" class="article-date">
+  	<time datetime="2017-09-02T18:13:44.833Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Squid/15. Squid的防盗链/">
+        Squid的防盗链
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有了Varnish防盗链，自然也要有Squid的防盗链。原理都一样，对Referer进行判断，当然网上有所谓的终极解决方案还对cookies进行判断的，这里还是只讨论Referer这种。在Squid里就是在配置文件添加acl控制，在squid.conf中的acl段添加如下配置:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">acl has_referer referer_regex .</div><div class="line">acl allow_referer referer_regex -i baidu\.com</div><div class="line">acl allow_referer referer_regex -i google\.com</div><div class="line">acl allow_referer referer_regex -i yahoo\.cn</div><div class="line">acl allow_referer referer_regex -i google\.cn</div><div class="line"> </div><div class="line">http_access allow !has_referer</div><div class="line">http_access deny !allow_referer</div><div class="line">deny_info http://img1.test.com/images/noposter.jpg allow_referer</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解释一下，has_referer匹配Referer存在，然后利用!has_referer来匹配没有Referer即直接访问的请求，这部分请求不予做防盗链处理，allow。allow_referer即允许使用源站资源的网站，然后利用!allow_referer来匹配不在允许列表的网站，这些不允许的Referer过来的请求就返回deny_info的内容</p>
 
       
     </div>

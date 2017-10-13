@@ -106,6 +106,8 @@
 				        
 							<li><a href="/archives">所有文章</a></li>
 				        
+							<li><a href="/tags">静心阅读</a></li>
+				        
 						</ul>
 					</nav>
 					<nav class="header-nav">
@@ -154,6 +156,8 @@
 					<li><a href="/">主页</a></li>
 		        
 					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/tags">静心阅读</a></li>
 		        
 		        <div class="clearfix"></div>
 				</ul>
@@ -371,69 +375,6 @@
 
 
   
-    <article id="post-MySQL/10. mysql5.7 root密码更改" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/MySQL/10. mysql5.7 root密码更改/" class="article-date">
-  	<time datetime="2017-09-02T18:06:42.769Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/MySQL/10. mysql5.7 root密码更改/">
-        mysql5.7root密码更改
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mysql5.7root有默认密码，必须重设密码后，才能进行mysql的操作，以下是设置root密码的步骤</p>
-<h2 id="一、查看默认密码"><a href="#一、查看默认密码" class="headerlink" title="一、查看默认密码"></a>一、查看默认密码</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost src]<span class="comment"># cat /root/.mysql_secret</span></div><div class="line"><span class="comment"># The random password set for the root userat Fri Jan 10 20:00:34 2014 (local time): aJqZsA2m</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里的aJqZsA2m就是生成的root随机密码。</p>
-<h2 id="二、登录mysql"><a href="#二、登录mysql" class="headerlink" title="二、登录mysql"></a>二、登录mysql</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost src]<span class="comment"># mysql -u root -p</span></div><div class="line">Enter password:</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输入上面的密码aJqZsA2m登录，如果没有把mysql的路径加到PATH里，那就用绝对路径。<code>mysql -u root -p</code> 还可以写成 <code>mysql -uroot -paJqZsA2m</code>。</p>
-<h2 id="三、更改密码"><a href="#三、更改密码" class="headerlink" title="三、更改密码"></a>三、更改密码</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mysql&gt; SET PASSWORD FOR <span class="string">'root'</span>@localhost = PASSWORD（<span class="string">'123456'</span>）；</div><div class="line">Query OK, 0 rows affected (0.17 sec)</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;至此，就成功的修改了密码。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-MySQL/11.  mysql登录" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -498,6 +439,69 @@
 <h2 id="socket方式"><a href="#socket方式" class="headerlink" title="socket方式"></a>socket方式</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这种只适合连接本机的mysql：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># mysql -uroot -S /tmp/mysql.sock -pyanyi</span></div></pre></td></tr></table></figure>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里的-S可以省略掉。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-MySQL/10. mysql5.7 root密码更改" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/MySQL/10. mysql5.7 root密码更改/" class="article-date">
+  	<time datetime="2017-09-02T18:06:42.769Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/MySQL/10. mysql5.7 root密码更改/">
+        mysql5.7root密码更改
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mysql5.7root有默认密码，必须重设密码后，才能进行mysql的操作，以下是设置root密码的步骤</p>
+<h2 id="一、查看默认密码"><a href="#一、查看默认密码" class="headerlink" title="一、查看默认密码"></a>一、查看默认密码</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost src]<span class="comment"># cat /root/.mysql_secret</span></div><div class="line"><span class="comment"># The random password set for the root userat Fri Jan 10 20:00:34 2014 (local time): aJqZsA2m</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里的aJqZsA2m就是生成的root随机密码。</p>
+<h2 id="二、登录mysql"><a href="#二、登录mysql" class="headerlink" title="二、登录mysql"></a>二、登录mysql</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost src]<span class="comment"># mysql -u root -p</span></div><div class="line">Enter password:</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输入上面的密码aJqZsA2m登录，如果没有把mysql的路径加到PATH里，那就用绝对路径。<code>mysql -u root -p</code> 还可以写成 <code>mysql -uroot -paJqZsA2m</code>。</p>
+<h2 id="三、更改密码"><a href="#三、更改密码" class="headerlink" title="三、更改密码"></a>三、更改密码</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mysql&gt; SET PASSWORD FOR <span class="string">'root'</span>@localhost = PASSWORD（<span class="string">'123456'</span>）；</div><div class="line">Query OK, 0 rows affected (0.17 sec)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;至此，就成功的修改了密码。</p>
 
       
     </div>

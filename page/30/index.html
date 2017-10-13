@@ -106,6 +106,8 @@
 				        
 							<li><a href="/archives">所有文章</a></li>
 				        
+							<li><a href="/tags">静心阅读</a></li>
+				        
 						</ul>
 					</nav>
 					<nav class="header-nav">
@@ -155,6 +157,8 @@
 		        
 					<li><a href="/archives">所有文章</a></li>
 		        
+					<li><a href="/tags">静心阅读</a></li>
+		        
 		        <div class="clearfix"></div>
 				</ul>
 			</nav>
@@ -199,6 +203,131 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Order deny,allow</div><div class="line">Deny from all</div><div class="line">Allow from 127.0.0.1</div><div class="line">Allow from 2.2.2.2</div></pre></td></tr></table></figure>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;假如该虚拟机的域名为 domain.com , 这样配置后，除了 127.0.0.1 和 2.2.2.2 外，其他ip访问以下类似的uri时都会直接禁止的。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">http://domain.com/1212admin.txt </div><div class="line">http://domain.com/admin.php</div><div class="line">http://domain.com/1212/admin.html</div><div class="line">等</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux安全/">Linux安全</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Linux安全/13. 浅谈CSRF攻击方式" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Linux安全/13. 浅谈CSRF攻击方式/" class="article-date">
+  	<time datetime="2017-09-02T18:04:46.018Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Linux安全/13. 浅谈CSRF攻击方式/">
+        浅谈CSRF攻击方式
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一-CSRF是什么？"><a href="#一-CSRF是什么？" class="headerlink" title="一.CSRF是什么？"></a>一.CSRF是什么？</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;CSRF（Cross-site request forgery），中文名称：跨站请求伪造，也被称为：one click attack/session riding，缩写为：CSRF/XSRF。</p>
+<h2 id="二-CSRF可以做什么？"><a href="#二-CSRF可以做什么？" class="headerlink" title="二.CSRF可以做什么？"></a>二.CSRF可以做什么？</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;你这可以这么理解CSRF攻击：<strong>攻击者盗用了你的身份，以你的名义发送恶意请求</strong>。CSRF能够做的事情包括：以你名义发送邮件，发消息，盗取你的账号，甚至于购买商品，虚拟货币转账……造成的问题包括：个人隐私泄露以及财产安全。</p>
+<h2 id="三-CSRF漏洞现状"><a href="#三-CSRF漏洞现状" class="headerlink" title="三.CSRF漏洞现状"></a>三.CSRF漏洞现状</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;CSRF这种攻击方式在2000年已经被国外的安全人员提出，但在国内，直到06年才开始被关注，08年，国内外的多个大型社区和交互网站分别爆出CSRF漏洞，如：NYTimes.com（纽约时报）、Metafilter（一个大型的BLOG网站），YouTube和百度HI……而现在，互联网上的许多站点仍对此毫无防备，以至于安全业界称CSRF为“沉睡的巨人”。</p>
+<h2 id="四-CSRF的原理"><a href="#四-CSRF的原理" class="headerlink" title="四.CSRF的原理"></a>四.CSRF的原理</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下图简单阐述了CSRF攻击的思想：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E6%B5%85%E8%B0%88CSRF%E6%94%BB%E5%87%BB%E6%96%B9%E5%BC%8F/01.jpeg?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从上图可以看出，要完成一次CSRF攻击，<strong>受害者必须依次完成两个步骤</strong>：</p>
+<ol>
+<li><p><strong>登录受信任网站A，并在本地生成Cookie。</strong></p>
+</li>
+<li><p><strong>在不登出A的情况下，访问危险网站B。</strong></p>
+</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;看到这里，你也许会说：“<strong>如果我不满足以上两个条件中的一个，我就不会受到CSRF的攻击</strong>”。是的，确实如此，但你不能保证以下情况不会发生：</p>
+<ol>
+<li><p>你不能保证你登录了一个网站后，不再打开一个tab页面并访问另外的网站。</p>
+</li>
+<li><p>你不能保证你关闭浏览器了后，你本地的Cookie立刻过期，你上次的会话已经结束。（事实上，关闭浏览器不能结束一个会话，但大多数人都会错误的认为关闭浏览器就等于退出登录/结束会话了……）</p>
+</li>
+<li><p>上图中所谓的攻击网站，可能是一个存在其他漏洞的可信任的经常被人访问的网站。</p>
+</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上面大概地讲了一下CSRF攻击的思想，下面我将用几个例子详细说说具体的CSRF攻击，这里我以一个银行转账的操作作为例子（仅仅是例子，真实的银行网站没这么傻:&gt;）</p>
+<h3 id="示例1："><a href="#示例1：" class="headerlink" title="示例1："></a>示例1：</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;银行网站A，它以GET请求来完成银行转账的操作，如：<a href="http://www.mybank.com/Transfer.php?toBankId=11&amp;money=1000" target="_blank" rel="external">http://www.mybank.com/Transfer.php?toBankId=11&amp;money=1000</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;危险网站B，它里面有一段HTML的代码如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;img src=http://www.mybank.com/Transfer.php?toBankId=11&amp;money=1000&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先，你登录了银行网站A，然后访问危险网站B，噢，这时你会发现你的银行账户少了1000块……</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为什么会这样呢？原因是银行网站A违反了HTTP规范，使用GET请求更新资源。在访问危险网站B的之前，你已经登录了银行网站A，而B中的<img>以GET的方式请求第三方资源（这里的第三方就是指银行网站了，原本这是一个合法的请求，但这里被不法分子利用了），所以你的浏览器会带上你的银行网站A的Cookie发出Get请求，去获取资源“<a href="http://www.mybank.com/Transfer.php?toBankId=11&amp;money=1000”，结果银行网站服务器收到请求后，认为这是一个更新资源操作（转账操作），所以就立刻进行转账操作" target="_blank" rel="external">http://www.mybank.com/Transfer.php?toBankId=11&amp;money=1000”，结果银行网站服务器收到请求后，认为这是一个更新资源操作（转账操作），所以就立刻进行转账操作</a>……</p>
+<h3 id="示例2："><a href="#示例2：" class="headerlink" title="示例2："></a>示例2：</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为了杜绝上面的问题，银行决定改用POST请求完成转账操作。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;银行网站A的WEB表单如下：　　</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;form action=<span class="string">"Transfer.php"</span> method=<span class="string">"POST"</span>&gt;</div><div class="line">　　&lt;p&gt;ToBankId: &lt;input <span class="built_in">type</span>=<span class="string">"text"</span> name=<span class="string">"toBankId"</span> /&gt;&lt;/p&gt;</div><div class="line">　　&lt;p&gt;Money: &lt;input <span class="built_in">type</span>=<span class="string">"text"</span> name=<span class="string">"money"</span> /&gt;&lt;/p&gt;</div><div class="line">　　&lt;p&gt;&lt;input <span class="built_in">type</span>=<span class="string">"submit"</span> value=<span class="string">"Transfer"</span> /&gt;&lt;/p&gt;</div><div class="line">&lt;/form&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;后台处理页面Transfer.php如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">　　session_start();</div><div class="line">　　<span class="keyword">if</span> (isset(<span class="variable">$_REQUEST</span>[<span class="string">'toBankId'</span>] &amp;&amp;　isset(<span class="variable">$_REQUEST</span>[<span class="string">'money'</span>]))</div><div class="line">　　&#123;</div><div class="line">　　    buy_stocks(<span class="variable">$_REQUEST</span>[<span class="string">'toBankId'</span>],　<span class="variable">$_REQUEST</span>[<span class="string">'money'</span>]);</div><div class="line">　　&#125;</div><div class="line">?&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;危险网站B，仍然只是包含那句HTML代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;img src=http://www.mybank.com/Transfer.php?toBankId=11&amp;money=1000&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;和示例1中的操作一样，你首先登录了银行网站A，然后访问危险网站B，结果…..和示例1一样，你再次没了1000块～T_T，这次事故的原因是：银行后台使用了$_REQUEST去获取请求的数据，而$_REQUEST既可以获取GET请求的数据，也可以获取POST请求的数据，这就造成了在后台处理程序无法区分这到底是GET请求的数据还是POST请求的数据。在PHP中，可以使用$_GET和$_POST分别获取GET请求和POST请求的数据。在JAVA中，用于获取请求数据request一样存在不能区分GET请求数据和POST数据的问题。</p>
+<h3 id="示例3："><a href="#示例3：" class="headerlink" title="示例3："></a>示例3：</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;经过前面2个惨痛的教训，银行决定把获取请求数据的方法也改了，改用$_POST，只获取POST请求的数据，后台处理页面Transfer.php代码如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">　　session_start();</div><div class="line">　　<span class="keyword">if</span> (isset(<span class="variable">$_POST</span>[<span class="string">'toBankId'</span>] &amp;&amp;　isset(<span class="variable">$_POST</span>[<span class="string">'money'</span>]))</div><div class="line">　　&#123;</div><div class="line">　　    buy_stocks(<span class="variable">$_POST</span>[<span class="string">'toBankId'</span>],　<span class="variable">$_POST</span>[<span class="string">'money'</span>]);</div><div class="line">　　&#125;</div><div class="line">?&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然而，危险网站B与时俱进，它改了一下代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">&lt;html&gt;</div><div class="line">　　&lt;head&gt;</div><div class="line">　　　　&lt;script <span class="built_in">type</span>=<span class="string">"text/javascript"</span>&gt;</div><div class="line">　　　　　　<span class="keyword">function</span> steal()</div><div class="line">　　　　　　&#123;</div><div class="line">          　　　　 iframe = document.frames[<span class="string">"steal"</span>];</div><div class="line">　　     　　      iframe.document.Submit(<span class="string">"transfer"</span>);</div><div class="line">　　　　　　&#125;</div><div class="line">　　　　&lt;/script&gt;</div><div class="line">　　&lt;/head&gt;</div><div class="line"></div><div class="line">　　&lt;body onload=<span class="string">"steal()"</span>&gt;</div><div class="line">　　　　&lt;iframe name=<span class="string">"steal"</span> display=<span class="string">"none"</span>&gt;</div><div class="line">　　　　　　&lt;form method=<span class="string">"POST"</span> name=<span class="string">"transfer"</span>　action=<span class="string">"http://www.myBank.com/Transfer.php"</span>&gt;</div><div class="line">　　　　　　　　&lt;input <span class="built_in">type</span>=<span class="string">"hidden"</span> name=<span class="string">"toBankId"</span> value=<span class="string">"11"</span>&gt;</div><div class="line">　　　　　　　　&lt;input <span class="built_in">type</span>=<span class="string">"hidden"</span> name=<span class="string">"money"</span> value=<span class="string">"1000"</span>&gt;</div><div class="line">　　　　　　&lt;/form&gt;</div><div class="line">　　　　&lt;/iframe&gt;</div><div class="line">　　&lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果用户仍是继续上面的操作，很不幸，结果将会是再次不见1000块……因为这里危险网站B暗地里发送了POST请求到银行!</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;总结一下上面3个例子，CSRF主要的攻击模式基本上是以上的3种，其中以第1,2种最为严重，因为触发条件很简单，一个<img>就可以了，而第3种比较麻烦，需要使用JavaScript，所以使用的机会会比前面的少很多，但无论是哪种情况，只要触发了CSRF攻击，后果都有可能很严重。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;理解上面的3种攻击模式，其实可以看出，<strong>CSRF攻击是源于WEB的隐式身份验证机制！WEB的身份验证机制虽然可以保证一个请求是来自于某个用户的浏览器，但却无法保证该请求是用户批准发送的</strong>！</p>
+<h2 id="五-CSRF的防御"><a href="#五-CSRF的防御" class="headerlink" title="五.CSRF的防御"></a>五.CSRF的防御</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;总结了一下看到的资料，CSRF的防御可以从服务端和客户端两方面着手，防御效果是从服务端着手效果比较好，现在一般的CSRF防御也都在服务端进行。</p>
+<h3 id="1-服务端进行CSRF防御"><a href="#1-服务端进行CSRF防御" class="headerlink" title="1.服务端进行CSRF防御"></a>1.服务端进行CSRF防御</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;服务端的CSRF方式方法很多样，但总的思想都是一致的，就是在客户端页面增加伪随机数。</p>
+<h4 id="Cookie-Hashing-所有表单都包含同一个伪随机值-："><a href="#Cookie-Hashing-所有表单都包含同一个伪随机值-：" class="headerlink" title="Cookie Hashing(所有表单都包含同一个伪随机值)："></a>Cookie Hashing(所有表单都包含同一个伪随机值)：</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这可能是最简单的解决方案了，因为攻击者不能获得第三方的Cookie(理论上)，所以表单中的数据也就构造失败了:&gt;</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">　　//构造加密的Cookie信息</div><div class="line">　　<span class="variable">$value</span> = “DefenseSCRF”;</div><div class="line">　　setcookie(”cookie”, <span class="variable">$value</span>, time()+3600);</div><div class="line">?&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在表单里增加Hash值，以认证这确实是用户发送的请求。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">　　<span class="variable">$hash</span> = md5(<span class="variable">$_COOKIE</span>[<span class="string">'cookie'</span>]);</div><div class="line">?&gt;</div><div class="line">&lt;form method=”POST” action=”transfer.php”&gt;</div><div class="line">　　&lt;input <span class="built_in">type</span>=”text” name=”toBankId”&gt;</div><div class="line">　　&lt;input <span class="built_in">type</span>=”text” name=”money”&gt;</div><div class="line">　　&lt;input <span class="built_in">type</span>=”hidden” name=”<span class="built_in">hash</span>” value=”&lt;?=<span class="variable">$hash</span>;?&gt;”&gt;</div><div class="line">　　&lt;input <span class="built_in">type</span>=”submit” name=”submit” value=”Submit”&gt;</div><div class="line">&lt;/form&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后在服务器端进行Hash值验证</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">    <span class="keyword">if</span>(isset(<span class="variable">$_POST</span>[<span class="string">'check'</span>])) &#123;</div><div class="line">        <span class="variable">$hash</span> = md5(<span class="variable">$_COOKIE</span>[<span class="string">'cookie'</span>]);</div><div class="line">        <span class="keyword">if</span>(<span class="variable">$_POST</span>[<span class="string">'check'</span>] == <span class="variable">$hash</span>) &#123;</div><div class="line">            doJob();</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">        //...</div><div class="line">        &#125;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">    //...</div><div class="line">    &#125;</div><div class="line">?&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个方法个人觉得已经可以杜绝99%的CSRF攻击了，那还有1%呢….由于用户的Cookie很容易由于网站的XSS漏洞而被盗取，这就另外的1%。一般的攻击者看到有需要算Hash值，基本都会放弃了，某些除外，所以如果需要100%的杜绝，这个不是最好的方法。</p>
+<h4 id="验证码"><a href="#验证码" class="headerlink" title="验证码"></a>验证码</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个方案的思路是：每次的用户提交都需要用户在表单中填写一个图片上的随机字符串，厄….这个方案可以完全解决CSRF，但个人觉得在易用性方面似乎不是太好，还有听闻是验证码图片的使用涉及了一个被称为MHTML的Bug，可能在某些版本的微软IE中受影响。</p>
+<h4 id="One-Time-Tokens-不同的表单包含一个不同的伪随机值"><a href="#One-Time-Tokens-不同的表单包含一个不同的伪随机值" class="headerlink" title="One-Time Tokens(不同的表单包含一个不同的伪随机值)"></a>One-Time Tokens(不同的表单包含一个不同的伪随机值)</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在实现One-Time Tokens时，需要注意一点：就是“并行会话的兼容”。如果用户在一个站点上同时打开了两个不同的表单，CSRF保护措施不应该影响到他对任何表单的提交。考虑一下如果每次表单被装入时站点生成一个伪随机值来覆盖以前的伪随机值将会发生什么情况：用户只能成功地提交他最后打开的表单，因为所有其他的表单都含有非法的伪随机值。必须小心操作以确保CSRF保护措施不会影响选项卡式的浏览或者利用多个浏览器窗口浏览一个站点。</p>
+<h2 id="以下我的实现"><a href="#以下我的实现" class="headerlink" title="以下我的实现:"></a>以下我的实现:</h2><h3 id="1-先是令牌生成函数-gen-token-："><a href="#1-先是令牌生成函数-gen-token-：" class="headerlink" title="1.先是令牌生成函数(gen_token())："></a>1.先是令牌生成函数(gen_token())：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">    <span class="keyword">function</span> <span class="function"><span class="title">gen_token</span></span>() &#123;</div><div class="line">    //这里我是贪方便，实际上单使用Rand()得出的随机数作为令牌，也是不安全的。</div><div class="line">    //这个可以参考我写的Findbugs笔记中的《Random object created and used only once》</div><div class="line">    <span class="variable">$token</span> = md5(uniqid(rand(), <span class="literal">true</span>));</div><div class="line">    <span class="built_in">return</span> <span class="variable">$token</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="2-然后是Session令牌生成函数-gen-stoken-："><a href="#2-然后是Session令牌生成函数-gen-stoken-：" class="headerlink" title="2.然后是Session令牌生成函数(gen_stoken())："></a>2.然后是Session令牌生成函数(gen_stoken())：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">    <span class="keyword">function</span> <span class="function"><span class="title">gen_stoken</span></span>() &#123;</div><div class="line">        <span class="variable">$pToken</span> = <span class="string">""</span>;</div><div class="line">        <span class="keyword">if</span>(<span class="variable">$_SESSION</span>[STOKEN_NAME]  == <span class="variable">$pToken</span>)&#123;</div><div class="line">            //没有值，赋新值</div><div class="line">            <span class="variable">$_SESSION</span>[STOKEN_NAME] = gen_token();</div><div class="line">        &#125;    </div><div class="line">        <span class="keyword">else</span>&#123;</div><div class="line">            //继续使用旧的值</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">?&gt;</div></pre></td></tr></table></figure>
+<h3 id="3-WEB表单生成隐藏输入域的函数："><a href="#3-WEB表单生成隐藏输入域的函数：" class="headerlink" title="3.WEB表单生成隐藏输入域的函数：　　"></a>3.WEB表单生成隐藏输入域的函数：　　</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">     <span class="keyword">function</span> <span class="function"><span class="title">gen_input</span></span>() &#123;</div><div class="line">　　     gen_stoken();</div><div class="line">         <span class="built_in">echo</span> “&lt;input <span class="built_in">type</span>=\”hidden\” name=\”<span class="string">" . FTOKEN_NAME . “\”</span></div><div class="line"><span class="string">  　　     value=\”"</span> . <span class="variable">$_SESSION</span>[STOKEN_NAME] . “\”&gt; “;</div><div class="line">　　&#125;</div><div class="line">?&gt;</div></pre></td></tr></table></figure>
+<h3 id="4-WEB表单结构："><a href="#4-WEB表单结构：" class="headerlink" title="4.WEB表单结构："></a>4.WEB表单结构：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">  session_start();</div><div class="line">  include(”functions.php”);</div><div class="line">?&gt;</div><div class="line">&lt;form method=”POST” action=”transfer.php”&gt;</div><div class="line">  &lt;input <span class="built_in">type</span>=”text” name=”toBankId”&gt;</div><div class="line">  &lt;input <span class="built_in">type</span>=”text” name=”money”&gt;</div><div class="line">  &lt;? gen_input(); ?&gt;</div><div class="line">  &lt;input <span class="built_in">type</span>=”submit” name=”submit” value=”Submit”&gt;</div><div class="line">&lt;/FORM&gt;</div></pre></td></tr></table></figure>
+<h3 id="5-服务端核对令牌："><a href="#5-服务端核对令牌：" class="headerlink" title="5.服务端核对令牌："></a>5.服务端核对令牌：</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个很简单，这里就不再啰嗦了。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上面这个其实不完全符合“并行会话的兼容”的规则，大家可以在此基础上修改。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其实还有很多想写，无奈精力有限，暂且打住，日后补充，如果错漏，请指出:&gt;</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PS：今天下午写这篇文档的时候FF崩溃了一次，写了一半文章的全没了，郁闷好久T_T…….</p>
+<h2 id="六-参考文献"><a href="#六-参考文献" class="headerlink" title="六.参考文献"></a>六.参考文献</h2><ol>
+<li><a href="http://www.playhack.net/view.php?id=31" target="_blank" rel="external">Preventing CSRF</a></li>
+<li><a href="http://shiflett.org/articles/cross-site-request-forgeries" target="_blank" rel="external">Security Corner: Cross-Site Request Forgeries</a></li>
+<li><a href="http://netsecurity.51cto.com/art/200812/102951.htm" target="_blank" rel="external">《深入解析跨站请求伪造漏洞：原理剖析》</a></li>
+<li><a href="http://netsecurity.51cto.com/art/200811/97281.htm" target="_blank" rel="external">《Web安全测试之跨站请求伪造（CSRF）》</a></li>
+<li><a href="http://netsecurity.51cto.com/art/200812/102925.htm" target="_blank" rel="external">《深入解析跨站请求伪造漏洞：实例讲解》</a></li>
+<li><a href="http://baike.baidu.com/view/1609487.htm" target="_blank" rel="external">CSRF</a></li>
+</ol>
 
       
     </div>
@@ -341,131 +470,6 @@
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;最后，再来修改一下/dev/shm的安全设置。由于/dev/shm是一个共享内存设备，因此也可以通过修改/etc/fstab文件设置而实现，在默认情况下，/dev/shm通过defaults选项来加载，对保证其安全性是不够    的，修改/dev/shm的挂载属性，操作如下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tmpfs   /dev/shm    tmpfs   defaults,nosuid,noexec,rw  0 0</div></pre></td></tr></table></figure>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;通过这种方式，就限制了任何suid程序，同时也限制了/dev/shm的可执行权限，系统安全性得到进一步提升。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux安全/">Linux安全</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Linux安全/13. 浅谈CSRF攻击方式" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Linux安全/13. 浅谈CSRF攻击方式/" class="article-date">
-  	<time datetime="2017-09-02T18:04:46.018Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Linux安全/13. 浅谈CSRF攻击方式/">
-        浅谈CSRF攻击方式
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="一-CSRF是什么？"><a href="#一-CSRF是什么？" class="headerlink" title="一.CSRF是什么？"></a>一.CSRF是什么？</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;CSRF（Cross-site request forgery），中文名称：跨站请求伪造，也被称为：one click attack/session riding，缩写为：CSRF/XSRF。</p>
-<h2 id="二-CSRF可以做什么？"><a href="#二-CSRF可以做什么？" class="headerlink" title="二.CSRF可以做什么？"></a>二.CSRF可以做什么？</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;你这可以这么理解CSRF攻击：<strong>攻击者盗用了你的身份，以你的名义发送恶意请求</strong>。CSRF能够做的事情包括：以你名义发送邮件，发消息，盗取你的账号，甚至于购买商品，虚拟货币转账……造成的问题包括：个人隐私泄露以及财产安全。</p>
-<h2 id="三-CSRF漏洞现状"><a href="#三-CSRF漏洞现状" class="headerlink" title="三.CSRF漏洞现状"></a>三.CSRF漏洞现状</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;CSRF这种攻击方式在2000年已经被国外的安全人员提出，但在国内，直到06年才开始被关注，08年，国内外的多个大型社区和交互网站分别爆出CSRF漏洞，如：NYTimes.com（纽约时报）、Metafilter（一个大型的BLOG网站），YouTube和百度HI……而现在，互联网上的许多站点仍对此毫无防备，以至于安全业界称CSRF为“沉睡的巨人”。</p>
-<h2 id="四-CSRF的原理"><a href="#四-CSRF的原理" class="headerlink" title="四.CSRF的原理"></a>四.CSRF的原理</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下图简单阐述了CSRF攻击的思想：</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/%E6%B5%85%E8%B0%88CSRF%E6%94%BB%E5%87%BB%E6%96%B9%E5%BC%8F/01.jpeg?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从上图可以看出，要完成一次CSRF攻击，<strong>受害者必须依次完成两个步骤</strong>：</p>
-<ol>
-<li><p><strong>登录受信任网站A，并在本地生成Cookie。</strong></p>
-</li>
-<li><p><strong>在不登出A的情况下，访问危险网站B。</strong></p>
-</li>
-</ol>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;看到这里，你也许会说：“<strong>如果我不满足以上两个条件中的一个，我就不会受到CSRF的攻击</strong>”。是的，确实如此，但你不能保证以下情况不会发生：</p>
-<ol>
-<li><p>你不能保证你登录了一个网站后，不再打开一个tab页面并访问另外的网站。</p>
-</li>
-<li><p>你不能保证你关闭浏览器了后，你本地的Cookie立刻过期，你上次的会话已经结束。（事实上，关闭浏览器不能结束一个会话，但大多数人都会错误的认为关闭浏览器就等于退出登录/结束会话了……）</p>
-</li>
-<li><p>上图中所谓的攻击网站，可能是一个存在其他漏洞的可信任的经常被人访问的网站。</p>
-</li>
-</ol>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上面大概地讲了一下CSRF攻击的思想，下面我将用几个例子详细说说具体的CSRF攻击，这里我以一个银行转账的操作作为例子（仅仅是例子，真实的银行网站没这么傻:&gt;）</p>
-<h3 id="示例1："><a href="#示例1：" class="headerlink" title="示例1："></a>示例1：</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;银行网站A，它以GET请求来完成银行转账的操作，如：<a href="http://www.mybank.com/Transfer.php?toBankId=11&amp;money=1000" target="_blank" rel="external">http://www.mybank.com/Transfer.php?toBankId=11&amp;money=1000</a></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;危险网站B，它里面有一段HTML的代码如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;img src=http://www.mybank.com/Transfer.php?toBankId=11&amp;money=1000&gt;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先，你登录了银行网站A，然后访问危险网站B，噢，这时你会发现你的银行账户少了1000块……</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为什么会这样呢？原因是银行网站A违反了HTTP规范，使用GET请求更新资源。在访问危险网站B的之前，你已经登录了银行网站A，而B中的<img>以GET的方式请求第三方资源（这里的第三方就是指银行网站了，原本这是一个合法的请求，但这里被不法分子利用了），所以你的浏览器会带上你的银行网站A的Cookie发出Get请求，去获取资源“<a href="http://www.mybank.com/Transfer.php?toBankId=11&amp;money=1000”，结果银行网站服务器收到请求后，认为这是一个更新资源操作（转账操作），所以就立刻进行转账操作" target="_blank" rel="external">http://www.mybank.com/Transfer.php?toBankId=11&amp;money=1000”，结果银行网站服务器收到请求后，认为这是一个更新资源操作（转账操作），所以就立刻进行转账操作</a>……</p>
-<h3 id="示例2："><a href="#示例2：" class="headerlink" title="示例2："></a>示例2：</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为了杜绝上面的问题，银行决定改用POST请求完成转账操作。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;银行网站A的WEB表单如下：　　</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;form action=<span class="string">"Transfer.php"</span> method=<span class="string">"POST"</span>&gt;</div><div class="line">　　&lt;p&gt;ToBankId: &lt;input <span class="built_in">type</span>=<span class="string">"text"</span> name=<span class="string">"toBankId"</span> /&gt;&lt;/p&gt;</div><div class="line">　　&lt;p&gt;Money: &lt;input <span class="built_in">type</span>=<span class="string">"text"</span> name=<span class="string">"money"</span> /&gt;&lt;/p&gt;</div><div class="line">　　&lt;p&gt;&lt;input <span class="built_in">type</span>=<span class="string">"submit"</span> value=<span class="string">"Transfer"</span> /&gt;&lt;/p&gt;</div><div class="line">&lt;/form&gt;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;后台处理页面Transfer.php如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">　　session_start();</div><div class="line">　　<span class="keyword">if</span> (isset(<span class="variable">$_REQUEST</span>[<span class="string">'toBankId'</span>] &amp;&amp;　isset(<span class="variable">$_REQUEST</span>[<span class="string">'money'</span>]))</div><div class="line">　　&#123;</div><div class="line">　　    buy_stocks(<span class="variable">$_REQUEST</span>[<span class="string">'toBankId'</span>],　<span class="variable">$_REQUEST</span>[<span class="string">'money'</span>]);</div><div class="line">　　&#125;</div><div class="line">?&gt;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;危险网站B，仍然只是包含那句HTML代码：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;img src=http://www.mybank.com/Transfer.php?toBankId=11&amp;money=1000&gt;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;和示例1中的操作一样，你首先登录了银行网站A，然后访问危险网站B，结果…..和示例1一样，你再次没了1000块～T_T，这次事故的原因是：银行后台使用了$_REQUEST去获取请求的数据，而$_REQUEST既可以获取GET请求的数据，也可以获取POST请求的数据，这就造成了在后台处理程序无法区分这到底是GET请求的数据还是POST请求的数据。在PHP中，可以使用$_GET和$_POST分别获取GET请求和POST请求的数据。在JAVA中，用于获取请求数据request一样存在不能区分GET请求数据和POST数据的问题。</p>
-<h3 id="示例3："><a href="#示例3：" class="headerlink" title="示例3："></a>示例3：</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;经过前面2个惨痛的教训，银行决定把获取请求数据的方法也改了，改用$_POST，只获取POST请求的数据，后台处理页面Transfer.php代码如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">　　session_start();</div><div class="line">　　<span class="keyword">if</span> (isset(<span class="variable">$_POST</span>[<span class="string">'toBankId'</span>] &amp;&amp;　isset(<span class="variable">$_POST</span>[<span class="string">'money'</span>]))</div><div class="line">　　&#123;</div><div class="line">　　    buy_stocks(<span class="variable">$_POST</span>[<span class="string">'toBankId'</span>],　<span class="variable">$_POST</span>[<span class="string">'money'</span>]);</div><div class="line">　　&#125;</div><div class="line">?&gt;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然而，危险网站B与时俱进，它改了一下代码：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">&lt;html&gt;</div><div class="line">　　&lt;head&gt;</div><div class="line">　　　　&lt;script <span class="built_in">type</span>=<span class="string">"text/javascript"</span>&gt;</div><div class="line">　　　　　　<span class="keyword">function</span> steal()</div><div class="line">　　　　　　&#123;</div><div class="line">          　　　　 iframe = document.frames[<span class="string">"steal"</span>];</div><div class="line">　　     　　      iframe.document.Submit(<span class="string">"transfer"</span>);</div><div class="line">　　　　　　&#125;</div><div class="line">　　　　&lt;/script&gt;</div><div class="line">　　&lt;/head&gt;</div><div class="line"></div><div class="line">　　&lt;body onload=<span class="string">"steal()"</span>&gt;</div><div class="line">　　　　&lt;iframe name=<span class="string">"steal"</span> display=<span class="string">"none"</span>&gt;</div><div class="line">　　　　　　&lt;form method=<span class="string">"POST"</span> name=<span class="string">"transfer"</span>　action=<span class="string">"http://www.myBank.com/Transfer.php"</span>&gt;</div><div class="line">　　　　　　　　&lt;input <span class="built_in">type</span>=<span class="string">"hidden"</span> name=<span class="string">"toBankId"</span> value=<span class="string">"11"</span>&gt;</div><div class="line">　　　　　　　　&lt;input <span class="built_in">type</span>=<span class="string">"hidden"</span> name=<span class="string">"money"</span> value=<span class="string">"1000"</span>&gt;</div><div class="line">　　　　　　&lt;/form&gt;</div><div class="line">　　　　&lt;/iframe&gt;</div><div class="line">　　&lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果用户仍是继续上面的操作，很不幸，结果将会是再次不见1000块……因为这里危险网站B暗地里发送了POST请求到银行!</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;总结一下上面3个例子，CSRF主要的攻击模式基本上是以上的3种，其中以第1,2种最为严重，因为触发条件很简单，一个<img>就可以了，而第3种比较麻烦，需要使用JavaScript，所以使用的机会会比前面的少很多，但无论是哪种情况，只要触发了CSRF攻击，后果都有可能很严重。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;理解上面的3种攻击模式，其实可以看出，<strong>CSRF攻击是源于WEB的隐式身份验证机制！WEB的身份验证机制虽然可以保证一个请求是来自于某个用户的浏览器，但却无法保证该请求是用户批准发送的</strong>！</p>
-<h2 id="五-CSRF的防御"><a href="#五-CSRF的防御" class="headerlink" title="五.CSRF的防御"></a>五.CSRF的防御</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;总结了一下看到的资料，CSRF的防御可以从服务端和客户端两方面着手，防御效果是从服务端着手效果比较好，现在一般的CSRF防御也都在服务端进行。</p>
-<h3 id="1-服务端进行CSRF防御"><a href="#1-服务端进行CSRF防御" class="headerlink" title="1.服务端进行CSRF防御"></a>1.服务端进行CSRF防御</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;服务端的CSRF方式方法很多样，但总的思想都是一致的，就是在客户端页面增加伪随机数。</p>
-<h4 id="Cookie-Hashing-所有表单都包含同一个伪随机值-："><a href="#Cookie-Hashing-所有表单都包含同一个伪随机值-：" class="headerlink" title="Cookie Hashing(所有表单都包含同一个伪随机值)："></a>Cookie Hashing(所有表单都包含同一个伪随机值)：</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这可能是最简单的解决方案了，因为攻击者不能获得第三方的Cookie(理论上)，所以表单中的数据也就构造失败了:&gt;</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">　　//构造加密的Cookie信息</div><div class="line">　　<span class="variable">$value</span> = “DefenseSCRF”;</div><div class="line">　　setcookie(”cookie”, <span class="variable">$value</span>, time()+3600);</div><div class="line">?&gt;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在表单里增加Hash值，以认证这确实是用户发送的请求。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">　　<span class="variable">$hash</span> = md5(<span class="variable">$_COOKIE</span>[<span class="string">'cookie'</span>]);</div><div class="line">?&gt;</div><div class="line">&lt;form method=”POST” action=”transfer.php”&gt;</div><div class="line">　　&lt;input <span class="built_in">type</span>=”text” name=”toBankId”&gt;</div><div class="line">　　&lt;input <span class="built_in">type</span>=”text” name=”money”&gt;</div><div class="line">　　&lt;input <span class="built_in">type</span>=”hidden” name=”<span class="built_in">hash</span>” value=”&lt;?=<span class="variable">$hash</span>;?&gt;”&gt;</div><div class="line">　　&lt;input <span class="built_in">type</span>=”submit” name=”submit” value=”Submit”&gt;</div><div class="line">&lt;/form&gt;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后在服务器端进行Hash值验证</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">    <span class="keyword">if</span>(isset(<span class="variable">$_POST</span>[<span class="string">'check'</span>])) &#123;</div><div class="line">        <span class="variable">$hash</span> = md5(<span class="variable">$_COOKIE</span>[<span class="string">'cookie'</span>]);</div><div class="line">        <span class="keyword">if</span>(<span class="variable">$_POST</span>[<span class="string">'check'</span>] == <span class="variable">$hash</span>) &#123;</div><div class="line">            doJob();</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">        //...</div><div class="line">        &#125;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">    //...</div><div class="line">    &#125;</div><div class="line">?&gt;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个方法个人觉得已经可以杜绝99%的CSRF攻击了，那还有1%呢….由于用户的Cookie很容易由于网站的XSS漏洞而被盗取，这就另外的1%。一般的攻击者看到有需要算Hash值，基本都会放弃了，某些除外，所以如果需要100%的杜绝，这个不是最好的方法。</p>
-<h4 id="验证码"><a href="#验证码" class="headerlink" title="验证码"></a>验证码</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个方案的思路是：每次的用户提交都需要用户在表单中填写一个图片上的随机字符串，厄….这个方案可以完全解决CSRF，但个人觉得在易用性方面似乎不是太好，还有听闻是验证码图片的使用涉及了一个被称为MHTML的Bug，可能在某些版本的微软IE中受影响。</p>
-<h4 id="One-Time-Tokens-不同的表单包含一个不同的伪随机值"><a href="#One-Time-Tokens-不同的表单包含一个不同的伪随机值" class="headerlink" title="One-Time Tokens(不同的表单包含一个不同的伪随机值)"></a>One-Time Tokens(不同的表单包含一个不同的伪随机值)</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在实现One-Time Tokens时，需要注意一点：就是“并行会话的兼容”。如果用户在一个站点上同时打开了两个不同的表单，CSRF保护措施不应该影响到他对任何表单的提交。考虑一下如果每次表单被装入时站点生成一个伪随机值来覆盖以前的伪随机值将会发生什么情况：用户只能成功地提交他最后打开的表单，因为所有其他的表单都含有非法的伪随机值。必须小心操作以确保CSRF保护措施不会影响选项卡式的浏览或者利用多个浏览器窗口浏览一个站点。</p>
-<h2 id="以下我的实现"><a href="#以下我的实现" class="headerlink" title="以下我的实现:"></a>以下我的实现:</h2><h3 id="1-先是令牌生成函数-gen-token-："><a href="#1-先是令牌生成函数-gen-token-：" class="headerlink" title="1.先是令牌生成函数(gen_token())："></a>1.先是令牌生成函数(gen_token())：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">    <span class="keyword">function</span> <span class="function"><span class="title">gen_token</span></span>() &#123;</div><div class="line">    //这里我是贪方便，实际上单使用Rand()得出的随机数作为令牌，也是不安全的。</div><div class="line">    //这个可以参考我写的Findbugs笔记中的《Random object created and used only once》</div><div class="line">    <span class="variable">$token</span> = md5(uniqid(rand(), <span class="literal">true</span>));</div><div class="line">    <span class="built_in">return</span> <span class="variable">$token</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="2-然后是Session令牌生成函数-gen-stoken-："><a href="#2-然后是Session令牌生成函数-gen-stoken-：" class="headerlink" title="2.然后是Session令牌生成函数(gen_stoken())："></a>2.然后是Session令牌生成函数(gen_stoken())：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">    <span class="keyword">function</span> <span class="function"><span class="title">gen_stoken</span></span>() &#123;</div><div class="line">        <span class="variable">$pToken</span> = <span class="string">""</span>;</div><div class="line">        <span class="keyword">if</span>(<span class="variable">$_SESSION</span>[STOKEN_NAME]  == <span class="variable">$pToken</span>)&#123;</div><div class="line">            //没有值，赋新值</div><div class="line">            <span class="variable">$_SESSION</span>[STOKEN_NAME] = gen_token();</div><div class="line">        &#125;    </div><div class="line">        <span class="keyword">else</span>&#123;</div><div class="line">            //继续使用旧的值</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">?&gt;</div></pre></td></tr></table></figure>
-<h3 id="3-WEB表单生成隐藏输入域的函数："><a href="#3-WEB表单生成隐藏输入域的函数：" class="headerlink" title="3.WEB表单生成隐藏输入域的函数：　　"></a>3.WEB表单生成隐藏输入域的函数：　　</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">     <span class="keyword">function</span> <span class="function"><span class="title">gen_input</span></span>() &#123;</div><div class="line">　　     gen_stoken();</div><div class="line">         <span class="built_in">echo</span> “&lt;input <span class="built_in">type</span>=\”hidden\” name=\”<span class="string">" . FTOKEN_NAME . “\”</span></div><div class="line"><span class="string">  　　     value=\”"</span> . <span class="variable">$_SESSION</span>[STOKEN_NAME] . “\”&gt; “;</div><div class="line">　　&#125;</div><div class="line">?&gt;</div></pre></td></tr></table></figure>
-<h3 id="4-WEB表单结构："><a href="#4-WEB表单结构：" class="headerlink" title="4.WEB表单结构："></a>4.WEB表单结构：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">  session_start();</div><div class="line">  include(”functions.php”);</div><div class="line">?&gt;</div><div class="line">&lt;form method=”POST” action=”transfer.php”&gt;</div><div class="line">  &lt;input <span class="built_in">type</span>=”text” name=”toBankId”&gt;</div><div class="line">  &lt;input <span class="built_in">type</span>=”text” name=”money”&gt;</div><div class="line">  &lt;? gen_input(); ?&gt;</div><div class="line">  &lt;input <span class="built_in">type</span>=”submit” name=”submit” value=”Submit”&gt;</div><div class="line">&lt;/FORM&gt;</div></pre></td></tr></table></figure>
-<h3 id="5-服务端核对令牌："><a href="#5-服务端核对令牌：" class="headerlink" title="5.服务端核对令牌："></a>5.服务端核对令牌：</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个很简单，这里就不再啰嗦了。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上面这个其实不完全符合“并行会话的兼容”的规则，大家可以在此基础上修改。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其实还有很多想写，无奈精力有限，暂且打住，日后补充，如果错漏，请指出:&gt;</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PS：今天下午写这篇文档的时候FF崩溃了一次，写了一半文章的全没了，郁闷好久T_T…….</p>
-<h2 id="六-参考文献"><a href="#六-参考文献" class="headerlink" title="六.参考文献"></a>六.参考文献</h2><ol>
-<li><a href="http://www.playhack.net/view.php?id=31" target="_blank" rel="external">Preventing CSRF</a></li>
-<li><a href="http://shiflett.org/articles/cross-site-request-forgeries" target="_blank" rel="external">Security Corner: Cross-Site Request Forgeries</a></li>
-<li><a href="http://netsecurity.51cto.com/art/200812/102951.htm" target="_blank" rel="external">《深入解析跨站请求伪造漏洞：原理剖析》</a></li>
-<li><a href="http://netsecurity.51cto.com/art/200811/97281.htm" target="_blank" rel="external">《Web安全测试之跨站请求伪造（CSRF）》</a></li>
-<li><a href="http://netsecurity.51cto.com/art/200812/102925.htm" target="_blank" rel="external">《深入解析跨站请求伪造漏洞：实例讲解》</a></li>
-<li><a href="http://baike.baidu.com/view/1609487.htm" target="_blank" rel="external">CSRF</a></li>
-</ol>
 
       
     </div>

@@ -106,6 +106,8 @@
 				        
 							<li><a href="/archives">所有文章</a></li>
 				        
+							<li><a href="/tags">静心阅读</a></li>
+				        
 						</ul>
 					</nav>
 					<nav class="header-nav">
@@ -155,6 +157,8 @@
 		        
 					<li><a href="/archives">所有文章</a></li>
 		        
+					<li><a href="/tags">静心阅读</a></li>
+		        
 		        <div class="clearfix"></div>
 				</ul>
 			</nav>
@@ -167,6 +171,73 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-1. Linux 基础/39.yum局域网软件源搭建" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/1. Linux 基础/39.yum局域网软件源搭建/" class="article-date">
+  	<time datetime="2017-09-02T17:55:11.288Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/1. Linux 基础/39.yum局域网软件源搭建/">
+        yum局域网软件源搭建
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-搭建apache服务器或ftp服务器"><a href="#1-搭建apache服务器或ftp服务器" class="headerlink" title="1.搭建apache服务器或ftp服务器"></a>1.搭建apache服务器或ftp服务器</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;yum安装或二进制安装</p>
+<h2 id="2、准备RPM包"><a href="#2、准备RPM包" class="headerlink" title="2、准备RPM包"></a>2、准备RPM包</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;把CentOS的DVD1和DVD2.iso都下载下来，把DVD1.iso里的所有内容解压出来，放到/var/www/html/centos-6目录下，然后把DVD2.iso解压出来的Packages目录下的rpm包复制到/var/html/centos-6/Packages目录下，这样/var/html/centos-6/Packages里面就有了6000多个rpm包。</p>
+<h2 id="3、创建yum仓库"><a href="#3、创建yum仓库" class="headerlink" title="3、创建yum仓库"></a>3、创建yum仓库</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;准备createrepo：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y install createrepo</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;创建repository：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">createrepo /var/www/html/centos-6/</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;创建完成之后，会在/var/www/html/centos-6/repodata下生成一些文件。</p>
+<h2 id="4、使用软件源"><a href="#4、使用软件源" class="headerlink" title="4、使用软件源"></a>4、使用软件源</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在其他centos机器上试试软件源能不能用。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先修改机器上软件源配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># cd /etc/yum.repos.d/</span></div><div class="line"><span class="comment"># mkdir bk</span></div><div class="line"><span class="comment"># mv *.repo bk/</span></div><div class="line"><span class="comment"># cp bk/CentOS-Base.repo ./</span></div><div class="line"><span class="comment"># vi CentOS-Base.repo</span></div><div class="line">CentOS-Base.repo文件修改之后如下：</div><div class="line">[base]</div><div class="line">name=CentOS-<span class="variable">$releasever</span> - Base</div><div class="line">baseurl=http://*.*.*.*/centos-6/</div><div class="line">gpgcheck=1(改成0下面那行就不用设置了)</div><div class="line">gpgkey=http:///*.*.*.*/centos-6/RPM-GPG-KEY-CentOS-6</div><div class="line">enabled=1</div><div class="line"><span class="comment">#released updates</span></div><div class="line"><span class="comment">#[updates]</span></div><div class="line"><span class="comment">#name=CentOS-$releasever - Updates</span></div><div class="line"><span class="comment">#baseurl=http:///*.*.*.*/centos-6/</span></div><div class="line"><span class="comment">#gpgcheck=1</span></div><div class="line"><span class="comment">#gpgkey=http:///*.*.*.*/centos-6/RPM-GPG-KEY-CentOS-6</span></div><div class="line"><span class="comment">#enabled = 1</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;保存之后，就可以使用局域网的软件源了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># yum update</span></div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-1. Linux 基础/12. Linux su 切换用户" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -217,73 +288,6 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service sshd restart</div></pre></td></tr></table></figure>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样就可以了。</p>
 
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-1. Linux 基础/39.yum局域网软件源搭建" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/1. Linux 基础/39.yum局域网软件源搭建/" class="article-date">
-  	<time datetime="2017-09-02T17:55:11.288Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/1. Linux 基础/39.yum局域网软件源搭建/">
-        yum局域网软件源搭建
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="1-搭建apache服务器或ftp服务器"><a href="#1-搭建apache服务器或ftp服务器" class="headerlink" title="1.搭建apache服务器或ftp服务器"></a>1.搭建apache服务器或ftp服务器</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;yum安装或二进制安装</p>
-<h2 id="2、准备RPM包"><a href="#2、准备RPM包" class="headerlink" title="2、准备RPM包"></a>2、准备RPM包</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;把CentOS的DVD1和DVD2.iso都下载下来，把DVD1.iso里的所有内容解压出来，放到/var/www/html/centos-6目录下，然后把DVD2.iso解压出来的Packages目录下的rpm包复制到/var/html/centos-6/Packages目录下，这样/var/html/centos-6/Packages里面就有了6000多个rpm包。</p>
-<h2 id="3、创建yum仓库"><a href="#3、创建yum仓库" class="headerlink" title="3、创建yum仓库"></a>3、创建yum仓库</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;准备createrepo：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y install createrepo</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;创建repository：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">createrepo /var/www/html/centos-6/</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;创建完成之后，会在/var/www/html/centos-6/repodata下生成一些文件。</p>
-<h2 id="4、使用软件源"><a href="#4、使用软件源" class="headerlink" title="4、使用软件源"></a>4、使用软件源</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在其他centos机器上试试软件源能不能用。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先修改机器上软件源配置文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># cd /etc/yum.repos.d/</span></div><div class="line"><span class="comment"># mkdir bk</span></div><div class="line"><span class="comment"># mv *.repo bk/</span></div><div class="line"><span class="comment"># cp bk/CentOS-Base.repo ./</span></div><div class="line"><span class="comment"># vi CentOS-Base.repo</span></div><div class="line">CentOS-Base.repo文件修改之后如下：</div><div class="line">[base]</div><div class="line">name=CentOS-<span class="variable">$releasever</span> - Base</div><div class="line">baseurl=http://*.*.*.*/centos-6/</div><div class="line">gpgcheck=1(改成0下面那行就不用设置了)</div><div class="line">gpgkey=http:///*.*.*.*/centos-6/RPM-GPG-KEY-CentOS-6</div><div class="line">enabled=1</div><div class="line"><span class="comment">#released updates</span></div><div class="line"><span class="comment">#[updates]</span></div><div class="line"><span class="comment">#name=CentOS-$releasever - Updates</span></div><div class="line"><span class="comment">#baseurl=http:///*.*.*.*/centos-6/</span></div><div class="line"><span class="comment">#gpgcheck=1</span></div><div class="line"><span class="comment">#gpgkey=http:///*.*.*.*/centos-6/RPM-GPG-KEY-CentOS-6</span></div><div class="line"><span class="comment">#enabled = 1</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;保存之后，就可以使用局域网的软件源了：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># yum update</span></div></pre></td></tr></table></figure>
       
     </div>
     

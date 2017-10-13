@@ -106,6 +106,8 @@
 				        
 							<li><a href="/archives">所有文章</a></li>
 				        
+							<li><a href="/tags">静心阅读</a></li>
+				        
 						</ul>
 					</nav>
 					<nav class="header-nav">
@@ -154,6 +156,8 @@
 					<li><a href="/">主页</a></li>
 		        
 					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/tags">静心阅读</a></li>
 		        
 		        <div class="clearfix"></div>
 				</ul>
@@ -212,74 +216,6 @@
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然而如果第二个  Options  指令使用了+和-符号：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Options Indexes FollowSymLinks</div><div class="line">  </div><div class="line"> Options +Includes -Indexes</div></pre></td></tr></table></figure>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;那么就会有  FollowSymLinks  和  Includes  设置到/web/docs/spec目录上。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Apache/19. Apache 用户认证" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Apache/19. Apache 用户认证/" class="article-date">
-  	<time datetime="2017-09-02T18:00:30.897Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Apache/19. Apache 用户认证/">
-        Apache 用户认证
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有时候，需要给一些特殊的访问设置一个用户认证机制，增加安全。为了使 WEB 服务器更安全，需要将一些特定用户才能访问的目录设置用户认证，例如：网站后台登陆地址 ，可以再设置一层用户认证。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># vim /usr/local/apache2/conf/extra/httpd-vhosts.conf</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在对应的虚拟主机配置中加入如下配置：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;Directory /data/www/admin.php&gt;</div><div class="line"> AllowOverride AuthConfig</div><div class="line"> AuthName <span class="string">"自定义的"</span></div><div class="line"> AuthType Basic</div><div class="line"> AuthUserFile /data/.htpasswd</div><div class="line"> require valid-user</div><div class="line"> &lt;/Directory&gt;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：首先指定要对哪个目录进行验证， AuthName 自定义，AuthUserFile 指定用户密码文件在哪里。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># /usr/local/apache2/bin/htpasswd -cm /data/.htpasswd yanyi</span></div><div class="line">New password: </div><div class="line">Re-type new password: </div><div class="line">Adding password <span class="keyword">for</span> user yanyi</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这一步是要创建进行验证的用户，<strong>第一次要加个 -c 选项，目的就是为了创建 /data/.htpasswd 密码文件，回车后要输入要设定的密码就 ok 了。</strong></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后重启 apache 服务</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># /usr/local/apache2/bin/apachectl -t</span></div><div class="line">Syntax OK</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;先检查配置是否正确</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># /usr/local/apache2/bin/apachectl graceful</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里 graceful 相当于 reload 配置。</p>
 
       
     </div>
@@ -486,6 +422,74 @@
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;（对于动态IP的另类方法：指定虚拟主机的IP，由于要将域名映射为IP，不能使用localhost,127.0.0.1,计算机名，等这样的地址，所以，可以再一次通过域名转换，将域名转换为IP，这样就不必每次更改IP了。）</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># VirtualHost example:</span></div><div class="line"><span class="comment"># Almost any Apache directive may go into a VirtualHost container.</span></div><div class="line"><span class="comment"># The first VirtualHost section is used for requests without a known</span></div><div class="line"><span class="comment"># server name.</span></div><div class="line"><span class="comment">#</span></div><div class="line">&lt;VirtualHost 192.168.0.1&gt;（虚拟主机IP）</div><div class="line"> ServerAdmin 111@xxx.com（第一个虚拟主机Email）</div><div class="line"> DocumentRoot H:/web001（第一个虚拟主机目录）</div><div class="line"> ServerName www.xxx.org（第一个虚拟主机域名）</div><div class="line"> ErrorLog logs/www.xxx.org-error.log（第一个虚拟主机错误日志）</div><div class="line"> CustomLog logs/www.xxx.org-access.log common（第一个虚拟主机数据）</div><div class="line">&lt;/VirtualHost&gt;</div><div class="line"></div><div class="line">&lt;VirtualHost 192.168.0.2&gt;（虚拟主机IP）</div><div class="line"> ServerAdmin 111@xxx.com（第二个虚拟主机Email）</div><div class="line"> DocumentRoot H:/web002（第二个虚拟主机目录）</div><div class="line"> ServerName www.xxx2.org（第二个虚拟主机域名）</div><div class="line"> ErrorLog logs/www.xxx2.org-error.log（第二个虚拟主机错误日志）</div><div class="line"> CustomLog logs/www.xxx2.org-access.log common（第二个虚拟主机数据）</div><div class="line">&lt;/VirtualHost&gt;</div></pre></td></tr></table></figure>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以此类推，可以增加更多虚拟主机。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Apache/19. Apache 用户认证" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Apache/19. Apache 用户认证/" class="article-date">
+  	<time datetime="2017-09-02T18:00:30.897Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Apache/19. Apache 用户认证/">
+        Apache 用户认证
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有时候，需要给一些特殊的访问设置一个用户认证机制，增加安全。为了使 WEB 服务器更安全，需要将一些特定用户才能访问的目录设置用户认证，例如：网站后台登陆地址 ，可以再设置一层用户认证。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># vim /usr/local/apache2/conf/extra/httpd-vhosts.conf</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在对应的虚拟主机配置中加入如下配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;Directory /data/www/admin.php&gt;</div><div class="line"> AllowOverride AuthConfig</div><div class="line"> AuthName <span class="string">"自定义的"</span></div><div class="line"> AuthType Basic</div><div class="line"> AuthUserFile /data/.htpasswd</div><div class="line"> require valid-user</div><div class="line"> &lt;/Directory&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：首先指定要对哪个目录进行验证， AuthName 自定义，AuthUserFile 指定用户密码文件在哪里。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># /usr/local/apache2/bin/htpasswd -cm /data/.htpasswd yanyi</span></div><div class="line">New password: </div><div class="line">Re-type new password: </div><div class="line">Adding password <span class="keyword">for</span> user yanyi</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这一步是要创建进行验证的用户，<strong>第一次要加个 -c 选项，目的就是为了创建 /data/.htpasswd 密码文件，回车后要输入要设定的密码就 ok 了。</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后重启 apache 服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># /usr/local/apache2/bin/apachectl -t</span></div><div class="line">Syntax OK</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;先检查配置是否正确</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lamp ~]<span class="comment"># /usr/local/apache2/bin/apachectl graceful</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里 graceful 相当于 reload 配置。</p>
 
       
     </div>

@@ -106,6 +106,8 @@
 				        
 							<li><a href="/archives">所有文章</a></li>
 				        
+							<li><a href="/tags">静心阅读</a></li>
+				        
 						</ul>
 					</nav>
 					<nav class="header-nav">
@@ -155,6 +157,8 @@
 		        
 					<li><a href="/archives">所有文章</a></li>
 		        
+					<li><a href="/tags">静心阅读</a></li>
+		        
 		        <div class="clearfix"></div>
 				</ul>
 			</nav>
@@ -167,6 +171,63 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-Shell 练习/41. shell 练习-猜数字" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/08/31/Shell 练习/41. shell 练习-猜数字/" class="article-date">
+  	<time datetime="2017-08-30T16:07:07.566Z" itemprop="datePublished">2017-08-31</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/31/Shell 练习/41. shell 练习-猜数字/">
+        shell 练习-猜数字
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>写一个猜数字脚本，当用户输入的数字和预设数字（随机生成一个小于100的数字）一样时，直接退出，否则让用户一直输入，并且提示用户的数字比预设数字大或者小。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line">m=`<span class="built_in">echo</span> <span class="variable">$RANDOM</span>`</div><div class="line">n1=$[<span class="variable">$m</span>%100]</div><div class="line"><span class="keyword">while</span> :</div><div class="line"><span class="keyword">do</span></div><div class="line">    <span class="built_in">read</span> -p <span class="string">"Please input a number: "</span> n</div><div class="line">    <span class="keyword">if</span> [ <span class="variable">$n</span> == <span class="variable">$n1</span> ]</div><div class="line">    <span class="keyword">then</span></div><div class="line">        <span class="built_in">break</span></div><div class="line">    <span class="keyword">elif</span> [ <span class="variable">$n</span> -gt <span class="variable">$n1</span> ]</div><div class="line">    <span class="keyword">then</span></div><div class="line">        <span class="built_in">echo</span> <span class="string">"bigger"</span></div><div class="line">        <span class="built_in">continue</span></div><div class="line">    <span class="keyword">else</span></div><div class="line">        <span class="built_in">echo</span> <span class="string">"smaller"</span></div><div class="line">        <span class="built_in">continue</span></div><div class="line">    <span class="keyword">fi</span></div><div class="line"><span class="keyword">done</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"You are right."</span></div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell练习/">shell练习</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-Shell 练习/40. shell 练习-下载文件" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -203,63 +264,6 @@
 </ol>
 <p>提示，在函数中返回错误值给调用脚本，使用return</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> [ ! -d <span class="variable">$2</span> ]</div><div class="line"><span class="keyword">then</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">"please make directory"</span></div><div class="line">    <span class="built_in">exit</span> 51</div><div class="line"><span class="keyword">fi</span></div><div class="line"><span class="built_in">cd</span> <span class="variable">$2</span></div><div class="line">wget <span class="variable">$1</span></div><div class="line">n=`<span class="built_in">echo</span> $?`</div><div class="line"><span class="keyword">if</span> [ <span class="variable">$n</span> -eq 0 ];<span class="keyword">then</span></div><div class="line">    <span class="built_in">exit</span> 0</div><div class="line"><span class="keyword">else</span></div><div class="line">    <span class="built_in">exit</span> 52</div><div class="line"><span class="keyword">fi</span></div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell练习/">shell练习</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Shell 练习/41. shell 练习-猜数字" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/08/31/Shell 练习/41. shell 练习-猜数字/" class="article-date">
-  	<time datetime="2017-08-30T16:07:07.566Z" itemprop="datePublished">2017-08-31</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/31/Shell 练习/41. shell 练习-猜数字/">
-        shell 练习-猜数字
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>写一个猜数字脚本，当用户输入的数字和预设数字（随机生成一个小于100的数字）一样时，直接退出，否则让用户一直输入，并且提示用户的数字比预设数字大或者小。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line">m=`<span class="built_in">echo</span> <span class="variable">$RANDOM</span>`</div><div class="line">n1=$[<span class="variable">$m</span>%100]</div><div class="line"><span class="keyword">while</span> :</div><div class="line"><span class="keyword">do</span></div><div class="line">    <span class="built_in">read</span> -p <span class="string">"Please input a number: "</span> n</div><div class="line">    <span class="keyword">if</span> [ <span class="variable">$n</span> == <span class="variable">$n1</span> ]</div><div class="line">    <span class="keyword">then</span></div><div class="line">        <span class="built_in">break</span></div><div class="line">    <span class="keyword">elif</span> [ <span class="variable">$n</span> -gt <span class="variable">$n1</span> ]</div><div class="line">    <span class="keyword">then</span></div><div class="line">        <span class="built_in">echo</span> <span class="string">"bigger"</span></div><div class="line">        <span class="built_in">continue</span></div><div class="line">    <span class="keyword">else</span></div><div class="line">        <span class="built_in">echo</span> <span class="string">"smaller"</span></div><div class="line">        <span class="built_in">continue</span></div><div class="line">    <span class="keyword">fi</span></div><div class="line"><span class="keyword">done</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"You are right."</span></div></pre></td></tr></table></figure>
       
     </div>
     
@@ -405,63 +409,6 @@
 
 
   
-    <article id="post-Shell 练习/37. shell 练习-用户交互脚本" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/08/31/Shell 练习/37. shell 练习-用户交互脚本/" class="article-date">
-  	<time datetime="2017-08-30T16:07:07.563Z" itemprop="datePublished">2017-08-31</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/31/Shell 练习/37. shell 练习-用户交互脚本/">
-        shell 练习-用户交互脚本
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>写一个脚本，执行后，打印一行提示“Please input a number:”，要求用户输入数值，然后打印出该数值，然后再次要求用户输入数值。直到用户输入”end”停止。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="keyword">while</span> :</div><div class="line"><span class="keyword">do</span></div><div class="line">        <span class="built_in">read</span> -p <span class="string">"Please input a number:(end for exit) "</span> n</div><div class="line">        num=` <span class="built_in">echo</span> <span class="variable">$n</span> |sed -r <span class="string">'s/[0-9]//g'</span>|wc -c `</div><div class="line">        <span class="keyword">if</span> [ <span class="variable">$n</span> == <span class="string">"end"</span> ]</div><div class="line">                <span class="keyword">then</span></div><div class="line">                        <span class="built_in">exit</span></div><div class="line">                <span class="keyword">elif</span> [ <span class="variable">$num</span> -ne 1  ]</div><div class="line">                        <span class="keyword">then</span></div><div class="line">                        <span class="built_in">echo</span> <span class="string">"what you input is not a number!Try again!"</span></div><div class="line">                <span class="keyword">else</span></div><div class="line">                        <span class="built_in">echo</span> <span class="string">"your input number is: <span class="variable">$n</span>"</span></div><div class="line">        <span class="keyword">fi</span></div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell练习/">shell练习</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-Shell 练习/36. shell 练习-脚本传参" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -498,6 +445,63 @@
 <li>除法时需要用大的数字除以小的数字，并且结果需要保留两个小数点。</li>
 </ol>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="keyword">if</span> [ <span class="variable">$#</span> -ne 2 ]</div><div class="line"><span class="keyword">then</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">"The number of parameter is not 2, Please useage: ./<span class="variable">$0</span> 1 2"</span></div><div class="line">    <span class="built_in">exit</span> 1</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line">is_int()</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> <span class="built_in">echo</span> <span class="string">"<span class="variable">$1</span>"</span>|grep -q <span class="string">'[^0-9]'</span></div><div class="line">    <span class="keyword">then</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">"<span class="variable">$1</span> is not integer number."</span></div><div class="line">    <span class="built_in">exit</span> 1</div><div class="line">    <span class="keyword">fi</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">max()</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> [ <span class="variable">$1</span> -ge <span class="variable">$2</span> ]</div><div class="line">    <span class="keyword">then</span></div><div class="line">    <span class="built_in">echo</span> <span class="variable">$1</span></div><div class="line">    <span class="keyword">else</span></div><div class="line">    <span class="built_in">echo</span> <span class="variable">$2</span></div><div class="line">    <span class="keyword">fi</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">min()</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> [ <span class="variable">$1</span> -lt <span class="variable">$2</span> ]</div><div class="line">    <span class="keyword">then</span></div><div class="line">    <span class="built_in">echo</span> <span class="variable">$1</span></div><div class="line">    <span class="keyword">else</span></div><div class="line">    <span class="built_in">echo</span> <span class="variable">$2</span></div><div class="line">    <span class="keyword">fi</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">sum()</div><div class="line">&#123;</div><div class="line">    <span class="built_in">echo</span> <span class="string">"<span class="variable">$1</span> + <span class="variable">$2</span> = $[<span class="variable">$1</span>+<span class="variable">$2</span>]"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">minus()</div><div class="line">&#123;</div><div class="line">    big=`max <span class="variable">$1</span> <span class="variable">$2</span>`</div><div class="line">    small=`min <span class="variable">$1</span> <span class="variable">$2</span>`</div><div class="line">    <span class="built_in">echo</span> <span class="string">"<span class="variable">$big</span> - <span class="variable">$small</span> = $[<span class="variable">$big</span>-<span class="variable">$small</span>]"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">mult()</div><div class="line">&#123;</div><div class="line">    <span class="built_in">echo</span> <span class="string">"<span class="variable">$1</span> * <span class="variable">$2</span> = $[<span class="variable">$1</span>*<span class="variable">$2</span>]"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">div()</div><div class="line">&#123;</div><div class="line">    big=`max <span class="variable">$1</span> <span class="variable">$2</span>`</div><div class="line">    small=`min <span class="variable">$1</span> <span class="variable">$2</span>`</div><div class="line">    d=`<span class="built_in">echo</span> <span class="string">"scale =2; <span class="variable">$big</span> / <span class="variable">$small</span>"</span>|bc`</div><div class="line">    <span class="built_in">echo</span> <span class="string">"<span class="variable">$big</span> / <span class="variable">$small</span> = <span class="variable">$d</span>"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">is_int <span class="variable">$1</span></div><div class="line">is_int <span class="variable">$2</span></div><div class="line">sum <span class="variable">$1</span> <span class="variable">$2</span></div><div class="line">minus <span class="variable">$1</span> <span class="variable">$2</span></div><div class="line">mult <span class="variable">$1</span> <span class="variable">$2</span></div><div class="line">div <span class="variable">$1</span> <span class="variable">$2</span></div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell练习/">shell练习</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Shell 练习/37. shell 练习-用户交互脚本" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/08/31/Shell 练习/37. shell 练习-用户交互脚本/" class="article-date">
+  	<time datetime="2017-08-30T16:07:07.563Z" itemprop="datePublished">2017-08-31</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/31/Shell 练习/37. shell 练习-用户交互脚本/">
+        shell 练习-用户交互脚本
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>写一个脚本，执行后，打印一行提示“Please input a number:”，要求用户输入数值，然后打印出该数值，然后再次要求用户输入数值。直到用户输入”end”停止。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="keyword">while</span> :</div><div class="line"><span class="keyword">do</span></div><div class="line">        <span class="built_in">read</span> -p <span class="string">"Please input a number:(end for exit) "</span> n</div><div class="line">        num=` <span class="built_in">echo</span> <span class="variable">$n</span> |sed -r <span class="string">'s/[0-9]//g'</span>|wc -c `</div><div class="line">        <span class="keyword">if</span> [ <span class="variable">$n</span> == <span class="string">"end"</span> ]</div><div class="line">                <span class="keyword">then</span></div><div class="line">                        <span class="built_in">exit</span></div><div class="line">                <span class="keyword">elif</span> [ <span class="variable">$num</span> -ne 1  ]</div><div class="line">                        <span class="keyword">then</span></div><div class="line">                        <span class="built_in">echo</span> <span class="string">"what you input is not a number!Try again!"</span></div><div class="line">                <span class="keyword">else</span></div><div class="line">                        <span class="built_in">echo</span> <span class="string">"your input number is: <span class="variable">$n</span>"</span></div><div class="line">        <span class="keyword">fi</span></div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure>
       
     </div>
     

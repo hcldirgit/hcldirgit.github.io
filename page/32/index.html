@@ -106,6 +106,8 @@
 				        
 							<li><a href="/archives">所有文章</a></li>
 				        
+							<li><a href="/tags">静心阅读</a></li>
+				        
 						</ul>
 					</nav>
 					<nav class="header-nav">
@@ -155,6 +157,8 @@
 		        
 					<li><a href="/archives">所有文章</a></li>
 		        
+					<li><a href="/tags">静心阅读</a></li>
+		        
 		        <div class="clearfix"></div>
 				</ul>
 			</nav>
@@ -167,6 +171,80 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-Memcached/1. Memcached" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Memcached/1. Memcached/" class="article-date">
+  	<time datetime="2017-09-02T18:04:45.994Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Memcached/1. Memcached/">
+        Memcached
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-memcached介绍"><a href="#1-memcached介绍" class="headerlink" title="1.memcached介绍"></a>1.memcached介绍</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是国外社区网站LiveJournal团队开发，通过缓存数据库查询结果，减少数据库访问次数，从而提高动态web站点性能。<a href="http://memcached.org/" target="_blank" rel="external">官方站点</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;基于c/s架构，协议简单</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;基于libevent的事件处理</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;自主内存存储处理（slab allowcation)</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;数据过期方式：Lazy Expiration 和 LRU</p>
+<h2 id="2-memcached数据流"><a href="#2-memcached数据流" class="headerlink" title="2.memcached数据流"></a>2.memcached数据流</h2><p><img src="https://github.com/hcldirgit/image/blob/master/memcached/01.png?raw=true" alt=""></p>
+<h2 id="3-slab-allocation"><a href="#3-slab-allocation" class="headerlink" title="3.slab allocation"></a>3.slab allocation</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Slab Allocation的原理——将分配的内存分割成各种尺寸的块（chunk）， 并把尺寸相同的块分成组（chunk的集合），每个chunk集合被称为slab。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Memcached的内存分配以Page为单位，Page默认值为1M，可以在启动时通过-I参数来指定。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Slab是由多个Page组成的，Page按照指定大小切割成多个chunk。其结构如图</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/memcached/02.png?raw=true" alt=""></p>
+<h2 id="4-Growth-factor"><a href="#4-Growth-factor" class="headerlink" title="4.Growth factor"></a>4.Growth factor</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;memcached在启动时通过-f选项可以指定 Growth Factor因子。该值控制chunk大小的差异。默认值为1.25。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;通过memcached-tool查看指定memcached实例的不同slab状态，可以看到各Item所占大小（chunk大小）差距为1.25</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">memcached-tool 127.0.0.1:11211 display</div></pre></td></tr></table></figure>
+<h2 id="5-memcached数据过期方式"><a href="#5-memcached数据过期方式" class="headerlink" title="5.memcached数据过期方式"></a>5.memcached数据过期方式</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Lazy Expiration </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;memcached 内部不会监视记录是否过期，而是在get时查看记录的时间戳，检查记录是否过期。这种技术被称为lazy（惰性）expiration。因此，memcached不会在过期监视上耗费CPU时间。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;LRU</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;memcached会优先使用已超时的记录的空间，但即使如此，也会发生追加新记录时空间不足的情况，此时就要使用名为Least Recently Used（LRU）机制来分配空间。顾名思义，这是删除“最近最少使用”的记录的机制。因此，当内存空间不足时（无法从slab class获取到新的空间时），就从最近未被使用的记录中搜索，并将其空间分配给新的记录。从缓存的实用角度来看，该模型十分理想。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Memcached/">Memcached</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-Memcached/2. memcached安装" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -295,80 +373,6 @@
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;类似于1443702394<br><br>1443702394<br><br>i44nunao0g3o7vf2su0hnc5440</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@memcached ~]<span class="comment"># telnet 127.0.0.1 11211</span></div></pre></td></tr></table></figure>
 <p><img src="https://github.com/hcldirgit/image/blob/master/memcached%E5%AE%89%E8%A3%85/19.png?raw=true" alt="19"></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Memcached/">Memcached</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Memcached/1. Memcached" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Memcached/1. Memcached/" class="article-date">
-  	<time datetime="2017-09-02T18:04:45.994Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Memcached/1. Memcached/">
-        Memcached
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="1-memcached介绍"><a href="#1-memcached介绍" class="headerlink" title="1.memcached介绍"></a>1.memcached介绍</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是国外社区网站LiveJournal团队开发，通过缓存数据库查询结果，减少数据库访问次数，从而提高动态web站点性能。<a href="http://memcached.org/" target="_blank" rel="external">官方站点</a></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;基于c/s架构，协议简单</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;基于libevent的事件处理</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;自主内存存储处理（slab allowcation)</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;数据过期方式：Lazy Expiration 和 LRU</p>
-<h2 id="2-memcached数据流"><a href="#2-memcached数据流" class="headerlink" title="2.memcached数据流"></a>2.memcached数据流</h2><p><img src="https://github.com/hcldirgit/image/blob/master/memcached/01.png?raw=true" alt=""></p>
-<h2 id="3-slab-allocation"><a href="#3-slab-allocation" class="headerlink" title="3.slab allocation"></a>3.slab allocation</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Slab Allocation的原理——将分配的内存分割成各种尺寸的块（chunk）， 并把尺寸相同的块分成组（chunk的集合），每个chunk集合被称为slab。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Memcached的内存分配以Page为单位，Page默认值为1M，可以在启动时通过-I参数来指定。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Slab是由多个Page组成的，Page按照指定大小切割成多个chunk。其结构如图</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/memcached/02.png?raw=true" alt=""></p>
-<h2 id="4-Growth-factor"><a href="#4-Growth-factor" class="headerlink" title="4.Growth factor"></a>4.Growth factor</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;memcached在启动时通过-f选项可以指定 Growth Factor因子。该值控制chunk大小的差异。默认值为1.25。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;通过memcached-tool查看指定memcached实例的不同slab状态，可以看到各Item所占大小（chunk大小）差距为1.25</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">memcached-tool 127.0.0.1:11211 display</div></pre></td></tr></table></figure>
-<h2 id="5-memcached数据过期方式"><a href="#5-memcached数据过期方式" class="headerlink" title="5.memcached数据过期方式"></a>5.memcached数据过期方式</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Lazy Expiration </p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;memcached 内部不会监视记录是否过期，而是在get时查看记录的时间戳，检查记录是否过期。这种技术被称为lazy（惰性）expiration。因此，memcached不会在过期监视上耗费CPU时间。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;LRU</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;memcached会优先使用已超时的记录的空间，但即使如此，也会发生追加新记录时空间不足的情况，此时就要使用名为Least Recently Used（LRU）机制来分配空间。顾名思义，这是删除“最近最少使用”的记录的机制。因此，当内存空间不足时（无法从slab class获取到新的空间时），就从最近未被使用的记录中搜索，并将其空间分配给新的记录。从缓存的实用角度来看，该模型十分理想。</p>
 
       
     </div>
@@ -953,102 +957,6 @@
 
 
   
-    <article id="post-FTP/2. vsftp部署和优化" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/FTP/2. vsftp部署和优化/" class="article-date">
-  	<time datetime="2017-09-02T18:02:06.172Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/FTP/2. vsftp部署和优化/">
-        vsftp部署和优化
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;作为系统默认自带的 ftp 服务软件，vsftp 也是比较常用的。</p>
-<h2 id="1-安装-vsftp"><a href="#1-安装-vsftp" class="headerlink" title="1.安装 vsftp"></a>1.安装 vsftp</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># yum install -y vsftpd db4-utils</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里安装两个软件包，同时会把依赖的包安装上。其中 db4-utils 用来生成木马库文件。</p>
-<h2 id="2-建立帐号"><a href="#2-建立帐号" class="headerlink" title="2.建立帐号"></a>2.建立帐号</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;vsftp 默认是可以支持使用系统帐号体系登录的，但这样不太安全，所以建议使用虚拟账号体系。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;建立虚拟账号相关的系统帐号</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># useradd virftp -s /sbin/nologin</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;建立虚拟账户相关的文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># vim /etc/vsftpd/vsftpd_login</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;内容如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">test1</div><div class="line">123456</div><div class="line">test2</div><div class="line">abcdef</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;更改该文件的权限，提升安全级别</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># chmod 600 /etc/vsftpd/vsftpd_login</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;vsftpd 使用的密码文件肯定不是铭文的，需要生成对应的库文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># db_load -T -t hash -f /etc/vsftpd/vsftpd_login /etc/vsftpd/vsftpd_login.db</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;建立虚拟帐号相关的目录以及配置文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># mkdir /etc/vsftpd/vsftpd_user_conf</span></div><div class="line">[root@192 ~]<span class="comment"># cd /etc/vsftpd/vsftpd_user_conf</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;3.创建和用户对应的配置文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 vsftpd_user_conf]<span class="comment"># vim test1</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;内容如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">local_root=/home/virftp/test1</div><div class="line">anonymous_enable=NO</div><div class="line">write_enable=YES</div><div class="line">local_umask=022</div><div class="line">anon_upload_enable=NO</div><div class="line">anon_mkdir_write_enable=NO</div><div class="line">idle_session_timeout=600</div><div class="line">data_connection_timeout=120</div><div class="line">max_clients=10</div><div class="line">max_per_ip=5</div><div class="line">local_max_rate=50000</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明:local_root 为该帐号的家目录，anonymous_enable 用来限制是否允许匿名帐号登录，若为 NO 表示不允许匿名帐号登录， write_enable=YES 表示可写，local_umask 指定 umask 值，anon_upload_enable 是否允许匿名帐号上传文件，anon_mkdir_write_enable 是否允许匿名帐号可写。以上为关键参数，其他暂时不用关心，创建 test2 帐号的步骤和 test1 一样。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@192 vsftpd_user_conf]<span class="comment"># mkdir /home/virftp/test1</span></div><div class="line">[root@192 vsftpd_user_conf]<span class="comment"># chown -R virftp:virftp /home/virftp</span></div><div class="line">[root@192 vsftpd_user_conf]<span class="comment"># vim /etc/pam.d/vsftpd</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在最开头添加两行：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">auth sufficient /lib64/security/pam_userdb.so db=/etc/vsftpd/vsftpd_login</div><div class="line">account sufficient /lib64/security/pam_userdb.so db=/etc/vsftpd/vsftpd_login</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：linux 为 64 位系统，所以库文件为 /lib64/security/pam_userdb.so ，若系统为 32位，那么库文件在 /lib/security/pam_userdb.so</p>
-<h2 id="4-修改全局配置文件-etc-vsftpd-conf"><a href="#4-修改全局配置文件-etc-vsftpd-conf" class="headerlink" title="4.修改全局配置文件 /etc/vsftpd.conf"></a>4.修改全局配置文件 /etc/vsftpd.conf</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 vsftpd_user_conf]<span class="comment"># vim /etc/vsftpd/vsftpd.conf</span></div></pre></td></tr></table></figure>
-<p><img src="https://github.com/hcldirgit/image/blob/master/vsftp%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BC%98%E5%8C%96/01.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;改为</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/vsftp%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BC%98%E5%8C%96/02.png?raw=true" alt=""></p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/vsftp%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BC%98%E5%8C%96/03.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;改为</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/vsftp%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BC%98%E5%8C%96/04.png?raw=true" alt=""></p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/vsftp%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BC%98%E5%8C%96/05.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;改为</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/vsftp%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BC%98%E5%8C%96/06.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;再增加：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">chroot_local_user=YES</div><div class="line">guest_enabled=YES</div><div class="line">guest_username=virftp</div><div class="line">virtual_use_local_privs=YES</div><div class="line">user_config_dir=/etc/vsftpd/vsftpd_user_conf</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;最后启动 vsftpd 服务</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@192 vsftpd_user_conf]<span class="comment"># /etc/init.d/vsftpd start </span></div><div class="line">为 vsftpd 启动 vsftpd： [确定]</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果服务启动不了，很有可能是前面 21端口占用。测试过程和 pure-ftpd 一样，如果用户无法登录，查看日志 /var/log/srcure</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FTP/">FTP</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-FTP/1. pureftp部署和优化" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1130,6 +1038,102 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># pure-pw userdel $user</span></div></pre></td></tr></table></figure>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动服务</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># /etc/init.d/pure-ftpd start</span></div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FTP/">FTP</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-FTP/2. vsftp部署和优化" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/FTP/2. vsftp部署和优化/" class="article-date">
+  	<time datetime="2017-09-02T18:02:06.172Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/FTP/2. vsftp部署和优化/">
+        vsftp部署和优化
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;作为系统默认自带的 ftp 服务软件，vsftp 也是比较常用的。</p>
+<h2 id="1-安装-vsftp"><a href="#1-安装-vsftp" class="headerlink" title="1.安装 vsftp"></a>1.安装 vsftp</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># yum install -y vsftpd db4-utils</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里安装两个软件包，同时会把依赖的包安装上。其中 db4-utils 用来生成木马库文件。</p>
+<h2 id="2-建立帐号"><a href="#2-建立帐号" class="headerlink" title="2.建立帐号"></a>2.建立帐号</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;vsftp 默认是可以支持使用系统帐号体系登录的，但这样不太安全，所以建议使用虚拟账号体系。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;建立虚拟账号相关的系统帐号</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># useradd virftp -s /sbin/nologin</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;建立虚拟账户相关的文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># vim /etc/vsftpd/vsftpd_login</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;内容如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">test1</div><div class="line">123456</div><div class="line">test2</div><div class="line">abcdef</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;更改该文件的权限，提升安全级别</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># chmod 600 /etc/vsftpd/vsftpd_login</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;vsftpd 使用的密码文件肯定不是铭文的，需要生成对应的库文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># db_load -T -t hash -f /etc/vsftpd/vsftpd_login /etc/vsftpd/vsftpd_login.db</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;建立虚拟帐号相关的目录以及配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># mkdir /etc/vsftpd/vsftpd_user_conf</span></div><div class="line">[root@192 ~]<span class="comment"># cd /etc/vsftpd/vsftpd_user_conf</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;3.创建和用户对应的配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 vsftpd_user_conf]<span class="comment"># vim test1</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;内容如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">local_root=/home/virftp/test1</div><div class="line">anonymous_enable=NO</div><div class="line">write_enable=YES</div><div class="line">local_umask=022</div><div class="line">anon_upload_enable=NO</div><div class="line">anon_mkdir_write_enable=NO</div><div class="line">idle_session_timeout=600</div><div class="line">data_connection_timeout=120</div><div class="line">max_clients=10</div><div class="line">max_per_ip=5</div><div class="line">local_max_rate=50000</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明:local_root 为该帐号的家目录，anonymous_enable 用来限制是否允许匿名帐号登录，若为 NO 表示不允许匿名帐号登录， write_enable=YES 表示可写，local_umask 指定 umask 值，anon_upload_enable 是否允许匿名帐号上传文件，anon_mkdir_write_enable 是否允许匿名帐号可写。以上为关键参数，其他暂时不用关心，创建 test2 帐号的步骤和 test1 一样。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@192 vsftpd_user_conf]<span class="comment"># mkdir /home/virftp/test1</span></div><div class="line">[root@192 vsftpd_user_conf]<span class="comment"># chown -R virftp:virftp /home/virftp</span></div><div class="line">[root@192 vsftpd_user_conf]<span class="comment"># vim /etc/pam.d/vsftpd</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在最开头添加两行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">auth sufficient /lib64/security/pam_userdb.so db=/etc/vsftpd/vsftpd_login</div><div class="line">account sufficient /lib64/security/pam_userdb.so db=/etc/vsftpd/vsftpd_login</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：linux 为 64 位系统，所以库文件为 /lib64/security/pam_userdb.so ，若系统为 32位，那么库文件在 /lib/security/pam_userdb.so</p>
+<h2 id="4-修改全局配置文件-etc-vsftpd-conf"><a href="#4-修改全局配置文件-etc-vsftpd-conf" class="headerlink" title="4.修改全局配置文件 /etc/vsftpd.conf"></a>4.修改全局配置文件 /etc/vsftpd.conf</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 vsftpd_user_conf]<span class="comment"># vim /etc/vsftpd/vsftpd.conf</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/vsftp%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BC%98%E5%8C%96/01.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;改为</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/vsftp%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BC%98%E5%8C%96/02.png?raw=true" alt=""></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/vsftp%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BC%98%E5%8C%96/03.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;改为</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/vsftp%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BC%98%E5%8C%96/04.png?raw=true" alt=""></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/vsftp%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BC%98%E5%8C%96/05.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;改为</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/vsftp%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BC%98%E5%8C%96/06.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;再增加：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">chroot_local_user=YES</div><div class="line">guest_enabled=YES</div><div class="line">guest_username=virftp</div><div class="line">virtual_use_local_privs=YES</div><div class="line">user_config_dir=/etc/vsftpd/vsftpd_user_conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;最后启动 vsftpd 服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@192 vsftpd_user_conf]<span class="comment"># /etc/init.d/vsftpd start </span></div><div class="line">为 vsftpd 启动 vsftpd： [确定]</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果服务启动不了，很有可能是前面 21端口占用。测试过程和 pure-ftpd 一样，如果用户无法登录，查看日志 /var/log/srcure</p>
 
       
     </div>

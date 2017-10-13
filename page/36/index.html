@@ -106,6 +106,8 @@
 				        
 							<li><a href="/archives">所有文章</a></li>
 				        
+							<li><a href="/tags">静心阅读</a></li>
+				        
 						</ul>
 					</nav>
 					<nav class="header-nav">
@@ -154,6 +156,8 @@
 					<li><a href="/">主页</a></li>
 		        
 					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/tags">静心阅读</a></li>
 		        
 		        <div class="clearfix"></div>
 				</ul>
@@ -323,82 +327,6 @@
 
 
   
-    <article id="post-Apache/45. apache的order、allow、deny" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Apache/45. apache的order、allow、deny/" class="article-date">
-  	<time datetime="2017-09-02T18:00:30.924Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Apache/45. apache的order、allow、deny/">
-        apache的order、allow、deny
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个东西确实挺容易让人迷糊。其实也不难，只要掌握这样一条规律即可：</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先举个例子：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Order deny,allow</div><div class="line">deny from all</div><div class="line">allow from 127.0.0.1</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;判断的依据是这样的：</p>
-<ol>
-<li>看Order后面的，哪个在前，哪个在后</li>
-<li>如果deny在前，那么就需要看deny from 这句，然后看allow from 这一句</li>
-<li>规则是一条一条的匹配的，不管是deny在前还是allow在前，都是会生效的。比如例子中，先deny 了所有，然后又allow了127.0.0.1，所以127.0.0.1是通过的。</li>
-</ol>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;不妨再多举几个例子：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Order allow,deny</div><div class="line">deny from all</div><div class="line">allow from 127.0.0.1</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个就会deny所有了，127.0.0.1也会被deny。因为顺序是先allow然后deny，虽然一开始allow了127.0.0.1，但是后面又拒绝了它。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Order allow,deny</div><div class="line">deny from all</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;全部都不能通行</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Order deny,allow</div><div class="line">deny from all</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;全部都不能通行</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Order deny,allow</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;全部都可以通行（默认的），记住即可</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Order allow,deny</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;全部都不能通行（默认的），记住即可</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-Apache/46. apache几种限制ip的方法" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -450,6 +378,82 @@
 <li>只允许某些IP访问，适合比如就允许内部或者合作公司访问：</li>
 </ol>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;Directory <span class="string">"/var/www/web/"</span>&gt;</div><div class="line"> Order deny,allow</div><div class="line"> Deny from all</div><div class="line"> Allow from example.com              <span class="comment">#允许某个域名</span></div><div class="line"> Allow from 10.0.0.1                 <span class="comment">#允许一个IP</span></div><div class="line"> Allow from 10.0.0.1 10.0.0.2        <span class="comment">#允许多个IP</span></div><div class="line"> Allow from 10.1.0.0/255.255.0.0     <span class="comment">#允许一个IP段，掩码对</span></div><div class="line"> Allow from 10.0.1 192.168           <span class="comment">#允许一个IP段，后面不填写</span></div><div class="line"> Allow from 192.168.0.0/24           <span class="comment">#允许一个IP段，网络号</span></div><div class="line">&lt;/Directory&gt;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Apache/45. apache的order、allow、deny" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Apache/45. apache的order、allow、deny/" class="article-date">
+  	<time datetime="2017-09-02T18:00:30.924Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Apache/45. apache的order、allow、deny/">
+        apache的order、allow、deny
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个东西确实挺容易让人迷糊。其实也不难，只要掌握这样一条规律即可：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先举个例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Order deny,allow</div><div class="line">deny from all</div><div class="line">allow from 127.0.0.1</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;判断的依据是这样的：</p>
+<ol>
+<li>看Order后面的，哪个在前，哪个在后</li>
+<li>如果deny在前，那么就需要看deny from 这句，然后看allow from 这一句</li>
+<li>规则是一条一条的匹配的，不管是deny在前还是allow在前，都是会生效的。比如例子中，先deny 了所有，然后又allow了127.0.0.1，所以127.0.0.1是通过的。</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;不妨再多举几个例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Order allow,deny</div><div class="line">deny from all</div><div class="line">allow from 127.0.0.1</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个就会deny所有了，127.0.0.1也会被deny。因为顺序是先allow然后deny，虽然一开始allow了127.0.0.1，但是后面又拒绝了它。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Order allow,deny</div><div class="line">deny from all</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;全部都不能通行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Order deny,allow</div><div class="line">deny from all</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;全部都不能通行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Order deny,allow</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;全部都可以通行（默认的），记住即可</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Order allow,deny</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;全部都不能通行（默认的），记住即可</p>
 
       
     </div>

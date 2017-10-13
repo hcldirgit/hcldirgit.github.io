@@ -106,6 +106,8 @@
 				        
 							<li><a href="/archives">所有文章</a></li>
 				        
+							<li><a href="/tags">静心阅读</a></li>
+				        
 						</ul>
 					</nav>
 					<nav class="header-nav">
@@ -154,6 +156,8 @@
 					<li><a href="/">主页</a></li>
 		        
 					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/tags">静心阅读</a></li>
 		        
 		        <div class="clearfix"></div>
 				</ul>
@@ -266,6 +270,69 @@
 
 
   
+    <article id="post-1. Linux 基础/28.建立一个swap文件增加虚拟内存" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/1. Linux 基础/28.建立一个swap文件增加虚拟内存/" class="article-date">
+  	<time datetime="2017-09-02T17:55:11.344Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/1. Linux 基础/28.建立一个swap文件增加虚拟内存/">
+        建立一个swap文件增加虚拟内存
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从装系统时就接触过这个swap了，它类似与windows的虚拟内存，分区的时候一般大小为内存的2倍，如果内存超过8G，那么你分16G似乎是没有必要了。分16G足够日常交换了。然而，还会有虚拟内存不够用的情况发生。如果真遇到了，莫非还要重新给磁盘分区？当然不能，那我们就增加一个虚拟的磁盘出来。基本的思路就是：建立swapfile -&gt; 格式化为swap格式 -&gt; 启用该虚拟磁盘。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># dd if=/dev/zero of=/tmp/newdisk bs=4k count=102400</span></div><div class="line">记录了102400+0 的读入</div><div class="line">记录了102400+0 的写出</div><div class="line">419430400字节(419 MB)已复制，2.59193 秒，162 MB/秒</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;“dd” 这个命令会经常用到，所以要掌握它的使用方法，其实也不难，用 “if” 指定源，基本上除了 “/dev/zero” 外基本上不会写别的，而/dev/zero 是UNIX系统特有的一个文件，它可以提供源源不断的 “0”, 关于它的其他信息请你在网上查一下资料。 “of” 指定目标文件， “bs” 定义块的大小， “count” 定义块的数量，这两个参数的多少决定了目标文件的大小，目标文件大小 = bs x count. 用dd建了一个大小为400M的文件，然后格式化成swap格式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# mkswap -f /tmp/newdisk</div><div class="line">Setting up swapspace version 1, size = 409596 KiB</div><div class="line">no label, UUID=29832cab-04b9-4083-a667-9a5795a5d490</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;格式化完后，就可以挂载上使用了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># free -m</span></div><div class="line">          total       used       free     shared    buffers     cached</div><div class="line">Mem:           318        314          4          0          5        278</div><div class="line">-/+ buffers/cache:         30        288</div><div class="line">Swap:         2047          0       2047</div><div class="line">[root@localhost ~]<span class="comment"># swapon /tmp/newdisk</span></div><div class="line">[root@localhost ~]<span class="comment"># free -m</span></div><div class="line">             total       used       free     shared    buffers     cached</div><div class="line">Mem:           318        314          4          0          5        278</div><div class="line">-/+ buffers/cache:         31        287</div><div class="line">Swap:         2447          0       2447</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;前后对比swap分区多了400M空间。其中 “free” 这个命令用来查看内存使用情况， “-m” 表示以M为单位显示</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-1. Linux 基础/71. 郁闷，又断开了！！！" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -302,69 +369,6 @@
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;CTRL + A ，然后按 d键，那么就退出了这个screen界面</p>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要想运行多个 screen，则我们还可以继续输入screen命令，回车，接下来的步骤和前面是一样的。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">screen -ls  // 查看目前所有的screen任务</div><div class="line">screen -r id // 这个id是screen -ls 时 看到的一个数字，如果只有一个，可以省略掉id号</div></pre></td></tr></table></figure>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-1. Linux 基础/28.建立一个swap文件增加虚拟内存" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/1. Linux 基础/28.建立一个swap文件增加虚拟内存/" class="article-date">
-  	<time datetime="2017-09-02T17:55:11.344Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/1. Linux 基础/28.建立一个swap文件增加虚拟内存/">
-        建立一个swap文件增加虚拟内存
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从装系统时就接触过这个swap了，它类似与windows的虚拟内存，分区的时候一般大小为内存的2倍，如果内存超过8G，那么你分16G似乎是没有必要了。分16G足够日常交换了。然而，还会有虚拟内存不够用的情况发生。如果真遇到了，莫非还要重新给磁盘分区？当然不能，那我们就增加一个虚拟的磁盘出来。基本的思路就是：建立swapfile -&gt; 格式化为swap格式 -&gt; 启用该虚拟磁盘。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># dd if=/dev/zero of=/tmp/newdisk bs=4k count=102400</span></div><div class="line">记录了102400+0 的读入</div><div class="line">记录了102400+0 的写出</div><div class="line">419430400字节(419 MB)已复制，2.59193 秒，162 MB/秒</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;“dd” 这个命令会经常用到，所以要掌握它的使用方法，其实也不难，用 “if” 指定源，基本上除了 “/dev/zero” 外基本上不会写别的，而/dev/zero 是UNIX系统特有的一个文件，它可以提供源源不断的 “0”, 关于它的其他信息请你在网上查一下资料。 “of” 指定目标文件， “bs” 定义块的大小， “count” 定义块的数量，这两个参数的多少决定了目标文件的大小，目标文件大小 = bs x count. 用dd建了一个大小为400M的文件，然后格式化成swap格式：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# mkswap -f /tmp/newdisk</div><div class="line">Setting up swapspace version 1, size = 409596 KiB</div><div class="line">no label, UUID=29832cab-04b9-4083-a667-9a5795a5d490</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;格式化完后，就可以挂载上使用了：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># free -m</span></div><div class="line">          total       used       free     shared    buffers     cached</div><div class="line">Mem:           318        314          4          0          5        278</div><div class="line">-/+ buffers/cache:         30        288</div><div class="line">Swap:         2047          0       2047</div><div class="line">[root@localhost ~]<span class="comment"># swapon /tmp/newdisk</span></div><div class="line">[root@localhost ~]<span class="comment"># free -m</span></div><div class="line">             total       used       free     shared    buffers     cached</div><div class="line">Mem:           318        314          4          0          5        278</div><div class="line">-/+ buffers/cache:         31        287</div><div class="line">Swap:         2447          0       2447</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;前后对比swap分区多了400M空间。其中 “free” 这个命令用来查看内存使用情况， “-m” 表示以M为单位显示</p>
 
       
     </div>

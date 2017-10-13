@@ -106,6 +106,8 @@
 				        
 							<li><a href="/archives">所有文章</a></li>
 				        
+							<li><a href="/tags">静心阅读</a></li>
+				        
 						</ul>
 					</nav>
 					<nav class="header-nav">
@@ -154,6 +156,8 @@
 					<li><a href="/">主页</a></li>
 		        
 					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/tags">静心阅读</a></li>
 		        
 		        <div class="clearfix"></div>
 				</ul>
@@ -265,90 +269,6 @@
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;use dbname  //先进入对应的库</p>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;db.printCollectionStats()  // 然后查看集合状态</p>
 <p><img src="https://github.com/hcldirgit/image/blob/master/MongoDB%20%E8%BF%9E%E6%8E%A5%E5%92%8C%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86/25.png?raw=true" alt="25"></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MongoDB/">MongoDB</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-MongoDB/2. MongoDB 安装" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/MongoDB/2. MongoDB 安装/" class="article-date">
-  	<time datetime="2017-09-02T18:06:42.757Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/MongoDB/2. MongoDB 安装/">
-        MongoDB 安装
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="1-搭建-yum-源"><a href="#1-搭建-yum-源" class="headerlink" title="1. 搭建 yum 源"></a>1. 搭建 yum 源</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果安装epel扩展源，可以安装mongodb2.4版本，但这次我们要安装3.0版本，官方提供的源只支持64位系统</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编辑 /etc/yum.repos.d/mongodb-org-3.0.repo </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@mongodb ~]<span class="comment"># vim /etc/yum.repos.d/mongodb-org-3.0.repo</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加入如下内容</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[mongodb-org-3.0]</div><div class="line">name=MongoDB Repository</div><div class="line">baseurl=http://repo.mongodb.org/yum/redhat/<span class="variable">$releasever</span>/mongodb-org/3.0/x86_64/ </div><div class="line">gpgcheck=0</div><div class="line">enabled=1</div></pre></td></tr></table></figure>
-<p><img src="https://github.com/hcldirgit/image/blob/master/MongoDB%20%E5%AE%89%E8%A3%85/01.png?raw=true" alt=""></p>
-<h2 id="2-安装配置-MongoDB"><a href="#2-安装配置-MongoDB" class="headerlink" title="2. 安装配置 MongoDB"></a>2. 安装配置 MongoDB</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安装很简单  yum install -y mongodb-org</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@mongodb ~]<span class="comment"># yum install -y mongodb-org</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编辑配置文件 /etc/mongod.conf</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@mongodb ~]<span class="comment"># vim /etc/mongod.conf</span></div></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">fork: <span class="literal">true</span></div><div class="line">pidFilePath: /var/run/mongodb/mongod.pid</div></pre></td></tr></table></figure>
-<p><img src="https://github.com/hcldirgit/image/blob/master/MongoDB%20%E5%AE%89%E8%A3%85/02.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;把这两行后面#开头的注释删掉,否则重启的时候会有问题</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/MongoDB%20%E5%AE%89%E8%A3%85/03.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要想绑定多个ip，在bind_ip 后写多个ip，中间用逗号分隔</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/MongoDB%20%E5%AE%89%E8%A3%85/04.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;监听全部ip留空即可</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/MongoDB%20%E5%AE%89%E8%A3%85/05.png?raw=true" alt=""></p>
-<h2 id="3-启动-MongoDB"><a href="#3-启动-MongoDB" class="headerlink" title="3. 启动 MongoDB"></a>3. 启动 MongoDB</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@mongodb ~]<span class="comment"># /etc/init.d/mongod start</span></div><div class="line">Starting mongod: [确定]</div></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@mongodb ~]<span class="comment"># echo never &gt; /sys/kernel/mm/transparent_hugepage/enabled</span></div><div class="line">[root@mongodb ~]<span class="comment"># echo never &gt; /sys/kernel/mm/transparent_hugepage/defrag</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编辑 /etc/security/limits.conf </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@mongodb ~]<span class="comment"># vim /etc/security/limits.conf</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加入</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">mongod soft nofile 64000</div><div class="line">mongod hard nofile 64000</div><div class="line">mongod soft nproc 32000</div><div class="line">mongod hard nproc 32000</div></pre></td></tr></table></figure>
-<p><img src="https://github.com/hcldirgit/image/blob/master/MongoDB%20%E5%AE%89%E8%A3%85/06.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动：service mongod start</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@mongodb ~]<span class="comment"># service mongod restart</span></div><div class="line">Stopping mongod: [确定]</div><div class="line">Starting mongod: [确定]</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动的过程会比较慢，这是它在写数据 /var/lib/mongo</p>
 
       
     </div>
@@ -667,6 +587,90 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mongodb：//example1.com,example2.com,example3.com/？replicaSet = <span class="built_in">test</span>＆w = 2＆wtimeoutMS = 2000</div></pre></td></tr></table></figure>
 <h3 id="集群"><a href="#集群" class="headerlink" title="集群"></a>集群</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下连接到具有三个mongos实例的分片集群：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mongodb：//router1.example.com：27017，router2.example2.com：27017，router3.example3.com：27017 /</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MongoDB/">MongoDB</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-MongoDB/2. MongoDB 安装" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/MongoDB/2. MongoDB 安装/" class="article-date">
+  	<time datetime="2017-09-02T18:06:42.757Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/MongoDB/2. MongoDB 安装/">
+        MongoDB 安装
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-搭建-yum-源"><a href="#1-搭建-yum-源" class="headerlink" title="1. 搭建 yum 源"></a>1. 搭建 yum 源</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果安装epel扩展源，可以安装mongodb2.4版本，但这次我们要安装3.0版本，官方提供的源只支持64位系统</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编辑 /etc/yum.repos.d/mongodb-org-3.0.repo </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@mongodb ~]<span class="comment"># vim /etc/yum.repos.d/mongodb-org-3.0.repo</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加入如下内容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[mongodb-org-3.0]</div><div class="line">name=MongoDB Repository</div><div class="line">baseurl=http://repo.mongodb.org/yum/redhat/<span class="variable">$releasever</span>/mongodb-org/3.0/x86_64/ </div><div class="line">gpgcheck=0</div><div class="line">enabled=1</div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/MongoDB%20%E5%AE%89%E8%A3%85/01.png?raw=true" alt=""></p>
+<h2 id="2-安装配置-MongoDB"><a href="#2-安装配置-MongoDB" class="headerlink" title="2. 安装配置 MongoDB"></a>2. 安装配置 MongoDB</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安装很简单  yum install -y mongodb-org</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@mongodb ~]<span class="comment"># yum install -y mongodb-org</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编辑配置文件 /etc/mongod.conf</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@mongodb ~]<span class="comment"># vim /etc/mongod.conf</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">fork: <span class="literal">true</span></div><div class="line">pidFilePath: /var/run/mongodb/mongod.pid</div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/MongoDB%20%E5%AE%89%E8%A3%85/02.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;把这两行后面#开头的注释删掉,否则重启的时候会有问题</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/MongoDB%20%E5%AE%89%E8%A3%85/03.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要想绑定多个ip，在bind_ip 后写多个ip，中间用逗号分隔</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/MongoDB%20%E5%AE%89%E8%A3%85/04.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;监听全部ip留空即可</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/MongoDB%20%E5%AE%89%E8%A3%85/05.png?raw=true" alt=""></p>
+<h2 id="3-启动-MongoDB"><a href="#3-启动-MongoDB" class="headerlink" title="3. 启动 MongoDB"></a>3. 启动 MongoDB</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@mongodb ~]<span class="comment"># /etc/init.d/mongod start</span></div><div class="line">Starting mongod: [确定]</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@mongodb ~]<span class="comment"># echo never &gt; /sys/kernel/mm/transparent_hugepage/enabled</span></div><div class="line">[root@mongodb ~]<span class="comment"># echo never &gt; /sys/kernel/mm/transparent_hugepage/defrag</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编辑 /etc/security/limits.conf </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@mongodb ~]<span class="comment"># vim /etc/security/limits.conf</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">mongod soft nofile 64000</div><div class="line">mongod hard nofile 64000</div><div class="line">mongod soft nproc 32000</div><div class="line">mongod hard nproc 32000</div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/MongoDB%20%E5%AE%89%E8%A3%85/06.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动：service mongod start</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@mongodb ~]<span class="comment"># service mongod restart</span></div><div class="line">Stopping mongod: [确定]</div><div class="line">Starting mongod: [确定]</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动的过程会比较慢，这是它在写数据 /var/lib/mongo</p>
 
       
     </div>
