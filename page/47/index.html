@@ -106,8 +106,6 @@
 				        
 							<li><a href="/archives">所有文章</a></li>
 				        
-							<li><a href="/tags">静心阅读</a></li>
-				        
 						</ul>
 					</nav>
 					<nav class="header-nav">
@@ -156,8 +154,6 @@
 					<li><a href="/">主页</a></li>
 		        
 					<li><a href="/archives">所有文章</a></li>
-		        
-					<li><a href="/tags">静心阅读</a></li>
 		        
 		        <div class="clearfix"></div>
 				</ul>
@@ -338,6 +334,96 @@
 
 
   
+    <article id="post-2. Linux 命令/20. find 命令之 exec" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/2. Linux 命令/20. find 命令之 exec/" class="article-date">
+  	<time datetime="2017-09-02T17:57:34.253Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/2. Linux 命令/20. find 命令之 exec/">
+        find 命令之 exec
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;find是我们很常用的一个Linux命令，但是我们一般查找出来的并不仅仅是看看而已，还会有进一步的操作，这个时候exec的作用就显现出来了。</p>
+<h2 id="exec解释："><a href="#exec解释：" class="headerlink" title="exec解释："></a>exec解释：</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;-exec  参数后面跟的是command命令，它的终止是以;为结束标志的，所以这句命令后面的分号是不可缺少的，考虑到各个系统中分号会有不同的意义，所以前面加反斜杠。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;{}   花括号代表前面find查找出来的文件名。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用find时，只要把想要的操作写在一个文件里，就可以用exec来配合find查找，很方便的。在有些操作系统中只允许-exec选项执行诸如l s或ls -l这样的命令。大多数用户使用这一选项是为了查找旧文件并删除它们。建议在真正执行rm命令删除文件之前，最好先用ls命令看一下，确认它们是所要删除的文件。 exec选项后面跟随着所要执行的命令或脚本，然后是一对儿{ }，一个空格和一个\，最后是一个分号。为了使用exec选项，必须要同时使用print选项。如果验证一下find命令，会发现该命令只输出从当前路径起的相对路径及文件名。</p>
+<h2 id="使用实例"><a href="#使用实例" class="headerlink" title="使用实例"></a>使用实例</h2><h3 id="实例1：ls-l-命令放在-find-命令的-exec-选项中"><a href="#实例1：ls-l-命令放在-find-命令的-exec-选项中" class="headerlink" title="实例1：ls -l 命令放在 find 命令的 -exec 选项中"></a>实例1：ls -l 命令放在 find 命令的 -exec 选项中</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">find . -<span class="built_in">type</span> d -<span class="built_in">exec</span> ls -l &#123;&#125; \;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># find . -type f -exec ls -l &#123;&#125; \; </span></div><div class="line">-rw-r--r-- 1 root root 127 10-28 16:51 ./log2014.log</div><div class="line">-rw-r--r-- 1 root root 0 10-28 14:47 ./test4/log3-2.log</div><div class="line">-rw-r--r-- 1 root root 0 10-28 14:47 ./test4/log3-3.log</div><div class="line">-rw-r--r-- 1 root root 0 10-28 14:47 ./test4/log3-1.log</div><div class="line">-rw-r--r-- 1 root root 33 10-28 16:54 ./log2013.log</div><div class="line">-rw-r--r-- 1 root root 302108 11-03 06:19 ./log2012.log</div><div class="line">-rw-r--r-- 1 root root 25 10-28 17:02 ./log.log</div><div class="line">-rw-r--r-- 1 root root 37 10-28 17:07 ./log.txt</div><div class="line">-rw-r--r-- 1 root root 0 10-28 14:47 ./test3/log3-2.log</div><div class="line">-rw-r--r-- 1 root root 0 10-28 14:47 ./test3/log3-3.log</div><div class="line">-rw-r--r-- 1 root root 0 10-28 14:47 ./test3/log3-1.log</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong><br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上例中，find 命令匹配到了当前目录下的所有普通文件，并在 -exec 选项中使用 ls -l 命令将他们列出来。</p>
+<h3 id="实例2：在目录中查找更改时间在-n-日以前的文件并删除它们"><a href="#实例2：在目录中查找更改时间在-n-日以前的文件并删除它们" class="headerlink" title="实例2：在目录中查找更改时间在 n 日以前的文件并删除它们"></a>实例2：在目录中查找更改时间在 n 日以前的文件并删除它们</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">find . -<span class="built_in">type</span> f -mtime +14 -<span class="built_in">exec</span> rm &#123;&#125; \;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># ll</span></div><div class="line">总计 328</div><div class="line">-rw-r--r-- 1 root root 302108 11-03 06:19 log2012.log</div><div class="line">-rw-r--r-- 1 root root     33 10-28 16:54 log2013.log</div><div class="line">-rw-r--r-- 1 root root    127 10-28 16:51 log2014.log</div><div class="line">lrwxrwxrwx 1 root root      7 10-28 15:18 log_link.log -&gt; log.log</div><div class="line">-rw-r--r-- 1 root root     25 10-28 17:02 log.log</div><div class="line">-rw-r--r-- 1 root root     37 10-28 17:07 log.txt</div><div class="line">drwxr-xr-x 6 root root   4096 10-27 01:58 scf</div><div class="line">drwxrwxrwx 2 root root   4096 10-28 14:47 test3</div><div class="line">drwxrwxrwx 2 root root   4096 10-28 14:47 test4</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># find . -type f -mtime +14 -exec rm &#123;&#125; \;</span></div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># ll</span></div><div class="line">总计 312</div><div class="line">-rw-r--r-- 1 root root 302108 11-03 06:19 log2012.log</div><div class="line">lrwxrwxrwx 1 root root      7 10-28 15:18 log_link.log -&gt; log.log</div><div class="line">drwxr-xr-x 6 root root   4096 10-27 01:58 scf</div><div class="line">drwxrwxrwx 2 root root   4096 11-12 19:32 test3</div><div class="line">drwxrwxrwx 2 root root   4096 11-12 19:32 test4</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong><br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在 shell 中用任何方式删除文件之前，应当先查看相应的文件，一定要小心！当使用诸如 mv 或 rm 命令时，可以使用 -exec 选项的安全模式。它将在对每个匹配到的文件进行操作之前提示你。</p>
+<h3 id="实例3：在目录中查找更改时间在-n-日以前的文件并删除它们，在删除之前先给出提示"><a href="#实例3：在目录中查找更改时间在-n-日以前的文件并删除它们，在删除之前先给出提示" class="headerlink" title="实例3：在目录中查找更改时间在 n 日以前的文件并删除它们，在删除之前先给出提示"></a>实例3：在目录中查找更改时间在 n 日以前的文件并删除它们，在删除之前先给出提示</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">find . -name <span class="string">"*.log"</span> -mtime +5 -ok rm &#123;&#125; \;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># ll</span></div><div class="line">总计 312</div><div class="line">-rw-r--r-- 1 root root 302108 11-03 06:19 log2012.log</div><div class="line">lrwxrwxrwx 1 root root      7 10-28 15:18 log_link.log -&gt; log.log</div><div class="line">drwxr-xr-x 6 root root   4096 10-27 01:58 scf</div><div class="line">drwxrwxrwx 2 root root   4096 11-12 19:32 test3</div><div class="line">drwxrwxrwx 2 root root   4096 11-12 19:32 test4</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># find . -name "*.log" -mtime +5 -ok rm &#123;&#125; \;</span></div><div class="line">&lt; rm ... ./log_link.log &gt; ? y</div><div class="line">&lt; rm ... ./log2012.log &gt; ? n</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># ll</span></div><div class="line">总计 312</div><div class="line">-rw-r--r-- 1 root root 302108 11-03 06:19 log2012.log</div><div class="line">drwxr-xr-x 6 root root   4096 10-27 01:58 scf</div><div class="line">drwxrwxrwx 2 root root   4096 11-12 19:32 test3</div><div class="line">drwxrwxrwx 2 root root   4096 11-12 19:32 test4</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在上例中，find 命令在当前目录中查找所有文件名以 .log 结尾、更改时间在5日以上的文件，并删除它们，只不过在删除之前先给出提示。按 y 键删除文件，按 n 键不删除。</p>
+<h3 id="实例4：-exec-中使用-grep-命令"><a href="#实例4：-exec-中使用-grep-命令" class="headerlink" title="实例4：-exec 中使用 grep  命令"></a>实例4：-exec 中使用 grep  命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">find /etc -name <span class="string">"passwd*"</span> -<span class="built_in">exec</span> grep <span class="string">"root"</span> &#123;&#125; \;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># find /etc -name "passwd*" -exec grep "root" &#123;&#125; \;</span></div><div class="line">root:x:0:0:root:/root:/bin/bash</div><div class="line">root:x:0:0:root:/root:/bin/bash</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;任何形式的命令都可以在 -exec 选项中使用。在上例中使用 grep 命令。find 命令首先匹配所有文件名为 “passwd” 的文件，例如：passwd、passwd.old、paaswd.bak，然后执行 grep 命令看看在这些文件中是否存在一个 root 用户。</p>
+<h3 id="实例5：查找文件移动到指定目录"><a href="#实例5：查找文件移动到指定目录" class="headerlink" title="实例5：查找文件移动到指定目录"></a>实例5：查找文件移动到指定目录</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">find . -name <span class="string">"*.log"</span> -<span class="built_in">exec</span> mv &#123;&#125; .. \;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># ll</span></div><div class="line">总计 12drwxr-xr-x 6 root root 4096 10-27 01:58 scf</div><div class="line">drwxrwxr-x 2 root root 4096 11-12 22:49 test3</div><div class="line">drwxrwxr-x 2 root root 4096 11-12 19:32 test4</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># cd test3/</span></div><div class="line">[root@localhost test3]<span class="comment"># ll</span></div><div class="line">总计 304</div><div class="line">-rw-r--r-- 1 root root 302108 11-03 06:19 log2012.log</div><div class="line">-rw-r--r-- 1 root root     61 11-12 22:44 log2013.log</div><div class="line">-rw-r--r-- 1 root root      0 11-12 22:25 log2014.log</div><div class="line">[root@localhost test3]<span class="comment"># find . -name "*.log" -exec mv &#123;&#125; .. \;</span></div><div class="line">[root@localhost test3]<span class="comment"># ll</span></div><div class="line">总计 0[root@localhost test3]<span class="comment"># cd ..</span></div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># ll</span></div><div class="line">总计 316</div><div class="line">-rw-r--r-- 1 root root 302108 11-03 06:19 log2012.log</div><div class="line">-rw-r--r-- 1 root root     61 11-12 22:44 log2013.log</div><div class="line">-rw-r--r-- 1 root root      0 11-12 22:25 log2014.log</div><div class="line">drwxr-xr-x 6 root root   4096 10-27 01:58 scf</div><div class="line">drwxrwxr-x 2 root root   4096 11-12 22:50 test3</div><div class="line">drwxrwxr-x 2 root root   4096 11-12 19:32 test4</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<h3 id="实例6：用-exec-选项执行-cp-命令"><a href="#实例6：用-exec-选项执行-cp-命令" class="headerlink" title="实例6：用 exec 选项执行 cp 命令"></a>实例6：用 exec 选项执行 cp 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">find . -name <span class="string">"*.log"</span> -<span class="built_in">exec</span> cp &#123;&#125; test3 \;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">[root@localhost test3]<span class="comment"># ll</span></div><div class="line">总计 0[root@localhost test3]<span class="comment"># cd ..</span></div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># ll</span></div><div class="line">总计 316</div><div class="line">-rw-r--r-- 1 root root 302108 11-03 06:19 log2012.log</div><div class="line">-rw-r--r-- 1 root root     61 11-12 22:44 log2013.log</div><div class="line">-rw-r--r-- 1 root root      0 11-12 22:25 log2014.log</div><div class="line">drwxr-xr-x 6 root root   4096 10-27 01:58 scf</div><div class="line">drwxrwxr-x 2 root root   4096 11-12 22:50 test3</div><div class="line">drwxrwxr-x 2 root root   4096 11-12 19:32 test4</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># find . -name "*.log" -exec cp &#123;&#125; test3 \;</span></div><div class="line">cp: “./test3/log2014.log” 及 “test3/log2014.log” 为同一文件</div><div class="line">cp: “./test3/log2013.log” 及 “test3/log2013.log” 为同一文件</div><div class="line">cp: “./test3/log2012.log” 及 “test3/log2012.log” 为同一文件</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># cd test3</span></div><div class="line">[root@localhost test3]<span class="comment"># ll</span></div><div class="line">总计 304</div><div class="line">-rw-r--r-- 1 root root 302108 11-12 22:54 log2012.log</div><div class="line">-rw-r--r-- 1 root root     61 11-12 22:54 log2013.log</div><div class="line">-rw-r--r-- 1 root root      0 11-12 22:54 log2014.log</div><div class="line">[root@localhost test3]<span class="comment">#</span></div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux命令/">Linux命令</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-2. Linux 命令/73. Linux 命令- yum" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -451,96 +537,6 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;下载vte到指定/tmp下</div><div class="line"></div><div class="line">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;如果已安装过的包这个小插件默认是不能下载的,我们可以用 reinstall 下载，如下图例：</div><div class="line"></div><div class="line">![](https://github.com/hcldirgit/image/blob/master/linux%E5%91%BD%E4%BB%A4-yum/01.png?raw=true)</div><div class="line"></div><div class="line">```bash</div><div class="line">yum reinstall vim --downloadonly --downloaddir=/tmp</div></pre></td></tr></table></figure>
 <p><img src="https://github.com/hcldirgit/image/blob/master/linux%E5%91%BD%E4%BB%A4-yum/02.png?raw=true" alt=""></p>
 <h2 id="yum配置"><a href="#yum配置" class="headerlink" title="yum配置"></a>yum配置</h2><h3 id="etc-yum-conf配置详解："><a href="#etc-yum-conf配置详解：" class="headerlink" title="/etc/yum.conf配置详解："></a>/etc/yum.conf配置详解：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">cachedir=/var/cache/yum         <span class="comment">#yum下载的RPM包的缓存目录</span></div><div class="line">keepcache=0              <span class="comment">#缓存是否保存，1保存，0不保存。</span></div><div class="line">debuglevel=2             <span class="comment">#调试级别(0-10)，默认为2(具体调试级别的应用，我也不了解)。</span></div><div class="line">logfile=/var/<span class="built_in">log</span>/yum.log         <span class="comment">#yum的日志文件所在的位置</span></div><div class="line">exactarch=1             <span class="comment">#在更新的时候，是否允许更新不同版本的RPM包，比如是否在i386上更新i686 </span></div><div class="line">                                   的RPM包。</div><div class="line">obsoletes=1            <span class="comment">#这是一个update的参数，具体请参阅yum(8)，简单的说就是相当于upgrade，                  允许更新陈旧的RPM包。</span></div><div class="line">gpgcheck=1            <span class="comment">#是否检查GPG(GNU Private Guard)，一种密钥方式签名。</span></div><div class="line">plugins=1                <span class="comment">#是否允许使用插件，默认是0不允许，但是我们一般会用yum-fastestmirror这</span></div><div class="line">                                  个插件。</div><div class="line">installonly_limit=3        <span class="comment">#允许保留多少个内核包。</span></div><div class="line">exclude=selinux*          <span class="comment">#屏蔽不想更新的RPM包，可用通配符，多个RPM包之间使用空格分离。</span></div><div class="line"></div><div class="line">/etc/yum.repos.d/ *.repo</div><div class="line">[fedora]      <span class="comment">#方括号里面的是软件源的名称，将被yum取得并识别</span></div><div class="line">name=Fedora <span class="variable">$releasever</span> - <span class="variable">$basearch</span>   <span class="comment">#这里也定义了软件 仓库的名称，通常是为了方便阅读配置文件，一般没什么作用，$releasever变量定义了发行版本，通常是8，9，10等数字，$basearch变 量定义了系统的架构，可以是i386、x86_64、ppc等值，这两个变量根据当前系统的版本架构不同而有不同的取值，这可以方便yum升级的时候选择 适合当前系统的软件包，以下同……</span></div><div class="line">failovermethod=priority   <span class="comment">#failovermethod 有两个值可以选择，priority是默认值，表示从列出的baseurl中顺序选择镜像服务器地址，roundrobin表示在列出的服务器中随机选择</span></div><div class="line">exclude=compiz* *compiz* fusion-icon* <span class="comment">#exclude这个选项是后来我自己加上去的，用来禁止这个软件仓库中的某些软件包的安装和更新，可以使用通配符，并以空格分隔，可以视情况需要自行添加</span></div><div class="line"><span class="comment">#baseurl=http://download.fedoraproject.org/pub/fedora/linux/releases/$releasever/Everything/$basearch/os/</span></div><div class="line"><span class="comment">#上面的一行baseurl第一个字符是'#'表示该行已经被注释，将不会被读取，这一行的意思是指定一个baseurl（源的镜像服务器地址）</span></div><div class="line"><span class="comment">#mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=fedora-$releasever&amp;arch=$basearch</span></div><div class="line"><span class="comment">#上面的这一行是指定一个镜像服务器的地址列表，通常是开启的，本例中加了注释符号禁用了，我们可以试试，将$releasever和$basearch替换成自己对应的版本和架构，例如10和i386，在浏览器中打开，我们就能看到一长串镜可用的镜像服务器地址列表。</span></div><div class="line">选择自己访问速度较快的镜像服务器地址复制并粘贴到repo文件中，我们就能获得较快的更新速度了，格式如下baseurl所示：</div><div class="line">baseurl=</div><div class="line">ftp://ftp.sfc.wide.ad.jp/pub/Linux/Fedora/releases/10/Everything/i386/os</div><div class="line">http://ftp.chg.ru/pub/Linux/fedora/linux/releases/10/Everything/i386/os</div><div class="line">http://ftp.yz.yamagata-u.ac.jp/pub/linux/fedora/linux/releases/10/Everything/i386/os</div><div class="line">http://mirror.nus.edu.sg/fedora/releases/10/Everything/i386/os</div><div class="line">http://mirror.yandex.ru/fedora/linux/releases/10/Everything/i386/os</div><div class="line">http://ftp.twaren.net/Linux/Fedora/linux/releases/10/Everything/i386/os</div><div class="line">http://ftp.itu.edu.tr/Mirror/Fedora/linux/releases/10/Everything/i386/os</div><div class="line">enabled=1 <span class="comment">#这个选项表示这个repo中定义的源是启用的，0为禁用</span></div><div class="line">gpgcheck=1 <span class="comment">#这个选项表示这个repo中下载的rpm将进行gpg的校验，已确定rpm包的来源是有效和安全的</span></div><div class="line">gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-<span class="variable">$basearch</span> <span class="comment">#定义用于校验的gpg密钥</span></div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux命令/">Linux命令</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-2. Linux 命令/20. find 命令之 exec" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/2. Linux 命令/20. find 命令之 exec/" class="article-date">
-  	<time datetime="2017-09-02T17:57:34.253Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/2. Linux 命令/20. find 命令之 exec/">
-        find 命令之 exec
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;find是我们很常用的一个Linux命令，但是我们一般查找出来的并不仅仅是看看而已，还会有进一步的操作，这个时候exec的作用就显现出来了。</p>
-<h2 id="exec解释："><a href="#exec解释：" class="headerlink" title="exec解释："></a>exec解释：</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;-exec  参数后面跟的是command命令，它的终止是以;为结束标志的，所以这句命令后面的分号是不可缺少的，考虑到各个系统中分号会有不同的意义，所以前面加反斜杠。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;{}   花括号代表前面find查找出来的文件名。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用find时，只要把想要的操作写在一个文件里，就可以用exec来配合find查找，很方便的。在有些操作系统中只允许-exec选项执行诸如l s或ls -l这样的命令。大多数用户使用这一选项是为了查找旧文件并删除它们。建议在真正执行rm命令删除文件之前，最好先用ls命令看一下，确认它们是所要删除的文件。 exec选项后面跟随着所要执行的命令或脚本，然后是一对儿{ }，一个空格和一个\，最后是一个分号。为了使用exec选项，必须要同时使用print选项。如果验证一下find命令，会发现该命令只输出从当前路径起的相对路径及文件名。</p>
-<h2 id="使用实例"><a href="#使用实例" class="headerlink" title="使用实例"></a>使用实例</h2><h3 id="实例1：ls-l-命令放在-find-命令的-exec-选项中"><a href="#实例1：ls-l-命令放在-find-命令的-exec-选项中" class="headerlink" title="实例1：ls -l 命令放在 find 命令的 -exec 选项中"></a>实例1：ls -l 命令放在 find 命令的 -exec 选项中</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">find . -<span class="built_in">type</span> d -<span class="built_in">exec</span> ls -l &#123;&#125; \;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># find . -type f -exec ls -l &#123;&#125; \; </span></div><div class="line">-rw-r--r-- 1 root root 127 10-28 16:51 ./log2014.log</div><div class="line">-rw-r--r-- 1 root root 0 10-28 14:47 ./test4/log3-2.log</div><div class="line">-rw-r--r-- 1 root root 0 10-28 14:47 ./test4/log3-3.log</div><div class="line">-rw-r--r-- 1 root root 0 10-28 14:47 ./test4/log3-1.log</div><div class="line">-rw-r--r-- 1 root root 33 10-28 16:54 ./log2013.log</div><div class="line">-rw-r--r-- 1 root root 302108 11-03 06:19 ./log2012.log</div><div class="line">-rw-r--r-- 1 root root 25 10-28 17:02 ./log.log</div><div class="line">-rw-r--r-- 1 root root 37 10-28 17:07 ./log.txt</div><div class="line">-rw-r--r-- 1 root root 0 10-28 14:47 ./test3/log3-2.log</div><div class="line">-rw-r--r-- 1 root root 0 10-28 14:47 ./test3/log3-3.log</div><div class="line">-rw-r--r-- 1 root root 0 10-28 14:47 ./test3/log3-1.log</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment">#</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong><br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上例中，find 命令匹配到了当前目录下的所有普通文件，并在 -exec 选项中使用 ls -l 命令将他们列出来。</p>
-<h3 id="实例2：在目录中查找更改时间在-n-日以前的文件并删除它们"><a href="#实例2：在目录中查找更改时间在-n-日以前的文件并删除它们" class="headerlink" title="实例2：在目录中查找更改时间在 n 日以前的文件并删除它们"></a>实例2：在目录中查找更改时间在 n 日以前的文件并删除它们</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">find . -<span class="built_in">type</span> f -mtime +14 -<span class="built_in">exec</span> rm &#123;&#125; \;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># ll</span></div><div class="line">总计 328</div><div class="line">-rw-r--r-- 1 root root 302108 11-03 06:19 log2012.log</div><div class="line">-rw-r--r-- 1 root root     33 10-28 16:54 log2013.log</div><div class="line">-rw-r--r-- 1 root root    127 10-28 16:51 log2014.log</div><div class="line">lrwxrwxrwx 1 root root      7 10-28 15:18 log_link.log -&gt; log.log</div><div class="line">-rw-r--r-- 1 root root     25 10-28 17:02 log.log</div><div class="line">-rw-r--r-- 1 root root     37 10-28 17:07 log.txt</div><div class="line">drwxr-xr-x 6 root root   4096 10-27 01:58 scf</div><div class="line">drwxrwxrwx 2 root root   4096 10-28 14:47 test3</div><div class="line">drwxrwxrwx 2 root root   4096 10-28 14:47 test4</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># find . -type f -mtime +14 -exec rm &#123;&#125; \;</span></div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># ll</span></div><div class="line">总计 312</div><div class="line">-rw-r--r-- 1 root root 302108 11-03 06:19 log2012.log</div><div class="line">lrwxrwxrwx 1 root root      7 10-28 15:18 log_link.log -&gt; log.log</div><div class="line">drwxr-xr-x 6 root root   4096 10-27 01:58 scf</div><div class="line">drwxrwxrwx 2 root root   4096 11-12 19:32 test3</div><div class="line">drwxrwxrwx 2 root root   4096 11-12 19:32 test4</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment">#</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong><br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在 shell 中用任何方式删除文件之前，应当先查看相应的文件，一定要小心！当使用诸如 mv 或 rm 命令时，可以使用 -exec 选项的安全模式。它将在对每个匹配到的文件进行操作之前提示你。</p>
-<h3 id="实例3：在目录中查找更改时间在-n-日以前的文件并删除它们，在删除之前先给出提示"><a href="#实例3：在目录中查找更改时间在-n-日以前的文件并删除它们，在删除之前先给出提示" class="headerlink" title="实例3：在目录中查找更改时间在 n 日以前的文件并删除它们，在删除之前先给出提示"></a>实例3：在目录中查找更改时间在 n 日以前的文件并删除它们，在删除之前先给出提示</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">find . -name <span class="string">"*.log"</span> -mtime +5 -ok rm &#123;&#125; \;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># ll</span></div><div class="line">总计 312</div><div class="line">-rw-r--r-- 1 root root 302108 11-03 06:19 log2012.log</div><div class="line">lrwxrwxrwx 1 root root      7 10-28 15:18 log_link.log -&gt; log.log</div><div class="line">drwxr-xr-x 6 root root   4096 10-27 01:58 scf</div><div class="line">drwxrwxrwx 2 root root   4096 11-12 19:32 test3</div><div class="line">drwxrwxrwx 2 root root   4096 11-12 19:32 test4</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># find . -name "*.log" -mtime +5 -ok rm &#123;&#125; \;</span></div><div class="line">&lt; rm ... ./log_link.log &gt; ? y</div><div class="line">&lt; rm ... ./log2012.log &gt; ? n</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># ll</span></div><div class="line">总计 312</div><div class="line">-rw-r--r-- 1 root root 302108 11-03 06:19 log2012.log</div><div class="line">drwxr-xr-x 6 root root   4096 10-27 01:58 scf</div><div class="line">drwxrwxrwx 2 root root   4096 11-12 19:32 test3</div><div class="line">drwxrwxrwx 2 root root   4096 11-12 19:32 test4</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment">#</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在上例中，find 命令在当前目录中查找所有文件名以 .log 结尾、更改时间在5日以上的文件，并删除它们，只不过在删除之前先给出提示。按 y 键删除文件，按 n 键不删除。</p>
-<h3 id="实例4：-exec-中使用-grep-命令"><a href="#实例4：-exec-中使用-grep-命令" class="headerlink" title="实例4：-exec 中使用 grep  命令"></a>实例4：-exec 中使用 grep  命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">find /etc -name <span class="string">"passwd*"</span> -<span class="built_in">exec</span> grep <span class="string">"root"</span> &#123;&#125; \;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># find /etc -name "passwd*" -exec grep "root" &#123;&#125; \;</span></div><div class="line">root:x:0:0:root:/root:/bin/bash</div><div class="line">root:x:0:0:root:/root:/bin/bash</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment">#</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;任何形式的命令都可以在 -exec 选项中使用。在上例中使用 grep 命令。find 命令首先匹配所有文件名为 “passwd” 的文件，例如：passwd、passwd.old、paaswd.bak，然后执行 grep 命令看看在这些文件中是否存在一个 root 用户。</p>
-<h3 id="实例5：查找文件移动到指定目录"><a href="#实例5：查找文件移动到指定目录" class="headerlink" title="实例5：查找文件移动到指定目录"></a>实例5：查找文件移动到指定目录</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">find . -name <span class="string">"*.log"</span> -<span class="built_in">exec</span> mv &#123;&#125; .. \;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># ll</span></div><div class="line">总计 12drwxr-xr-x 6 root root 4096 10-27 01:58 scf</div><div class="line">drwxrwxr-x 2 root root 4096 11-12 22:49 test3</div><div class="line">drwxrwxr-x 2 root root 4096 11-12 19:32 test4</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># cd test3/</span></div><div class="line">[root@localhost test3]<span class="comment"># ll</span></div><div class="line">总计 304</div><div class="line">-rw-r--r-- 1 root root 302108 11-03 06:19 log2012.log</div><div class="line">-rw-r--r-- 1 root root     61 11-12 22:44 log2013.log</div><div class="line">-rw-r--r-- 1 root root      0 11-12 22:25 log2014.log</div><div class="line">[root@localhost test3]<span class="comment"># find . -name "*.log" -exec mv &#123;&#125; .. \;</span></div><div class="line">[root@localhost test3]<span class="comment"># ll</span></div><div class="line">总计 0[root@localhost test3]<span class="comment"># cd ..</span></div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># ll</span></div><div class="line">总计 316</div><div class="line">-rw-r--r-- 1 root root 302108 11-03 06:19 log2012.log</div><div class="line">-rw-r--r-- 1 root root     61 11-12 22:44 log2013.log</div><div class="line">-rw-r--r-- 1 root root      0 11-12 22:25 log2014.log</div><div class="line">drwxr-xr-x 6 root root   4096 10-27 01:58 scf</div><div class="line">drwxrwxr-x 2 root root   4096 11-12 22:50 test3</div><div class="line">drwxrwxr-x 2 root root   4096 11-12 19:32 test4</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment">#</span></div></pre></td></tr></table></figure>
-<h3 id="实例6：用-exec-选项执行-cp-命令"><a href="#实例6：用-exec-选项执行-cp-命令" class="headerlink" title="实例6：用 exec 选项执行 cp 命令"></a>实例6：用 exec 选项执行 cp 命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>命令</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">find . -name <span class="string">"*.log"</span> -<span class="built_in">exec</span> cp &#123;&#125; test3 \;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>输出</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">[root@localhost test3]<span class="comment"># ll</span></div><div class="line">总计 0[root@localhost test3]<span class="comment"># cd ..</span></div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># ll</span></div><div class="line">总计 316</div><div class="line">-rw-r--r-- 1 root root 302108 11-03 06:19 log2012.log</div><div class="line">-rw-r--r-- 1 root root     61 11-12 22:44 log2013.log</div><div class="line">-rw-r--r-- 1 root root      0 11-12 22:25 log2014.log</div><div class="line">drwxr-xr-x 6 root root   4096 10-27 01:58 scf</div><div class="line">drwxrwxr-x 2 root root   4096 11-12 22:50 test3</div><div class="line">drwxrwxr-x 2 root root   4096 11-12 19:32 test4</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># find . -name "*.log" -exec cp &#123;&#125; test3 \;</span></div><div class="line">cp: “./test3/log2014.log” 及 “test3/log2014.log” 为同一文件</div><div class="line">cp: “./test3/log2013.log” 及 “test3/log2013.log” 为同一文件</div><div class="line">cp: “./test3/log2012.log” 及 “test3/log2012.log” 为同一文件</div><div class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># cd test3</span></div><div class="line">[root@localhost test3]<span class="comment"># ll</span></div><div class="line">总计 304</div><div class="line">-rw-r--r-- 1 root root 302108 11-12 22:54 log2012.log</div><div class="line">-rw-r--r-- 1 root root     61 11-12 22:54 log2013.log</div><div class="line">-rw-r--r-- 1 root root      0 11-12 22:54 log2014.log</div><div class="line">[root@localhost test3]<span class="comment">#</span></div></pre></td></tr></table></figure>
-
       
     </div>
     

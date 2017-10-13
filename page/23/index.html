@@ -106,8 +106,6 @@
 				        
 							<li><a href="/archives">所有文章</a></li>
 				        
-							<li><a href="/tags">静心阅读</a></li>
-				        
 						</ul>
 					</nav>
 					<nav class="header-nav">
@@ -156,8 +154,6 @@
 					<li><a href="/">主页</a></li>
 		        
 					<li><a href="/archives">所有文章</a></li>
-		        
-					<li><a href="/tags">静心阅读</a></li>
 		        
 		        <div class="clearfix"></div>
 				</ul>
@@ -1207,6 +1203,77 @@
 
 
   
+    <article id="post-Nginx/36. nginx 代理多台机器导致用户登陆异常，长连接(会话保持)解决问题" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Nginx/36. nginx 代理多台机器导致用户登陆异常，长连接(会话保持)解决问题/" class="article-date">
+  	<time datetime="2017-09-02T18:06:42.741Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Nginx/36. nginx 代理多台机器导致用户登陆异常，长连接(会话保持)解决问题/">
+        nginx 代理多台机器导致用户登陆异常，长连接(会话保持)解决问题
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;网站使用程序 discuzx3  访问都正常，只有用户登陆存在异常，具体的情况是这样的：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用户登陆后，会马上显示未登陆，然后刷新一下或者多下又变成了登陆中。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个问题很显然是由于session导致，后台有多个web机器，当用户登陆后，会把登陆态session保存到当前web,但是再次发送请求时则会到另一台机器，所以原来的session信息找不到了。解决这个问题有两个思路：</p>
+<ol>
+<li><p>可以把session时时同步到另外的机器。</p>
+</li>
+<li><p>可以让前端的调度器保持长连接，也就是说某个用户的请求在某一时间段内始终抓发到固定的一台机器上。</p>
+</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这两种方式，第二种更容易实现。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我使用的是nginx的代理，其中nginx有一种算法支持长连接，具体配置是这样的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">upstream <span class="built_in">test</span> &#123;</div><div class="line"> ip_hash;</div><div class="line">server 192.168.109.5;</div><div class="line">server 192.168.109.3;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关键代码： ip_hash </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">E = mc^2</div></pre></td></tr></table></figure></p>
+<p>这样，nginx会把用户的请求一直转发到后端的某台机器。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Nginx/37. nginx的location优先级" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1273,77 +1340,6 @@
 </ol>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">location ~* \.(gif|jpg|jpeg)$ &#123;</div><div class="line">[ configuration E ]</div><div class="line">&#125;</div><div class="line"></div><div class="line">location ~ /images/abc/ &#123;</div><div class="line"></div><div class="line">[ configuration H ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当访问的链接为/images/abc/123.jpg时，E生效。因为上面的规则更加精准。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Nginx/36. nginx 代理多台机器导致用户登陆异常，长连接(会话保持)解决问题" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Nginx/36. nginx 代理多台机器导致用户登陆异常，长连接(会话保持)解决问题/" class="article-date">
-  	<time datetime="2017-09-02T18:06:42.741Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Nginx/36. nginx 代理多台机器导致用户登陆异常，长连接(会话保持)解决问题/">
-        nginx 代理多台机器导致用户登陆异常，长连接(会话保持)解决问题
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;网站使用程序 discuzx3  访问都正常，只有用户登陆存在异常，具体的情况是这样的：</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用户登陆后，会马上显示未登陆，然后刷新一下或者多下又变成了登陆中。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个问题很显然是由于session导致，后台有多个web机器，当用户登陆后，会把登陆态session保存到当前web,但是再次发送请求时则会到另一台机器，所以原来的session信息找不到了。解决这个问题有两个思路：</p>
-<ol>
-<li><p>可以把session时时同步到另外的机器。</p>
-</li>
-<li><p>可以让前端的调度器保持长连接，也就是说某个用户的请求在某一时间段内始终抓发到固定的一台机器上。</p>
-</li>
-</ol>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这两种方式，第二种更容易实现。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我使用的是nginx的代理，其中nginx有一种算法支持长连接，具体配置是这样的：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">upstream <span class="built_in">test</span> &#123;</div><div class="line"> ip_hash;</div><div class="line">server 192.168.109.5;</div><div class="line">server 192.168.109.3;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关键代码： ip_hash </p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">E = mc^2</div></pre></td></tr></table></figure></p>
-<p>这样，nginx会把用户的请求一直转发到后端的某台机器。</p>
 
       
     </div>

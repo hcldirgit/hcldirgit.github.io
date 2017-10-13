@@ -106,8 +106,6 @@
 				        
 							<li><a href="/archives">所有文章</a></li>
 				        
-							<li><a href="/tags">静心阅读</a></li>
-				        
 						</ul>
 					</nav>
 					<nav class="header-nav">
@@ -156,8 +154,6 @@
 					<li><a href="/">主页</a></li>
 		        
 					<li><a href="/archives">所有文章</a></li>
-		        
-					<li><a href="/tags">静心阅读</a></li>
 		        
 		        <div class="clearfix"></div>
 				</ul>
@@ -501,73 +497,6 @@
 
 
   
-    <article id="post-Apache/51. apache限制某个目录下的php文件没有执行权限" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Apache/51. apache限制某个目录下的php文件没有执行权限/" class="article-date">
-  	<time datetime="2017-09-02T18:00:30.929Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Apache/51. apache限制某个目录下的php文件没有执行权限/">
-        apache限制某个目录下的php文件没有执行权限
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为了安全期间，有时我们需要限制网站下的某些目录对于php脚本不能执行。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有两种方法可以参考：</p>
-<ol>
-<li>使用.htaccess 文件限制</li>
-</ol>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在要限制php执行的目录下，创建.htaccess文件，加入内容</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php_flag engine off</div></pre></td></tr></table></figure>
-<ol>
-<li>使用apache的配置文件httpd.conf<br>在相关的虚拟主机段，加入 </li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;Directory /data/www/data/&gt;</div><div class="line">  php_admin_flag engine off </div><div class="line">  &lt;filesmatch <span class="string">"(.*)php"</span>&gt;</div><div class="line">    Order deny,allow</div><div class="line">    Deny from all</div><div class="line">    Allow from 127.0.0.1 </div><div class="line">  &lt;/filesmatch&gt;</div><div class="line">&lt;/Directory&gt;</div></pre></td></tr></table></figure>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-Apache/52. http协议的状态码—400,401,403,404,500,502,503,301,302等常见网页错误代码" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -806,6 +735,73 @@
 </tr>
 </tbody>
 </table>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Apache/51. apache限制某个目录下的php文件没有执行权限" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Apache/51. apache限制某个目录下的php文件没有执行权限/" class="article-date">
+  	<time datetime="2017-09-02T18:00:30.929Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Apache/51. apache限制某个目录下的php文件没有执行权限/">
+        apache限制某个目录下的php文件没有执行权限
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为了安全期间，有时我们需要限制网站下的某些目录对于php脚本不能执行。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有两种方法可以参考：</p>
+<ol>
+<li>使用.htaccess 文件限制</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在要限制php执行的目录下，创建.htaccess文件，加入内容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php_flag engine off</div></pre></td></tr></table></figure>
+<ol>
+<li>使用apache的配置文件httpd.conf<br>在相关的虚拟主机段，加入 </li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;Directory /data/www/data/&gt;</div><div class="line">  php_admin_flag engine off </div><div class="line">  &lt;filesmatch <span class="string">"(.*)php"</span>&gt;</div><div class="line">    Order deny,allow</div><div class="line">    Deny from all</div><div class="line">    Allow from 127.0.0.1 </div><div class="line">  &lt;/filesmatch&gt;</div><div class="line">&lt;/Directory&gt;</div></pre></td></tr></table></figure>
 
       
     </div>

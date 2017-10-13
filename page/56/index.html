@@ -106,8 +106,6 @@
 				        
 							<li><a href="/archives">所有文章</a></li>
 				        
-							<li><a href="/tags">静心阅读</a></li>
-				        
 						</ul>
 					</nav>
 					<nav class="header-nav">
@@ -156,8 +154,6 @@
 					<li><a href="/">主页</a></li>
 		        
 					<li><a href="/archives">所有文章</a></li>
-		        
-					<li><a href="/tags">静心阅读</a></li>
 		        
 		        <div class="clearfix"></div>
 				</ul>
@@ -676,6 +672,64 @@
 
 
   
+    <article id="post-1. Linux 基础/37. 利用tar通过网络拷贝数据" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/1. Linux 基础/37. 利用tar通过网络拷贝数据/" class="article-date">
+  	<time datetime="2017-09-02T17:55:11.283Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/1. Linux 基础/37. 利用tar通过网络拷贝数据/">
+        利用tar通过网络拷贝数据
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># cd /data  // data目录下有我们要拷贝的目标文件目录 test</span></div><div class="line"><span class="comment"># tar cvf  -  test| ssh 10.0.1.11 "cd /copy1/; tar xvf  -"  //首先将要拷贝的目录test打包，"-" 代表标准输出，然后再ssh 到目标主机 10.0.1.11 ，运行相应的命令。其中tar xvf  - 意思是，将前面的标准输出内容作为解包的对象。</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;总结：其实就是想拷贝的目录先打包，然后将打包好的文件拷贝到目标主机，最后在目标主机上解包。只不过，我们用一条命令实现了边打包边解包的过程。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-1. Linux 基础/69. CentOS 7 下使用iptables" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -732,64 +786,6 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">iptables: Saving firewall rules to /etc/sysconfig/iptables: /etc/init.d/iptables: line 274: restorecon: <span class="built_in">command</span> not found</div></pre></td></tr></table></figure>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这是因为selinux没有安装的缘故，缺少一个组件。安装policycoreutils即可。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@openstack1 ~]<span class="comment"># yum install -y policycoreutils</span></div></pre></td></tr></table></figure>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-1. Linux 基础/37. 利用tar通过网络拷贝数据" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/1. Linux 基础/37. 利用tar通过网络拷贝数据/" class="article-date">
-  	<time datetime="2017-09-02T17:55:11.283Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/1. Linux 基础/37. 利用tar通过网络拷贝数据/">
-        利用tar通过网络拷贝数据
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># cd /data  // data目录下有我们要拷贝的目标文件目录 test</span></div><div class="line"><span class="comment"># tar cvf  -  test| ssh 10.0.1.11 "cd /copy1/; tar xvf  -"  //首先将要拷贝的目录test打包，"-" 代表标准输出，然后再ssh 到目标主机 10.0.1.11 ，运行相应的命令。其中tar xvf  - 意思是，将前面的标准输出内容作为解包的对象。</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;总结：其实就是想拷贝的目录先打包，然后将打包好的文件拷贝到目标主机，最后在目标主机上解包。只不过，我们用一条命令实现了边打包边解包的过程。</p>
 
       
     </div>

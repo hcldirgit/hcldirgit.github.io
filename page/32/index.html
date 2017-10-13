@@ -106,8 +106,6 @@
 				        
 							<li><a href="/archives">所有文章</a></li>
 				        
-							<li><a href="/tags">静心阅读</a></li>
-				        
 						</ul>
 					</nav>
 					<nav class="header-nav">
@@ -156,8 +154,6 @@
 					<li><a href="/">主页</a></li>
 		        
 					<li><a href="/archives">所有文章</a></li>
-		        
-					<li><a href="/tags">静心阅读</a></li>
 		        
 		        <div class="clearfix"></div>
 				</ul>
@@ -382,6 +378,138 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Memcached/">Memcached</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Git/2.  github常见操作和常见错误  错误提示  fatal   remote origin already exists." class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Git/2.  github常见操作和常见错误  错误提示  fatal   remote origin already exists./" class="article-date">
+  	<time datetime="2017-09-02T18:02:06.177Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Git/2.  github常见操作和常见错误  错误提示  fatal   remote origin already exists./">
+        github常见操作和常见错误  错误提示  fatal   remote origin already exists.
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果输入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Git remote add origin git@github.com:djqiang（github帐号名）/gitdemo（项目名）.git</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;提示出错信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">fatal: remote origin already exists.</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解决办法如下：</p>
+<ol>
+<li><p>先输入 <strong>$ git remote rm origin</strong></p>
+</li>
+<li><p>再输入 $ git remote add origin git@github.com:djqiang/gitdemo.git 就不会报错了！</p>
+</li>
+<li><p>如果输入 <strong>$ git remote rm origin</strong> 还是报错的话，error: Could not remove config section ‘remote.origin’. 我们需要修改gitconfig文件的内容</p>
+</li>
+<li><p>找到github的安装路径，我的是C:\Users\ASUS\AppData\Local\GitHub\PortableGit_ca477551eeb4aea0e4ae9fcd3358bd96720bb5c8\etc</p>
+</li>
+<li><p>找到一个名为gitconfig的文件，打开它把里面的[remote “origin”]那一行删掉就好了！</p>
+</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果输入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh -T git@github.com</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;出现错误提示：Permission denied (publickey).因为新生成的key不能加入ssh就会导致连接不上github。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解决办法如下：</p>
+<ol>
+<li><p>先输入$ ssh-agent，再输入$ ssh-add ~/.ssh/id_key，这样就可以了。</p>
+</li>
+<li><p>如果还是不行的话，输入ssh-add ~/.ssh/id_key 命令后出现报错Could not open a connection to your authentication agent.解决方法是key用Git Gui的ssh工具生成，这样生成的时候key就直接保存在ssh中了，不需要再ssh-add命令加入了，其它的user，token等配置都用命令行来做。</p>
+</li>
+<li><p>最好检查一下在你复制id_rsa.pub文件的内容时有没有产生多余的空格或空行，有些编辑器会帮你添加这些的。</p>
+</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果输入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git push origin master</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;提示出错信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">error:failed to push som refs to .......</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解决办法如下：</p>
+<ol>
+<li><p>先输入$ git pull origin master //先把远程服务器github上面的文件拉下来</p>
+</li>
+<li><p>再输入$ git push origin master</p>
+</li>
+<li><p>如果出现报错 fatal: Couldn’t find remote ref master或者fatal: ‘origin’ does not appear to be a git repository以及fatal: Could not read from remote repository.</p>
+</li>
+<li><p>则需要重新输入$ git remote add origingit@github.com:djqiang/gitdemo.git</p>
+</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用git在本地创建一个项目的过程</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">makdir ~/hello-world    //创建一个项目hello-world</div><div class="line"><span class="built_in">cd</span> ~/hello-world       //打开这个项目</div><div class="line">git init             //初始化 </div><div class="line">touch README</div><div class="line">git add README        //更新README文件</div><div class="line">git commit -m <span class="string">'first commit'</span>     //提交更新，并注释信息“first commit” </div><div class="line">git remote add origin git@github.com:defnngj/hello-world.git     //连接远程github项目  </div><div class="line">git push -u origin master     //将本地项目更新到github项目上去</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;gitconfig配置文件</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Git有一个工具被称为git config，它允许你获得和设置配置变量；这些变量可以控制Git的外观和操作的各个方面。这些变量可以被存储在三个不同的位置： </p>
+<ol>
+<li><p>/etc/gitconfig 文件：包含了适用于系统所有用户和所有库的值。如果你传递参数选项’–system’ 给 git config，它将明确的读和写这个文件。 </p>
+</li>
+<li><p>~/.gitconfig 文件 ：具体到你的用户。你可以通过传递–global 选项使Git 读或写这个特定的文件。</p>
+</li>
+<li><p>位于git目录的config文件 (也就是 .git/config) ：无论你当前在用的库是什么，特定指向该单一的库。每个级别重写前一个级别的值。因此，在.git/config中的值覆盖了在/etc/gitconfig中的同一个值。</p>
+</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在Windows系统中，Git在$HOME目录中查找.gitconfig文件（对大多数人来说，位于C:\Documents and Settings\$USER下）。它也会查找/etc/gitconfig，尽管它是相对于Msys 根目录的。这可能是你在Windows中运行安装程序时决定安装Git的任何地方。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置相关信息：</p>
+<ol>
+<li>当你安装Git后首先要做的事情是设置你的用户名称和e-mail地址。这是非常重要的，因为每次Git提交都会使用该信息。它被永远的嵌入到了你的提交中：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">git config --global user.name <span class="string">"John Doe"</span></div><div class="line">git config --global user.email johndoe@example.com</div><div class="line">``` </div><div class="line"></div><div class="line">2. 你的编辑器(Your Editor)</div><div class="line"></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;现在，标识已经设置，可以配置缺省文本编辑器，Git在需要输入一些消息时会使用该文本编辑器。缺省情况下，Git使用系统的缺省编辑器，这通常可能是vi 或者 vim。如果想使用一个不同的文本编辑器，例如Emacs，可以做如下操作：</span></div><div class="line"></div><div class="line">```bash</div><div class="line">git config --global core.editor emacs</div></pre></td></tr></table></figure>
+<ol>
+<li>检查设置(Checking Your Settings)</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果想检查设置，可以使用 git config –list 命令来列出Git可以在该处找到的所有的设置:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git config --list</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;也可以查看Git认为的一个特定的关键字目前的值，使用如下命令 git config {key}:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git config user.name</div></pre></td></tr></table></figure>
+<ol>
+<li>获取帮助(Getting help)</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果当你在使用Git时需要帮助，有三种方法可以获得任何git命令的手册页(manpage)帮助信息:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">help</span> &lt;verb&gt;</div><div class="line">git &lt;verb&gt; --<span class="built_in">help</span></div><div class="line">man git-&lt;verb&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例如，你可以运行如下命令获取对config命令的手册页帮助:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">help</span> config</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Git/">Git</a></li></ul>
 	</div>
 
       
@@ -654,138 +782,6 @@
 
 
   
-    <article id="post-Git/2.  github常见操作和常见错误  错误提示  fatal   remote origin already exists." class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Git/2.  github常见操作和常见错误  错误提示  fatal   remote origin already exists./" class="article-date">
-  	<time datetime="2017-09-02T18:02:06.177Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Git/2.  github常见操作和常见错误  错误提示  fatal   remote origin already exists./">
-        github常见操作和常见错误  错误提示  fatal   remote origin already exists.
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果输入</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Git remote add origin git@github.com:djqiang（github帐号名）/gitdemo（项目名）.git</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;提示出错信息：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">fatal: remote origin already exists.</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解决办法如下：</p>
-<ol>
-<li><p>先输入 <strong>$ git remote rm origin</strong></p>
-</li>
-<li><p>再输入 $ git remote add origin git@github.com:djqiang/gitdemo.git 就不会报错了！</p>
-</li>
-<li><p>如果输入 <strong>$ git remote rm origin</strong> 还是报错的话，error: Could not remove config section ‘remote.origin’. 我们需要修改gitconfig文件的内容</p>
-</li>
-<li><p>找到github的安装路径，我的是C:\Users\ASUS\AppData\Local\GitHub\PortableGit_ca477551eeb4aea0e4ae9fcd3358bd96720bb5c8\etc</p>
-</li>
-<li><p>找到一个名为gitconfig的文件，打开它把里面的[remote “origin”]那一行删掉就好了！</p>
-</li>
-</ol>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果输入</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh -T git@github.com</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;出现错误提示：Permission denied (publickey).因为新生成的key不能加入ssh就会导致连接不上github。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解决办法如下：</p>
-<ol>
-<li><p>先输入$ ssh-agent，再输入$ ssh-add ~/.ssh/id_key，这样就可以了。</p>
-</li>
-<li><p>如果还是不行的话，输入ssh-add ~/.ssh/id_key 命令后出现报错Could not open a connection to your authentication agent.解决方法是key用Git Gui的ssh工具生成，这样生成的时候key就直接保存在ssh中了，不需要再ssh-add命令加入了，其它的user，token等配置都用命令行来做。</p>
-</li>
-<li><p>最好检查一下在你复制id_rsa.pub文件的内容时有没有产生多余的空格或空行，有些编辑器会帮你添加这些的。</p>
-</li>
-</ol>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果输入</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git push origin master</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;提示出错信息：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">error:failed to push som refs to .......</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解决办法如下：</p>
-<ol>
-<li><p>先输入$ git pull origin master //先把远程服务器github上面的文件拉下来</p>
-</li>
-<li><p>再输入$ git push origin master</p>
-</li>
-<li><p>如果出现报错 fatal: Couldn’t find remote ref master或者fatal: ‘origin’ does not appear to be a git repository以及fatal: Could not read from remote repository.</p>
-</li>
-<li><p>则需要重新输入$ git remote add origingit@github.com:djqiang/gitdemo.git</p>
-</li>
-</ol>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用git在本地创建一个项目的过程</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">makdir ~/hello-world    //创建一个项目hello-world</div><div class="line"><span class="built_in">cd</span> ~/hello-world       //打开这个项目</div><div class="line">git init             //初始化 </div><div class="line">touch README</div><div class="line">git add README        //更新README文件</div><div class="line">git commit -m <span class="string">'first commit'</span>     //提交更新，并注释信息“first commit” </div><div class="line">git remote add origin git@github.com:defnngj/hello-world.git     //连接远程github项目  </div><div class="line">git push -u origin master     //将本地项目更新到github项目上去</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;gitconfig配置文件</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Git有一个工具被称为git config，它允许你获得和设置配置变量；这些变量可以控制Git的外观和操作的各个方面。这些变量可以被存储在三个不同的位置： </p>
-<ol>
-<li><p>/etc/gitconfig 文件：包含了适用于系统所有用户和所有库的值。如果你传递参数选项’–system’ 给 git config，它将明确的读和写这个文件。 </p>
-</li>
-<li><p>~/.gitconfig 文件 ：具体到你的用户。你可以通过传递–global 选项使Git 读或写这个特定的文件。</p>
-</li>
-<li><p>位于git目录的config文件 (也就是 .git/config) ：无论你当前在用的库是什么，特定指向该单一的库。每个级别重写前一个级别的值。因此，在.git/config中的值覆盖了在/etc/gitconfig中的同一个值。</p>
-</li>
-</ol>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在Windows系统中，Git在$HOME目录中查找.gitconfig文件（对大多数人来说，位于C:\Documents and Settings\$USER下）。它也会查找/etc/gitconfig，尽管它是相对于Msys 根目录的。这可能是你在Windows中运行安装程序时决定安装Git的任何地方。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置相关信息：</p>
-<ol>
-<li>当你安装Git后首先要做的事情是设置你的用户名称和e-mail地址。这是非常重要的，因为每次Git提交都会使用该信息。它被永远的嵌入到了你的提交中：</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">git config --global user.name <span class="string">"John Doe"</span></div><div class="line">git config --global user.email johndoe@example.com</div><div class="line">``` </div><div class="line"></div><div class="line">2. 你的编辑器(Your Editor)</div><div class="line"></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;现在，标识已经设置，可以配置缺省文本编辑器，Git在需要输入一些消息时会使用该文本编辑器。缺省情况下，Git使用系统的缺省编辑器，这通常可能是vi 或者 vim。如果想使用一个不同的文本编辑器，例如Emacs，可以做如下操作：</span></div><div class="line"></div><div class="line">```bash</div><div class="line">git config --global core.editor emacs</div></pre></td></tr></table></figure>
-<ol>
-<li>检查设置(Checking Your Settings)</li>
-</ol>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果想检查设置，可以使用 git config –list 命令来列出Git可以在该处找到的所有的设置:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git config --list</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;也可以查看Git认为的一个特定的关键字目前的值，使用如下命令 git config {key}:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git config user.name</div></pre></td></tr></table></figure>
-<ol>
-<li>获取帮助(Getting help)</li>
-</ol>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果当你在使用Git时需要帮助，有三种方法可以获得任何git命令的手册页(manpage)帮助信息:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">help</span> &lt;verb&gt;</div><div class="line">git &lt;verb&gt; --<span class="built_in">help</span></div><div class="line">man git-&lt;verb&gt;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例如，你可以运行如下命令获取对config命令的手册页帮助:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">help</span> config</div></pre></td></tr></table></figure>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Git/">Git</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-FTP/4. vsftp 利用mysql 验证虚拟账户" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -957,102 +953,6 @@
 
 
   
-    <article id="post-FTP/2. vsftp部署和优化" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/FTP/2. vsftp部署和优化/" class="article-date">
-  	<time datetime="2017-09-02T18:02:06.172Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/FTP/2. vsftp部署和优化/">
-        vsftp部署和优化
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;作为系统默认自带的 ftp 服务软件，vsftp 也是比较常用的。</p>
-<h2 id="1-安装-vsftp"><a href="#1-安装-vsftp" class="headerlink" title="1.安装 vsftp"></a>1.安装 vsftp</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># yum install -y vsftpd db4-utils</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里安装两个软件包，同时会把依赖的包安装上。其中 db4-utils 用来生成木马库文件。</p>
-<h2 id="2-建立帐号"><a href="#2-建立帐号" class="headerlink" title="2.建立帐号"></a>2.建立帐号</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;vsftp 默认是可以支持使用系统帐号体系登录的，但这样不太安全，所以建议使用虚拟账号体系。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;建立虚拟账号相关的系统帐号</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># useradd virftp -s /sbin/nologin</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;建立虚拟账户相关的文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># vim /etc/vsftpd/vsftpd_login</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;内容如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">test1</div><div class="line">123456</div><div class="line">test2</div><div class="line">abcdef</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;更改该文件的权限，提升安全级别</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># chmod 600 /etc/vsftpd/vsftpd_login</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;vsftpd 使用的密码文件肯定不是铭文的，需要生成对应的库文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># db_load -T -t hash -f /etc/vsftpd/vsftpd_login /etc/vsftpd/vsftpd_login.db</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;建立虚拟帐号相关的目录以及配置文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># mkdir /etc/vsftpd/vsftpd_user_conf</span></div><div class="line">[root@192 ~]<span class="comment"># cd /etc/vsftpd/vsftpd_user_conf</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;3.创建和用户对应的配置文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 vsftpd_user_conf]<span class="comment"># vim test1</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;内容如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">local_root=/home/virftp/test1</div><div class="line">anonymous_enable=NO</div><div class="line">write_enable=YES</div><div class="line">local_umask=022</div><div class="line">anon_upload_enable=NO</div><div class="line">anon_mkdir_write_enable=NO</div><div class="line">idle_session_timeout=600</div><div class="line">data_connection_timeout=120</div><div class="line">max_clients=10</div><div class="line">max_per_ip=5</div><div class="line">local_max_rate=50000</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明:local_root 为该帐号的家目录，anonymous_enable 用来限制是否允许匿名帐号登录，若为 NO 表示不允许匿名帐号登录， write_enable=YES 表示可写，local_umask 指定 umask 值，anon_upload_enable 是否允许匿名帐号上传文件，anon_mkdir_write_enable 是否允许匿名帐号可写。以上为关键参数，其他暂时不用关心，创建 test2 帐号的步骤和 test1 一样。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@192 vsftpd_user_conf]<span class="comment"># mkdir /home/virftp/test1</span></div><div class="line">[root@192 vsftpd_user_conf]<span class="comment"># chown -R virftp:virftp /home/virftp</span></div><div class="line">[root@192 vsftpd_user_conf]<span class="comment"># vim /etc/pam.d/vsftpd</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在最开头添加两行：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">auth sufficient /lib64/security/pam_userdb.so db=/etc/vsftpd/vsftpd_login</div><div class="line">account sufficient /lib64/security/pam_userdb.so db=/etc/vsftpd/vsftpd_login</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：linux 为 64 位系统，所以库文件为 /lib64/security/pam_userdb.so ，若系统为 32位，那么库文件在 /lib/security/pam_userdb.so</p>
-<h2 id="4-修改全局配置文件-etc-vsftpd-conf"><a href="#4-修改全局配置文件-etc-vsftpd-conf" class="headerlink" title="4.修改全局配置文件 /etc/vsftpd.conf"></a>4.修改全局配置文件 /etc/vsftpd.conf</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 vsftpd_user_conf]<span class="comment"># vim /etc/vsftpd/vsftpd.conf</span></div></pre></td></tr></table></figure>
-<p><img src="https://github.com/hcldirgit/image/blob/master/vsftp%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BC%98%E5%8C%96/01.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;改为</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/vsftp%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BC%98%E5%8C%96/02.png?raw=true" alt=""></p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/vsftp%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BC%98%E5%8C%96/03.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;改为</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/vsftp%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BC%98%E5%8C%96/04.png?raw=true" alt=""></p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/vsftp%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BC%98%E5%8C%96/05.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;改为</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/vsftp%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BC%98%E5%8C%96/06.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;再增加：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">chroot_local_user=YES</div><div class="line">guest_enabled=YES</div><div class="line">guest_username=virftp</div><div class="line">virtual_use_local_privs=YES</div><div class="line">user_config_dir=/etc/vsftpd/vsftpd_user_conf</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;最后启动 vsftpd 服务</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@192 vsftpd_user_conf]<span class="comment"># /etc/init.d/vsftpd start </span></div><div class="line">为 vsftpd 启动 vsftpd： [确定]</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果服务启动不了，很有可能是前面 21端口占用。测试过程和 pure-ftpd 一样，如果用户无法登录，查看日志 /var/log/srcure</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FTP/">FTP</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-FTP/1. pureftp部署和优化" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1134,6 +1034,102 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># pure-pw userdel $user</span></div></pre></td></tr></table></figure>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动服务</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># /etc/init.d/pure-ftpd start</span></div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FTP/">FTP</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-FTP/2. vsftp部署和优化" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/FTP/2. vsftp部署和优化/" class="article-date">
+  	<time datetime="2017-09-02T18:02:06.172Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/FTP/2. vsftp部署和优化/">
+        vsftp部署和优化
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;作为系统默认自带的 ftp 服务软件，vsftp 也是比较常用的。</p>
+<h2 id="1-安装-vsftp"><a href="#1-安装-vsftp" class="headerlink" title="1.安装 vsftp"></a>1.安装 vsftp</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># yum install -y vsftpd db4-utils</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里安装两个软件包，同时会把依赖的包安装上。其中 db4-utils 用来生成木马库文件。</p>
+<h2 id="2-建立帐号"><a href="#2-建立帐号" class="headerlink" title="2.建立帐号"></a>2.建立帐号</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;vsftp 默认是可以支持使用系统帐号体系登录的，但这样不太安全，所以建议使用虚拟账号体系。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;建立虚拟账号相关的系统帐号</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># useradd virftp -s /sbin/nologin</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;建立虚拟账户相关的文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># vim /etc/vsftpd/vsftpd_login</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;内容如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">test1</div><div class="line">123456</div><div class="line">test2</div><div class="line">abcdef</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;更改该文件的权限，提升安全级别</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># chmod 600 /etc/vsftpd/vsftpd_login</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;vsftpd 使用的密码文件肯定不是铭文的，需要生成对应的库文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># db_load -T -t hash -f /etc/vsftpd/vsftpd_login /etc/vsftpd/vsftpd_login.db</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;建立虚拟帐号相关的目录以及配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># mkdir /etc/vsftpd/vsftpd_user_conf</span></div><div class="line">[root@192 ~]<span class="comment"># cd /etc/vsftpd/vsftpd_user_conf</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;3.创建和用户对应的配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 vsftpd_user_conf]<span class="comment"># vim test1</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;内容如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">local_root=/home/virftp/test1</div><div class="line">anonymous_enable=NO</div><div class="line">write_enable=YES</div><div class="line">local_umask=022</div><div class="line">anon_upload_enable=NO</div><div class="line">anon_mkdir_write_enable=NO</div><div class="line">idle_session_timeout=600</div><div class="line">data_connection_timeout=120</div><div class="line">max_clients=10</div><div class="line">max_per_ip=5</div><div class="line">local_max_rate=50000</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明:local_root 为该帐号的家目录，anonymous_enable 用来限制是否允许匿名帐号登录，若为 NO 表示不允许匿名帐号登录， write_enable=YES 表示可写，local_umask 指定 umask 值，anon_upload_enable 是否允许匿名帐号上传文件，anon_mkdir_write_enable 是否允许匿名帐号可写。以上为关键参数，其他暂时不用关心，创建 test2 帐号的步骤和 test1 一样。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@192 vsftpd_user_conf]<span class="comment"># mkdir /home/virftp/test1</span></div><div class="line">[root@192 vsftpd_user_conf]<span class="comment"># chown -R virftp:virftp /home/virftp</span></div><div class="line">[root@192 vsftpd_user_conf]<span class="comment"># vim /etc/pam.d/vsftpd</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在最开头添加两行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">auth sufficient /lib64/security/pam_userdb.so db=/etc/vsftpd/vsftpd_login</div><div class="line">account sufficient /lib64/security/pam_userdb.so db=/etc/vsftpd/vsftpd_login</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：linux 为 64 位系统，所以库文件为 /lib64/security/pam_userdb.so ，若系统为 32位，那么库文件在 /lib/security/pam_userdb.so</p>
+<h2 id="4-修改全局配置文件-etc-vsftpd-conf"><a href="#4-修改全局配置文件-etc-vsftpd-conf" class="headerlink" title="4.修改全局配置文件 /etc/vsftpd.conf"></a>4.修改全局配置文件 /etc/vsftpd.conf</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 vsftpd_user_conf]<span class="comment"># vim /etc/vsftpd/vsftpd.conf</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/vsftp%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BC%98%E5%8C%96/01.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;改为</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/vsftp%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BC%98%E5%8C%96/02.png?raw=true" alt=""></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/vsftp%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BC%98%E5%8C%96/03.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;改为</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/vsftp%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BC%98%E5%8C%96/04.png?raw=true" alt=""></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/vsftp%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BC%98%E5%8C%96/05.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;改为</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/vsftp%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BC%98%E5%8C%96/06.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;再增加：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">chroot_local_user=YES</div><div class="line">guest_enabled=YES</div><div class="line">guest_username=virftp</div><div class="line">virtual_use_local_privs=YES</div><div class="line">user_config_dir=/etc/vsftpd/vsftpd_user_conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;最后启动 vsftpd 服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@192 vsftpd_user_conf]<span class="comment"># /etc/init.d/vsftpd start </span></div><div class="line">为 vsftpd 启动 vsftpd： [确定]</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果服务启动不了，很有可能是前面 21端口占用。测试过程和 pure-ftpd 一样，如果用户无法登录，查看日志 /var/log/srcure</p>
 
       
     </div>

@@ -106,8 +106,6 @@
 				        
 							<li><a href="/archives">所有文章</a></li>
 				        
-							<li><a href="/tags">静心阅读</a></li>
-				        
 						</ul>
 					</nav>
 					<nav class="header-nav">
@@ -156,8 +154,6 @@
 					<li><a href="/">主页</a></li>
 		        
 					<li><a href="/archives">所有文章</a></li>
-		        
-					<li><a href="/tags">静心阅读</a></li>
 		        
 		        <div class="clearfix"></div>
 				</ul>
@@ -228,70 +224,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LVS/">LVS</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-LVS/7. keepalived 和 lvs 的结合配置文件详解" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/LVS/7. keepalived 和 lvs 的结合配置文件详解/" class="article-date">
-  	<time datetime="2017-09-02T18:04:46.051Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/LVS/7. keepalived 和 lvs 的结合配置文件详解/">
-        keepalived 和 lvs 的结合配置文件详解
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;/export/servers/keepalived/conf/keepalived.conf配置文件详解：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div></pre></td><td class="code"><pre><div class="line">! Configuration File <span class="keyword">for</span> keepalived</div><div class="line"><span class="comment">#全局配置</span></div><div class="line">global_defs &#123;</div><div class="line">notification_email &#123; <span class="comment">#设置报警邮件地址，每行一个，（如何要开启邮件报警，需要开启本机的sendmail服务）</span></div><div class="line">lihuiyw@jd.com</div><div class="line">&#125;</div><div class="line">notification_email_from lihuiyw@jd.com <span class="comment">#设置邮件的发送地址</span></div><div class="line">smtp_server mail.jd.com <span class="comment">#设置邮件的smtp server地址</span></div><div class="line">smtp_connect_timeout 30 <span class="comment">#设置连接smtp server的超时时间</span></div><div class="line">router_id LVS_DEVEL <span class="comment">#表示keepalived服务器的一个标识，是发邮件时显示在邮件主题中的信息</span></div><div class="line">&#125;</div><div class="line"><span class="comment">#keepalived的VRRPD配置，是所有keepalived配置的核心</span></div><div class="line"><span class="comment">#VRRP实例配置</span></div><div class="line">vrrp_instance VIP_142 <span class="comment">#是VRRP实例开始的标识，后跟VRRP实例名称</span></div><div class="line">&#123;</div><div class="line">state MASTER <span class="comment">#keepalived的角色，MASTER主，BACKUP备</span></div><div class="line">interface eth0 <span class="comment">#用于指定HA监测网络的接口</span></div><div class="line">virtual_router_id 142 <span class="comment">#虚拟路由标识，这个标识是一个数字，同一个VRRP实例使用唯一的一个标识，即在同一个vrrp_instance下，MASTER和BACKUP必须是一致的！</span></div><div class="line">priority 100 <span class="comment">#权重优先级</span></div><div class="line">advert_int 2 <span class="comment">#用于设定master和backup主机之间同步检查的时间间隔，单位是秒</span></div><div class="line">garp_master_delay 10 <span class="comment">#用于切换到master状态后延时进行Gratuitous arp请求的时间</span></div><div class="line">smtp_alert <span class="comment">#表示是否开启邮件通知(用全局区域的邮件设置来发通知)</span></div><div class="line">authentication <span class="comment">#主备之间进行通信的验证类型和密码：验证类型主要有PASS和AH两种，一个在vrrp_instance下，MASTER和backup必须使用相同的密码才可以通信</span></div><div class="line">&#123;</div><div class="line">auth_type PASS</div><div class="line">auth_pass 123456</div><div class="line">&#125;</div><div class="line"><span class="comment">#virtual_ipaddress用于设置虚拟ip地址，可以设置多个vip，每行一个，</span></div><div class="line">virtual_ipaddress</div><div class="line">&#123;</div><div class="line">10.95.0.200/24</div><div class="line">&#125;</div><div class="line">track_interface <span class="comment">#用于设置一些额外的网络监控接口，其中任何一个网络接口出现故障，keepalived都会进去fault状态！</span></div><div class="line">&#123;</div><div class="line">eth0</div><div class="line">&#125;</div><div class="line">nopreempt <span class="comment">#设置不抢占功能，只能在backup上使用，知道机器有故障了才切换，</span></div><div class="line">preemtp_delay 300 <span class="comment">#用于设置抢占的延时时间，（例：开启启动没必要抢占）</span></div><div class="line">&#125;</div><div class="line"><span class="comment">#以下是lvs的主要主要配置信息，主要实现lvs的ip包转发功能！</span></div><div class="line">virtual_server 10.95.0.200 80 <span class="comment">#虚拟ip和端口</span></div><div class="line">&#123;</div><div class="line">delay_loop 6 <span class="comment">#设置健康检查的时间间隔</span></div><div class="line">lb_algo wrr <span class="comment">#设置负载调度算法</span></div><div class="line">lb_kind DR <span class="comment">#设置lvs的模式</span></div><div class="line">persistence_timeout 60 <span class="comment">#会话保持时间，单位秒</span></div><div class="line">protocol TCP <span class="comment">#ip包转发协议，有TCP和UDP两种</span></div><div class="line">real_server 10.95.0.143 80 <span class="comment">#real server 的ip</span></div><div class="line">&#123;</div><div class="line">weight 3 <span class="comment">#权重</span></div><div class="line">TCP_CHECK <span class="comment">#健康检查</span></div><div class="line">&#123;</div><div class="line">connect_timeout 10 <span class="comment">#表示无响应超时时间</span></div><div class="line">nb_get_retry 3 <span class="comment">#表示重连次数</span></div><div class="line">delay_before_retry 3 <span class="comment">#表示重试间隔</span></div><div class="line">connect_port 80 <span class="comment">#表示端口</span></div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">real_server 10.95.0.144 80</div><div class="line">&#123;</div><div class="line">weight 3</div><div class="line">TCP_CHECK</div><div class="line">&#123;</div><div class="line">connect_timeout 10</div><div class="line">nb_get_retry 3</div><div class="line">delay_before_retry 3</div><div class="line">connect_port 80</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;健康监测应许多种检查方式，常见的有，HTTP_GET，SSL_GET，TCP_CHECK，SMTP_CHECK，MISC_CHECK.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">TCP_CHECK &#123;</div><div class="line">conetct_port 80</div><div class="line">connect_timeout 3</div><div class="line">nb_get_retry 3</div><div class="line">delay_before_retry 3</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;connect_port:健康检查的端口，如果不指定，默认是real_server指定的端口</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;connect_timeout:表示无响应超时时间，单位是秒，这里是3s</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;nb_get_retry：表示重试次数，这里是3ci</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;delay_before_retry：表示重试间隔，</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">HTTP_GET |SSL_GET</div><div class="line">&#123;</div><div class="line">url&#123;</div><div class="line">path /index.html <span class="comment">#指定url信息</span></div><div class="line">digest e6owjfdsjfalsjdfsalkf30wfdsfjwqe</div><div class="line"><span class="comment">#ssl检查后的摘要信息，这些摘要信息可以通过genhash命令工具获取，</span></div><div class="line"><span class="comment">#例：genhash -s 192.168.12.80 -p 80 -u /index.html</span></div><div class="line">status_code 200</div><div class="line">&#125;</div><div class="line">connect_port 80</div><div class="line">bindto 192.168.31.128 <span class="comment">#表示通过此地址来对发送请求对服务器进行健康检查</span></div><div class="line">nb_get_retry 3</div><div class="line">delay_before_retry 2</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LVS/">LVS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/keepalived/">keepalived</a></li></ul>
 	</div>
 
       
@@ -476,6 +408,70 @@
 
 
   
+    <article id="post-LVS/7. keepalived 和 lvs 的结合配置文件详解" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/LVS/7. keepalived 和 lvs 的结合配置文件详解/" class="article-date">
+  	<time datetime="2017-09-02T18:04:46.051Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/LVS/7. keepalived 和 lvs 的结合配置文件详解/">
+        keepalived 和 lvs 的结合配置文件详解
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;/export/servers/keepalived/conf/keepalived.conf配置文件详解：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div></pre></td><td class="code"><pre><div class="line">! Configuration File <span class="keyword">for</span> keepalived</div><div class="line"><span class="comment">#全局配置</span></div><div class="line">global_defs &#123;</div><div class="line">notification_email &#123; <span class="comment">#设置报警邮件地址，每行一个，（如何要开启邮件报警，需要开启本机的sendmail服务）</span></div><div class="line">lihuiyw@jd.com</div><div class="line">&#125;</div><div class="line">notification_email_from lihuiyw@jd.com <span class="comment">#设置邮件的发送地址</span></div><div class="line">smtp_server mail.jd.com <span class="comment">#设置邮件的smtp server地址</span></div><div class="line">smtp_connect_timeout 30 <span class="comment">#设置连接smtp server的超时时间</span></div><div class="line">router_id LVS_DEVEL <span class="comment">#表示keepalived服务器的一个标识，是发邮件时显示在邮件主题中的信息</span></div><div class="line">&#125;</div><div class="line"><span class="comment">#keepalived的VRRPD配置，是所有keepalived配置的核心</span></div><div class="line"><span class="comment">#VRRP实例配置</span></div><div class="line">vrrp_instance VIP_142 <span class="comment">#是VRRP实例开始的标识，后跟VRRP实例名称</span></div><div class="line">&#123;</div><div class="line">state MASTER <span class="comment">#keepalived的角色，MASTER主，BACKUP备</span></div><div class="line">interface eth0 <span class="comment">#用于指定HA监测网络的接口</span></div><div class="line">virtual_router_id 142 <span class="comment">#虚拟路由标识，这个标识是一个数字，同一个VRRP实例使用唯一的一个标识，即在同一个vrrp_instance下，MASTER和BACKUP必须是一致的！</span></div><div class="line">priority 100 <span class="comment">#权重优先级</span></div><div class="line">advert_int 2 <span class="comment">#用于设定master和backup主机之间同步检查的时间间隔，单位是秒</span></div><div class="line">garp_master_delay 10 <span class="comment">#用于切换到master状态后延时进行Gratuitous arp请求的时间</span></div><div class="line">smtp_alert <span class="comment">#表示是否开启邮件通知(用全局区域的邮件设置来发通知)</span></div><div class="line">authentication <span class="comment">#主备之间进行通信的验证类型和密码：验证类型主要有PASS和AH两种，一个在vrrp_instance下，MASTER和backup必须使用相同的密码才可以通信</span></div><div class="line">&#123;</div><div class="line">auth_type PASS</div><div class="line">auth_pass 123456</div><div class="line">&#125;</div><div class="line"><span class="comment">#virtual_ipaddress用于设置虚拟ip地址，可以设置多个vip，每行一个，</span></div><div class="line">virtual_ipaddress</div><div class="line">&#123;</div><div class="line">10.95.0.200/24</div><div class="line">&#125;</div><div class="line">track_interface <span class="comment">#用于设置一些额外的网络监控接口，其中任何一个网络接口出现故障，keepalived都会进去fault状态！</span></div><div class="line">&#123;</div><div class="line">eth0</div><div class="line">&#125;</div><div class="line">nopreempt <span class="comment">#设置不抢占功能，只能在backup上使用，知道机器有故障了才切换，</span></div><div class="line">preemtp_delay 300 <span class="comment">#用于设置抢占的延时时间，（例：开启启动没必要抢占）</span></div><div class="line">&#125;</div><div class="line"><span class="comment">#以下是lvs的主要主要配置信息，主要实现lvs的ip包转发功能！</span></div><div class="line">virtual_server 10.95.0.200 80 <span class="comment">#虚拟ip和端口</span></div><div class="line">&#123;</div><div class="line">delay_loop 6 <span class="comment">#设置健康检查的时间间隔</span></div><div class="line">lb_algo wrr <span class="comment">#设置负载调度算法</span></div><div class="line">lb_kind DR <span class="comment">#设置lvs的模式</span></div><div class="line">persistence_timeout 60 <span class="comment">#会话保持时间，单位秒</span></div><div class="line">protocol TCP <span class="comment">#ip包转发协议，有TCP和UDP两种</span></div><div class="line">real_server 10.95.0.143 80 <span class="comment">#real server 的ip</span></div><div class="line">&#123;</div><div class="line">weight 3 <span class="comment">#权重</span></div><div class="line">TCP_CHECK <span class="comment">#健康检查</span></div><div class="line">&#123;</div><div class="line">connect_timeout 10 <span class="comment">#表示无响应超时时间</span></div><div class="line">nb_get_retry 3 <span class="comment">#表示重连次数</span></div><div class="line">delay_before_retry 3 <span class="comment">#表示重试间隔</span></div><div class="line">connect_port 80 <span class="comment">#表示端口</span></div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">real_server 10.95.0.144 80</div><div class="line">&#123;</div><div class="line">weight 3</div><div class="line">TCP_CHECK</div><div class="line">&#123;</div><div class="line">connect_timeout 10</div><div class="line">nb_get_retry 3</div><div class="line">delay_before_retry 3</div><div class="line">connect_port 80</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;健康监测应许多种检查方式，常见的有，HTTP_GET，SSL_GET，TCP_CHECK，SMTP_CHECK，MISC_CHECK.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">TCP_CHECK &#123;</div><div class="line">conetct_port 80</div><div class="line">connect_timeout 3</div><div class="line">nb_get_retry 3</div><div class="line">delay_before_retry 3</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;connect_port:健康检查的端口，如果不指定，默认是real_server指定的端口</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;connect_timeout:表示无响应超时时间，单位是秒，这里是3s</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;nb_get_retry：表示重试次数，这里是3ci</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;delay_before_retry：表示重试间隔，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">HTTP_GET |SSL_GET</div><div class="line">&#123;</div><div class="line">url&#123;</div><div class="line">path /index.html <span class="comment">#指定url信息</span></div><div class="line">digest e6owjfdsjfalsjdfsalkf30wfdsfjwqe</div><div class="line"><span class="comment">#ssl检查后的摘要信息，这些摘要信息可以通过genhash命令工具获取，</span></div><div class="line"><span class="comment">#例：genhash -s 192.168.12.80 -p 80 -u /index.html</span></div><div class="line">status_code 200</div><div class="line">&#125;</div><div class="line">connect_port 80</div><div class="line">bindto 192.168.31.128 <span class="comment">#表示通过此地址来对发送请求对服务器进行健康检查</span></div><div class="line">nb_get_retry 3</div><div class="line">delay_before_retry 2</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LVS/">LVS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/keepalived/">keepalived</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-LVS/5. keepalived 的启动脚本和安装脚本" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -569,78 +565,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LVS/">LVS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/keepalived/">keepalived</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-LVS/3. LVS 负载均衡 fullnat 模式和 nat 模式的区别" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/LVS/3. LVS 负载均衡 fullnat 模式和 nat 模式的区别/" class="article-date">
-  	<time datetime="2017-09-02T18:04:46.048Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/LVS/3. LVS 负载均衡 fullnat 模式和 nat 模式的区别/">
-        LVS 负载均衡 fullnat 模式和 nat 模式的区别
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关于LVS和FULLNAT的介绍可以看一下 <a href="http://blog.aliyun.com/1750" target="_blank" rel="external">淘宝吴佳明(普空)的视频</a> ，FULLNAT 模式很大简化了LVS的配置和部署，目前淘宝和百度基本上都在使用FULLNAT模式来作为接入侧的负载均衡模式.</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;百度的LVS叫做BVS, Baidu Virtual Server, 是在LVS基础上修改的增加了L3 Though 和 SYN Porxy，貌似也是吴佳明(普空)在百度搞的, 类似FULLNAT 项目.</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面的图来自吴佳明(普空)的PPT, 自己重画了一遍，关于NAT和FULLNAT的区别如下图所示：</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/LVS%20%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%20fullnat%20%E6%A8%A1%E5%BC%8F%E5%92%8C%20nat%20%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB/01.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;看完上图后发现 FULLNAT有一个问题是：RealServer无法获得用户IP；淘宝通过叫TOA的方式解决的，</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;主要原理是：将 client address 放到了TCP Option 里面带给后端RealServer，RealServer 收到后保存在 socket 的结构体里并通过toa内核模块 hook 了 getname 函数，这样当用户调用 getname 获取远端地址时，返回的是保存在 socket 的 TCPOption 的 IP . 百度的 BVS 是通过叫 ttm 模块实现的，其实现方式跟 toa 基本一样，只是没有开源.</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;实现原理图如下：</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/LVS%20%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%20fullnat%20%E6%A8%A1%E5%BC%8F%E5%92%8C%20nat%20%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB/03.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面看下上面说的逻辑的实现<a href="https://github.com/alibaba/LVS" target="_blank" rel="external">代码</a></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;lvs侧在TCP报文的选项中插入clientip代码: tcp_fnat_in_handler()</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/LVS%20%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%20fullnat%20%E6%A8%A1%E5%BC%8F%E5%92%8C%20nat%20%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB/04.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;RS 侧收到建连报文时，取出 toa 里面的 client ip 和 port  存放在 socket 的 use_data 里, toa.c</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/LVS%20%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%20fullnat%20%E6%A8%A1%E5%BC%8F%E5%92%8C%20nat%20%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB/05.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;HOOK挂载：</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/LVS%20%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%20fullnat%20%E6%A8%A1%E5%BC%8F%E5%92%8C%20nat%20%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB/06.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当应用层调用 getpeername() 或者 getsocketname() 时，会进入到 inet_getname_toa,如果存在toa 信息则将 socket 存放的真是的 clientip 返回给应用层。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LVS/">LVS</a></li></ul>
 	</div>
 
       
@@ -755,6 +679,78 @@
 
 
   
+    <article id="post-LVS/3. LVS 负载均衡 fullnat 模式和 nat 模式的区别" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/LVS/3. LVS 负载均衡 fullnat 模式和 nat 模式的区别/" class="article-date">
+  	<time datetime="2017-09-02T18:04:46.048Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/LVS/3. LVS 负载均衡 fullnat 模式和 nat 模式的区别/">
+        LVS 负载均衡 fullnat 模式和 nat 模式的区别
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关于LVS和FULLNAT的介绍可以看一下 <a href="http://blog.aliyun.com/1750" target="_blank" rel="external">淘宝吴佳明(普空)的视频</a> ，FULLNAT 模式很大简化了LVS的配置和部署，目前淘宝和百度基本上都在使用FULLNAT模式来作为接入侧的负载均衡模式.</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;百度的LVS叫做BVS, Baidu Virtual Server, 是在LVS基础上修改的增加了L3 Though 和 SYN Porxy，貌似也是吴佳明(普空)在百度搞的, 类似FULLNAT 项目.</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面的图来自吴佳明(普空)的PPT, 自己重画了一遍，关于NAT和FULLNAT的区别如下图所示：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/LVS%20%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%20fullnat%20%E6%A8%A1%E5%BC%8F%E5%92%8C%20nat%20%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB/01.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;看完上图后发现 FULLNAT有一个问题是：RealServer无法获得用户IP；淘宝通过叫TOA的方式解决的，</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;主要原理是：将 client address 放到了TCP Option 里面带给后端RealServer，RealServer 收到后保存在 socket 的结构体里并通过toa内核模块 hook 了 getname 函数，这样当用户调用 getname 获取远端地址时，返回的是保存在 socket 的 TCPOption 的 IP . 百度的 BVS 是通过叫 ttm 模块实现的，其实现方式跟 toa 基本一样，只是没有开源.</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;实现原理图如下：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/LVS%20%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%20fullnat%20%E6%A8%A1%E5%BC%8F%E5%92%8C%20nat%20%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB/03.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面看下上面说的逻辑的实现<a href="https://github.com/alibaba/LVS" target="_blank" rel="external">代码</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;lvs侧在TCP报文的选项中插入clientip代码: tcp_fnat_in_handler()</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/LVS%20%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%20fullnat%20%E6%A8%A1%E5%BC%8F%E5%92%8C%20nat%20%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB/04.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;RS 侧收到建连报文时，取出 toa 里面的 client ip 和 port  存放在 socket 的 use_data 里, toa.c</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/LVS%20%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%20fullnat%20%E6%A8%A1%E5%BC%8F%E5%92%8C%20nat%20%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB/05.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;HOOK挂载：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/LVS%20%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%20fullnat%20%E6%A8%A1%E5%BC%8F%E5%92%8C%20nat%20%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB/06.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当应用层调用 getpeername() 或者 getsocketname() 时，会进入到 inet_getname_toa,如果存在toa 信息则将 socket 存放的真是的 clientip 返回给应用层。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LVS/">LVS</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-LVS/22. keepalived之vrrp_script总结" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -808,119 +804,6 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">vrrp_script checkhaproxy</div><div class="line">&#123;</div><div class="line">    script <span class="string">"/etc/check.sh"</span></div><div class="line">    interval 3</div><div class="line">    weight -20</div><div class="line">&#125;</div><div class="line"></div><div class="line">vrrp_instance <span class="built_in">test</span></div><div class="line">&#123;</div><div class="line">    ....</div><div class="line">    </div><div class="line">    state backup</div><div class="line">    priority 70</div><div class="line"></div><div class="line">    track_script</div><div class="line">    &#123;</div><div class="line">        checkhaproxy</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    ....</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;A,B同时启动后，由于A的优先级较高，因此通过选举会成为master。当A上的业务进程出现问题时，优先级会降低到60。此时B收到优先级比自己低的vrrp广播包时，将切换为master状态。那么当B上的业务出现问题时，优先级降低到50，尽管A的优先级比B的要    高，但是由于设置了nopreempt，A不会再抢占成为master状态。</p>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;所以，可以在检测脚本中增加杀掉keepalived进程（或者停用keepalived服务）的方式，做到业务进程出现问题时完成主备切换。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LVS/">LVS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/keepalived/">keepalived</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-LVS/21. Keepalived配置及典型应用案例" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/LVS/21. Keepalived配置及典型应用案例/" class="article-date">
-  	<time datetime="2017-09-02T18:04:46.046Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/LVS/21. Keepalived配置及典型应用案例/">
-        Keepalived配置及典型应用案例
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用源码先安装keepalived 1.2.6</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/src</div><div class="line">wget  http://www.keepalived.org/software/keepalived-1.2.6.tar.gz</div><div class="line">tar zxf keepalived-1.2.6.tar.gz </div><div class="line"><span class="built_in">cd</span> keepalived-1.2.6</div><div class="line">./configure --prefix=/usr/<span class="built_in">local</span>/keepalived </div><div class="line">make</div><div class="line">make install</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;所设keepalived安装到/usr/local/keepalived, 则所有配置文件均位于此目录之下。 我一直没搞明白一个问题，Linux默认总是将程序安装到/usr/local目录下，所有程序共享了/usr/local/sbin目录。这对一些人的操作习惯是有影响的。为何不考虑使用每个软件一个独立的目录呢？</p>
-<ol>
-<li>建立服务启动脚本，以便使用service命令控制之 </li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cp /usr/<span class="built_in">local</span>/keepalived/etc/rc.d/init.d/keepalived /etc/init.d/keepalived</div><div class="line">chmod +x /etc/init.d/keepalived</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;因为我们使用非默认路径（/usr/local）安装keepalived, 故需要修改几处路径，以保证keepalived能正常启动, 需要修改的文件如下：</p>
-<ol>
-<li>修改/etc/init.d/keepalived, 寻找大约15行左右的. /etc/sysconfig/keepalived, 修改为： .  /usr/local/keepalived/etc/sysconfig/keepalived, 即指向正确的文件位置</li>
-</ol>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;同时在上述行下添加以下内容（将keepavlied主程序所在路径导入到环境变量PATH中）：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">PATH=<span class="string">"<span class="variable">$PATH</span>:/usr/local/keepalived/sbin"</span></div><div class="line"><span class="built_in">export</span> PATH</div></pre></td></tr></table></figure>
-<ol>
-<li>修改/usr/local/keepalived/etc/sysconfig/keepalived文件，设置正确的服务启动参数 </li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">KEEPALIVED_OPTIONS=<span class="string">"-D -f /usr/local/keepalived/etc/keepalived/keepalived.conf"</span></div></pre></td></tr></table></figure>
-<ol>
-<li>经过以上修改，keepalived基本安装即可完成，启动测试之： </li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service keepalived restart</div></pre></td></tr></table></figure>
-<ol>
-<li>切勿忘记将此服务设置为开机启动</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chkconfig keepalived on</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认的配置文件中，指定了两个数个虚拟IP : 192.168.200.16  192.168.200.17  192.168.200.18</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可使用ip addr命令验证之。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以上实验只需要一台主机，因为当前节点被指定为主节点，且没有收到其它节点的VRRP组播信息，故自动绑定了虚拟IP。</p>
-<h2 id="参考案例一：主-备模式"><a href="#参考案例一：主-备模式" class="headerlink" title="参考案例一：主-备模式"></a>参考案例一：主-备模式</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在这种模式下，虚拟IP在某时刻只能属于某一个节点，另一个节点作为备用节点存在。当主节点不可用时，备用节点接管虚拟IP，提供正常服务。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;节点A 192.168.0.11 (主节点), 节点B 192.168.0.12(备用节点)  虚拟IP(对外提供服务的IP 192.168.0.200 </p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要求默认情况下由节点A提供服务，当节点A不可用时，由节点B提供服务(即虚拟IP漂移至节点B)。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;节点A上的配置文件/usr/local/keepalived/etc/keepalived/keepalived.conf</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">global_defs &#123;</div><div class="line">   notification_email &#123;</div><div class="line">     root@localhost</div><div class="line">   &#125;</div><div class="line">   notification_email_from root@<span class="built_in">local</span> host</div><div class="line">   smtp_server localhost</div><div class="line">   smtp_connect_timeout 30</div><div class="line">   router_id  NodeA</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认的配置文件中，使用第三方smtp服务器，但这在现实中几乎没有意义（需要验证的原因），我们将其指定为localhost, 将通知信息的发送交给本地sendmail服务处理。查阅说明文档得知route_id配置是为了标识当前节点，我将其设置为NodeA。当然两个节点的此项设置可相同，也可不相同。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">vrrp_instance VI_1 &#123;</div><div class="line">    state MASTER   <span class="comment">#指定A节点为主节点 备用节点上设置为BACKUP即可</span></div><div class="line">    interface eth0   <span class="comment">#绑定虚拟IP的网络接口</span></div><div class="line">    virtual_router_id 51  <span class="comment">#VRRP组名，两个节点的设置必须一样，以指明各个节点属于同一VRRP组</span></div><div class="line">    priority 100   <span class="comment">#主节点的优先级（1-254之间），备用节点必须比主节点优先级低</span></div><div class="line">    advert_int 1   <span class="comment">#组播信息发送间隔，两个节点设置必须一样</span></div><div class="line">    authentication &#123;   <span class="comment">#设置验证信息，两个节点必须一致</span></div><div class="line">        auth_type PASS</div><div class="line">        auth_pass 1111</div><div class="line">    &#125;</div><div class="line">    virtual_ipaddress &#123;   <span class="comment">#指定虚拟IP, 两个节点设置必须一样</span></div><div class="line">        192.168.200.16/24</div><div class="line">        192.168.200.17 /24</div><div class="line">        192.168.200.18 /24</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认的配置文件中，竟然没有子网掩码，从而导致使用了默认子网掩码255.255.255.255，如果导致无法从其它机器访问虚拟IP（keepalived虚拟IP无法ping通）。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;按同样的方法配置节点B并修改配置文件，可将A节点的配置文件复制到B节点，并修改以下几项： </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">router_id  NodeB</div><div class="line">state   BACKUP</div><div class="line">priority   99</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其它项不必修改。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;测试及验证：拔掉节点A的网线，就发现虚拟IP已经绑定到节点B上，再恢复A节点的网线，虚拟IP又绑定回节点A之上。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;但是这种方式存在恼裂的可能，即两个节点实际都处于正常工作状态，但是无法接收到彼此的组播通知，这时两个节点均强行绑定虚拟IP，导致不可预料的后果。 </p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这时就需要设置仲裁，即每个节点必须判断自身的状态（应用服务状态及自身网络状态），要实现这两点可使用自定义shell脚本实现，通过周期性地检查自身应用服务状态，并不断ping网关（或其它可靠的参考IP）均可。当自身服务异常、或无法ping通网关，则认为自身出现故障，就应该移除掉虚拟IP(停止keepalived服务即可）。主要借助keepalived提供的vrrp_script及track_script实现：</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在keepalived的配置文件最前面加入以下代码，定义一个跟踪脚本： </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">vrrp_script check_local &#123; <span class="comment">#定义一个名称为check_local的检查脚本</span></div><div class="line">    script <span class="string">"/usr/local/keepalived/bin/check_local.sh"</span> <span class="comment">#shell脚本的路径</span></div><div class="line">    interval 5  <span class="comment">#运行间隔</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;再在vrrp_instance配置中加入以下代码使用上面定义的检测脚本：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">track_script &#123;</div><div class="line">check_local</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们在/usr/local/keepalived/bin/check_local.sh定义的检测规则是：</p>
-<ol>
-<li>自身web服务故障（超时，http返回状态不是200）</li>
-<li>无法ping通网关</li>
-<li>产生以上任何一个问题，均应该移除本机的虚拟IP(停止keepalived实例即可)</li>
-</ol>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;但这里有个小问题，如果本机或是网关偶尔出现一次故障，那么我们不能认为是服务故障。更好的做法是如果连续N次检测本机服务不正常或连接N次无法ping通网关，才认为是故障产生，才需要进行故障转移。另一方面，如果脚本检测到故障产生，并停止掉了keepalived服务，那么当故障恢复后，keepalived是无法自动恢复的。我觉得利用独立的脚本以秒级的间隔检查自身服务及网关连接性，再根据故障情况控制keepalived的运行或是停止。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里提供一个思路，具体脚本内容请大家根据自己的需要编写即可。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如下图的案例：</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/Keepalived%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%85%B8%E5%9E%8B%E5%BA%94%E7%94%A8%E6%A1%88%E4%BE%8B/01.png?raw=true" alt=""> </p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;假设节点A和B组成主备关系，A为备用节点，B为主节点，那么当在图标红叉位置发生网络故障时，节点A接收不到节点B的组播通知，将抢占虚拟IP。这时出现的后果就是节点Ａ和节点B均拥有虚拟IP，就可能导致了脑裂。所以我们以网关IP连通性作为参考，可避免此问题产生。</p>
 
       
     </div>
@@ -1089,6 +972,119 @@
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;test.domain.com的请求发向了192.168.1.187:8000</p>
 <p><img src="https://github.com/hcldirgit/image/blob/master/haproxy+keepalived%E5%AE%9E%E7%8E%B0%E9%AB%98%E5%8F%AF%E7%94%A8%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/03.jpeg?raw=true" alt=""></p>
 <p><img src="https://github.com/hcldirgit/image/blob/master/haproxy+keepalived%E5%AE%9E%E7%8E%B0%E9%AB%98%E5%8F%AF%E7%94%A8%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/04.jpeg?raw=true" alt=""></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LVS/">LVS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/keepalived/">keepalived</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-LVS/21. Keepalived配置及典型应用案例" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/LVS/21. Keepalived配置及典型应用案例/" class="article-date">
+  	<time datetime="2017-09-02T18:04:46.046Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/LVS/21. Keepalived配置及典型应用案例/">
+        Keepalived配置及典型应用案例
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用源码先安装keepalived 1.2.6</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/src</div><div class="line">wget  http://www.keepalived.org/software/keepalived-1.2.6.tar.gz</div><div class="line">tar zxf keepalived-1.2.6.tar.gz </div><div class="line"><span class="built_in">cd</span> keepalived-1.2.6</div><div class="line">./configure --prefix=/usr/<span class="built_in">local</span>/keepalived </div><div class="line">make</div><div class="line">make install</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;所设keepalived安装到/usr/local/keepalived, 则所有配置文件均位于此目录之下。 我一直没搞明白一个问题，Linux默认总是将程序安装到/usr/local目录下，所有程序共享了/usr/local/sbin目录。这对一些人的操作习惯是有影响的。为何不考虑使用每个软件一个独立的目录呢？</p>
+<ol>
+<li>建立服务启动脚本，以便使用service命令控制之 </li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cp /usr/<span class="built_in">local</span>/keepalived/etc/rc.d/init.d/keepalived /etc/init.d/keepalived</div><div class="line">chmod +x /etc/init.d/keepalived</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;因为我们使用非默认路径（/usr/local）安装keepalived, 故需要修改几处路径，以保证keepalived能正常启动, 需要修改的文件如下：</p>
+<ol>
+<li>修改/etc/init.d/keepalived, 寻找大约15行左右的. /etc/sysconfig/keepalived, 修改为： .  /usr/local/keepalived/etc/sysconfig/keepalived, 即指向正确的文件位置</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;同时在上述行下添加以下内容（将keepavlied主程序所在路径导入到环境变量PATH中）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">PATH=<span class="string">"<span class="variable">$PATH</span>:/usr/local/keepalived/sbin"</span></div><div class="line"><span class="built_in">export</span> PATH</div></pre></td></tr></table></figure>
+<ol>
+<li>修改/usr/local/keepalived/etc/sysconfig/keepalived文件，设置正确的服务启动参数 </li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">KEEPALIVED_OPTIONS=<span class="string">"-D -f /usr/local/keepalived/etc/keepalived/keepalived.conf"</span></div></pre></td></tr></table></figure>
+<ol>
+<li>经过以上修改，keepalived基本安装即可完成，启动测试之： </li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service keepalived restart</div></pre></td></tr></table></figure>
+<ol>
+<li>切勿忘记将此服务设置为开机启动</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chkconfig keepalived on</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认的配置文件中，指定了两个数个虚拟IP : 192.168.200.16  192.168.200.17  192.168.200.18</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可使用ip addr命令验证之。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以上实验只需要一台主机，因为当前节点被指定为主节点，且没有收到其它节点的VRRP组播信息，故自动绑定了虚拟IP。</p>
+<h2 id="参考案例一：主-备模式"><a href="#参考案例一：主-备模式" class="headerlink" title="参考案例一：主-备模式"></a>参考案例一：主-备模式</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在这种模式下，虚拟IP在某时刻只能属于某一个节点，另一个节点作为备用节点存在。当主节点不可用时，备用节点接管虚拟IP，提供正常服务。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;节点A 192.168.0.11 (主节点), 节点B 192.168.0.12(备用节点)  虚拟IP(对外提供服务的IP 192.168.0.200 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要求默认情况下由节点A提供服务，当节点A不可用时，由节点B提供服务(即虚拟IP漂移至节点B)。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;节点A上的配置文件/usr/local/keepalived/etc/keepalived/keepalived.conf</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">global_defs &#123;</div><div class="line">   notification_email &#123;</div><div class="line">     root@localhost</div><div class="line">   &#125;</div><div class="line">   notification_email_from root@<span class="built_in">local</span> host</div><div class="line">   smtp_server localhost</div><div class="line">   smtp_connect_timeout 30</div><div class="line">   router_id  NodeA</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认的配置文件中，使用第三方smtp服务器，但这在现实中几乎没有意义（需要验证的原因），我们将其指定为localhost, 将通知信息的发送交给本地sendmail服务处理。查阅说明文档得知route_id配置是为了标识当前节点，我将其设置为NodeA。当然两个节点的此项设置可相同，也可不相同。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">vrrp_instance VI_1 &#123;</div><div class="line">    state MASTER   <span class="comment">#指定A节点为主节点 备用节点上设置为BACKUP即可</span></div><div class="line">    interface eth0   <span class="comment">#绑定虚拟IP的网络接口</span></div><div class="line">    virtual_router_id 51  <span class="comment">#VRRP组名，两个节点的设置必须一样，以指明各个节点属于同一VRRP组</span></div><div class="line">    priority 100   <span class="comment">#主节点的优先级（1-254之间），备用节点必须比主节点优先级低</span></div><div class="line">    advert_int 1   <span class="comment">#组播信息发送间隔，两个节点设置必须一样</span></div><div class="line">    authentication &#123;   <span class="comment">#设置验证信息，两个节点必须一致</span></div><div class="line">        auth_type PASS</div><div class="line">        auth_pass 1111</div><div class="line">    &#125;</div><div class="line">    virtual_ipaddress &#123;   <span class="comment">#指定虚拟IP, 两个节点设置必须一样</span></div><div class="line">        192.168.200.16/24</div><div class="line">        192.168.200.17 /24</div><div class="line">        192.168.200.18 /24</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认的配置文件中，竟然没有子网掩码，从而导致使用了默认子网掩码255.255.255.255，如果导致无法从其它机器访问虚拟IP（keepalived虚拟IP无法ping通）。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;按同样的方法配置节点B并修改配置文件，可将A节点的配置文件复制到B节点，并修改以下几项： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">router_id  NodeB</div><div class="line">state   BACKUP</div><div class="line">priority   99</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其它项不必修改。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;测试及验证：拔掉节点A的网线，就发现虚拟IP已经绑定到节点B上，再恢复A节点的网线，虚拟IP又绑定回节点A之上。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;但是这种方式存在恼裂的可能，即两个节点实际都处于正常工作状态，但是无法接收到彼此的组播通知，这时两个节点均强行绑定虚拟IP，导致不可预料的后果。 </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这时就需要设置仲裁，即每个节点必须判断自身的状态（应用服务状态及自身网络状态），要实现这两点可使用自定义shell脚本实现，通过周期性地检查自身应用服务状态，并不断ping网关（或其它可靠的参考IP）均可。当自身服务异常、或无法ping通网关，则认为自身出现故障，就应该移除掉虚拟IP(停止keepalived服务即可）。主要借助keepalived提供的vrrp_script及track_script实现：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在keepalived的配置文件最前面加入以下代码，定义一个跟踪脚本： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">vrrp_script check_local &#123; <span class="comment">#定义一个名称为check_local的检查脚本</span></div><div class="line">    script <span class="string">"/usr/local/keepalived/bin/check_local.sh"</span> <span class="comment">#shell脚本的路径</span></div><div class="line">    interval 5  <span class="comment">#运行间隔</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;再在vrrp_instance配置中加入以下代码使用上面定义的检测脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">track_script &#123;</div><div class="line">check_local</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们在/usr/local/keepalived/bin/check_local.sh定义的检测规则是：</p>
+<ol>
+<li>自身web服务故障（超时，http返回状态不是200）</li>
+<li>无法ping通网关</li>
+<li>产生以上任何一个问题，均应该移除本机的虚拟IP(停止keepalived实例即可)</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;但这里有个小问题，如果本机或是网关偶尔出现一次故障，那么我们不能认为是服务故障。更好的做法是如果连续N次检测本机服务不正常或连接N次无法ping通网关，才认为是故障产生，才需要进行故障转移。另一方面，如果脚本检测到故障产生，并停止掉了keepalived服务，那么当故障恢复后，keepalived是无法自动恢复的。我觉得利用独立的脚本以秒级的间隔检查自身服务及网关连接性，再根据故障情况控制keepalived的运行或是停止。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里提供一个思路，具体脚本内容请大家根据自己的需要编写即可。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如下图的案例：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Keepalived%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%85%B8%E5%9E%8B%E5%BA%94%E7%94%A8%E6%A1%88%E4%BE%8B/01.png?raw=true" alt=""> </p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;假设节点A和B组成主备关系，A为备用节点，B为主节点，那么当在图标红叉位置发生网络故障时，节点A接收不到节点B的组播通知，将抢占虚拟IP。这时出现的后果就是节点Ａ和节点B均拥有虚拟IP，就可能导致了脑裂。所以我们以网关IP连通性作为参考，可避免此问题产生。</p>
 
       
     </div>

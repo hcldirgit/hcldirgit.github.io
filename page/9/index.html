@@ -106,8 +106,6 @@
 				        
 							<li><a href="/archives">所有文章</a></li>
 				        
-							<li><a href="/tags">静心阅读</a></li>
-				        
 						</ul>
 					</nav>
 					<nav class="header-nav">
@@ -156,8 +154,6 @@
 					<li><a href="/">主页</a></li>
 		        
 					<li><a href="/archives">所有文章</a></li>
-		        
-					<li><a href="/tags">静心阅读</a></li>
 		        
 		        <div class="clearfix"></div>
 				</ul>
@@ -637,6 +633,65 @@
 
 
   
+    <article id="post-Squid/7. squid 日志不记录图片、js、css等静态文件" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Squid/7. squid 日志不记录图片、js、css等静态文件/" class="article-date">
+  	<time datetime="2017-09-02T18:13:44.839Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Squid/7. squid 日志不记录图片、js、css等静态文件/">
+        squid 日志不记录图片、js、css等静态文件
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在squid.conf中加入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">acl nolog urlpath_regex -i \.css \.js \.swf \.jpg \.gif \.png \.jpeg</div><div class="line">access_log /var/<span class="built_in">log</span>/squid/access.log common !nolog</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其中common 为日志格式</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Squid/">Squid</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Squid/8. squid 透明代理配置" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -682,65 +737,6 @@
 <h3 id="5-启动squid"><a href="#5-启动squid" class="headerlink" title="5.启动squid"></a>5.启动squid</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service squid start</div></pre></td></tr></table></figure>
 <h3 id="6-打开端口转发"><a href="#6-打开端口转发" class="headerlink" title="6.打开端口转发"></a>6.打开端口转发</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> <span class="string">"1"</span> &gt; /proc/sys/net/ipv4/ip_forward</div></pre></td></tr></table></figure>
 <h3 id="7-设置防火墙规则"><a href="#7-设置防火墙规则" class="headerlink" title="7. 设置防火墙规则"></a>7. 设置防火墙规则</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE</div><div class="line">iptables -t nat -A PREROUTING -p tcp -s 192.168.19.0/24 --dport 80 -j REDIRECT --to-ports 3128</div></pre></td></tr></table></figure>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Squid/">Squid</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Squid/7. squid 日志不记录图片、js、css等静态文件" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Squid/7. squid 日志不记录图片、js、css等静态文件/" class="article-date">
-  	<time datetime="2017-09-02T18:13:44.839Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Squid/7. squid 日志不记录图片、js、css等静态文件/">
-        squid 日志不记录图片、js、css等静态文件
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在squid.conf中加入：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">acl nolog urlpath_regex -i \.css \.js \.swf \.jpg \.gif \.png \.jpeg</div><div class="line">access_log /var/<span class="built_in">log</span>/squid/access.log common !nolog</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其中common 为日志格式</p>
 
       
     </div>
@@ -853,6 +849,64 @@
 
 
   
+    <article id="post-Squid/5. Squid.conf配置文件详解" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/Squid/5. Squid.conf配置文件详解/" class="article-date">
+  	<time datetime="2017-09-02T18:13:44.837Z" itemprop="datePublished">2017-09-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/Squid/5. Squid.conf配置文件详解/">
+        Squid.conf配置文件详解
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;squid常用命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div></pre></td><td class="code"><pre><div class="line">/usr/<span class="built_in">local</span>/squid/sbin/squid -z 初始化缓存空间</div><div class="line">/usr/<span class="built_in">local</span>/squid/sbin/squid 启动</div><div class="line">/usr/<span class="built_in">local</span>/squid/sbin/squid -k shutdown 停止</div><div class="line">/usr/<span class="built_in">local</span>/squid/sbin/squid -k reconfigure 重新载入配置文件</div><div class="line">/usr/<span class="built_in">local</span>/squid/sbin/squid -k rotate 轮循日志</div><div class="line"></div><div class="line"><span class="comment">#acl all src 0.0.0.0/0.0.0.0 and http_access allow all选项定义了一个访问控制列表。详细情况参见和Squid软件</span></div><div class="line"><span class="comment">#携带的文档。这里的访问控制列表允许所有对代理服务的访问，因为这里该代理是加速web服务器。</span></div><div class="line">acl all src 0.0.0.0/0.0.0.0                 <span class="comment">#允许所有IP访问</span></div><div class="line">acl manager proto http                 <span class="comment">#manager url协议为http</span></div><div class="line">acl localhost src 127.0.0.1/255.255.255.255  <span class="comment">#允午本机IP</span></div><div class="line">acl to_localhost dst 127.0.0.1                 <span class="comment">#允午目的地址为本机IP</span></div><div class="line">acl Safe_ports port 80                <span class="comment"># 允许安全更新的端口为80</span></div><div class="line">acl CONNECT method CONNECT        <span class="comment">#请求方法以CONNECT</span></div><div class="line">http_access allow all                <span class="comment">#允许所有人使用该代理.因为这里是代理加速web服务器</span></div><div class="line">http_reply_access allow all                <span class="comment">#允许所有客户端使用该代理</span></div><div class="line"></div><div class="line">acl OverConnLimit maxconn 16        <span class="comment">#限制每个IP最大允许16个连接，防止攻击</span></div><div class="line">http_access deny OverConnLimit</div><div class="line"></div><div class="line">icp_access deny all                        <span class="comment">#禁止从邻居服务器缓冲内发送和接收ICP请求.</span></div><div class="line">miss_access allow all                <span class="comment">#允许直接更新请求</span></div><div class="line">ident_lookup_access deny all                                <span class="comment">#禁止lookup检查DNS</span></div><div class="line">http_port 8080 transparent                                <span class="comment">#指定Squid监听浏览器客户请求的端口号。</span></div><div class="line"></div><div class="line">hierarchy_stoplist cgi-bin ?                <span class="comment">#用来强制某些特定的对象不被缓存，主要是处于安全的目的。</span></div><div class="line">acl QUERY urlpath_regex cgi-bin ?</div><div class="line">cache deny QUERY</div><div class="line"></div><div class="line">cache_mem 1 GB        <span class="comment">#这是一个优化选项，增加该内存值有利于缓存。应该注意的是：</span></div><div class="line">                     <span class="comment">#一般来说如果系统有内存，设置该值为(n/)3M。现在是3G 所以这里1G</span></div><div class="line">fqdncache_size 1024        <span class="comment">#FQDN 高速缓存大小</span></div><div class="line">maximum_object_size_in_memory 2 MB        <span class="comment">#允许最大的文件载入内存</span></div><div class="line"></div><div class="line">memory_replacement_policy heap LFUDA  <span class="comment">#动态使用最小的，移出内存cache</span></div><div class="line">cache_replacement_policy heap LFUDA         <span class="comment">#动态使用最小的，移出硬盘cache</span></div><div class="line"></div><div class="line">cache_dir ufs /home/cache 5000 32 512  <span class="comment">#高速缓存目录 ufs 类型 使用的缓冲值最大允午1000MB空间，</span></div><div class="line"><span class="comment">#32个一级目录，512个二级目录</span></div><div class="line"></div><div class="line">max_open_disk_fds 0                                 <span class="comment">#允许最大打开文件数量,0 无限制</span></div><div class="line">minimum_object_size 1 KB                         <span class="comment">#允午最小文件请求体大小</span></div><div class="line">maximum_object_size 20 MB                 <span class="comment">#允午最大文件请求体大小</span></div><div class="line"></div><div class="line">cache_swap_low 90                            <span class="comment">#最小允许使用swap 90%</span></div><div class="line">cache_swap_high 95                            <span class="comment">#最多允许使用swap 95%</span></div><div class="line"></div><div class="line">ipcache_size 2048                                <span class="comment"># IP 地址高速缓存大小 2M</span></div><div class="line">ipcache_low 90                                <span class="comment">#最小允许ipcache使用swap 90%</span></div><div class="line">ipcache_high 95                                  <span class="comment">#最大允许ipcache使用swap 90%</span></div><div class="line"></div><div class="line"></div><div class="line">access_log /var/<span class="built_in">log</span>/squid/access.log squid        <span class="comment">#定义日志存放记录</span></div><div class="line">cache_log /var/<span class="built_in">log</span>/squid/cache.log squid</div><div class="line">cache_store_log none                        <span class="comment">#禁止store日志</span></div><div class="line"></div><div class="line">emulate_httpd_log on        <span class="comment">#将使Squid仿照Web服务器的格式创建访问记录。如果希望使用</span></div><div class="line">                                <span class="comment">#Web访问记录分析程序，就需要设置这个参数。</span></div><div class="line"></div><div class="line">refresh_pattern . 0 20% 4320 override-expire override-lastmod reload-into-ims ignore-reload   <span class="comment">#更新cache规则</span></div><div class="line"></div><div class="line">acl buggy_server url_regex ^http://.... http://          <span class="comment">#只允许http的请求</span></div><div class="line">broken_posts allow buggy_server</div><div class="line"></div><div class="line">acl apache rep_header Server ^Apache                 <span class="comment">#允许apache的编码</span></div><div class="line">broken_vary_encoding allow apache</div><div class="line"></div><div class="line">request_entities off                                        <span class="comment">#禁止非http的标分准请求，防止攻击</span></div><div class="line">header_access header allow all                        <span class="comment">#允许所有的http报头</span></div><div class="line">relaxed_header_parser on                                <span class="comment">#不严格分析http报头.</span></div><div class="line">client_lifetime 120 minute                                <span class="comment">#最大客户连接时间 120分钟</span></div><div class="line"></div><div class="line">cache_mgr sky@test.com                        <span class="comment">#指定当缓冲出现问题时向缓冲管理者发送告警信息的地址信息。</span></div><div class="line"></div><div class="line">cache_effective_user squid                        <span class="comment">#这里以用户squid的身份Squid服务器</span></div><div class="line">cache_effective_group squid</div><div class="line"></div><div class="line">icp_port 0                       <span class="comment">#指定Squid从邻居服务器缓冲内发送和接收ICP请求的端口号。</span></div><div class="line">                     <span class="comment">#这里设置为0是因为这里配置Squid为内部Web服务器的加速器，</span></div><div class="line">                     <span class="comment">#所以不需要使用邻居服务器的缓冲。0是禁用</span></div><div class="line"></div><div class="line"><span class="comment"># cache_peer 设置允许更新缓存的主机，因是本机所以127.0.0.1</span></div><div class="line">cache_peer 127.0.0.1 parent 80 0 no-query default multicast-responder no-netdb-exchange</div><div class="line">cache_peer_domain 127.0.0.1                                 </div><div class="line">hostname_aliases 127.0.0.1</div><div class="line"></div><div class="line">error_directory /usr/share/squid/errors/Simplify_Chinese        <span class="comment">#定义错误路径</span></div><div class="line"></div><div class="line">always_direct allow all                <span class="comment"># cache丢失或不存在是允许所有请求直接转发到原始服务器</span></div><div class="line">ignore_unknown_nameservers on        <span class="comment">#开反DNS查询，当域名地址不相同时候，禁止访问</span></div><div class="line">coredump_dir  /var/<span class="built_in">log</span>/squid                 <span class="comment">#定义dump的目录</span></div><div class="line"></div><div class="line">max_filedesc 2048                <span class="comment">#最大打开的文件描述</span></div><div class="line"></div><div class="line">half_closed_clients off        <span class="comment">#使Squid在当read不再返回数据时立即关闭客户端的连接。</span></div><div class="line">                                <span class="comment">#有时read不再返回数据是由于某些客户关闭TCP的发送数据</span></div><div class="line">                                <span class="comment">#而仍然保持接收数据。而Squid分辨不出TCP半关闭和完全关闭。</span></div><div class="line"></div><div class="line">buffered_logs on <span class="comment">#若打开选项“buffered_logs”可以稍稍提高加速某些对日志文件的写入，该选项主要是实现优化特性。</span></div><div class="line"></div><div class="line"><span class="comment">#防止天涯盗链，转嫁给百度</span></div><div class="line">acl tianya referer_regex -i tianya</div><div class="line">http_access deny tianya</div><div class="line">deny_info  tianya</div><div class="line"><span class="comment">#阻止baidu蜘蛛</span></div><div class="line">acl baidu req_header User-Agent Baiduspider</div><div class="line">http_access deny baidu</div><div class="line"><span class="comment">#限制同一IP客户端的最大连接数</span></div><div class="line">acl OverConnLimit maxconn 128</div><div class="line">http_access deny OverConnLimit</div><div class="line"></div><div class="line"><span class="comment">#防止被人利用为HTTP代理，设置允许访问的IP地址</span></div><div class="line">acl myip dst 222.18.63.37</div><div class="line">http_access deny !myip</div><div class="line"></div><div class="line"><span class="comment">#允许本地管理</span></div><div class="line">acl Manager proto cache_object</div><div class="line">acl Localhost src 127.0.0.1 222.18.63.37</div><div class="line">http_access allow Manager Localhost</div><div class="line">cachemgr_passwd 53034338 all</div><div class="line">http_access deny Manager</div><div class="line"></div><div class="line"><span class="comment">#仅仅允许80端口的代理</span></div><div class="line">acl all src 0.0.0.0/0.0.0.0</div><div class="line">acl Safe_ports port 80 <span class="comment"># http</span></div><div class="line">http_access deny !Safe_ports</div><div class="line">http_access allow all</div><div class="line"></div><div class="line"><span class="comment">#Squid信息设置</span></div><div class="line">visible_hostname happy.swjtu.edu.cn</div><div class="line">cache_mgr  ooopic2008@qq.com</div><div class="line"></div><div class="line"><span class="comment">#基本设置</span></div><div class="line">cache_effective_user squid</div><div class="line">cache_effective_group squid</div><div class="line">tcp_recv_bufsize 65535 bytes</div><div class="line"></div><div class="line"><span class="comment">#2.6的反向代理加速配置</span></div><div class="line">cache_peer 127.0.0.1 parent 80 0 no-query originserver</div><div class="line"></div><div class="line"><span class="comment">#错误文档</span></div><div class="line">error_directory /usr/<span class="built_in">local</span>/squid/share/errors/Simplify_Chinese</div><div class="line"></div><div class="line"><span class="comment">#单台使用，不使用该功能</span></div><div class="line">icp_port 0</div><div class="line"></div><div class="line">hierarchy_stoplist cgi-bin ?</div><div class="line"></div><div class="line">acl QUERY urlpath_regex cgi-bin ? .php .cgi .avi .wmv .rm .ram .mpg .mpeg .zip .exe</div><div class="line">cache deny QUERY</div><div class="line"></div><div class="line">acl apache rep_header Server ^Apache</div><div class="line">broken_vary_encoding allow apache</div><div class="line"></div><div class="line"></div><div class="line">refresh_pattern ^ftp:           1440 20%     10080</div><div class="line">refresh_pattern ^gopher:        1440 0%    1440</div><div class="line">refresh_pattern .             0    20%     4320</div><div class="line"></div><div class="line">cache_store_log none</div><div class="line">pid_filename /usr/<span class="built_in">local</span>/squid/var/logs/squid.pid</div><div class="line">emulate_httpd_log on</div><div class="line">logformat combined %&gt;a %ui %un [%tl] <span class="string">"%rm %ru HTTP/%rv"</span> %Hs %&lt;st <span class="string">"%&#123;Referer&#125;&gt;h"</span> <span class="string">"%&#123;User-Agent&#125;&gt;h"</span> %Ss:%Sh</div><div class="line">cache_log /usr/<span class="built_in">local</span>/squid/var/logs/cache.log</div><div class="line">access_log /usr/<span class="built_in">local</span>/squid/var/logs/access.log combined</div><div class="line">coredump_dir /usr/<span class="built_in">local</span>/squid/var/cache</div><div class="line">cache_dir ufs /usr/<span class="built_in">local</span>/squid/var/cache 10000 16 256</div><div class="line"></div><div class="line">dns_children 32</div><div class="line">hosts_file /etc/hosts</div><div class="line"></div><div class="line">cache_mem 400 MB</div><div class="line">cache_swap_low 90</div><div class="line">cache_swap_high 95</div><div class="line">maximum_object_size 32768 KB</div><div class="line">maximum_object_size_in_memory 4096 KB</div><div class="line">emulate_httpd_log on</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">#防止盗链</span></div><div class="line">acl picurl url_regex -i .bmp$ .png$ .jpg$ .gif$ .jpeg$</div><div class="line">acl mystie1 referer_regex -i happy.swjtu.edu.cn</div><div class="line">http_access allow mystie1 picurl</div><div class="line">acl nullref referer_regex -i ^$</div><div class="line">http_access allow nullref</div><div class="line">acl hasref referer_regex -i .+</div><div class="line">http_access deny hasref picurl</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Squid/">Squid</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Squid/4. Linux下squid.conf中cache_peer参数详解" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -898,64 +952,6 @@
 <li>Default：有点象路由表中的缺省路由，该peer将被用作最后的尝试手段。当你只有一个父代理服务器并且其不支持ICP协议时，可以使用default和no-query选项让所有请求都发送到该父代理服务器；</li>
 <li>login=user:password：当你的父代理服务器要求用户认证时可以使用该选项来进行认证。</li>
 </ol>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Squid/">Squid</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Squid/5. Squid.conf配置文件详解" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/03/Squid/5. Squid.conf配置文件详解/" class="article-date">
-  	<time datetime="2017-09-02T18:13:44.837Z" itemprop="datePublished">2017-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/03/Squid/5. Squid.conf配置文件详解/">
-        Squid.conf配置文件详解
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;squid常用命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div></pre></td><td class="code"><pre><div class="line">/usr/<span class="built_in">local</span>/squid/sbin/squid -z 初始化缓存空间</div><div class="line">/usr/<span class="built_in">local</span>/squid/sbin/squid 启动</div><div class="line">/usr/<span class="built_in">local</span>/squid/sbin/squid -k shutdown 停止</div><div class="line">/usr/<span class="built_in">local</span>/squid/sbin/squid -k reconfigure 重新载入配置文件</div><div class="line">/usr/<span class="built_in">local</span>/squid/sbin/squid -k rotate 轮循日志</div><div class="line"></div><div class="line"><span class="comment">#acl all src 0.0.0.0/0.0.0.0 and http_access allow all选项定义了一个访问控制列表。详细情况参见和Squid软件</span></div><div class="line"><span class="comment">#携带的文档。这里的访问控制列表允许所有对代理服务的访问，因为这里该代理是加速web服务器。</span></div><div class="line">acl all src 0.0.0.0/0.0.0.0                 <span class="comment">#允许所有IP访问</span></div><div class="line">acl manager proto http                 <span class="comment">#manager url协议为http</span></div><div class="line">acl localhost src 127.0.0.1/255.255.255.255  <span class="comment">#允午本机IP</span></div><div class="line">acl to_localhost dst 127.0.0.1                 <span class="comment">#允午目的地址为本机IP</span></div><div class="line">acl Safe_ports port 80                <span class="comment"># 允许安全更新的端口为80</span></div><div class="line">acl CONNECT method CONNECT        <span class="comment">#请求方法以CONNECT</span></div><div class="line">http_access allow all                <span class="comment">#允许所有人使用该代理.因为这里是代理加速web服务器</span></div><div class="line">http_reply_access allow all                <span class="comment">#允许所有客户端使用该代理</span></div><div class="line"></div><div class="line">acl OverConnLimit maxconn 16        <span class="comment">#限制每个IP最大允许16个连接，防止攻击</span></div><div class="line">http_access deny OverConnLimit</div><div class="line"></div><div class="line">icp_access deny all                        <span class="comment">#禁止从邻居服务器缓冲内发送和接收ICP请求.</span></div><div class="line">miss_access allow all                <span class="comment">#允许直接更新请求</span></div><div class="line">ident_lookup_access deny all                                <span class="comment">#禁止lookup检查DNS</span></div><div class="line">http_port 8080 transparent                                <span class="comment">#指定Squid监听浏览器客户请求的端口号。</span></div><div class="line"></div><div class="line">hierarchy_stoplist cgi-bin ?                <span class="comment">#用来强制某些特定的对象不被缓存，主要是处于安全的目的。</span></div><div class="line">acl QUERY urlpath_regex cgi-bin ?</div><div class="line">cache deny QUERY</div><div class="line"></div><div class="line">cache_mem 1 GB        <span class="comment">#这是一个优化选项，增加该内存值有利于缓存。应该注意的是：</span></div><div class="line">                     <span class="comment">#一般来说如果系统有内存，设置该值为(n/)3M。现在是3G 所以这里1G</span></div><div class="line">fqdncache_size 1024        <span class="comment">#FQDN 高速缓存大小</span></div><div class="line">maximum_object_size_in_memory 2 MB        <span class="comment">#允许最大的文件载入内存</span></div><div class="line"></div><div class="line">memory_replacement_policy heap LFUDA  <span class="comment">#动态使用最小的，移出内存cache</span></div><div class="line">cache_replacement_policy heap LFUDA         <span class="comment">#动态使用最小的，移出硬盘cache</span></div><div class="line"></div><div class="line">cache_dir ufs /home/cache 5000 32 512  <span class="comment">#高速缓存目录 ufs 类型 使用的缓冲值最大允午1000MB空间，</span></div><div class="line"><span class="comment">#32个一级目录，512个二级目录</span></div><div class="line"></div><div class="line">max_open_disk_fds 0                                 <span class="comment">#允许最大打开文件数量,0 无限制</span></div><div class="line">minimum_object_size 1 KB                         <span class="comment">#允午最小文件请求体大小</span></div><div class="line">maximum_object_size 20 MB                 <span class="comment">#允午最大文件请求体大小</span></div><div class="line"></div><div class="line">cache_swap_low 90                            <span class="comment">#最小允许使用swap 90%</span></div><div class="line">cache_swap_high 95                            <span class="comment">#最多允许使用swap 95%</span></div><div class="line"></div><div class="line">ipcache_size 2048                                <span class="comment"># IP 地址高速缓存大小 2M</span></div><div class="line">ipcache_low 90                                <span class="comment">#最小允许ipcache使用swap 90%</span></div><div class="line">ipcache_high 95                                  <span class="comment">#最大允许ipcache使用swap 90%</span></div><div class="line"></div><div class="line"></div><div class="line">access_log /var/<span class="built_in">log</span>/squid/access.log squid        <span class="comment">#定义日志存放记录</span></div><div class="line">cache_log /var/<span class="built_in">log</span>/squid/cache.log squid</div><div class="line">cache_store_log none                        <span class="comment">#禁止store日志</span></div><div class="line"></div><div class="line">emulate_httpd_log on        <span class="comment">#将使Squid仿照Web服务器的格式创建访问记录。如果希望使用</span></div><div class="line">                                <span class="comment">#Web访问记录分析程序，就需要设置这个参数。</span></div><div class="line"></div><div class="line">refresh_pattern . 0 20% 4320 override-expire override-lastmod reload-into-ims ignore-reload   <span class="comment">#更新cache规则</span></div><div class="line"></div><div class="line">acl buggy_server url_regex ^http://.... http://          <span class="comment">#只允许http的请求</span></div><div class="line">broken_posts allow buggy_server</div><div class="line"></div><div class="line">acl apache rep_header Server ^Apache                 <span class="comment">#允许apache的编码</span></div><div class="line">broken_vary_encoding allow apache</div><div class="line"></div><div class="line">request_entities off                                        <span class="comment">#禁止非http的标分准请求，防止攻击</span></div><div class="line">header_access header allow all                        <span class="comment">#允许所有的http报头</span></div><div class="line">relaxed_header_parser on                                <span class="comment">#不严格分析http报头.</span></div><div class="line">client_lifetime 120 minute                                <span class="comment">#最大客户连接时间 120分钟</span></div><div class="line"></div><div class="line">cache_mgr sky@test.com                        <span class="comment">#指定当缓冲出现问题时向缓冲管理者发送告警信息的地址信息。</span></div><div class="line"></div><div class="line">cache_effective_user squid                        <span class="comment">#这里以用户squid的身份Squid服务器</span></div><div class="line">cache_effective_group squid</div><div class="line"></div><div class="line">icp_port 0                       <span class="comment">#指定Squid从邻居服务器缓冲内发送和接收ICP请求的端口号。</span></div><div class="line">                     <span class="comment">#这里设置为0是因为这里配置Squid为内部Web服务器的加速器，</span></div><div class="line">                     <span class="comment">#所以不需要使用邻居服务器的缓冲。0是禁用</span></div><div class="line"></div><div class="line"><span class="comment"># cache_peer 设置允许更新缓存的主机，因是本机所以127.0.0.1</span></div><div class="line">cache_peer 127.0.0.1 parent 80 0 no-query default multicast-responder no-netdb-exchange</div><div class="line">cache_peer_domain 127.0.0.1                                 </div><div class="line">hostname_aliases 127.0.0.1</div><div class="line"></div><div class="line">error_directory /usr/share/squid/errors/Simplify_Chinese        <span class="comment">#定义错误路径</span></div><div class="line"></div><div class="line">always_direct allow all                <span class="comment"># cache丢失或不存在是允许所有请求直接转发到原始服务器</span></div><div class="line">ignore_unknown_nameservers on        <span class="comment">#开反DNS查询，当域名地址不相同时候，禁止访问</span></div><div class="line">coredump_dir  /var/<span class="built_in">log</span>/squid                 <span class="comment">#定义dump的目录</span></div><div class="line"></div><div class="line">max_filedesc 2048                <span class="comment">#最大打开的文件描述</span></div><div class="line"></div><div class="line">half_closed_clients off        <span class="comment">#使Squid在当read不再返回数据时立即关闭客户端的连接。</span></div><div class="line">                                <span class="comment">#有时read不再返回数据是由于某些客户关闭TCP的发送数据</span></div><div class="line">                                <span class="comment">#而仍然保持接收数据。而Squid分辨不出TCP半关闭和完全关闭。</span></div><div class="line"></div><div class="line">buffered_logs on <span class="comment">#若打开选项“buffered_logs”可以稍稍提高加速某些对日志文件的写入，该选项主要是实现优化特性。</span></div><div class="line"></div><div class="line"><span class="comment">#防止天涯盗链，转嫁给百度</span></div><div class="line">acl tianya referer_regex -i tianya</div><div class="line">http_access deny tianya</div><div class="line">deny_info  tianya</div><div class="line"><span class="comment">#阻止baidu蜘蛛</span></div><div class="line">acl baidu req_header User-Agent Baiduspider</div><div class="line">http_access deny baidu</div><div class="line"><span class="comment">#限制同一IP客户端的最大连接数</span></div><div class="line">acl OverConnLimit maxconn 128</div><div class="line">http_access deny OverConnLimit</div><div class="line"></div><div class="line"><span class="comment">#防止被人利用为HTTP代理，设置允许访问的IP地址</span></div><div class="line">acl myip dst 222.18.63.37</div><div class="line">http_access deny !myip</div><div class="line"></div><div class="line"><span class="comment">#允许本地管理</span></div><div class="line">acl Manager proto cache_object</div><div class="line">acl Localhost src 127.0.0.1 222.18.63.37</div><div class="line">http_access allow Manager Localhost</div><div class="line">cachemgr_passwd 53034338 all</div><div class="line">http_access deny Manager</div><div class="line"></div><div class="line"><span class="comment">#仅仅允许80端口的代理</span></div><div class="line">acl all src 0.0.0.0/0.0.0.0</div><div class="line">acl Safe_ports port 80 <span class="comment"># http</span></div><div class="line">http_access deny !Safe_ports</div><div class="line">http_access allow all</div><div class="line"></div><div class="line"><span class="comment">#Squid信息设置</span></div><div class="line">visible_hostname happy.swjtu.edu.cn</div><div class="line">cache_mgr  ooopic2008@qq.com</div><div class="line"></div><div class="line"><span class="comment">#基本设置</span></div><div class="line">cache_effective_user squid</div><div class="line">cache_effective_group squid</div><div class="line">tcp_recv_bufsize 65535 bytes</div><div class="line"></div><div class="line"><span class="comment">#2.6的反向代理加速配置</span></div><div class="line">cache_peer 127.0.0.1 parent 80 0 no-query originserver</div><div class="line"></div><div class="line"><span class="comment">#错误文档</span></div><div class="line">error_directory /usr/<span class="built_in">local</span>/squid/share/errors/Simplify_Chinese</div><div class="line"></div><div class="line"><span class="comment">#单台使用，不使用该功能</span></div><div class="line">icp_port 0</div><div class="line"></div><div class="line">hierarchy_stoplist cgi-bin ?</div><div class="line"></div><div class="line">acl QUERY urlpath_regex cgi-bin ? .php .cgi .avi .wmv .rm .ram .mpg .mpeg .zip .exe</div><div class="line">cache deny QUERY</div><div class="line"></div><div class="line">acl apache rep_header Server ^Apache</div><div class="line">broken_vary_encoding allow apache</div><div class="line"></div><div class="line"></div><div class="line">refresh_pattern ^ftp:           1440 20%     10080</div><div class="line">refresh_pattern ^gopher:        1440 0%    1440</div><div class="line">refresh_pattern .             0    20%     4320</div><div class="line"></div><div class="line">cache_store_log none</div><div class="line">pid_filename /usr/<span class="built_in">local</span>/squid/var/logs/squid.pid</div><div class="line">emulate_httpd_log on</div><div class="line">logformat combined %&gt;a %ui %un [%tl] <span class="string">"%rm %ru HTTP/%rv"</span> %Hs %&lt;st <span class="string">"%&#123;Referer&#125;&gt;h"</span> <span class="string">"%&#123;User-Agent&#125;&gt;h"</span> %Ss:%Sh</div><div class="line">cache_log /usr/<span class="built_in">local</span>/squid/var/logs/cache.log</div><div class="line">access_log /usr/<span class="built_in">local</span>/squid/var/logs/access.log combined</div><div class="line">coredump_dir /usr/<span class="built_in">local</span>/squid/var/cache</div><div class="line">cache_dir ufs /usr/<span class="built_in">local</span>/squid/var/cache 10000 16 256</div><div class="line"></div><div class="line">dns_children 32</div><div class="line">hosts_file /etc/hosts</div><div class="line"></div><div class="line">cache_mem 400 MB</div><div class="line">cache_swap_low 90</div><div class="line">cache_swap_high 95</div><div class="line">maximum_object_size 32768 KB</div><div class="line">maximum_object_size_in_memory 4096 KB</div><div class="line">emulate_httpd_log on</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">#防止盗链</span></div><div class="line">acl picurl url_regex -i .bmp$ .png$ .jpg$ .gif$ .jpeg$</div><div class="line">acl mystie1 referer_regex -i happy.swjtu.edu.cn</div><div class="line">http_access allow mystie1 picurl</div><div class="line">acl nullref referer_regex -i ^$</div><div class="line">http_access allow nullref</div><div class="line">acl hasref referer_regex -i .+</div><div class="line">http_access deny hasref picurl</div></pre></td></tr></table></figure>
 
       
     </div>
