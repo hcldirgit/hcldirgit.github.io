@@ -168,10 +168,10 @@
 </nav>
       <div class="body-wrap">
   
-    <article id="post-Tomcat/9. tomcat 性能优化" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Tomcat/8. tomcat 的优化配置" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/10/13/Tomcat/9. tomcat 性能优化/" class="article-date">
+      <a href="/2017/10/13/Tomcat/8. tomcat 的优化配置/" class="article-date">
   	<time datetime="2017-10-13T13:48:39.111Z" itemprop="datePublished">2017-10-13</time>
 </a>
     </div>
@@ -185,8 +185,8 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Tomcat/9. tomcat 性能优化/">
-        tomcat 性能优化
+      <a class="article-title" href="/2017/10/13/Tomcat/8. tomcat 的优化配置/">
+        tomcat 的优化配置
         
       </a>
     </h1>
@@ -197,9 +197,15 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;tomcat默认参数是为开发环境制定，而非适合生产环境，尤其是内存和线程的配置，默认都很低，容易成为性能瓶颈。</p>
-<h2 id="tomcat内存优化"><a href="#tomcat内存优化" class="headerlink" title="tomcat内存优化"></a>tomcat内存优化</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;linux修改TOMCAT_HOME/bin/catalina.sh，在前面加入</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">JAVA_OPTS=<span class="string">"-XX:PermSize=64M -XX:MaxPermSize=128m -Xms512m -Xmx1024m -Duser.timezone=Asia/Shanghai"</span></div></pre></td></tr></table></figure>
+        <h2 id="一、精简Tomcat和配置文件"><a href="#一、精简Tomcat和配置文件" class="headerlink" title="一、精简Tomcat和配置文件"></a>一、精简Tomcat和配置文件</h2><p>1．删除不需要的管理应用和帮助应用，提高tomcat安全性。</p>
+<ul>
+<li>删除webapps下所有文件</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rm –fr <span class="variable">$CATALINA_HOME</span>/webapps/*</div></pre></td></tr></table></figure>
+<ul>
+<li>删除server/wenapps下所有文件</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rm –fr <span class="variable">$CATALINA_HOME</span>/server/webapps/*</div></pre></td></tr></table></figure>
       
     </div>
     
@@ -217,7 +223,7 @@
     </div>
       
         <p class="article-more-link">
-          <a  href="/2017/10/13/Tomcat/9. tomcat 性能优化/#more">阅读全文 >></a>
+          <a  href="/2017/10/13/Tomcat/8. tomcat 的优化配置/#more">阅读全文 >></a>
         </p>
       
     
@@ -301,6 +307,68 @@
 
 
   
+    <article id="post-Tomcat/6.  tomcat配置文件server.xml详解" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Tomcat/6.  tomcat配置文件server.xml详解/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.109Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Tomcat/6.  tomcat配置文件server.xml详解/">
+        tomcat配置文件server.xml详解
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://github.com/hcldirgit/image/blob/master/tomcat%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6server.xml%E8%AF%A6%E8%A7%A3/01.png?raw=true" alt=""></p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Tomcat/">Tomcat</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Tomcat/6.  tomcat配置文件server.xml详解/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Tomcat/5. 四大Java EE容器(Tomcat、JBoss、Resin、Glassfish)之简单比较" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -350,68 +418,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Tomcat/5. 四大Java EE容器(Tomcat、JBoss、Resin、Glassfish)之简单比较/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Tomcat/6.  tomcat配置文件server.xml详解" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Tomcat/6.  tomcat配置文件server.xml详解/" class="article-date">
-  	<time datetime="2017-10-13T13:48:39.109Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Tomcat/6.  tomcat配置文件server.xml详解/">
-        tomcat配置文件server.xml详解
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="https://github.com/hcldirgit/image/blob/master/tomcat%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6server.xml%E8%AF%A6%E8%A7%A3/01.png?raw=true" alt=""></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Tomcat/">Tomcat</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Tomcat/6.  tomcat配置文件server.xml详解/#more">阅读全文 >></a>
         </p>
       
     
@@ -489,6 +495,69 @@
 
 
   
+    <article id="post-Tomcat/3. tomcat配置和优化" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Tomcat/3. tomcat配置和优化/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.107Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Tomcat/3. tomcat配置和优化/">
+        tomcat配置和优化
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;tomcat 的安装步骤非常简单，但是还需要学会如何去做简单的配置。tomcat 默认启动的是 8080，如果想修改成 80，则需要修改 sercer.xml 文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 src]<span class="comment"># vim /usr/local/tomcat/conf/server.xml</span></div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Tomcat/">Tomcat</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Tomcat/3. tomcat配置和优化/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Tomcat/2. tomcat 安装" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -539,69 +608,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Tomcat/2. tomcat 安装/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Tomcat/3. tomcat配置和优化" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Tomcat/3. tomcat配置和优化/" class="article-date">
-  	<time datetime="2017-10-13T13:48:39.107Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Tomcat/3. tomcat配置和优化/">
-        tomcat配置和优化
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;tomcat 的安装步骤非常简单，但是还需要学会如何去做简单的配置。tomcat 默认启动的是 8080，如果想修改成 80，则需要修改 sercer.xml 文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 src]<span class="comment"># vim /usr/local/tomcat/conf/server.xml</span></div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Tomcat/">Tomcat</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Tomcat/3. tomcat配置和优化/#more">阅读全文 >></a>
         </p>
       
     
