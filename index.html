@@ -168,10 +168,10 @@
 </nav>
       <div class="body-wrap">
   
-    <article id="post-Python/2.python新教程/2.1 pycharm的安装设置" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Python/2.python新教程/3.pycharm的安装设置" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/10/18/Python/2.python新教程/2.1 pycharm的安装设置/" class="article-date">
+      <a href="/2017/10/18/Python/2.python新教程/3.pycharm的安装设置/" class="article-date">
   	<time datetime="2017-10-17T16:09:16.023Z" itemprop="datePublished">2017-10-18</time>
 </a>
     </div>
@@ -469,70 +469,6 @@
 
 
   
-    <article id="post-Redis/9. Redis基本操作——String" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Redis/9. Redis基本操作——String/" class="article-date">
-  	<time datetime="2017-10-13T14:03:32.207Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Redis/9. Redis基本操作——String/">
-        Redis基本操作——String
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关于Redis的命令，主要参考<a href="http://redis.io/commands#string" target="_blank" rel="external">Redis的官方文档</a>。这里主要像是翻译一下，并且给出一些实用的例子。排版上，按功能重新组织了一下指令，并将比较常用的指令放在了最前面。这里的Redis版本是3.0.7，应该是目前的最新版。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注：redis的命令（SET，GET等）是不区分大小写的（KEY和VALUE区分的），为了方便所以操作可能都是小写的。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;指令清单:</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/">Redis</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Redis/9. Redis基本操作——String/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-Redis/8. Redis 起步" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -596,11 +532,11 @@
 
 
   
-    <article id="post-Redis/7. Redis list 之增删改查" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Redis/9. Redis基本操作——String" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/10/13/Redis/7. Redis list 之增删改查/" class="article-date">
-  	<time datetime="2017-10-13T14:03:32.206Z" itemprop="datePublished">2017-10-13</time>
+      <a href="/2017/10/13/Redis/9. Redis基本操作——String/" class="article-date">
+  	<time datetime="2017-10-13T14:03:32.207Z" itemprop="datePublished">2017-10-13</time>
 </a>
     </div>
   
@@ -613,8 +549,8 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Redis/7. Redis list 之增删改查/">
-        Redis list 之增删改查
+      <a class="article-title" href="/2017/10/13/Redis/9. Redis基本操作——String/">
+        Redis基本操作——String
         
       </a>
     </h1>
@@ -625,10 +561,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="一、增加"><a href="#一、增加" class="headerlink" title="一、增加"></a>一、增加</h2><ol>
-<li>lpush [lpush key valus…]  类似于压栈操作，将元素放入头部</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">127.0.0.1:6379&gt; lpush plist ch0 ch1 ch2</div><div class="line">(<span class="built_in">integer</span>) 3</div><div class="line">127.0.0.1:6379&gt; lrange plist 0 3</div><div class="line">1) <span class="string">"ch2"</span></div><div class="line">2) <span class="string">"ch1"</span></div><div class="line">3) <span class="string">"ch0"</span></div><div class="line">127.0.0.1:6379&gt; lpush plist ch4</div><div class="line">(<span class="built_in">integer</span>) 4</div><div class="line">127.0.0.1:6379&gt; lrange plist 0 4</div><div class="line">1) <span class="string">"ch4"</span></div><div class="line">2) <span class="string">"ch2"</span></div><div class="line">3) <span class="string">"ch1"</span></div><div class="line">4) <span class="string">"ch0"</span></div></pre></td></tr></table></figure>
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关于Redis的命令，主要参考<a href="http://redis.io/commands#string" target="_blank" rel="external">Redis的官方文档</a>。这里主要像是翻译一下，并且给出一些实用的例子。排版上，按功能重新组织了一下指令，并将比较常用的指令放在了最前面。这里的Redis版本是3.0.7，应该是目前的最新版。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注：redis的命令（SET，GET等）是不区分大小写的（KEY和VALUE区分的），为了方便所以操作可能都是小写的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;指令清单:</p>
       
     </div>
     
@@ -646,7 +581,7 @@
     </div>
       
         <p class="article-more-link">
-          <a  href="/2017/10/13/Redis/7. Redis list 之增删改查/#more">阅读全文 >></a>
+          <a  href="/2017/10/13/Redis/9. Redis基本操作——String/#more">阅读全文 >></a>
         </p>
       
     
@@ -726,6 +661,71 @@
 
 
   
+    <article id="post-Redis/7. Redis list 之增删改查" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Redis/7. Redis list 之增删改查/" class="article-date">
+  	<time datetime="2017-10-13T14:03:32.206Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Redis/7. Redis list 之增删改查/">
+        Redis list 之增删改查
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一、增加"><a href="#一、增加" class="headerlink" title="一、增加"></a>一、增加</h2><ol>
+<li>lpush [lpush key valus…]  类似于压栈操作，将元素放入头部</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">127.0.0.1:6379&gt; lpush plist ch0 ch1 ch2</div><div class="line">(<span class="built_in">integer</span>) 3</div><div class="line">127.0.0.1:6379&gt; lrange plist 0 3</div><div class="line">1) <span class="string">"ch2"</span></div><div class="line">2) <span class="string">"ch1"</span></div><div class="line">3) <span class="string">"ch0"</span></div><div class="line">127.0.0.1:6379&gt; lpush plist ch4</div><div class="line">(<span class="built_in">integer</span>) 4</div><div class="line">127.0.0.1:6379&gt; lrange plist 0 4</div><div class="line">1) <span class="string">"ch4"</span></div><div class="line">2) <span class="string">"ch2"</span></div><div class="line">3) <span class="string">"ch1"</span></div><div class="line">4) <span class="string">"ch0"</span></div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/">Redis</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Redis/7. Redis list 之增删改查/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Redis/5. php 使用 redis 储存" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -789,10 +789,10 @@
 
 
   
-    <article id="post-Redis/3. Redis主从配置" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Redis/4. Redis 常用命令" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/10/13/Redis/3. Redis主从配置/" class="article-date">
+      <a href="/2017/10/13/Redis/4. Redis 常用命令/" class="article-date">
   	<time datetime="2017-10-13T14:03:32.204Z" itemprop="datePublished">2017-10-13</time>
 </a>
     </div>
@@ -806,8 +806,8 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Redis/3. Redis主从配置/">
-        Redis主从配置
+      <a class="article-title" href="/2017/10/13/Redis/4. Redis 常用命令/">
+        Redis 常用命令
         
       </a>
     </h1>
@@ -818,11 +818,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="1-redis-安装主从"><a href="#1-redis-安装主从" class="headerlink" title="1.redis 安装主从"></a>1.redis 安装主从</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;两台服务器： master （192.168.0.79） 和 slave （192.168.0.78）</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;分别按照之前介绍的步骤安装好redis并启动</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;master 配置文件不用动</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;slave 配置文件上加一行  </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># vim /usr/local/redis/etc/redis.conf</span></div></pre></td></tr></table></figure>
+        <h2 id="1-string-常用操作"><a href="#1-string-常用操作" class="headerlink" title="1.string 常用操作"></a>1.string 常用操作</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">set</span> key1 yanyi</div><div class="line">get key1  </div><div class="line"><span class="built_in">set</span> key1 yanyi1           <span class="comment"># 一个key对应一个value，多次赋值，会覆盖前面的value</span></div><div class="line">setnx key2 aaa            <span class="comment"># 返回1</span></div><div class="line">get key2</div><div class="line">setnx key2 bbb            <span class="comment"># 返回0;说明：setnx 如果key存在，则返回0，不存在会直接创建这个key</span></div><div class="line">setex key3 10 1           <span class="comment"># 这个是用来给key设定过期时间的</span></div><div class="line">mset key1 1 key2 2 key3 3 <span class="comment"># 同时设置多个key</span></div><div class="line">mget key1 key2 key3</div></pre></td></tr></table></figure>
       
     </div>
     
@@ -840,7 +836,7 @@
     </div>
       
         <p class="article-more-link">
-          <a  href="/2017/10/13/Redis/3. Redis主从配置/#more">阅读全文 >></a>
+          <a  href="/2017/10/13/Redis/4. Redis 常用命令/#more">阅读全文 >></a>
         </p>
       
     
