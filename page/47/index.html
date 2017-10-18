@@ -168,6 +168,146 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Php/2. CentOS 6 编译安装php 5.4 5.5（lamp模式）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Php/2. CentOS 6 编译安装php 5.4 5.5（lamp模式）/" class="article-date">
+  	<time datetime="2017-10-13T13:29:40.456Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Php/2. CentOS 6 编译安装php 5.4 5.5（lamp模式）/">
+        CentOS 6 编译安装php 5.4 5.5（lamp模式）
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li>下载php5.4</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget http://cn2.php.net/distributions/php-5.4.36.tar.bz2</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<a href="http://cn2.php.net/distributions/php-5.5.22.tar.bz2" target="_blank" rel="external">5.5下载地址</a></p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Php/">Php</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Php/2. CentOS 6 编译安装php 5.4 5.5（lamp模式）/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Php/14. php-fpm配置文件" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Php/14. php-fpm配置文件/" class="article-date">
+  	<time datetime="2017-10-13T13:29:40.455Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Php/14. php-fpm配置文件/">
+        php-fpm配置文件
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;之前给出了 php-fpm.conf 的内容，下面给出一个模版，配置如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">[global]</div><div class="line">pid = /usr/<span class="built_in">local</span>/php/var/run/php-fpm.pid</div><div class="line">error_log = /usr/<span class="built_in">local</span>/php/var/<span class="built_in">log</span>/php-fpm.log</div><div class="line">[www]</div><div class="line">listen = /tmp/php-fcgi.sock</div><div class="line">user = php-fpm</div><div class="line">group = php-fpm</div><div class="line">listen.owner = nobody //和后面的nginx一致</div><div class="line">listen.group = nobody //同上</div><div class="line">pm = dynamic</div><div class="line">pm.max_children = 50</div><div class="line">pm.start_servers = 20</div><div class="line">pm.min_spare_servers = 5</div><div class="line">pm.max_spare_servers = 35</div><div class="line">pm.max_requests = 500</div><div class="line">rlimit_files = 1024</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>说明</strong></p>
+<ul>
+<li>[global]  部分是全局配置，指定 pid 文件路径以及 error_log 路径。</li>
+<li>[www] 是一个 pool ，还可以再写第二个 pool ，第二个 pool 和第一个不易演的的地方，首先 pool 的 name ，比如叫做  [www2] 。然后 listen 肯定就不能一样了，比如 可以 listen = /tmp/php-fcgi2.sock 。而 user ， group 也可以和   [www] 中定义的不一样。 listen.owner 这个是定义 /tmp/php-fcgi2.sock 这个文件的所有者是谁，在 php5.4 版本之后监听的 socket 文件权限默认变成了 600，如果不定义 listen.owner 那么 nginx 调用这个 socket 的时候就没有权限了，所以在这里定义 listen.owner 为 nginx 的子进程监听用户。</li>
+<li>pm = dynamic 表示以动态的形式启动，在 php5.3 版本以后它可以支持动态和静态了，如果是静态，即 pm = static 时，下面的配置只有 pm.max.children 管用。</li>
+<li>pm.max.children 表示启动几个 php-fpm 的子进程。如果是 dynamic ，下面的配置会生效，pm.max.children 表示最大可以启动几个子进程。</li>
+<li>pm.start_servers 表示一开始启动几个子进程。</li>
+<li>pm.max_requeste 表示一个子进程最多可以接受多少个请求，比如设置为500那么一个子进程手里500个请求后自动销毁。</li>
+<li>rlimit_files 表示每个子进程打开的多少个文件句柄。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">slowlog = /tmp/www_slow.log</div><div class="line">request_slowlog_timeout = 1</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;表示一个脚本执行时间超过 1秒就要记录这个slow.log ，记录这个可以看到这个脚本哪里执行慢，可以通过slow.log排查网站慢的原因，根据这个原因做一定的优化。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php_admin_value [open_basedir] = /data/www/:/tmp</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;apache 可以设置 open_basedir ，php-fpm也可以，不同的 pool 设置不同的 open_basedir 可以针对不同的域名进行不同的限制。多个目录用 ：分割。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LNMP/">LNMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Php/">Php</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Php/13. LNMP- php编译安装" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -731,151 +871,9 @@
 
 
   
-    <article id="post-Saltstack/1. Saltstack 安装配置" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Saltstack/1. Saltstack 安装配置/" class="article-date">
-  	<time datetime="2017-10-13T13:29:40.435Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Saltstack/1. Saltstack 安装配置/">
-        resin安装与配置
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="1-saltstack安装"><a href="#1-saltstack安装" class="headerlink" title="1.saltstack安装"></a>1.saltstack安装</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;准备两台机器 192.168.0.84  192.168.0.83</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;设置hostname</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;192.168.0.84</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@web9 ~]<span class="comment"># vim /etc/sysconfig/network</span></div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Saltstack/">Saltstack</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Saltstack/1. Saltstack 安装配置/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-jenkins/1.jenkins是什么？" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/jenkins/1.jenkins是什么？/" class="article-date">
-  	<time datetime="2017-10-13T13:29:40.434Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/jenkins/1.jenkins是什么？/">
-        jenkins是什么？
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Jenkins 是一个可扩展的持续集成引擎。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;主要用于：</p>
-<ul>
-<li>持续、自动地构建/测试软件项目。</li>
-<li>监控一些定时执行的任务。</li>
-</ul>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Jenkins拥有的特性包括：</p>
-<ul>
-<li>易于安装-只要把jenkins.war部署到servlet容器，不需要数据库支持。</li>
-<li>易于配置-所有配置都是通过其提供的web界面实现。</li>
-<li>集成RSS/E-mail通过RSS发布构建结果或当构建完成时通过e-mail通知。</li>
-<li>生成JUnit/TestNG测试报告。</li>
-<li>分布式构建支持Jenkins能够让多台计算机一起构建/测试。</li>
-<li>文件识别:Jenkins能够跟踪哪次构建生成哪些jar，哪次构建使用哪个版本的jar等。</li>
-<li>插件支持:支持扩展插件，你可以开发适合自己团队使用的工具。</li>
-</ul>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jenkins/">Jenkins</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/jenkins/1.jenkins是什么？/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/46/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/45/">45</a><a class="page-number" href="/page/46/">46</a><span class="page-number current">47</span><a class="page-number" href="/page/48/">48</a><a class="page-number" href="/page/49/">49</a><span class="space">&hellip;</span><a class="page-number" href="/page/63/">63</a><a class="extend next" rel="next" href="/page/48/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/46/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/45/">45</a><a class="page-number" href="/page/46/">46</a><span class="page-number current">47</span><a class="page-number" href="/page/48/">48</a><a class="page-number" href="/page/49/">49</a><span class="space">&hellip;</span><a class="page-number" href="/page/64/">64</a><a class="extend next" rel="next" href="/page/48/">Next &raquo;</a>
     </nav>
   
 </div>

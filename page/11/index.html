@@ -168,11 +168,11 @@
 </nav>
       <div class="body-wrap">
   
-    <article id="post-Squid/16. 学习CDN不得不读之-Squid 高级优化指南" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Squid/3. squid反向代理" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/10/13/Squid/16. 学习CDN不得不读之-Squid 高级优化指南/" class="article-date">
-  	<time datetime="2017-10-13T13:48:39.095Z" itemprop="datePublished">2017-10-13</time>
+      <a href="/2017/10/13/Squid/3. squid反向代理/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.097Z" itemprop="datePublished">2017-10-13</time>
 </a>
     </div>
   
@@ -185,8 +185,8 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Squid/16. 学习CDN不得不读之-Squid 高级优化指南/">
-        学习CDN不得不读之-Squid 高级优化指南
+      <a class="article-title" href="/2017/10/13/Squid/3. squid反向代理/">
+        squid反向代理
         
       </a>
     </h1>
@@ -197,16 +197,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先要明确一下，squid 能够用来作什么。很多人没有搞明白 squid 的工作原理，只是听说 squid 性能不错可以用来给网站提速，就直接在自己的 website 前面套了一个 squid ，这基本没有任何用处，即使你都是静态页面，后面apache上面没有开 mod_expires，一样缓存不了，squid只能起到一个连接管理的用处。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一般说来，网站用 squid 加速，目的有二种</p>
-<ol>
-<li><p>squid 本身具有缓存功能，可以将webserver输出的内容缓存起来，在缓存没有过期之前来的访问，都直接用缓存里面的内容，这样可以有效减少 webserver 机器上面的请求数量。这是 squid 的主要功用。</p>
-</li>
-<li><p>网络慢的用户会长时间占用 webserver 的 TCP 连接，webserver 对每个连接占用的资源比较大，如果长时间不能释放出来服务其他请求，性能会有比较大的影响。前面放一个 squid, webserver 就可以迅速处理完逻辑以后，把数据快速发送给 squid, 然后去处理别的逻辑，而 squid 每个 TCP 连接占用的资源很少，不用担心占用太多资源。这个用途也叫做连接管理，有一些网络设备也可以做这个事情，价格都很贵。</p>
-</li>
-</ol>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面针对 squid 的两种功用，来讲述如何调整业务逻辑和 squid 参数预操作</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在搞 squid 之前，不管你用什么编译配置，需要什么特殊选项，都请 –enable-snmp ，并配置好 mrtg 之类，可以图形化的显示 squid 状态，例如 Request Hit Ratio(RHR), Byte Hit Ratio(BHR), 等等，反馈是做一切事情的基础，优化也不例外。</p>
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;反向代理的配置过程和正向代理没有什么太大区别，唯一的区别是配置文件中一个地方需要改动一下，需要把</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># vim /etc/squid/squid.conf</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http_port 3128</div></pre></td></tr></table></figure>
       
     </div>
     
@@ -224,7 +217,70 @@
     </div>
       
         <p class="article-more-link">
-          <a  href="/2017/10/13/Squid/16. 学习CDN不得不读之-Squid 高级优化指南/#more">阅读全文 >></a>
+          <a  href="/2017/10/13/Squid/3. squid反向代理/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Squid/2. squid正向代理" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Squid/2. squid正向代理/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.096Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Squid/2. squid正向代理/">
+        squid正向代理
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;centos 系统自带 squid 包：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># yum install -y squid</span></div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Squid/">Squid</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Squid/2. squid正向代理/#more">阅读全文 >></a>
         </p>
       
     
@@ -288,6 +344,77 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Squid/15. Squid的防盗链/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Squid/16. 学习CDN不得不读之-Squid 高级优化指南" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Squid/16. 学习CDN不得不读之-Squid 高级优化指南/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.095Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Squid/16. 学习CDN不得不读之-Squid 高级优化指南/">
+        学习CDN不得不读之-Squid 高级优化指南
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先要明确一下，squid 能够用来作什么。很多人没有搞明白 squid 的工作原理，只是听说 squid 性能不错可以用来给网站提速，就直接在自己的 website 前面套了一个 squid ，这基本没有任何用处，即使你都是静态页面，后面apache上面没有开 mod_expires，一样缓存不了，squid只能起到一个连接管理的用处。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一般说来，网站用 squid 加速，目的有二种</p>
+<ol>
+<li><p>squid 本身具有缓存功能，可以将webserver输出的内容缓存起来，在缓存没有过期之前来的访问，都直接用缓存里面的内容，这样可以有效减少 webserver 机器上面的请求数量。这是 squid 的主要功用。</p>
+</li>
+<li><p>网络慢的用户会长时间占用 webserver 的 TCP 连接，webserver 对每个连接占用的资源比较大，如果长时间不能释放出来服务其他请求，性能会有比较大的影响。前面放一个 squid, webserver 就可以迅速处理完逻辑以后，把数据快速发送给 squid, 然后去处理别的逻辑，而 squid 每个 TCP 连接占用的资源很少，不用担心占用太多资源。这个用途也叫做连接管理，有一些网络设备也可以做这个事情，价格都很贵。</p>
+</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面针对 squid 的两种功用，来讲述如何调整业务逻辑和 squid 参数预操作</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在搞 squid 之前，不管你用什么编译配置，需要什么特殊选项，都请 –enable-snmp ，并配置好 mrtg 之类，可以图形化的显示 squid 状态，例如 Request Hit Ratio(RHR), Byte Hit Ratio(BHR), 等等，反馈是做一切事情的基础，优化也不例外。</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Squid/">Squid</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Squid/16. 学习CDN不得不读之-Squid 高级优化指南/#more">阅读全文 >></a>
         </p>
       
     
@@ -559,69 +686,6 @@
 
 
   
-    <article id="post-Squid/1. squid服务介绍" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Squid/1. squid服务介绍/" class="article-date">
-  	<time datetime="2017-10-13T13:48:39.089Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Squid/1. squid服务介绍/">
-        squid服务介绍
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;squid 是比较知名的代理软件，它不仅可以跑在 linux 上还可以跑在 windows 以及 unix 上，它的技术已经非常成熟，目前使用 squid 的用户也是什么广泛的。squid 与 linux 下其他的代理软件如 apache，socks，TIS FWTK 相比，下载安装简单，配置简单灵活，支持缓存和多种协议。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;squid之所以用的很多，是因为它的缓存功能。squid 缓存不仅可以节省宝贵的宽带资源，也可以大大降低服务器的 I/O 。从经济角度考虑，它是很多网站架构中不可或缺的角色 </p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Squid/">Squid</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Squid/1. squid服务介绍/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-Squid/10. squid故障汇总" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -688,11 +752,11 @@
 
 
   
-    <article id="post-Shell 练习/9. shell 练习-日志汇总" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Squid/1. squid服务介绍" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/10/13/Shell 练习/9. shell 练习-日志汇总/" class="article-date">
-  	<time datetime="2017-10-13T13:48:39.086Z" itemprop="datePublished">2017-10-13</time>
+      <a href="/2017/10/13/Squid/1. squid服务介绍/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.089Z" itemprop="datePublished">2017-10-13</time>
 </a>
     </div>
   
@@ -705,8 +769,8 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Shell 练习/9. shell 练习-日志汇总/">
-        shell 练习-日志汇总
+      <a class="article-title" href="/2017/10/13/Squid/1. squid服务介绍/">
+        squid服务介绍
         
       </a>
     </h1>
@@ -717,7 +781,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>我有一个日志（php的slow_log) 几乎每分钟都有输出信息。需要我们来写个脚本分析一下它，目的就是为了归类汇总，按照它们出现的频次做个排序，假如日志是每天0点5分清空，那么按照每小时一次汇总分析该日志，最后在第二天0点0分时，再汇总一下整天的日志，怎么写呢？ 下面我给出一个日志样例和我写的分析汇总脚本供参考。日志样例：</p>
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;squid 是比较知名的代理软件，它不仅可以跑在 linux 上还可以跑在 windows 以及 unix 上，它的技术已经非常成熟，目前使用 squid 的用户也是什么广泛的。squid 与 linux 下其他的代理软件如 apache，socks，TIS FWTK 相比，下载安装简单，配置简单灵活，支持缓存和多种协议。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;squid之所以用的很多，是因为它的缓存功能。squid 缓存不仅可以节省宝贵的宽带资源，也可以大大降低服务器的 I/O 。从经济角度考虑，它是很多网站架构中不可或缺的角色 </p>
       
     </div>
     
@@ -725,7 +790,7 @@
       
       
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell练习/">shell练习</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Squid/">Squid</a></li></ul>
 	</div>
 
       
@@ -735,69 +800,7 @@
     </div>
       
         <p class="article-more-link">
-          <a  href="/2017/10/13/Shell 练习/9. shell 练习-日志汇总/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Shell 练习/8. shell 练习" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Shell 练习/8. shell 练习/" class="article-date">
-  	<time datetime="2017-10-13T13:48:39.086Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Shell 练习/8. shell 练习/">
-        shell 练习8
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>需求： 两台web:A和B机器，其中一台B只打算跑附件（大多为图片），另一台A跑除了附件外的其他东西。其中附件会在A上生成，默认附件会通过A机器访问，但当我们更改某个附件的标志位时，那么附件则会跑到B上去访问。 假如提供给我们了将要在B上跑的附件列表和更改这些附件的标志位的一个sql文件，那么我们如何做呢？</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell练习/">shell练习</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Shell 练习/8. shell 练习/#more">阅读全文 >></a>
+          <a  href="/2017/10/13/Squid/1. squid服务介绍/#more">阅读全文 >></a>
         </p>
       
     
@@ -814,7 +817,7 @@
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/10/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/63/">63</a><a class="extend next" rel="next" href="/page/12/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/10/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/64/">64</a><a class="extend next" rel="next" href="/page/12/">Next &raquo;</a>
     </nav>
   
 </div>

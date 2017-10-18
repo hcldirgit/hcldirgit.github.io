@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>把vim配置成顺手的python轻量级IDE | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一、配置文件基础配置&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;vim的所有配置都是在 ~/.vimrc 这个文件中完成。默认是没有的需要自己新建： 123cd ~touch .vimrcvim .vimrc">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="把vim配置成顺手的python轻量级IDE">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/10/19/Python/2.python新教程/5.把vim配置成顺手的python轻量级IDE/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="一、配置文件基础配置&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;vim的所有配置都是在 ~/.vimrc 这个文件中完成。默认是没有的需要自己新建： 123cd ~touch .vimrcvim .vimrc">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E6%8A%8Avim%E9%85%8D%E7%BD%AE%E6%88%90%E9%A1%BA%E6%89%8B%E7%9A%84python%E8%BD%BB%E9%87%8F%E7%BA%A7IDE/01.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E6%8A%8Avim%E9%85%8D%E7%BD%AE%E6%88%90%E9%A1%BA%E6%89%8B%E7%9A%84python%E8%BD%BB%E9%87%8F%E7%BA%A7IDE/02.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E6%8A%8Avim%E9%85%8D%E7%BD%AE%E6%88%90%E9%A1%BA%E6%89%8B%E7%9A%84python%E8%BD%BB%E9%87%8F%E7%BA%A7IDE/03.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E6%8A%8Avim%E9%85%8D%E7%BD%AE%E6%88%90%E9%A1%BA%E6%89%8B%E7%9A%84python%E8%BD%BB%E9%87%8F%E7%BA%A7IDE/04.gif?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E6%8A%8Avim%E9%85%8D%E7%BD%AE%E6%88%90%E9%A1%BA%E6%89%8B%E7%9A%84python%E8%BD%BB%E9%87%8F%E7%BA%A7IDE/05.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E6%8A%8Avim%E9%85%8D%E7%BD%AE%E6%88%90%E9%A1%BA%E6%89%8B%E7%9A%84python%E8%BD%BB%E9%87%8F%E7%BA%A7IDE/06.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E6%8A%8Avim%E9%85%8D%E7%BD%AE%E6%88%90%E9%A1%BA%E6%89%8B%E7%9A%84python%E8%BD%BB%E9%87%8F%E7%BA%A7IDE/07.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E6%8A%8Avim%E9%85%8D%E7%BD%AE%E6%88%90%E9%A1%BA%E6%89%8B%E7%9A%84python%E8%BD%BB%E9%87%8F%E7%BA%A7IDE/08.png?raw=true">
+<meta property="og:updated_time" content="2017-10-18T16:32:16.740Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="把vim配置成顺手的python轻量级IDE">
+<meta name="twitter:description" content="一、配置文件基础配置&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;vim的所有配置都是在 ~/.vimrc 这个文件中完成。默认是没有的需要自己新建： 123cd ~touch .vimrcvim .vimrc">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/%E6%8A%8Avim%E9%85%8D%E7%BD%AE%E6%88%90%E9%A1%BA%E6%89%8B%E7%9A%84python%E8%BD%BB%E9%87%8F%E7%BA%A7IDE/01.png?raw=true">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.42px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.33px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.67px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.33px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.25px;">FTP</a> <a href="/tags/Git/" style="font-size: 10.83px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.67px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.5px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.42px;">Jenkins</a> <a href="/tags/LAMP/" style="font-size: 19.58px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 17.08px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.67px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.17px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.17px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.25px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.42px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.5px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.67px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 17.92px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.25px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.58px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.25px;">Puppet</a> <a href="/tags/Python/" style="font-size: 15.83px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.67px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.08px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.58px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.75px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 16.25px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.5px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 12.92px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15px;">shell</a> <a href="/tags/shell练习/" style="font-size: 18.75px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 12.92px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Python/2.python新教程/5.把vim配置成顺手的python轻量级IDE" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/19/Python/2.python新教程/5.把vim配置成顺手的python轻量级IDE/" class="article-date">
+  	<time datetime="2017-10-18T16:32:35.154Z" itemprop="datePublished">2017-10-19</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      把vim配置成顺手的python轻量级IDE
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一、配置文件"><a href="#一、配置文件" class="headerlink" title="一、配置文件"></a>一、配置文件</h2><h3 id="基础配置"><a href="#基础配置" class="headerlink" title="基础配置"></a>基础配置</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;vim的所有配置都是在 ~/.vimrc 这个文件中完成。默认是没有的需要自己新建：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> ~</div><div class="line">touch .vimrc</div><div class="line">vim .vimrc</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下是个人的.vimrc文件的基础配置部分，双引号内为注释内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="string">"去掉vi的一致性"</span></div><div class="line"><span class="built_in">set</span> nocompatible</div><div class="line"><span class="string">"显示行号"</span></div><div class="line"><span class="built_in">set</span> number</div><div class="line"><span class="string">" 隐藏滚动条"</span>    </div><div class="line"><span class="built_in">set</span> guioptions-=r </div><div class="line"><span class="built_in">set</span> guioptions-=L</div><div class="line"><span class="built_in">set</span> guioptions-=b</div><div class="line"><span class="string">"隐藏顶部标签栏"</span></div><div class="line"><span class="built_in">set</span> showtabline=0</div><div class="line"><span class="string">"设置字体"</span></div><div class="line"><span class="built_in">set</span> guifont=Monaco:h13         </div><div class="line">syntax on    <span class="string">"开启语法高亮"</span></div><div class="line"><span class="built_in">let</span> g:solarized_termcolors=256    <span class="string">"solarized主题设置在终端下的设置"</span></div><div class="line"><span class="built_in">set</span> background=dark        <span class="string">"设置背景色"</span></div><div class="line">colorscheme solarized</div><div class="line"><span class="built_in">set</span> nowrap    <span class="string">"设置不折行"</span></div><div class="line"><span class="built_in">set</span> fileformat=unix    <span class="string">"设置以unix的格式保存文件"</span></div><div class="line"><span class="built_in">set</span> cindent        <span class="string">"设置C样式的缩进格式"</span></div><div class="line"><span class="built_in">set</span> tabstop=4    <span class="string">"设置table长度"</span></div><div class="line"><span class="built_in">set</span> shiftwidth=4        <span class="string">"同上"</span></div><div class="line"><span class="built_in">set</span> showmatch    <span class="string">"显示匹配的括号"</span></div><div class="line"><span class="built_in">set</span> scrolloff=5        <span class="string">"距离顶部和底部5行"</span></div><div class="line"><span class="built_in">set</span> laststatus=2    <span class="string">"命令行为两行"</span></div><div class="line"><span class="built_in">set</span> fenc=utf-8      <span class="string">"文件编码"</span></div><div class="line"><span class="built_in">set</span> backspace=2</div><div class="line"><span class="built_in">set</span> mouse=a        <span class="string">"启用鼠标"</span></div><div class="line"><span class="built_in">set</span> selection=exclusive</div><div class="line"><span class="built_in">set</span> selectmode=mouse,key</div><div class="line"><span class="built_in">set</span> matchtime=5</div><div class="line"><span class="built_in">set</span> ignorecase        <span class="string">"忽略大小写"</span></div><div class="line"><span class="built_in">set</span> incsearch</div><div class="line"><span class="built_in">set</span> hlsearch        <span class="string">"高亮搜索项"</span></div><div class="line"><span class="built_in">set</span> noexpandtab        <span class="string">"不允许扩展table"</span></div><div class="line"><span class="built_in">set</span> whichwrap+=&lt;,&gt;,h,l</div><div class="line"><span class="built_in">set</span> autoread</div><div class="line"><span class="built_in">set</span> cursorline        <span class="string">"突出显示当前行"</span></div><div class="line"><span class="built_in">set</span> cursorcolumn        <span class="string">"突出显示当前列"</span></div></pre></td></tr></table></figure>
+<!--more-->
+<h3 id="一键执行python代码"><a href="#一键执行python代码" class="headerlink" title="一键执行python代码"></a>一键执行python代码</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其他常用的编辑器都有很方便的一键执行的功能或插件，例如Sublime Text的command+b、Atom的script插件。vim实现这个功能只需要在.vimrc中添加如下代码就可以实现F5一键执行python代码，而且由于是调用了vim的quickfix功能，因此还支持如果出现错误，跳转到错误行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="string">"按F5运行python"</span></div><div class="line">map &lt;F5&gt; :Autopep8&lt;CR&gt; :w&lt;CR&gt; :call RunPython()&lt;CR&gt;</div><div class="line"><span class="keyword">function</span> RunPython()</div><div class="line">  <span class="built_in">let</span> mp = &amp;makeprg</div><div class="line">  <span class="built_in">let</span> ef = &amp;errorformat</div><div class="line">  <span class="built_in">let</span> exeFile = expand(<span class="string">"%:t"</span>)</div><div class="line">  setlocal makeprg=python\ -u</div><div class="line">  <span class="built_in">set</span> efm=%C\ %.%<span class="comment">#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m</span></div><div class="line">  silent make %</div><div class="line">  copen</div><div class="line">  <span class="built_in">let</span> &amp;makeprg = mp</div><div class="line">  <span class="built_in">let</span> &amp;errorformat = ef</div><div class="line">endfunction</div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E6%8A%8Avim%E9%85%8D%E7%BD%AE%E6%88%90%E9%A1%BA%E6%89%8B%E7%9A%84python%E8%BD%BB%E9%87%8F%E7%BA%A7IDE/01.png?raw=true" alt="01"></p>
+<blockquote>
+<p>但是这个一键执行有一个小问题,由于quickfix的原因，不支持标准输入input()和raw_input()，只要代码中有这两个函数，100%卡死，目前这个问题貌似还无解。如果不用quickfix就可以支持输入，但是在终端中使用的话就是跳回终端输入和输出；使用macvim的话又会出现输出数据很多时就无法查看全部。由于我在写python是标准输入用的较少，就决定放使用quickfix来保证实用和美观。</p>
+</blockquote>
+<h2 id="二、插件"><a href="#二、插件" class="headerlink" title="二、插件"></a>二、插件</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;先上我的插件目录，本文只着重介绍Vundle和YouCompleteMe两个插件因为这两个插件的安装过程比较复杂一些，而其他插件的安装几乎可以算是傻瓜式的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">Plugin <span class="string">'VundleVim/Vundle.vim'</span></div><div class="line">Plugin <span class="string">'Valloric/YouCompleteMe'</span></div><div class="line">Plugin <span class="string">'Lokaltog/vim-powerline'</span></div><div class="line">Plugin <span class="string">'scrooloose/nerdtree'</span></div><div class="line">Plugin <span class="string">'Yggdroot/indentLine'</span></div><div class="line">Plugin <span class="string">'jiangmiao/auto-pairs'</span></div><div class="line">Plugin <span class="string">'tell-k/vim-autopep8'</span></div><div class="line">Plugin <span class="string">'scrooloose/nerdcommenter'</span></div></pre></td></tr></table></figure>
+<h3 id="Vundle"><a href="#Vundle" class="headerlink" title="Vundle"></a>Vundle</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;杀手级插件。这是唯一一个需要手动安装的插件。有了这个，安装其他插件就方便很多。</p>
+<h4 id="1、安装"><a href="#1、安装" class="headerlink" title="1、安装"></a>1、安装</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先需要从github上得到项目的源码，在终端下的命令如下（请自备git）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">clone</span> https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;若提醒目录不存在请先自行新建目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> ~</div><div class="line">mkdir .vim</div><div class="line"><span class="built_in">cd</span> .vim</div><div class="line">mkdir bundle</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后需要在.vimrc文件中添加一些配置才能生效：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">filetype off</div><div class="line"><span class="built_in">set</span> rtp+=~/.vim/bundle/Vundle.vim</div><div class="line">call vundle<span class="comment">#begin()</span></div><div class="line">Plugin <span class="string">'VundleVim/Vundle.vim'</span></div><div class="line">Plugin <span class="string">'你的插件'</span></div><div class="line">call vundle<span class="comment">#end()</span></div><div class="line">filetype plugin indent on</div></pre></td></tr></table></figure>
+<h4 id="2、使用"><a href="#2、使用" class="headerlink" title="2、使用"></a>2、使用</h4><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Vundle安装插件的方法非常简单，只需要两步。先在.vimrc文件中添加Plugin命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">“这是安装Github上的插件”</div><div class="line">Plugin <span class="string">'Lokaltog/vim-powerline'</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E6%8A%8Avim%E9%85%8D%E7%BD%AE%E6%88%90%E9%A1%BA%E6%89%8B%E7%9A%84python%E8%BD%BB%E9%87%8F%E7%BA%A7IDE/02.png?raw=true" alt="02"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面是安装在<a href="http://vim-scripts.org/vim/scripts.html" target="_blank" rel="external">vim-script</a>上的插件的方法，引号里为插件名称，其他插件安装方法请自行查看<a href="https://github.com/VundleVim/Vundle.vim" target="_blank" rel="external">项目主页</a>:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Plugin <span class="string">'L9'</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在添加完.vimrc的的配置后，:wq保存并退出vim,重启vim并输入下面的命令后，vim就会自动下载并安装插件了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">:PluginInstall</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当看到命令行出现Done!就代表所有插件安装完成啦！</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E6%8A%8Avim%E9%85%8D%E7%BD%AE%E6%88%90%E9%A1%BA%E6%89%8B%E7%9A%84python%E8%BD%BB%E9%87%8F%E7%BA%A7IDE/03.png?raw=true" alt="03"></p>
+<h3 id="YouCompleteMe"><a href="#YouCompleteMe" class="headerlink" title="YouCompleteMe"></a>YouCompleteMe</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;杀手级插件。vim上的自动补全神器，能够提供类似IDE的自动补全体验，还能和<a href="https://github.com/vim-syntastic/syntastic" target="_blank" rel="external">Syntastic</a>配合提供实时语法检查。YouCompleteMe与其他插件不同的地方在于不仅需要安装，还需要自己手动编译，而且还需要在.vimrc中配置。</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E6%8A%8Avim%E9%85%8D%E7%BD%AE%E6%88%90%E9%A1%BA%E6%89%8B%E7%9A%84python%E8%BD%BB%E9%87%8F%E7%BA%A7IDE/04.gif?raw=true" alt="04"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;YouCompleteMe支持的语言有：</p>
+<blockquote>
+<p>C、Objectiv-c、C#、C++、Objectiv-C++、Php、Javascript、Typescript、python、Go、Rust</p>
+</blockquote>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安装只需要一条命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Plugin <span class="string">'Valloric/YouCompleteMe'</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编译的命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> ~/.vim/bundle/YouCompleteMe</div><div class="line">./install.py --clang-completer</div></pre></td></tr></table></figure>
+<blockquote>
+<p>参数 –clang-completer是为了加上C系列语言的自动补全，如果不需要可以不加，它同时还支持其他语言的补全，详细请看官方文档。</p>
+</blockquote>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;YouCompleteMe涉及到的配置选项有很多，笔者也没有完全了解，此外，个人觉得Syntactic的提示略丑陋，因此没有安装。此处指列出笔者在使用的，详细请查看<a href="http://valloric.github.io/YouCompleteMe/" target="_blank" rel="external">官方文档</a>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="string">"默认配置文件路径"</span></div><div class="line"><span class="built_in">let</span> g:ycm_global_ycm_extra_conf = <span class="string">'~/.ycm_extra_conf.py'</span></div><div class="line"><span class="string">"打开vim时不再询问是否加载ycm_extra_conf.py配置"</span></div><div class="line"><span class="built_in">let</span> g:ycm_confirm_extra_conf=0</div><div class="line"><span class="built_in">set</span> completeopt=longest,menu</div><div class="line"><span class="string">"python解释器路径"</span></div><div class="line"><span class="built_in">let</span> g:ycm_path_to_python_interpreter=<span class="string">'/usr/local/bin/python'</span></div><div class="line"><span class="string">"是否开启语义补全"</span></div><div class="line"><span class="built_in">let</span> g:ycm_seed_identifiers_with_syntax=1</div><div class="line"><span class="string">"是否在注释中也开启补全"</span></div><div class="line"><span class="built_in">let</span> g:ycm_complete_in_comments=1</div><div class="line"><span class="built_in">let</span> g:ycm_collect_identifiers_from_comments_and_strings = 0</div><div class="line"><span class="string">"开始补全的字符数"</span></div><div class="line"><span class="built_in">let</span> g:ycm_min_num_of_chars_for_completion=2</div><div class="line"><span class="string">"补全后自动关机预览窗口"</span></div><div class="line"><span class="built_in">let</span> g:ycm_autoclose_preview_window_after_completion=1</div><div class="line"><span class="string">" 禁止缓存匹配项,每次都重新生成匹配项"</span></div><div class="line"><span class="built_in">let</span> g:ycm_cache_omnifunc=0</div><div class="line"><span class="string">"字符串中也开启补全"</span></div><div class="line"><span class="built_in">let</span> g:ycm_complete_in_strings = 1</div><div class="line"><span class="string">"离开插入模式后自动关闭预览窗口"</span></div><div class="line">autocmd InsertLeave * <span class="keyword">if</span> pumvisible() == 0|pclose|endif</div><div class="line"><span class="string">"回车即选中当前项"</span></div><div class="line">inoremap &lt;expr&gt; &lt;CR&gt;       pumvisible() ? <span class="string">'&lt;C-y&gt;'</span> : <span class="string">'\&lt;CR&gt;'</span>     </div><div class="line"><span class="string">"上下左右键行为"</span></div><div class="line">inoremap &lt;expr&gt; &lt;Down&gt;     pumvisible() ? <span class="string">'\&lt;C-n&gt;'</span> : <span class="string">'\&lt;Down&gt;'</span></div><div class="line">inoremap &lt;expr&gt; &lt;Up&gt;       pumvisible() ? <span class="string">'\&lt;C-p&gt;'</span> : <span class="string">'\&lt;Up&gt;'</span></div><div class="line">inoremap &lt;expr&gt; &lt;PageDown&gt; pumvisible() ? <span class="string">'\&lt;PageDown&gt;\&lt;C-p&gt;\&lt;C-n&gt;'</span> : <span class="string">'\&lt;PageDown&gt;'</span></div><div class="line">inoremap &lt;expr&gt; &lt;PageUp&gt;   pumvisible() ? <span class="string">'\&lt;PageUp&gt;\&lt;C-p&gt;\&lt;C-n&gt;'</span> : <span class="string">'\&lt;PageUp&gt;'</span></div></pre></td></tr></table></figure>
+<h3 id="vim-powerline"><a href="#vim-powerline" class="headerlink" title="vim-powerline"></a>vim-powerline</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用于美化状态栏，原生的状态栏略丑而且显示的信息很少，因此这款好看又实用的状态栏就派上用场啦。开箱即用，方便快捷。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Normal模式</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E6%8A%8Avim%E9%85%8D%E7%BD%AE%E6%88%90%E9%A1%BA%E6%89%8B%E7%9A%84python%E8%BD%BB%E9%87%8F%E7%BA%A7IDE/05.png?raw=true" alt="05"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Insert模式</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E6%8A%8Avim%E9%85%8D%E7%BD%AE%E6%88%90%E9%A1%BA%E6%89%8B%E7%9A%84python%E8%BD%BB%E9%87%8F%E7%BA%A7IDE/06.png?raw=true" alt="06"></p>
+<blockquote>
+<p>至于官网上的三角形效果需要安装额外的字体，笔者表示折腾很久没配置成功，而就这样不影响使用，视觉效果也还不错，因此就懒得折腾了。</p>
+</blockquote>
+<h3 id="NERDTree"><a href="#NERDTree" class="headerlink" title="NERDTree"></a>NERDTree</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;给vim添加一个树形目录，更方便的查看和切换文件。</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E6%8A%8Avim%E9%85%8D%E7%BD%AE%E6%88%90%E9%A1%BA%E6%89%8B%E7%9A%84python%E8%BD%BB%E9%87%8F%E7%BA%A7IDE/07.png?raw=true" alt="07"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.vimrc中的配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="string">"F2开启和关闭树"</span></div><div class="line">map &lt;F2&gt; :NERDTreeToggle&lt;CR&gt;</div><div class="line"><span class="built_in">let</span> NERDTreeChDirMode=1</div><div class="line"><span class="string">"显示书签"</span></div><div class="line"><span class="built_in">let</span> NERDTreeShowBookmarks=1</div><div class="line"><span class="string">"设置忽略文件类型"</span></div><div class="line"><span class="built_in">let</span> NERDTreeIgnore=[<span class="string">'\~$'</span>, <span class="string">'\.pyc$'</span>, <span class="string">'\.swp$'</span>]</div><div class="line"><span class="string">"窗口大小"</span></div><div class="line"><span class="built_in">let</span> NERDTreeWinSize=25</div></pre></td></tr></table></figure>
+<h3 id="indentLine、vim-autopep8"><a href="#indentLine、vim-autopep8" class="headerlink" title="indentLine、vim-autopep8"></a>indentLine、vim-autopep8</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;indentLine是一款缩进指示线，由纯字符实现，效果比较完美。由于python是靠代码缩进来判断代码块的，因此缩进指示的功能有多方便就不言而喻了。indentLine默认是关闭的，因此需要在.vimrc中配置才能看到效果。</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E6%8A%8Avim%E9%85%8D%E7%BD%AE%E6%88%90%E9%A1%BA%E6%89%8B%E7%9A%84python%E8%BD%BB%E9%87%8F%E7%BA%A7IDE/08.png?raw=true" alt="08"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;autopep8是一款自动格式化工具，安装后在Normal模式输入:Autopep8或按F8就可以自动依照pep8的标准自动格式化代码。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下是个人针对它们的配置，其他配置请参考项目主页：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="string">"缩进指示线"</span></div><div class="line"><span class="built_in">let</span> g:indentLine_char=<span class="string">'┆'</span></div><div class="line"><span class="built_in">let</span> g:indentLine_enabled = 1</div><div class="line"></div><div class="line"><span class="string">"autopep8设置"</span></div><div class="line"><span class="built_in">let</span> g:autopep8_disable_show_diff=1</div></pre></td></tr></table></figure>
+<h3 id="auto-pairs、nerdcommenter"><a href="#auto-pairs、nerdcommenter" class="headerlink" title="auto-pairs、nerdcommenter"></a>auto-pairs、nerdcommenter</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这两款插件让写代码更方便。auto-pairs主要功能是括号和引号自动补全，输入左引号和左括号自动补全另外一半。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;nerdcommenter和上面的NERDTree是同一作者，主要功能是方便的写注释具体用法请参考项目主页。需要注意的是nerdcommenter的leader默认为”\“，一般可以用下面的命令更改：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">let</span> mapleader=<span class="string">','</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一般IDE和很多编辑器都提供command+/快速添加（取消）注释，但是vim添加注释和取消注释需要不同的快捷键，而且多行注释就是泪啊，各种折腾后发现了nerdcommenter的ci命令，只需要在.vimrc文件中添加一条设置就可以一键注释和反注释：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">map &lt;F4&gt; &lt;leader&gt;ci &lt;CR&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;多行注释只需要在normal模式下按v并移动光标选择需要注释的行，再按F4就可以为所有选中的行添加注释。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/10/19/Python/2.python新教程/4.pycharm 快捷键整理及一些常用设置/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">pycharm 快捷键整理及一些常用设置</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="Python/2.python新教程/5.把vim配置成顺手的python轻量级IDE" data-title="把vim配置成顺手的python轻量级IDE" data-url="https://hcldirgit.github.io/2017/10/19/Python/2.python新教程/5.把vim配置成顺手的python轻量级IDE/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="把vim配置成顺手的python轻量级IDE">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

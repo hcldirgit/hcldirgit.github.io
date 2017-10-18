@@ -168,6 +168,133 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Nginx/26. nginx针对请求的uri来代理" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Nginx/26. nginx针对请求的uri来代理/" class="article-date">
+  	<time datetime="2017-10-13T13:29:41.886Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Nginx/26. nginx针对请求的uri来代理/">
+        nginx针对请求的uri来代理
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;场景：1台nginx去代理4台apache</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需求：根据不同的请求uri 代理到不同的apache</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LNMP/">LNMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Nginx/26. nginx针对请求的uri来代理/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Nginx/16. nginx的301与302如何配置" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Nginx/16. nginx的301与302如何配置/" class="article-date">
+  	<time datetime="2017-10-13T13:29:41.885Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Nginx/16. nginx的301与302如何配置/">
+        nginx的301与302如何配置
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先看一个完整代码示例，关于nginx 301 302跳转的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;301跳转设置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">listen 80;</div><div class="line">server_name 123.com;</div><div class="line">rewrite ^/(.*) http://456.com/<span class="variable">$1</span> permanent;</div><div class="line">access_log off;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LNMP/">LNMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Nginx/16. nginx的301与302如何配置/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Nginx/22. nginx禁止指定user_agent" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -679,153 +806,9 @@
 
 
   
-    <article id="post-Nginx/37. nginx的location优先级" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Nginx/37. nginx的location优先级/" class="article-date">
-  	<time datetime="2017-10-13T13:29:41.877Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Nginx/37. nginx的location优先级/">
-        nginx的location优先级
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在nginx配置文件中，location主要有这几种形式：</p>
-<ol>
-<li><p>正则匹配  location ~ /abc { }</p>
-</li>
-<li><p>不区分大小写的正则匹配 location ~* /abc { }</p>
-</li>
-<li><p>匹配路径的前缀，如果找到停止搜索 location ^~ /abc { }</p>
-</li>
-<li><p>精确匹配  location = /abc { }</p>
-</li>
-</ol>
-<p>5.普通路径前缀匹配  location  /abc { }</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Nginx/37. nginx的location优先级/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Nginx/29. nginx中location的规则" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Nginx/29. nginx中location的规则/" class="article-date">
-  	<time datetime="2017-10-13T13:29:41.876Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Nginx/29. nginx中location的规则/">
-        nginx中location的规则
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="语法规则"><a href="#语法规则" class="headerlink" title="语法规则"></a>语法规则</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">location [=|~|~*|^~] /uri/ &#123; … &#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>= 开头表示精确匹配</li>
-<li>^~ 开头表示uri以某个常规字符串开头，不是正则匹配。#^~表示普通字符匹配，如果该选项匹配，只匹配该选项，不匹配别的选项，一般用来匹配目录。nginx不对url做编码，因此请求为/static/20%/aa，可以被规则^~ /static/ /aa匹配到（注意是空格）。</li>
-<li>~ 开头表示区分大小写的正则匹配</li>
-<li>~*  开头表示不区分大小写的正则匹配</li>
-<li>!~和!~*分别为区分大小写不匹配及不区分大小写不匹配 的正则</li>
-<li>/ 通用匹配，任何请求都会匹配到。</li>
-<li>@     #”@” 定义一个命名的 location，使用在内部定向时，例如 error_page, try_files如 error_page, try_files</li>
-</ul>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LNMP/">LNMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Nginx/29. nginx中location的规则/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/24/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="page-number" href="/page/24/">24</a><span class="page-number current">25</span><a class="page-number" href="/page/26/">26</a><a class="page-number" href="/page/27/">27</a><span class="space">&hellip;</span><a class="page-number" href="/page/63/">63</a><a class="extend next" rel="next" href="/page/26/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/24/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="page-number" href="/page/24/">24</a><span class="page-number current">25</span><a class="page-number" href="/page/26/">26</a><a class="page-number" href="/page/27/">27</a><span class="space">&hellip;</span><a class="page-number" href="/page/64/">64</a><a class="extend next" rel="next" href="/page/26/">Next &raquo;</a>
     </nav>
   
 </div>

@@ -168,6 +168,152 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Zabbix/5. zabbix2.2 使用自定义脚本监控网卡流量" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Zabbix/5. zabbix2.2 使用自定义脚本监控网卡流量/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.185Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Zabbix/5. zabbix2.2 使用自定义脚本监控网卡流量/">
+        zabbix2.2 使用自定义脚本监控网卡流量
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li>在客户端修改配置文件  /etc/zabbix/zabbix_agentd.conf</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需要改动两个地方：</p>
+<ul>
+<li>UnsafeUserParameters=1</li>
+<li>UserParameter=my.net.if</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;/usr/local/sbin/zabbix/net.sh $1 $2   //其中UserParameter用来自定义键值，（类似于net.if.in)，自己写的脚本往往会有参数，所以需要加。这是固定写法，如果脚本压根就没有什么参数，那么这个就省了。逗号后面就是我们写的脚本的路径了，再后面就是要用到的参数，有几个就写几。</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zabbix/">Zabbix</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Zabbix/5. zabbix2.2 使用自定义脚本监控网卡流量/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Zabbix/4. Zabbix自定义监控脚本配置" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Zabbix/4. Zabbix自定义监控脚本配置/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.183Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Zabbix/4. Zabbix自定义监控脚本配置/">
+        Zabbix自定义监控脚本配置
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注：要添加自定义脚本监控，必须升级zabbix agent版本至2.0.0以上，这里以2.0.8为例</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置方式：</p>
+<ol>
+<li>完成自定义监控脚本的编写（windows或linux脚本）</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;脚本要求：</p>
+<ul>
+<li>既然是监控，那必然要有输出结果值（字符串，数字皆可） </li>
+<li>必须要求zabbix用户有执行权限，当然可以直接设置所有用户都有执行权限（chmod 777 脚本文件）</li>
+<li>若脚本需要传入参数，按照参数传入的顺序，在脚本中可用$1-$9来引用传入的参数</li>
+</ul>
+<ol>
+<li>找到zabbix agent的配置文件zabbix_agentd.conf,修改如下两个参数</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">UnsafeUserParameters=0 =&gt; UnsafeUserParameters=1  <span class="comment">#并去掉前面的注释符</span></div><div class="line">UserParameter= =&gt; UserParameter=aaa.bbb[*], /usr/<span class="built_in">local</span>/script/monitor.sh <span class="variable">$1</span> <span class="variable">$2</span> ...</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zabbix/">Zabbix</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Zabbix/4. Zabbix自定义监控脚本配置/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Zabbix/3. zabbix 增加客户端监控" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -680,137 +826,9 @@
 
 
   
-    <article id="post-Zabbix/2. zabbix 服务端安装" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Zabbix/2. zabbix 服务端安装/" class="article-date">
-  	<time datetime="2017-10-13T13:48:39.171Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Zabbix/2. zabbix 服务端安装/">
-        zabbix 服务端安装
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;zabbix 是另外一个用得比较多的监控工具，同样也需要 apache+php 的支持，但它比 nagios 要多一个 mysql ，因为它有数据需要储存。所以，安装 zabbix，必须要安装 mysql 。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在安装 zabbix 之前，也需要安装 epel 扩展源，因为 centos 自带 yum 源是没有 zabbix 的。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@zabbix ~]<span class="comment"># yum install -y epel-release</span></div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zabbix/">Zabbix</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Zabbix/2. zabbix 服务端安装/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Zabbix/19. zabbix进行数据库备份以及表分区" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Zabbix/19. zabbix进行数据库备份以及表分区/" class="article-date">
-  	<time datetime="2017-10-13T13:48:39.170Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Zabbix/19. zabbix进行数据库备份以及表分区/">
-        zabbix进行数据库备份以及表分区
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;由于测试环境上面使用的zabbix服务器配置比较低，经常会遇到性能瓶颈（主要是数据库和磁盘I/O等），于是倒逼我使用了一些方式来缓解这些问题。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;主要是以前使用的那个备份数据库的脚本是对zabbix数据库进行全备的，使用的又是mysql自带的工具mysqldump，当数据量大了之后进行全备所花的时间比较长，这样将会造成数据库的锁读。。。从而使zabbix服务以为mysql死掉了，产生一大堆的报警。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;后来发现原来造成数据库数据量大量增加的是zabbix数据库中的一些存储数据的大表导致的。于是备份数据库的时候可以选择跳过这些表进行备份，这样，将大大减少数据库备份所花的时间（PS：之前备份数据库所花时间在十分钟左右，现在跳过大表备份，所花时间在1S左右就能备份完，大大缩短了备份数据库时间）。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zabbix/">Zabbix</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Zabbix/19. zabbix进行数据库备份以及表分区/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/6/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/63/">63</a><a class="extend next" rel="next" href="/page/8/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/6/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/64/">64</a><a class="extend next" rel="next" href="/page/8/">Next &raquo;</a>
     </nav>
   
 </div>
