@@ -168,6 +168,70 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Redis/12. 几点建议，让Redis在你的系统中发挥更大作用" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Redis/12. 几点建议，让Redis在你的系统中发挥更大作用/" class="article-date">
+  	<time datetime="2017-10-13T14:03:32.193Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Redis/12. 几点建议，让Redis在你的系统中发挥更大作用/">
+        几点建议，让Redis在你的系统中发挥更大作用
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis在很多方面与其他数据库解决方案不同：它使用内存提供主存储支持，而仅使用硬盘做持久性的存储；它的数据模型非常独特，用的是单线程。另一个大区别在于，你可以在开发环境中使用Redis的功能，但却不需要转到Redis。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;转向Redis当然也是可取的，许多开发者从一开始就把Redis作为首选数据库；但设想如果你的开发环境已经搭建好，应用已经在上面运行了，那么更换数据库框架显然不那么容易。另外在一些需要大容量数据集的应用，Redis也并不适合，因为它的数据集不会超过系统可用的内存。所以如果你有大数据应用，而且主要是读取访问模式，那么Redis并不是正确的选择。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然而我喜欢Redis的一点就是你可以把它融入到你的系统中来，这就能够解决很多问题，比如那些你现有的数据库处理起来感到缓慢的任务。这些你就可以通过Redis来进行优化，或者为应用创建些新的功能。在本文中，我就想探讨一些怎样将Redis加入到现有的环境中，并利用它的原语命令等功能来解决传统环境中碰到的一些常见问题。在这些例子中，Redis都不是作为首选数据库。</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/">Redis</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Redis/12. 几点建议，让Redis在你的系统中发挥更大作用/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Redis/11. Redis内存使用优化与存储" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -559,70 +623,6 @@
 
 
   
-    <article id="post-Shell/12. shell中的select用法" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Shell/12. shell中的select用法/" class="article-date">
-  	<time datetime="2017-10-13T13:52:13.918Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Shell/12. shell中的select用法/">
-        shell中的select用法
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;select也是循环的一种，它比较适合用在用户选择的情况下。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;比如，我们有一个这样的需求，运行脚本后，让用户去选择数字，选择1，会运行w命令，选择2运行top命令，选择3运行free命令，选择4退出。脚本这样实现：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"Please chose a number, 1: run w, 2: run top, 3: run free, 4: quit"</span></div><div class="line"><span class="built_in">echo</span></div><div class="line">select <span class="built_in">command</span> <span class="keyword">in</span> w top free quit</div><div class="line"><span class="keyword">do</span></div><div class="line">    <span class="keyword">case</span> <span class="variable">$command</span> <span class="keyword">in</span></div><div class="line">    w)</div><div class="line">        w</div><div class="line">        ;;</div><div class="line">    top)</div><div class="line">        top</div><div class="line">        ;;</div><div class="line">    free)</div><div class="line">        free</div><div class="line">        ;;</div><div class="line">    quit)</div><div class="line">        <span class="built_in">exit</span></div><div class="line">        ;;</div><div class="line">    *)</div><div class="line">        <span class="built_in">echo</span> <span class="string">"Please input a number:(1-4)."</span></div><div class="line">        ;;</div><div class="line">    <span class="keyword">esac</span></div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Shell/12. shell中的select用法/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-Shell/13. for 循环" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -687,6 +687,70 @@
 
 
   
+    <article id="post-Shell/12. shell中的select用法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Shell/12. shell中的select用法/" class="article-date">
+  	<time datetime="2017-10-13T13:52:13.918Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Shell/12. shell中的select用法/">
+        shell中的select用法
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;select也是循环的一种，它比较适合用在用户选择的情况下。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;比如，我们有一个这样的需求，运行脚本后，让用户去选择数字，选择1，会运行w命令，选择2运行top命令，选择3运行free命令，选择4退出。脚本这样实现：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"Please chose a number, 1: run w, 2: run top, 3: run free, 4: quit"</span></div><div class="line"><span class="built_in">echo</span></div><div class="line">select <span class="built_in">command</span> <span class="keyword">in</span> w top free quit</div><div class="line"><span class="keyword">do</span></div><div class="line">    <span class="keyword">case</span> <span class="variable">$command</span> <span class="keyword">in</span></div><div class="line">    w)</div><div class="line">        w</div><div class="line">        ;;</div><div class="line">    top)</div><div class="line">        top</div><div class="line">        ;;</div><div class="line">    free)</div><div class="line">        free</div><div class="line">        ;;</div><div class="line">    quit)</div><div class="line">        <span class="built_in">exit</span></div><div class="line">        ;;</div><div class="line">    *)</div><div class="line">        <span class="built_in">echo</span> <span class="string">"Please input a number:(1-4)."</span></div><div class="line">        ;;</div><div class="line">    <span class="keyword">esac</span></div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Shell/12. shell中的select用法/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Shell/11. case 选择" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -737,70 +801,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Shell/11. case 选择/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Shell/15. shell 中断继续退出" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Shell/15. shell 中断继续退出/" class="article-date">
-  	<time datetime="2017-10-13T13:52:13.916Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Shell/15. shell 中断继续退出/">
-        shell 中断继续退出
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="break-直接结束本层循环："><a href="#break-直接结束本层循环：" class="headerlink" title="break 直接结束本层循环："></a>break 直接结束本层循环：</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 sbin]<span class="comment"># vim break.sh</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加入内容：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> `seq 1 5`</div><div class="line"><span class="keyword">do</span></div><div class="line">    <span class="built_in">echo</span> <span class="variable">$i</span></div><div class="line">    <span class="keyword">if</span> [ <span class="variable">$i</span>==3 ]</div><div class="line">    <span class="keyword">then</span></div><div class="line">        <span class="built_in">break</span></div><div class="line">    <span class="keyword">fi</span></div><div class="line">    <span class="built_in">echo</span> <span class="variable">$i</span></div><div class="line"><span class="keyword">done</span></div><div class="line"><span class="built_in">echo</span> aaaaaaa</div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Shell/15. shell 中断继续退出/#more">阅读全文 >></a>
         </p>
       
     
