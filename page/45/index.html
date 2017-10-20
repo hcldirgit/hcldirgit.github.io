@@ -168,6 +168,69 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-OpenStack/4. 深入理解 Neutron -- OpenStack 网络实现" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/OpenStack/4. 深入理解 Neutron -- OpenStack 网络实现/" class="article-date">
+  	<time datetime="2017-10-13T13:29:40.488Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/OpenStack/4. 深入理解 Neutron -- OpenStack 网络实现/">
+        深入理解 Neutron -- OpenStack 网络实现
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Neutron 的设计目标是实现“网络即服务”，为了达到这一目标，在设计上遵循了基于“软件定义网络”实现网络虚拟化的原则，在实现上充分利用了 Linux 系统上的各种网络相关的技术。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;理解了 Linux 系统上的这些概念将有利于快速理解 Neutron 的原理和实现。</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenStack/">OpenStack</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/OpenStack/4. 深入理解 Neutron -- OpenStack 网络实现/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Resin/1. resin安装与配置" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -747,69 +810,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Samba/5. samba中文乱码的问题/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Samba/4. samba同时用匿名和用户登录" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Samba/4. samba同时用匿名和用户登录/" class="article-date">
-  	<time datetime="2017-10-13T13:29:40.470Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Samba/4. samba同时用匿名和用户登录/">
-        samba同时用匿名和用户登录
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关于同时使用匿名和用户登录，配置文件如下，已经验证成功：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">[global]</div><div class="line">        workgroup = WORKGROUP</div><div class="line">        server string = Samba Server Version %v</div><div class="line">        <span class="built_in">log</span> file = /var/<span class="built_in">log</span>/samba/<span class="built_in">log</span>.%m</div><div class="line">        max <span class="built_in">log</span> size = 50</div><div class="line">        security = user</div><div class="line">        passdb backend = tdbsam</div><div class="line">        load printers = yes</div><div class="line">        cups iptions = raw</div><div class="line">        map to guest = bad user</div><div class="line">        guest account = nobody</div><div class="line">        encrypt password = yes</div><div class="line">        smb passwd file = /etc/samba/smbpasswd</div><div class="line"></div><div class="line">[public]</div><div class="line">        comment = public</div><div class="line">        path = /data/pub/public</div><div class="line">        browseable = yes</div><div class="line">        guest ok = yes</div><div class="line">        writable = yes</div><div class="line">        printable = no</div><div class="line">        create mask = 0644</div><div class="line">        directory mask = 0755</div><div class="line"></div><div class="line">[project]</div><div class="line">        comment = project</div><div class="line">        path = /data/pub/project</div><div class="line">        browseable = yes</div><div class="line">        public = no</div><div class="line">        guest ok = no</div><div class="line">        writeable = yes</div><div class="line">        force user = root</div><div class="line">        printable = no</div><div class="line">        create mask = 0644</div><div class="line">        directory mask = 0755</div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Samba/">Samba</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Samba/4. samba同时用匿名和用户登录/#more">阅读全文 >></a>
         </p>
       
     
