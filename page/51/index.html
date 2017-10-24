@@ -168,71 +168,6 @@
 </nav>
       <div class="body-wrap">
   
-    <article id="post-Hadoop/6. HDFS原理分析—— 基本概念" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Hadoop/6. HDFS原理分析—— 基本概念/" class="article-date">
-  	<time datetime="2017-10-13T13:29:40.415Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Hadoop/6. HDFS原理分析—— 基本概念/">
-        HDFS原理分析—— 基本概念
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;HDFS是Hadoop Distribute File System 的简称，也就是Hadoop的一个分布式文件系统。</p>
-<h2 id="一、HDFS的主要设计理念"><a href="#一、HDFS的主要设计理念" class="headerlink" title="一、HDFS的主要设计理念"></a>一、HDFS的主要设计理念</h2><h3 id="1、存储超大文件"><a href="#1、存储超大文件" class="headerlink" title="1、存储超大文件"></a>1、存储超大文件</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里的“超大文件”是指几百MB、GB甚至TB级别的文件。</p>
-<h3 id="2、最高效的访问模式是-一次写入、多次读取-流式数据访问"><a href="#2、最高效的访问模式是-一次写入、多次读取-流式数据访问" class="headerlink" title="2、最高效的访问模式是 一次写入、多次读取(流式数据访问)"></a>2、最高效的访问模式是 一次写入、多次读取(流式数据访问)</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;HDFS存储的数据集作为hadoop的分析对象。在数据集生成后，长时间在此数据集上进行各种分析。每次分析都将设计该数据集的大部分数据甚至全部数据，因此读取整个数据集的时间延迟比读取第一条记录的时间延迟更重要。</p>
-<h3 id="3、运行在普通廉价的服务器上"><a href="#3、运行在普通廉价的服务器上" class="headerlink" title="3、运行在普通廉价的服务器上"></a>3、运行在普通廉价的服务器上</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;HDFS设计理念之一就是让它能运行在普通的硬件之上，即便硬件出现故障，也可以通过容错策略来保证数据的高可用。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hadoop/">Hadoop</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Hadoop/6. HDFS原理分析—— 基本概念/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-Hadoop/1. Hadoop 大数据" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -788,6 +723,68 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Haproxy/5. haproxy 基础配置文件详解/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Haproxy/1. HAProxy 配置文件结构" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Haproxy/1. HAProxy 配置文件结构/" class="article-date">
+  	<time datetime="2017-10-13T13:29:40.259Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Haproxy/1. HAProxy 配置文件结构/">
+        haproxy 配置文件结构
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;HAProxy配置文件主要由5个部分组成，但是有些部分并不是必需的，可以根据需要选择相应的部分进行配置：</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/haproxy/">haproxy</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Haproxy/1. HAProxy 配置文件结构/#more">阅读全文 >></a>
         </p>
       
     

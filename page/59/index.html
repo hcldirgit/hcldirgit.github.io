@@ -168,74 +168,6 @@
 </nav>
       <div class="body-wrap">
   
-    <article id="post-MySQL/22. mysql主从搭建" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/MySQL/22. mysql主从搭建/" class="article-date">
-  	<time datetime="2017-10-13T13:29:39.977Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/MySQL/22. mysql主从搭建/">
-        mysql 主从搭建
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mysql 主从 （mysql replication），主要用于 mysql 的实时备份或者读写分离。在配置之前做准备工作，配置两台 mysql 服务器；或者在同一个机器上跑两个 mysql 服务。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mysql 主从原理非常简单:</p>
-<ul>
-<li>每个从仅可以设置一个主；</li>
-<li>主在执行 sql 之后，记录二进制 log 文件 （bin-log）；</li>
-<li>从连接主，并从主获取 binlog ，存于本地 relay-log ，并从上次记住的位置起执行 sql，一旦遇到错误则停止同步。</li>
-</ul>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/MySQL/22. mysql主从搭建/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-MySQL/29. mysql AB 常见错误" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -798,6 +730,71 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Nagios/1. Nagios 安装/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Nagios/3. nagios配置邮件告警" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Nagios/3. nagios配置邮件告警/" class="article-date">
+  	<time datetime="2017-10-13T13:29:39.946Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Nagios/3. nagios配置邮件告警/">
+        nagios配置邮件告警
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;目前 nagios 只能在浏览器上查看各个服务的状态，当某个机器宕掉或者某个服务宕掉时，我们是不知道的，因为我们不可能一直盯着服务器看。这时候，就需要用到警告系统了，让它自动化，当发现问题时及时通知到我们。下面配置使用发邮件的方式来实现告警。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下操作都在服务器上完成。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先定义发邮件接收者。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@nagios ~]<span class="comment"># vim /etc/nagios/objects/contacts.cfg</span></div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nagios/">Nagios</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Nagios/3. nagios配置邮件告警/#more">阅读全文 >></a>
         </p>
       
     
