@@ -168,6 +168,73 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Samba/5. samba中文乱码的问题" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Samba/5. samba中文乱码的问题/" class="article-date">
+  	<time datetime="2017-10-13T13:29:40.471Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Samba/5. samba中文乱码的问题/">
+        samba中文乱码的问题
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用SSH登陆远程的linux服务器，用win浏览运行samba的linux服务器中有中文名的文件夹的时候，看到里面的中文文件名都是乱码，而且想用shell来设置一下权限也设置不了。</p>
+<ol>
+<li>打开/etc/sysconfig/i18n</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;设置为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">LANG=<span class="string">"zh_CN.GB2312"</span></div><div class="line">LANGUAGE=<span class="string">"zh_CN.GB18030:zh_CN.GB2312:zh_CN"</span></div><div class="line">SUPPORTED=<span class="string">"zh_CN.GB18030:zh_CN.GB2312:zh_CN.UTF-8:zh:en_US.UTF-8:en_US:en:ja_JP.UTF-8:ja_JP:ja"</span></div><div class="line">SYSFONT=<span class="string">"lat0-sun16"</span></div><div class="line">SYSFONTACM=<span class="string">"8859-15"</span></div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Samba/">Samba</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Samba/5. samba中文乱码的问题/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Samba/4. samba同时用匿名和用户登录" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -741,82 +808,6 @@
       
       <div class="clearfix"></div>
     </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Php/3. 通过http上传大文件超时的问题" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Php/3. 通过http上传大文件超时的问题/" class="article-date">
-  	<time datetime="2017-10-13T13:29:40.459Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Php/3. 通过http上传大文件超时的问题/">
-        通过http上传大文件超时的问题
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;架构是 LAMP ， 上传文件的操作，并没有连接mysql，但是却使用了php资源，所以修改设置，不仅要设置apache还要设置php.ini </p>
-<ol>
-<li>apache httpd.conf 的设置</li>
-</ol>
-<ul>
-<li>Timeout 600  这个可以设置成 3600, 单位是s </li>
-</ul>
-<ol>
-<li>php.ini 相关的参数</li>
-</ol>
-<ul>
-<li>file_uploads  =  on  ; 默认为开</li>
-<li>upload_max_filesize  =  1024M  ; 上传最大值</li>
-<li>post_max_size = 1024M ; 通过表单POST给PHP的所能接收的最大值</li>
-</ul>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Php/">Php</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Php/3. 通过http上传大文件超时的问题/#more">阅读全文 >></a>
-        </p>
       
     
   </div>

@@ -168,6 +168,69 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-MySQL/24. mysql主从同步问题集" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/MySQL/24. mysql主从同步问题集/" class="article-date">
+  	<time datetime="2017-10-13T13:29:39.991Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/MySQL/24. mysql主从同步问题集/">
+        mysql 主从同步问题集
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在InnoDB引擎下发现，Mysql的主从热备存在数据不一致的问题，一些数据没有成功同步到备机。在use databases后，更新的表必须是当前选择的database才同步。譬如连上Mysql服务后操作： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">USE test2; </div><div class="line">UPDATE client SET name=<span class="string">'test'</span> WHERE uid=1;</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/MySQL/24. mysql主从同步问题集/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-MySQL/3. 源码编译安装MySQL5.6报错及解决方法" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -725,69 +788,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/MySQL/8. 关于mysql一些优化心得/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-MySQL/26. Mysql数据库主从心得整理" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/MySQL/26. Mysql数据库主从心得整理/" class="article-date">
-  	<time datetime="2017-10-13T13:29:39.983Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/MySQL/26. Mysql数据库主从心得整理/">
-        Mysql数据库主从心得整理
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="一、mysql主从的原理"><a href="#一、mysql主从的原理" class="headerlink" title="一、mysql主从的原理"></a>一、mysql主从的原理</h2><h3 id="1、Replication-线程"><a href="#1、Replication-线程" class="headerlink" title="1、Replication 线程"></a>1、Replication 线程</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Mysql的 Replication 是一个异步的复制过程（mysql5.1.7以上版本分为异步复制和半同步两种模式），从一个 Mysql instace(我们称之为 Master)复制到另一个 Mysql instance(我们称之 Slave)。在 Master 与 Slave 之间的实现整个复制过程主要由三个线程来完成，其中两个线程(Sql线程和IO线程)在 Slave 端，另外一个线程(IO线程)在 Master 端。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要实现 MySQL 的 Replication ，首先必须打开 Master 端的Binary Log(mysql-bin.xxxxxx)功能，否则无法实现。因为整个复制过程实际上就是Slave从Master端获取该日志然后再在自己身上完全 顺序的执行日志中所记录的各种操作。打开 MySQL 的 Binary Log 可以通过在启动 MySQL Server 的过程中使用 “—log-bin” 参数选项，或者在 my.cnf 配置文件中的 mysqld 参数组([mysqld]标识后的参数部分)增加 “log-bin” 参数项。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/MySQL/26. Mysql数据库主从心得整理/#more">阅读全文 >></a>
         </p>
       
     

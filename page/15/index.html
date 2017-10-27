@@ -168,11 +168,11 @@
 </nav>
       <div class="body-wrap">
   
-    <article id="post-Squid/1. squid服务介绍" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Squid/11. squid内核优化 减轻timewait问题" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/10/13/Squid/1. squid服务介绍/" class="article-date">
-  	<time datetime="2017-10-13T13:48:39.089Z" itemprop="datePublished">2017-10-13</time>
+      <a href="/2017/10/13/Squid/11. squid内核优化 减轻timewait问题/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.090Z" itemprop="datePublished">2017-10-13</time>
 </a>
     </div>
   
@@ -185,8 +185,8 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Squid/1. squid服务介绍/">
-        squid服务介绍
+      <a class="article-title" href="/2017/10/13/Squid/11. squid内核优化 减轻timewait问题/">
+        squid内核优化 减轻timewait问题
         
       </a>
     </h1>
@@ -197,8 +197,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;squid 是比较知名的代理软件，它不仅可以跑在 linux 上还可以跑在 windows 以及 unix 上，它的技术已经非常成熟，目前使用 squid 的用户也是什么广泛的。squid 与 linux 下其他的代理软件如 apache，socks，TIS FWTK 相比，下载安装简单，配置简单灵活，支持缓存和多种协议。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;squid之所以用的很多，是因为它的缓存功能。squid 缓存不仅可以节省宝贵的宽带资源，也可以大大降低服务器的 I/O 。从经济角度考虑，它是很多网站架构中不可或缺的角色 </p>
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Linux下高并发的Squid服务器，TCP TIME_WAIT套接字数量经常达到两、三万，服务器很容易被拖死。通过修改Linux内核参数，可以减少Squid服务器的TIME_WAIT套接字数量。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim /etc/sysctl.conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;增加以下几行：引用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">net.ipv4.tcp_fin_timeout = 30</div><div class="line">net.ipv4.tcp_keepalive_time = 1200</div><div class="line">net.ipv4.tcp_syncookies = 1</div><div class="line">net.ipv4.tcp_tw_reuse = 1</div><div class="line">net.ipv4.tcp_tw_recycle = 1</div><div class="line">net.ipv4.ip_local_port_range = 1024 65000</div><div class="line">net.ipv4.tcp_max_syn_backlog = 8192</div><div class="line">net.ipv4.tcp_max_tw_b****ets = 5000</div></pre></td></tr></table></figure>
       
     </div>
     
@@ -216,7 +218,7 @@
     </div>
       
         <p class="article-more-link">
-          <a  href="/2017/10/13/Squid/1. squid服务介绍/#more">阅读全文 >></a>
+          <a  href="/2017/10/13/Squid/11. squid内核优化 减轻timewait问题/#more">阅读全文 >></a>
         </p>
       
     
@@ -297,11 +299,11 @@
 
 
   
-    <article id="post-Shell 练习/8. shell 练习" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Squid/1. squid服务介绍" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/10/13/Shell 练习/8. shell 练习/" class="article-date">
-  	<time datetime="2017-10-13T13:48:39.086Z" itemprop="datePublished">2017-10-13</time>
+      <a href="/2017/10/13/Squid/1. squid服务介绍/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.089Z" itemprop="datePublished">2017-10-13</time>
 </a>
     </div>
   
@@ -314,8 +316,8 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Shell 练习/8. shell 练习/">
-        shell 练习8
+      <a class="article-title" href="/2017/10/13/Squid/1. squid服务介绍/">
+        squid服务介绍
         
       </a>
     </h1>
@@ -326,7 +328,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>需求： 两台web:A和B机器，其中一台B只打算跑附件（大多为图片），另一台A跑除了附件外的其他东西。其中附件会在A上生成，默认附件会通过A机器访问，但当我们更改某个附件的标志位时，那么附件则会跑到B上去访问。 假如提供给我们了将要在B上跑的附件列表和更改这些附件的标志位的一个sql文件，那么我们如何做呢？</p>
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;squid 是比较知名的代理软件，它不仅可以跑在 linux 上还可以跑在 windows 以及 unix 上，它的技术已经非常成熟，目前使用 squid 的用户也是什么广泛的。squid 与 linux 下其他的代理软件如 apache，socks，TIS FWTK 相比，下载安装简单，配置简单灵活，支持缓存和多种协议。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;squid之所以用的很多，是因为它的缓存功能。squid 缓存不仅可以节省宝贵的宽带资源，也可以大大降低服务器的 I/O 。从经济角度考虑，它是很多网站架构中不可或缺的角色 </p>
       
     </div>
     
@@ -334,7 +337,7 @@
       
       
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell练习/">shell练习</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Squid/">Squid</a></li></ul>
 	</div>
 
       
@@ -344,7 +347,7 @@
     </div>
       
         <p class="article-more-link">
-          <a  href="/2017/10/13/Shell 练习/8. shell 练习/#more">阅读全文 >></a>
+          <a  href="/2017/10/13/Squid/1. squid服务介绍/#more">阅读全文 >></a>
         </p>
       
     
@@ -407,6 +410,68 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Shell 练习/9. shell 练习-日志汇总/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Shell 练习/8. shell 练习" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Shell 练习/8. shell 练习/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.086Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Shell 练习/8. shell 练习/">
+        shell 练习8
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>需求： 两台web:A和B机器，其中一台B只打算跑附件（大多为图片），另一台A跑除了附件外的其他东西。其中附件会在A上生成，默认附件会通过A机器访问，但当我们更改某个附件的标志位时，那么附件则会跑到B上去访问。 假如提供给我们了将要在B上跑的附件列表和更改这些附件的标志位的一个sql文件，那么我们如何做呢？</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell练习/">shell练习</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Shell 练习/8. shell 练习/#more">阅读全文 >></a>
         </p>
       
     
@@ -718,69 +783,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Shell 练习/62.shell 练习-给文档增加内容/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Shell 练习/61.shell 练习-打印数字" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Shell 练习/61.shell 练习-打印数字/" class="article-date">
-  	<time datetime="2017-10-13T13:48:39.078Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Shell 练习/61.shell 练习-打印数字/">
-        shell 练习-打印数字
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>写一个shell脚本。提示你输入一个暂停的数字，然后从1打印到该数字。然后询问是否继续。继续的话在输入个在数字 接着打印。不继续退出。</p>
-<p>例：如果输入的是5，打印1 2 3 4 5  然后继续 输入15   然后打印 6 7 …14 15 依此类推。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell练习/">shell练习</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Shell 练习/61.shell 练习-打印数字/#more">阅读全文 >></a>
         </p>
       
     

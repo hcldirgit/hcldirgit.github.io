@@ -168,6 +168,69 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-MySQL/37. 数据库死锁原理及解决思路" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/MySQL/37. 数据库死锁原理及解决思路/" class="article-date">
+  	<time datetime="2017-10-13T13:29:40.000Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/MySQL/37. 数据库死锁原理及解决思路/">
+        数据库死锁原理及解决思路
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一、什么是锁？"><a href="#一、什么是锁？" class="headerlink" title="一、什么是锁？"></a>一、什么是锁？</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;数据库是一个多用户使用的共享资源。当多个用户并发地存取数据时，在数据库中就会产生多个事务同时存取同一数据的情况。若对并发操作不加控制就可能会读取和存储不正确的数据，破坏数据库的一致性。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加锁的目的确保并发更新场景下的数据正确性。当事务在对某个数据对象进行操作前，先向系统发出请求，对其加锁。加锁后事务就对该数据对象有了一定的控制，在该事务释放锁之前，其他的事务不能对此数据对象进行更新操作。</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/MySQL/37. 数据库死锁原理及解决思路/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-MySQL/4. MySQL5.7 二进制源码包安装" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -724,69 +787,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/MySQL/6. MySQL调优/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-MySQL/24. mysql主从同步问题集" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/MySQL/24. mysql主从同步问题集/" class="article-date">
-  	<time datetime="2017-10-13T13:29:39.991Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/MySQL/24. mysql主从同步问题集/">
-        mysql 主从同步问题集
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在InnoDB引擎下发现，Mysql的主从热备存在数据不一致的问题，一些数据没有成功同步到备机。在use databases后，更新的表必须是当前选择的database才同步。譬如连上Mysql服务后操作： </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">USE test2; </div><div class="line">UPDATE client SET name=<span class="string">'test'</span> WHERE uid=1;</div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/MySQL/24. mysql主从同步问题集/#more">阅读全文 >></a>
         </p>
       
     
