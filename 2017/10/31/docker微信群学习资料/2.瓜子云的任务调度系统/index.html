@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>瓜子云的任务调度系统 | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;瓜子云的任务调度系统结合了K8S的Job和Airflow。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Airflow是Airbnb出品的任务调度系统，支持DAG调度，这一点完美的弥补了k8s Job的不足。借助k8s的自动扩展，集群资源统一管理，Ai">
+<meta name="keywords" content="Docker,Kubernetes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="瓜子云的任务调度系统">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/10/31/docker微信群学习资料/2.瓜子云的任务调度系统/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;瓜子云的任务调度系统结合了K8S的Job和Airflow。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Airflow是Airbnb出品的任务调度系统，支持DAG调度，这一点完美的弥补了k8s Job的不足。借助k8s的自动扩展，集群资源统一管理，Ai">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E7%93%9C%E5%AD%90%E4%BA%91%E7%9A%84%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F/01.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E7%93%9C%E5%AD%90%E4%BA%91%E7%9A%84%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F/02.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E7%93%9C%E5%AD%90%E4%BA%91%E7%9A%84%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F/03.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E7%93%9C%E5%AD%90%E4%BA%91%E7%9A%84%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F/04.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/%E7%93%9C%E5%AD%90%E4%BA%91%E7%9A%84%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F/05.jpg?raw=true">
+<meta property="og:updated_time" content="2017-10-31T14:48:01.745Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="瓜子云的任务调度系统">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;瓜子云的任务调度系统结合了K8S的Job和Airflow。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Airflow是Airbnb出品的任务调度系统，支持DAG调度，这一点完美的弥补了k8s Job的不足。借助k8s的自动扩展，集群资源统一管理，Ai">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/%E7%93%9C%E5%AD%90%E4%BA%91%E7%9A%84%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F/01.jpg?raw=true">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.43px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.7px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.74px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.48px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10.87px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.3px;">FTP</a> <a href="/tags/Git/" style="font-size: 10.87px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.74px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.61px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.43px;">Jenkins</a> <a href="/tags/Kubernetes/" style="font-size: 10.43px;">Kubernetes</a> <a href="/tags/LAMP/" style="font-size: 19.13px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.96px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.52px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.13px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.35px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.3px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.65px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.83px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.74px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 18.26px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.3px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.78px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.3px;">Puppet</a> <a href="/tags/Python/" style="font-size: 17.39px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.52px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.17px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.78px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.91px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 16.09px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.61px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 13.04px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15.22px;">shell</a> <a href="/tags/shell练习/" style="font-size: 19.57px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 13.04px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-docker微信群学习资料/2.瓜子云的任务调度系统" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/31/docker微信群学习资料/2.瓜子云的任务调度系统/" class="article-date">
+  	<time datetime="2017-10-31T14:48:49.446Z" itemprop="datePublished">2017-10-31</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      瓜子云的任务调度系统
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/">Docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kubernetes/">Kubernetes</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;瓜子云的任务调度系统结合了K8S的Job和Airflow。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Airflow是Airbnb出品的任务调度系统，支持DAG调度，这一点完美的弥补了k8s Job的不足。借助k8s的自动扩展，集群资源统一管理，Airflow将更具灵活性，更稳定。但是，把Airflow部署在K8S上是一个很大的挑战。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;接下来详细介绍一下瓜子云的任务调度系统搭建所遇到的问题和解决方案。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需求</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;瓜子最早的时候，任务调度用的是 crontab，后来由于数据仓库的复杂调度需求，我们引入了Airflow。Airflow支持DAG依赖，失败重试，历史状态记录，log收集等多种非常使用的功能。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Airflow有很多问题：</p>
+<ul>
+<li>Airflow的worker需要手动搭建，可扩展性不好。</li>
+<li>Job代码更新之后，需要手动部署到worker上，非常繁琐。</li>
+<li>Airflow worker的环境太多，由各个团队自行维护，维护成本太高。</li>
+<li>瓜子云平台搭建之后，所有机器都会被回收，各业务线拥有的机器将会很少，worker将会没有地方部署。</li>
+</ul>
+<a id="more"></a>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;此外，还希望调度系统有如下的功能：</p>
+<ol>
+<li>DAG之间的依赖</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;因为数据仓库的ETL非常复杂，没有任何人能够完全掌控整个流程，我们需要把整个ETL切成很多小的DAG，这些DAG之间是有互相依赖的。</p>
+<ol>
+<li>自动扩容缩容</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;瓜子这样的特点，晚上有大量批量任务需要跑，白天每个小时，每一分钟都会有增量任务需要跑。</p>
+<ol>
+<li>环境隔离</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;瓜子的语言多种多样，每个团队都有很多不同的job在不同的环境上跑着，管理很混乱，还有可能互相影响。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;介于这样的问题，准备把调度系统部署到k8s上，利用k8s的环境隔离，自动扩容缩容的特性。</p>
+<h2 id="Airflow的原始架构"><a href="#Airflow的原始架构" class="headerlink" title="Airflow的原始架构"></a>Airflow的原始架构</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Airflow分为Master节点和Worker节点两种。Master节点有Scheduler和Web两种服务，Worker上有Executor一种服务。</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E7%93%9C%E5%AD%90%E4%BA%91%E7%9A%84%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F/01.jpg?raw=true" alt="01"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从任务的调度过程来看看他们是怎么工作的：</p>
+<ol>
+<li><p>Scheduler读取DAG配置文件，将需要执行的Job信息发给Rabbitmq，并且在Mysql里面注册Job信息。</p>
+</li>
+<li><p>Rabbitmq里面按照环境有很多channel，Scheduler的job会根据需要执行的环境发到相应的channel里面。</p>
+</li>
+<li><p>Executor消费Rabbitmq相应的channel，进行执行，执行结果更新到Mysql中，并将log暴露到Executor的某个http端口上调用，并存入Mysql中。</p>
+</li>
+<li><p>Web读取Mysql里面的Job信息，展示Job的执行结果，并从mysql中获取log的url，展示log。</p>
+</li>
+<li><p>Web上发现执行错误的Job可以点击重试，直接发送job给Rabbitmq里，并改变Mysql里面job的状态。</p>
+</li>
+</ol>
+<h2 id="Airflow上云的问题"><a href="#Airflow上云的问题" class="headerlink" title="Airflow上云的问题"></a>Airflow上云的问题</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Airflow上云有很多问题，我们这里只列举一些比较麻烦的问题来说一下。</p>
+<ol>
+<li>Scheduler HA</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Airflow不支持多个Scheduler，多个Scheduler一起启动时会报错，所有Scheduler都会挂掉。当我们在k8s上滚动更新时，需要先启动一个新的Scheduler，然后在干掉旧的Scheduler。这样就不可避免会出现多个Scheduler并行的情况。</p>
+<ol>
+<li>配置更新 </li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Job配置更新后，所有组件自动更新最新配置的问题。Airflow中所有组件都需要拿到DAG配置才能正常工作。其实原理上大可不必，可能是Airflow设计的时候没考虑到分别部署的情况吧。</p>
+<ol>
+<li>Web访问Worker</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Web需要通过Worker的HOSTNAME来访问Worker上的log，但是k8s中不支持通过HOSTNAME来访问。</p>
+<ol>
+<li>Worker不同环境</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Job需要在不同环境中执行，不可能在k8s中为所有环境单独搭建长期运行的Pod。</p>
+<h2 id="问题的解决"><a href="#问题的解决" class="headerlink" title="问题的解决"></a>问题的解决</h2><ol>
+<li>Scheduler HA</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;引入了Zookeeper，在Airflow Scheduler启动时去监听Zookeeper下的/airflow/scheduler。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果发现下面有个running的key，就说明已经有Scheduler在运行了，然后一直监听，直到running timeout。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果发现没有，就可以启动Scheduler，然后在/airflow/scheduler下注册running，把自己的信息，作为value。每隔5s注册一下，该running timeout时间设为30s。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样就解决了HA的问题。</p>
+<ol>
+<li>配置更新的问题</li>
+</ol>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E7%93%9C%E5%AD%90%E4%BA%91%E7%9A%84%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F/02.jpg?raw=true" alt="02"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置更新的配置流程为：</p>
+<ol>
+<li><p>自己写了一个Watcher的组件，通过连接Git的Webhooker，监听git merge信息，一旦收到merge的信息，就会把git的commit hash值存入ETCD的/medusa/airflow/config 里面。</p>
+</li>
+<li><p>在Scheduler旁边放一个sidecar —— Confd，两个容器作为一个Pod，共享一个文件夹作为airflow的DAG配置文件夹。</p>
+</li>
+<li><p>Confd监听ETCD的/medusa/airflow/config key，发现更新就触发git pull操作。</p>
+</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样子，就拿到了最新的配置文件。通过相同的方式部署Web和Worker即可。</p>
+<ol>
+<li>Web访问Worker的问题</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个问题，在Airflow源码里面改了一点东西，用ip地址代替HOSTNAME解决了问题。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;只需要修改models.py里面的这行代码就好。</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E7%93%9C%E5%AD%90%E4%BA%91%E7%9A%84%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F/03.jpg?raw=true" alt="03"></p>
+<ol>
+<li>Worker不同环境</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解决方案是，不在Worker里面放任何环境，只负责由给定的image和script来生成kubernetes job xml，并启动job和监控。将在下面重点介绍。</p>
+<h2 id="Airflow云上架构"><a href="#Airflow云上架构" class="headerlink" title="Airflow云上架构"></a>Airflow云上架构</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;经过上述改动后，云上Airflow的架构就改成了下图这样</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E7%93%9C%E5%AD%90%E4%BA%91%E7%9A%84%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F/04.jpg?raw=true" alt="04"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;整个任务调度流程为</p>
+<ol>
+<li>Scheduler读取任务配置文件夹信息，发现有个任务需要执行。所有的执行命令都是</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">kjob --image myimage:latest --script <span class="string">'hive -e test.sql'</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个样子的，也就是所有任务都通过kjob来执行。</p>
+<ol>
+<li>worker里面我们用golang写了一个kjob的脚本，内部做了如下几件事</li>
+</ol>
+<ul>
+<li>通过传入的两个参数image和script，生成job.yml</li>
+<li>通过job.yml 启动kubernetes job</li>
+<li>一旦job开始正常运行，监听log</li>
+<li>job完成，获取job的状态并返回成功与否</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个样子，就把环境依赖的事丢给开发者自行维护了。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这时的任务更新流程如下图</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/%E7%93%9C%E5%AD%90%E4%BA%91%E7%9A%84%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F/05.jpg?raw=true" alt="05"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;写了一个med-sdk，其功能是把代码打成Docker镜像，并且push到Docker Registry里面。这里我就不详细展开了，有兴趣的可以看我的之前的分享。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;详细流程为：</p>
+<ol>
+<li><p>如图右侧，任务代码改动后，会自动触发med-sdk构建Docker镜像，并发布到Docker Registry里面，镜像以latest作为version，确保每次都拉取最新版的镜像。</p>
+</li>
+<li><p>如图左侧，Airflow配置改动后，Watcher会收到git的merge信息，并更新ETCD。Scheduler，Worker会更新相应的配置文件。</p>
+</li>
+<li><p>Worker收到最新job之后会拉取最新的镜像部署服务。</p>
+</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;整个Airflow上kubernetes的难点算是处理完了。</p>
+<h2 id="答疑"><a href="#答疑" class="headerlink" title="答疑"></a>答疑</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Q:请问下自动触发med-sdk构建Docker镜像,med-sdk是什么开源项目？能介绍下么？<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;A:med-sdk是瓜子自行开发的一个工具，用于把代码打成Docker镜像包。每个git里面只需要添加一个med.yml就可以实现。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Q:请问为什么要集成k8s?<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;A:Airflow的worker需要手动搭建，可扩展性不好；Job代码更新之后，需要手动部署到worker上，非常繁琐；Airflow worker的环境太多，由各个团队自行维护，维护成本太高；云平台搭建之后，所有机器都会被回收，各业务线拥有的机器将会很少，worker将会没有地方部署</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Q:Airflow  处理的调度量是什么规模，也就是批量任务会不会阻塞，一次并发有多少pod,多少容器实例，一套k8s master能否扛得住。方便给个数据量进行参考吗？<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;A:目前瓜子每天有2000个任务。任务的执行地点都是在k8s上的，不会阻塞。并发的pod个数是由同时处理的job数定的，airflow的worker有设置一个worker可以同时跑几个job。我们并发pod有20个。一套k8s可以抗住我们的规模。数据量不好给，因为任务的计算量不好估算，有的大有的小。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Q:请问你们用的什么技术实现的  之前用过s2i ？<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;A:没用过，airflow+k8s</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Q:为什么不考虑celery之类的任务队列，<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;A:首先是我们之前选用的是airflow，用python写的DAG，非常符合我们的需求，我们的DAG需求很大，比如数据仓库。所以选择了airflow</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Q:有做过类似软件的对比么，差异在哪？<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;A:k8s目前被Docker官方支持。mesos用c写的，不好运维。rancher社区不够大。其实功能大家都支持，主要是社区</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Q:并发的容器数量是多少，实际的docker实例个数量级。20个pod可大可小。方便给个参考吗？谢谢！<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;A:我们测过每台机的上限在100个，我们的机器是128G，24cores。我们airflow的worker有20个pod。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/10/28/Python/2.python新教程/20.python file 方法/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">python file（文件） 方法</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="docker微信群学习资料/2.瓜子云的任务调度系统" data-title="瓜子云的任务调度系统" data-url="https://hcldirgit.github.io/2017/10/31/docker微信群学习资料/2.瓜子云的任务调度系统/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="瓜子云的任务调度系统">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
