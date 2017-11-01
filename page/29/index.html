@@ -168,6 +168,133 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Nginx/33. Nginx、LVS及HAProxy负载均衡软件的优缺点详解" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Nginx/33. Nginx、LVS及HAProxy负载均衡软件的优缺点详解/" class="article-date">
+  	<time datetime="2017-10-13T13:29:41.882Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Nginx/33. Nginx、LVS及HAProxy负载均衡软件的优缺点详解/">
+        Nginx、LVS及HAProxy负载均衡软件的优缺点详解
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Nginx/LVS/HAProxy是目前使用最广泛的三种负载均衡软件，本人都在多个项目中实施过，参考了一些资料，结合自己的一些使用经验，总结一下。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一般对负载均衡的使用是随着网站规模的提升根据不同的阶段来使用不同的技术。具体的应用需求还得具体分析，如果是中小型的Web应用，比如日PV小于1000万，用Nginx就完全可以了；如果机器不少，可以用DNS轮询，LVS所耗费的机器还是比较多的；大型网站或重要的服务，且服务器比较多时，可以考虑用LVS。</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LVS/">LVS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/haproxy/">haproxy</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Nginx/33. Nginx、LVS及HAProxy负载均衡软件的优缺点详解/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Nginx/23. nginx代理" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Nginx/23. nginx代理/" class="article-date">
+  	<time datetime="2017-10-13T13:29:41.882Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Nginx/23. nginx代理/">
+        nginx代理
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lnmp ~]<span class="comment"># vim /usr/local/nginx/conf/vhosts/proxy.conf</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;加入内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 80;</div><div class="line">    server_name www.baidu.com;</div><div class="line"></div><div class="line">    location / &#123;</div><div class="line">        proxy_pass http://180.97.33.107/;</div><div class="line">        proxy_set_header Host <span class="variable">$host</span>;</div><div class="line">        proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;</div><div class="line">        proxy_set_header X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</div><div class="line">    &#125;</div><div class="line"><span class="comment"># access_log /home/logs/baidu.access combined;</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LNMP/">LNMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Nginx/23. nginx代理/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Nginx/27. Nginx：承受3万并发连接数，胜过Apache 10倍" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -675,132 +802,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/MongoDB/10.   Mongodb 3.0 配置身份验证db.createUser()说明/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-MongoDB/7. MongoDBPHP 扩展" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/MongoDB/7. MongoDBPHP 扩展/" class="article-date">
-  	<time datetime="2017-10-13T13:29:41.873Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/MongoDB/7. MongoDBPHP 扩展/">
-        MongoDBPHP 扩展
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Linux上安装-MongoDB-PHP扩展"><a href="#Linux上安装-MongoDB-PHP扩展" class="headerlink" title="Linux上安装 MongoDB PHP扩展"></a>Linux上安装 MongoDB PHP扩展</h2><h3 id="在终端上安装"><a href="#在终端上安装" class="headerlink" title="在终端上安装"></a>在终端上安装</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以在linux中执行以下命令来安装MongoDB 的 PHP 扩展驱动</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo pecl install mongo</div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MongoDB/">MongoDB</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/MongoDB/7. MongoDBPHP 扩展/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-MongoDB/18. 连接字符串URI格式" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/MongoDB/18. 连接字符串URI格式/" class="article-date">
-  	<time datetime="2017-10-13T13:29:41.872Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/MongoDB/18. 连接字符串URI格式/">
-        连接字符串URI格式
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;本文档描述了用于在官方MongoDB <a href="https://docs.mongodb.com/manual/applications/drivers/" target="_blank" rel="external">驱动程序</a>中定义应用程序和MongoDB实例之间的连接的URI格式。</p>
-<h2 id="标准连接字符串格式"><a href="#标准连接字符串格式" class="headerlink" title="标准连接字符串格式"></a>标准连接字符串格式</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;本节介绍用于连接到MongoDB数据库服务器的MongoDB连接URI的标准格式。所有官方MongoDB驱动程序的格式是一样的。有关驱动程序列表和驱动程序文档的链接，请参阅<a href="https://docs.mongodb.com/manual/applications/drivers/" target="_blank" rel="external">MongoDB驱动程序和客户端库</a>。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MongoDB/">MongoDB</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/MongoDB/18. 连接字符串URI格式/#more">阅读全文 >></a>
         </p>
       
     
