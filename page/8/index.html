@@ -168,6 +168,135 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Redis/1. Redis下载安装" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Redis/1. Redis下载安装/" class="article-date">
+  	<time datetime="2017-10-13T14:03:32.191Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Redis/1. Redis下载安装/">
+        Redis下载安装
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis是一个key-value存储系统，<a href="http://redis.io" target="_blank" rel="external">官方站点</a></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;和memcached类似，但支持数据持久化</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;支持更多value类型，除了和string外，还支持hash、lists（链表）、sets（集合）和sorted sets（有序集合）几种数据类型</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;redis使用了两种文件格式：全量数据（RDB）和增量请求（aof)。全量数据格式是 把内存中的数据写入磁盘，便于下次读取文件进行加载。增量请求文件则是把内存中的 数据序列化为操作请求，用于读取文件进行replay得到数据redis的存储分为内存存储、    磁盘存储和log文件三部分</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/">Redis</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Redis/1. Redis下载安装/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Shell/18.shell中的select用法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Shell/18.shell中的select用法/" class="article-date">
+  	<time datetime="2017-10-13T13:54:37.868Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Shell/18.shell中的select用法/">
+        shell中的select用法
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;select也是循环的一种，它比较适合用在用户选择的情况下。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;比如，我们有一个这样的需求，运行脚本后，让用户去选择数字，选择1，会运行w命令，选择2运行top命令，选择3运行free命令，选择4退出。脚本这样实现：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"></div><div class="line"><span class="built_in">echo</span> <span class="string">"Please chose a number, 1: run w, 2: run top, 3: run free, 4: quit"</span></div><div class="line"><span class="built_in">echo</span></div><div class="line">select <span class="built_in">command</span> <span class="keyword">in</span> w top free quit</div><div class="line"><span class="keyword">do</span></div><div class="line">    <span class="keyword">case</span> <span class="variable">$command</span> <span class="keyword">in</span></div><div class="line">    w)</div><div class="line">        w</div><div class="line">        ;;</div><div class="line">    top)</div><div class="line">        top</div><div class="line">        ;;</div><div class="line">    free)</div><div class="line">        free</div><div class="line">        ;;</div><div class="line">    quit)</div><div class="line">        <span class="built_in">exit</span></div><div class="line">        ;;</div><div class="line">    *)</div><div class="line">        <span class="built_in">echo</span> <span class="string">"Please input a number:(1-4)."</span></div><div class="line">        ;;</div><div class="line">    <span class="keyword">esac</span></div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Shell/18.shell中的select用法/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Shell/16. shell 函数" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -666,138 +795,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Shell/8. shell 自定义变量/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Shell/7. shell脚本编程" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Shell/7. shell脚本编程/" class="article-date">
-  	<time datetime="2017-10-13T13:51:15.077Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Shell/7. shell脚本编程/">
-        shell脚本编程
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="1-shell脚本是什么"><a href="#1-shell脚本是什么" class="headerlink" title="1.shell脚本是什么"></a>1.shell脚本是什么</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;它是一种脚本语言，并非编程语言</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以使用一些逻辑判断、循环等语法</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以自定义子函数</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是系统命令的集合</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;shell脚本可以实现自动化运维，大大增加我们的工作效率</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Shell/7. shell脚本编程/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Shell/6. date 命令" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Shell/6. date 命令/" class="article-date">
-  	<time datetime="2017-10-13T13:51:15.077Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Shell/6. date 命令/">
-        date命令
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;date 在脚本中用得很多，那必须得学会这个命令，下面是 date 的几种用法：</p>
-<ol>
-<li>输出四位的年、月、日，格式 2017.04.27</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 sbin]<span class="comment"># date +%Y-%m-%d</span></div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Shell/6. date 命令/#more">阅读全文 >></a>
         </p>
       
     

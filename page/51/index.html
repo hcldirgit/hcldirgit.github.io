@@ -168,6 +168,162 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Php/13. LNMP- php编译安装" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Php/13. LNMP- php编译安装/" class="article-date">
+  	<time datetime="2017-10-13T13:29:40.454Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Php/13. LNMP- php编译安装/">
+        LNMP- php编译安装
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先针对 nginx 的 php 安装和针对 apache 的 php 安装是有区别的，因为 nginx 中的 php 是以 fastcgi 的方式结合 nginx 的。可以理解为 nginx 代理了 php 的 fastcgi ，而 apache 是把 php 作为子机的模块来调用的。<a href="http://www.php.net/downloads.php" target="_blank" rel="external">php官方下载地址</a></p>
+<h2 id="1-下载-php-源码包"><a href="#1-下载-php-源码包" class="headerlink" title="1.下载 php 源码包"></a>1.下载 php 源码包</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@lnmp ~]<span class="comment"># cd /usr/local/src</span></div><div class="line">[root@lnmp src]<span class="comment"># wget http://aul.php.net/distributions/php-5.4.44.tar.bz2</span></div></pre></td></tr></table></figure>
+<h2 id="2-解压源码包"><a href="#2-解压源码包" class="headerlink" title="2.解压源码包"></a>2.解压源码包</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lnmp src]<span class="comment"># tar jxf php.5.4.44.tar.bz2</span></div></pre></td></tr></table></figure>
+<h2 id="3-创建相关帐号"><a href="#3-创建相关帐号" class="headerlink" title="3.创建相关帐号"></a>3.创建相关帐号</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lnmp src]<span class="comment"># useradd -s /sbin/nologin php-fpm</span></div></pre></td></tr></table></figure>
+<h2 id="4-依赖包安装"><a href="#4-依赖包安装" class="headerlink" title="4.依赖包安装"></a>4.依赖包安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install -y bzip2-devel curl-devel db4-devel libjpeg-devel libpng-devel libXpm-devel gmp-devel libc-client-devel openldap-devel unixODBC-devel postgresql-devel sqlite-devel aspell-devel net-snmp-devel libxslt-devel libxml2-devel pcre-devel mysql-devel unixODBC-devel postgresql-devel pspell-devel net-snmp-devel freetype-devel libtomcrypt-devel.x86_64 php-mcrypt libmcrypt libmcrypt-devel</div></pre></td></tr></table></figure>
+<h2 id="5-配置编译参数"><a href="#5-配置编译参数" class="headerlink" title="5.配置编译参数"></a>5.配置编译参数</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">[root@lnmp src]<span class="comment"># cd php-5.4.44</span></div><div class="line">[root@lnmp php-5.4.44]<span class="comment"># ./configure \</span></div><div class="line">--prefix=/usr/<span class="built_in">local</span>/php \</div><div class="line">--with-config-file-path=/usr/<span class="built_in">local</span>/php/etc \</div><div class="line">--<span class="built_in">enable</span>-fpm \</div><div class="line">--with-fpm-user=php-fpm \</div><div class="line">--with-fpm-group=php-fpm \</div><div class="line">--with-mysql=/usr/<span class="built_in">local</span>/mysql \</div><div class="line">--with-mysql-sock=/tmp/mysql.sock \</div><div class="line">--with-libxml-dir \</div><div class="line">--with-gd \</div><div class="line">--with-jpeg-dir \</div><div class="line">--with-png-dir \</div><div class="line">--with-freetype-dir \</div><div class="line">--with-iconv-dir \</div><div class="line">--with-zlib-dir \</div><div class="line">--with-mcrypt \</div><div class="line">--<span class="built_in">enable</span>-soap \</div><div class="line">--<span class="built_in">enable</span>-gd-native-ttf \</div><div class="line">--<span class="built_in">enable</span>-ftp \</div><div class="line">--<span class="built_in">enable</span>-mbstring \</div><div class="line">--<span class="built_in">enable</span>-exif \</div><div class="line">--<span class="built_in">disable</span>-ipv6 \</div><div class="line">--with-pear \</div><div class="line">--with-curl \</div><div class="line">--with-openssl</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在该过程中，若出现和 lamp 安装 php 的错误一样的错误参照 lamp 的方法来解决，若出现如下错误，参考下面解决办法：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;错误信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">configure: error: Please reinstall the libcurl distribution -</div><div class="line"> easy.h should be <span class="keyword">in</span> &lt;curl-dir&gt;/include/curl/</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解决办法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install -y libcurl-devel</div></pre></td></tr></table></figure>
+<h2 id="6-编译-php"><a href="#6-编译-php" class="headerlink" title="6.编译 php"></a>6.编译 php</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lnmp php-5.4.44]<span class="comment"># make</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在这一步，通常会遇到一些错误：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">/usr/bin/ld: cannot find -lltdl</div><div class="line">collect2: ld returned 1 <span class="built_in">exit</span> status</div><div class="line">make: *** [sapi/fpm/php-fpm] 错误 1</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解决办法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install -y libtool-ltdl-devel</div></pre></td></tr></table></figure>
+<h2 id="7-安装-php"><a href="#7-安装-php" class="headerlink" title="7.安装 php"></a>7.安装 php</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lnmp php-5.4.44]<span class="comment"># make install</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以上每一步骤，如果没有完全执行正确，那么下一步是无法进行的，使用 echo $? 看结果是否为 “0”，如果不是，就是没有执行正确。</p>
+<h2 id="8-修改配置文件"><a href="#8-修改配置文件" class="headerlink" title="8.修改配置文件"></a>8.修改配置文件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cp php.ini-production /usr/<span class="built_in">local</span>/php/etc/php.ini</div><div class="line">vim /usr/<span class="built_in">local</span>/php/etc/php-fpm.conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;添加如下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">[global]</div><div class="line">pid = /usr/<span class="built_in">local</span>/php/var/run/php-fpm.pid</div><div class="line">error_log = /usr/<span class="built_in">local</span>/php/var/<span class="built_in">log</span>/php-fpm.log</div><div class="line">[www]</div><div class="line">listen = /tmp/php-fcgi.sock</div><div class="line">user = php-fpm</div><div class="line">group = php-fpm</div><div class="line">pm = dynamic</div><div class="line">pm.max_children = 50</div><div class="line">pm.start_servers = 20</div><div class="line">pm.min_spare_servers = 5</div><div class="line">pm.max_spare_servers = 35</div><div class="line">pm.max_requests = 500</div><div class="line">rlimit_files = 1024</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;保存配置文件后，检验配置是否正确的方法为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/<span class="built_in">local</span>/php/sbin/php-fpm -t</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果出现诸如 “test is successful” 字样，说明配置没有问题。</p>
+<h2 id="9-启动-php-fpm"><a href="#9-启动-php-fpm" class="headerlink" title="9.启动 php-fpm"></a>9.启动 php-fpm</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先要拷贝一个启动脚本到 /etc/init.d 下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cp /usr/<span class="built_in">local</span>/src/php-5.4.44/sapi/fpm/init.d.php-fpm /etc/init.d/php-fpm</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;更改权限为755</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">chmod 755 /etc/init.d/php-fpm</div><div class="line">service php-fpm start</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果要它开机启动，执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chkconfig php-fpm on</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;检测是否成功：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ps aux |grep php-fpm</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;看看是不是有很多进程</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LNMP/">LNMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Php/">Php</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Php/10. php.ini 中开启短标签" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Php/10. php.ini 中开启短标签/" class="article-date">
+  	<time datetime="2017-10-13T13:29:40.453Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Php/10. php.ini 中开启短标签/">
+        php.ini 中开启短标签
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;控制参数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">short_open_tag = On</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果设置为Off，则不能正常解析类似于这样形式的php文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;?</div><div class="line">phpinfo()</div><div class="line">?&gt;</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Php/">Php</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Php/10. php.ini 中开启短标签/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Php/6. LAMP测试 php 解析" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -703,134 +859,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/jenkins/1.jenkins是什么？/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-jenkins/2.使用jenkins进行持续集成" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/jenkins/2.使用jenkins进行持续集成/" class="article-date">
-  	<time datetime="2017-10-13T13:29:40.433Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/jenkins/2.使用jenkins进行持续集成/">
-        使用jenkins进行持续集成
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="安装JDK"><a href="#安装JDK" class="headerlink" title="安装JDK"></a>安装JDK</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;因为jenkins需要java环境，需要提前安装JDK。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下载JDK后解压</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># tar zxvf jdk-8u111-linux-x64.tar.gz</span></div><div class="line">[root@localhost ~]<span class="comment"># mv jdk1.8.0_111/ /usr/local/</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编辑文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># vim /etc/profile.d/java.sh</span></div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jenkins/">Jenkins</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/jenkins/2.使用jenkins进行持续集成/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Hadoop/4. Avro简介" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Hadoop/4. Avro简介/" class="article-date">
-  	<time datetime="2017-10-13T13:29:40.431Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Hadoop/4. Avro简介/">
-        Avro简介
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h2><h3 id="1、-简介"><a href="#1、-简介" class="headerlink" title="1、 简介"></a>1、 简介</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Avro是Hadoop中的一个子项目，也是Apache中一个独立的项目，Avro是一个基于二进制数据传输高性能的中间件。在Hadoop的其他项目中例如HBase(Ref)和Hive(Ref)的Client端与服务端的数据传输也采用了这个工具。Avro是一个数据序列化的系统。Avro 可以将数据结构或对象转化成便于存储或传输的格式。Avro设计之初就用来支持数据密集型应用，适合于远程或本地大规模数据的存储和交换。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hadoop/">Hadoop</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Hadoop/4. Avro简介/#more">阅读全文 >></a>
         </p>
       
     

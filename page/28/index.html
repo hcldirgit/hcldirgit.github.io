@@ -168,6 +168,130 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Nginx/34. Nginx的代理" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Nginx/34. Nginx的代理/" class="article-date">
+  	<time datetime="2017-10-13T13:29:41.893Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Nginx/34. Nginx的代理/">
+        Nginx的代理
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">upstream bbs.aaa.cn&#123;</div><div class="line">        server 1.2.3.1:80;</div><div class="line">        server 1.2.3.4:80;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    server &#123;</div><div class="line">        listen 80;</div><div class="line">        server_name bbs.aaa.cn;</div><div class="line"></div><div class="line">        location / &#123;</div><div class="line">            proxy_pass http://bbs.aaa.cn/;</div><div class="line">            proxy_set_header Host <span class="variable">$host</span>;</div><div class="line">            proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;</div><div class="line">            proxy_set_header X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</div><div class="line">        &#125;</div><div class="line"><span class="comment">#         access_log /home/logs/bbs.access combined;</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    upstream blog.aaa.cn&#123;</div><div class="line">        server 1.2.3.1:80;</div><div class="line">        server 1.2.3.4:80;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    server &#123;</div><div class="line">        listen 80;</div><div class="line">        server_name blog.aaa.cn;</div><div class="line"></div><div class="line">        location / &#123;</div><div class="line">            proxy_pass http://blog.aaa.cn/;</div><div class="line">            proxy_set_header Host <span class="variable">$host</span>;</div><div class="line">            proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;</div><div class="line">            proxy_set_header X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</div><div class="line">        &#125;</div><div class="line"><span class="comment">#         access_log /home/logs/ss.access combined;</span></div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Nginx/34. Nginx的代理/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Nginx/1. Nginx编译安装" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Nginx/1. Nginx编译安装/" class="article-date">
+  	<time datetime="2017-10-13T13:29:41.892Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Nginx/1. Nginx编译安装/">
+        Nginx编译安装
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<a href="http://nginx.org" target="_blank" rel="external">Nginx官方网站</a>, 从官方网站可以看到Nginx更新速度很快，这也反映了一个事实，目前使用Nginx跑网站的公司或者个人越来越多。</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LNMP/">LNMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Nginx/1. Nginx编译安装/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Nginx/4. Nginx为什么比Apache Httpd高效：原理篇" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -652,139 +776,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Nginx/16. nginx的301与302如何配置/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Nginx/22. nginx禁止指定user_agent" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Nginx/22. nginx禁止指定user_agent/" class="article-date">
-  	<time datetime="2017-10-13T13:29:41.884Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Nginx/22. nginx禁止指定user_agent/">
-        nginx禁止指定user_agent
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;具体配置如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">location / &#123;</div><div class="line"> <span class="keyword">if</span> (<span class="variable">$http_user_agent</span> ~ <span class="string">'curl|baidu|111111'</span>)</div><div class="line">     &#123;</div><div class="line">         <span class="built_in">return</span> 403;</div><div class="line">     &#125;</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LNMP/">LNMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Nginx/22. nginx禁止指定user_agent/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Nginx/30. nginx的负载均衡和反向代理" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Nginx/30. nginx的负载均衡和反向代理/" class="article-date">
-  	<time datetime="2017-10-13T13:29:41.883Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Nginx/30. nginx的负载均衡和反向代理/">
-        nginx的负载均衡和反向代理
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="负载均衡模块upstream："><a href="#负载均衡模块upstream：" class="headerlink" title="负载均衡模块upstream："></a>负载均衡模块upstream：</h2><p><img src="https://github.com/hcldirgit/image/blob/master/nginx%E7%9A%84%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E5%92%8C%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/01.png?raw=true" alt=""></p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;nginx的负载均衡的算法：</p>
-<ol>
-<li>轮询（默认）</li>
-<li>weight 权重轮询</li>
-<li>ip_hash  每个请求按访问ip的hash结果分配，这样来自同一个ip的请求固定到后台的一段服务器上，有效的解决动态网页存在的session共享问题</li>
-<li>fair 根据服务器的相应时间短来进行负载，需要安装nginx的upstream_fair模块</li>
-<li>url_hash 根据url的hash结果分配，同一个url定向到同一后台服务器，提高缓存服务器的效率，需要安装nginx的hash包</li>
-</ol>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Nginx/30. nginx的负载均衡和反向代理/#more">阅读全文 >></a>
         </p>
       
     

@@ -168,6 +168,130 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Shell 练习/20. shell 练习-乘法口诀表" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Shell 练习/20. shell 练习-乘法口诀表/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.019Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Shell 练习/20. shell 练习-乘法口诀表/">
+        shell 练习-乘法口诀表
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>需要两层循环</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell练习/">shell练习</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Shell 练习/20. shell 练习-乘法口诀表/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Shell 练习/2. shell 练习-统计IP访问量" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Shell 练习/2. shell 练习-统计IP访问量/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.018Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Shell 练习/2. shell 练习-统计IP访问量/">
+        shell 练习-统计IP访问量
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>抓包 ip 访问日志 /var/log/1.log 然后进行系统分析：要求统计出每个 IP 的访问量有多少？提示，先 awk 过滤出 ip ，然后进行排序，统计重复数</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell练习/">shell练习</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Shell 练习/2. shell 练习-统计IP访问量/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Shell 练习/19. shell 练习-找规律打印数字" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -675,136 +799,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Shell 练习/12. shell 练习-删除文本中的字母/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Shell 练习/11. shell 练习-自动重启php-fpm" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Shell 练习/11. shell 练习-自动重启php-fpm/" class="article-date">
-  	<time datetime="2017-10-13T13:48:39.006Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Shell 练习/11. shell 练习-自动重启php-fpm/">
-        shell 练习-自动重启php-fpm
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>服务器上跑的是LNMP环境，近期总是有502现象。502为网站访问的状态码，200正常，502错误是nginx最为普通的错误状态码。由于502只是暂时的，并且只要一重启php-fpm服务则502消失，但不重启的话，则会一直持续很长时间。所以有必要写一个监控脚本，监控访问日志的状态码，一旦发生502，则自动重启一下php-fpm。</p>
-<p>我们设定： </p>
-<ol>
-<li>access_log  /data1/log/access.log</li>
-<li>脚本死循环，每10s检测一次 （假设每10s钟的日志条数为300左右）</li>
-<li>重启php-fpm的方法是  /etc/init.d/php-fpm restart</li>
-</ol>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell练习/">shell练习</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Shell 练习/11. shell 练习-自动重启php-fpm/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Shell 练习/10. shell 练习-每天删除两天前的文件" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Shell 练习/10. shell 练习-每天删除两天前的文件/" class="article-date">
-  	<time datetime="2017-10-13T13:48:39.005Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Shell 练习/10. shell 练习-每天删除两天前的文件/">
-        shell 练习-每天删除两天前的文件
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>web服务器上有个目录，它的结构是这样的，首先有256个一级子目录和一个特殊目录，另外这256个一级子目录下还有256个二级子目录（特殊目录除外）。在这些二级子目录下有很多小文件，而且是每时每刻都会生成很多个。 虽然文件不大，但是时间长了，逐渐发现该分区的下inode快被占用满了。 所以请写一个小脚本，实现每天删除两天前的小文件，注意忽略那个特殊的一级子目录default。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell练习/">shell练习</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Shell 练习/10. shell 练习-每天删除两天前的文件/#more">阅读全文 >></a>
         </p>
       
     
