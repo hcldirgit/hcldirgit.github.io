@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>python生成器 | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;通过列表生成式，可以直接创建一个list。但是受到内存限制，list容量肯定是有限的。而且，创建一个包含100万个元素的列表，不仅占用很大的存储空间，如果仅仅需要访问前面几个元素，那后面绝大多数元素占用的空间都白白浪费了。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#16">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python生成器">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/11/04/Python/2.python新教程/26.python生成器/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;通过列表生成式，可以直接创建一个list。但是受到内存限制，list容量肯定是有限的。而且，创建一个包含100万个元素的列表，不仅占用很大的存储空间，如果仅仅需要访问前面几个元素，那后面绝大多数元素占用的空间都白白浪费了。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#16">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-03T18:18:02.813Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python生成器">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;通过列表生成式，可以直接创建一个list。但是受到内存限制，list容量肯定是有限的。而且，创建一个包含100万个元素的列表，不仅占用很大的存储空间，如果仅仅需要访问前面几个元素，那后面绝大多数元素占用的空间都白白浪费了。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#16">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.43px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.7px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.74px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.48px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10.87px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.3px;">FTP</a> <a href="/tags/Git/" style="font-size: 10.87px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.74px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.61px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.43px;">Jenkins</a> <a href="/tags/Kubernetes/" style="font-size: 10.43px;">Kubernetes</a> <a href="/tags/LAMP/" style="font-size: 19.13px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.96px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.52px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.13px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.35px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.3px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.65px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.39px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.74px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 18.26px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.3px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.78px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.3px;">Puppet</a> <a href="/tags/Python/" style="font-size: 17.83px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.52px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.17px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.78px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.91px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 16.09px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.61px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 13.04px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15.22px;">shell</a> <a href="/tags/shell练习/" style="font-size: 19.57px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 13.04px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Python/2.python新教程/26.python生成器" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/11/04/Python/2.python新教程/26.python生成器/" class="article-date">
+  	<time datetime="2017-11-03T18:47:51.983Z" itemprop="datePublished">2017-11-04</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      python生成器
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;通过列表生成式，可以直接创建一个list。但是受到内存限制，list容量肯定是有限的。而且，创建一个包含100万个元素的列表，不仅占用很大的存储空间，如果仅仅需要访问前面几个元素，那后面绝大多数元素占用的空间都白白浪费了。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;所以，如果list元素可以按照某种算法推算出来，那就可以在循环的过程中不断推算出后续的元素。这样就不必创建完整的list，从而节省大量的空间。在python中，这种一边循环一边计算的机制，称为生成器（Generator）。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要创建一个<code>generator</code>，有很多种方法。第一种方法很简单，只要把一个列表生成式的<code>[]</code>改成<code>()</code>，就创建了一个<code>generator</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>L = [x * x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">10</span>)]</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>L</div><div class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>, <span class="number">36</span>, <span class="number">49</span>, <span class="number">64</span>, <span class="number">81</span>]</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>g = (x * x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">10</span>))</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>g</div><div class="line">&lt;generator object &lt;genexpr&gt; at <span class="number">0x104feab40</span>&gt;</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;创建L和g的区别仅在于最外层的<code>[]</code>和<code>()</code>，L是一个list，而g是一个generator。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以直接打印出list的每一个元素，但generator的每一个元素该怎么打印？</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果要有一个一个打印出来，可以通过generator的<code>next()</code>方法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>g.next()</div><div class="line"><span class="number">0</span> &gt;&gt;&gt; g.next()</div><div class="line"><span class="number">1</span> &gt;&gt;&gt; g.next()</div><div class="line"><span class="number">4</span> &gt;&gt;&gt; g.next()</div><div class="line"><span class="number">9</span> &gt;&gt;&gt; g.next()</div><div class="line"><span class="number">16</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>g.next()</div><div class="line"><span class="number">25</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>g.next()</div><div class="line"><span class="number">36</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>g.next()</div><div class="line"><span class="number">49</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>g.next()</div><div class="line"><span class="number">64</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>g.next()</div><div class="line"><span class="number">81</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>g.next()</div><div class="line">Traceback (most recent call last):</div><div class="line">File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</div><div class="line">StopIteration</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;generator保存的是算法，每次调用<code>next()</code>，就计算出下一个元素的值，知道计算到最后一个元素，没有更多的元素时，抛出<code>StopIteration</code>的错误。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当然，上例中不断调用<code>next()</code>方法实在是太变态了，正确的方法是使用<code>for</code>循环，因为generator也是可迭代对象</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>g = (x * x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">10</span>))</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> n <span class="keyword">in</span> g:</div><div class="line"><span class="meta">... </span><span class="keyword">print</span> n</div><div class="line">...</div><div class="line"><span class="number">0</span></div><div class="line"><span class="number">1</span></div><div class="line"><span class="number">4</span></div><div class="line"><span class="number">9</span></div><div class="line"><span class="number">16</span></div><div class="line"><span class="number">25</span></div><div class="line"><span class="number">36</span></div><div class="line"><span class="number">49</span></div><div class="line"><span class="number">64</span></div><div class="line"><span class="number">81</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;所以，创建了一个generator后，基本上永远不会调用<code>next()</code>方法，而是通过<code>for</code>循环来迭代它。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;generator非常强大。如果推算的算法比较复杂，用类似列表生成式的for循环无法实现的时候，还可以用函数来实现。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;比如著名的斐波拉契数列（Fibonacci），除第一个和第二个数外，任意一个数都可由前两个数相加得到</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">1, 1, 2, 3, 5, 8, 13, 21, 34,...</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;斐波拉契数列列表生成式写不出来，但是，可以用函数把它打印出来</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">fid</span><span class="params">(max)</span>:</span></div><div class="line">    n, a, b = <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span></div><div class="line">    <span class="keyword">while</span> n &lt; max:</div><div class="line">        <span class="keyword">print</span> b</div><div class="line">        a, b = b, a + b</div><div class="line">        n = n + <span class="number">1</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上面的函数可以输出斐波拉契数列的前N个数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>fib(<span class="number">6</span>)</div><div class="line"><span class="number">1</span></div><div class="line"><span class="number">1</span></div><div class="line"><span class="number">2</span></div><div class="line"><span class="number">3</span></div><div class="line"><span class="number">5</span></div><div class="line"><span class="number">8</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以看出，fib函数实际上是定义了斐波拉契数列的推算规则，可以从第一个元素开始，推算出后续任意的元素，这种逻辑其实非常类似generator。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;也就是说，要把fib函数变成generator，只需要把<code>print b</code>改为<code>yield b</code>就可以了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib</span><span class="params">(max)</span>:</span></div><div class="line">n, a, b = <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span></div><div class="line"><span class="keyword">while</span> n &lt; max:</div><div class="line"><span class="keyword">yield</span> b</div><div class="line">a, b = b, a + b</div><div class="line">n = n + <span class="number">1</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这就是定义generator的另一种方法。如果一个函数定义中包含<code>yield</code>关键字，那么这个函数就不再是一个普通函数，而是一个generator</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>fib(<span class="number">6</span>)</div><div class="line">&lt;generator object fib at <span class="number">0x104feaaa0</span>&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里最难理解的就是generator和函数的执行流程不一样。函数是顺序执行，遇到return语句或者最后一行函数语句就返回。而变成generator的函数，在每次调用<code>next()</code>的时候执行，遇到<code>yield</code>语句返回，再次执行时从上次返回的<code>yield</code>语句处继续执行。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例：定义一个generator，一次返沪一数字1， 3， 5</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">odd</span><span class="params">()</span>:</span></div><div class="line"><span class="meta">... </span><span class="keyword">print</span> <span class="string">'step 1'</span></div><div class="line"><span class="meta">... </span><span class="keyword">yield</span> <span class="number">1</span></div><div class="line"><span class="meta">... </span><span class="keyword">print</span> <span class="string">'step 2'</span></div><div class="line"><span class="meta">... </span><span class="keyword">yield</span> <span class="number">3</span></div><div class="line"><span class="meta">... </span><span class="keyword">print</span> <span class="string">'step 3'</span></div><div class="line"><span class="meta">... </span><span class="keyword">yield</span> <span class="number">5</span></div><div class="line">...</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>o = odd()</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>o.next()</div><div class="line">step <span class="number">1</span></div><div class="line"><span class="number">1</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>o.next()</div><div class="line">step <span class="number">2</span></div><div class="line"><span class="number">3</span> </div><div class="line"><span class="meta">&gt;&gt;&gt; </span>o.next()</div><div class="line">step <span class="number">3</span></div><div class="line"><span class="number">5</span> </div><div class="line"><span class="meta">&gt;&gt;&gt; </span>o.next()</div><div class="line">Traceback (most recent call last):</div><div class="line">File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</div><div class="line">StopIteration</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以看到<code>odd</code>不是普通函数，而是<code>generator</code>，在执行过程中，遇到<code>yield</code>就终端，下一次又继续执行。执行3次<code>yield</code>后，已经没有<code>yield</code>可以执行了，所以第4次调用<code>next()</code>就报错。</p>
+<p>回到fib的例子，在循环过程中不断调用<code>yield</code>，就会不断中断。当然要给循环设置一个条件来退出循环，不然就会产生一个无限数列出来。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;同样的，把函数改成generator后，基本上从来不会用<code>next()</code>来调用它，而是直接使用<code>for</code>循环来迭代</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> n <span class="keyword">in</span> fib(<span class="number">6</span>):</div><div class="line"><span class="meta">... </span><span class="keyword">print</span> n</div><div class="line">...</div><div class="line"><span class="number">1</span></div><div class="line"><span class="number">1</span></div><div class="line"><span class="number">2</span></div><div class="line"><span class="number">3</span></div><div class="line"><span class="number">5</span></div><div class="line"><span class="number">8</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;generator是非常强大的工具，在python中，可以简单地把列表生成式改成generator，也可以通过函数实现复杂逻辑的generator。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;generator的工作原理：它是在for循环的过程中不断计算出下一个元素，并在适当的条件借宿for循环。对于函数改成的generator来说，鱼洞啊return语句或者执行到函数体最后一行语句，就是借宿generator的指令，for循环随之结束。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/11/04/Python/2.python新教程/27.python迭代/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          python迭代
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/11/04/Python/2.python新教程/25.python列表生成式/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">python列表生成式</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="Python/2.python新教程/26.python生成器" data-title="python生成器" data-url="https://hcldirgit.github.io/2017/11/04/Python/2.python新教程/26.python生成器/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="python生成器">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
