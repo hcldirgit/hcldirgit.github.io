@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>GitLab SMTP设置 | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;如想用 SMTP 代替 Sendmail 发送email,添加如下相应邮箱服务商的配置到/etc/gitlab/gitlab.rb, 然后运行gitlab-ctl reconfigure使修改生效。 omnibus-gitlab还提供了测试发送邮件功能。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;">
+<meta name="keywords" content="Git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GitLab SMTP设置">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/11/04/Git/5.GitLab SMTP设置/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;如想用 SMTP 代替 Sendmail 发送email,添加如下相应邮箱服务商的配置到/etc/gitlab/gitlab.rb, 然后运行gitlab-ctl reconfigure使修改生效。 omnibus-gitlab还提供了测试发送邮件功能。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-04T11:36:35.142Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="GitLab SMTP设置">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;如想用 SMTP 代替 Sendmail 发送email,添加如下相应邮箱服务商的配置到/etc/gitlab/gitlab.rb, 然后运行gitlab-ctl reconfigure使修改生效。 omnibus-gitlab还提供了测试发送邮件功能。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.43px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.7px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.74px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.48px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10.87px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.3px;">FTP</a> <a href="/tags/Git/" style="font-size: 11.74px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.74px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.61px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.43px;">Jenkins</a> <a href="/tags/Kubernetes/" style="font-size: 10.43px;">Kubernetes</a> <a href="/tags/LAMP/" style="font-size: 19.13px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.96px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.52px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.13px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.35px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.3px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.65px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.39px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.74px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 18.26px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.3px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.78px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.3px;">Puppet</a> <a href="/tags/Python/" style="font-size: 17.83px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.52px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.17px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.78px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.91px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 16.09px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.61px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 13.04px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15.22px;">shell</a> <a href="/tags/shell练习/" style="font-size: 19.57px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 13.04px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Git/5.GitLab SMTP设置" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/11/04/Git/5.GitLab SMTP设置/" class="article-date">
+  	<time datetime="2017-11-04T11:36:55.097Z" itemprop="datePublished">2017-11-04</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      GitLab SMTP设置
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Git/">Git</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如想用 SMTP 代替 Sendmail 发送email,添加如下相应邮箱服务商的配置到/etc/gitlab/gitlab.rb, 然后运行gitlab-ctl reconfigure使修改生效。 omnibus-gitlab还提供了测试发送邮件功能。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>注意</strong>：<code>smtp_password</code> 字段不应包含任何 Ruby或者YAML语法中的分隔符 (如<code>&#39;</code>), 以避免处理配置文件的过程中发生不必要的意外。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">gitlab_rails[<span class="string">'smtp_enable'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_address'</span>] = <span class="string">"smtp.server"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_port'</span>] = 465</div><div class="line">gitlab_rails[<span class="string">'smtp_user_name'</span>] = <span class="string">"smtp user"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_password'</span>] = <span class="string">"smtp password"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_domain'</span>] = <span class="string">"example.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_authentication'</span>] = <span class="string">"login"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_enable_starttls_auto'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_openssl_verify_mode'</span>] = <span class="string">'peer'</span></div><div class="line"></div><div class="line"><span class="comment"># 如果使用的SMTP服务是默认的 'From:gitlab@localhost'</span></div><div class="line"><span class="comment"># 可以修改这里的 'From' 的值。</span></div><div class="line">gitlab_rails[<span class="string">'gitlab_email_from'</span>] = <span class="string">'gitlab@example.com'</span></div><div class="line">gitlab_rails[<span class="string">'gitlab_email_reply_to'</span>] = <span class="string">'noreply@example.com'</span></div><div class="line">Example configuration 配置示例</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="Example-configuration配置示例"><a href="#Example-configuration配置示例" class="headerlink" title="Example configuration配置示例"></a>Example configuration配置示例</h2><h3 id="SMTP-on-localhost"><a href="#SMTP-on-localhost" class="headerlink" title="SMTP on localhost"></a>SMTP on localhost</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面的配置仅仅是启动smtp，值为<code>false</code>则使用默认的设置（sendmail），启用smtp可用于不提供<code>sendmail</code>接口或者与gitlab不兼容的<code>sendmail</code>接口的运行MTA的本地服务器，如“Exim”。</p>
+<h3 id="QQ-exmail-腾讯企业邮箱"><a href="#QQ-exmail-腾讯企业邮箱" class="headerlink" title="QQ exmail (腾讯企业邮箱)"></a>QQ exmail (腾讯企业邮箱)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">gitlab_rails[<span class="string">'smtp_enable'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_address'</span>] = <span class="string">"smtp.exmail.qq.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_port'</span>] = 465</div><div class="line">gitlab_rails[<span class="string">'smtp_user_name'</span>] = <span class="string">"xxxx@xx.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_password'</span>] = <span class="string">"password"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_authentication'</span>] = <span class="string">"login"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_enable_starttls_auto'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_tls'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'gitlab_email_from'</span>] = <span class="string">'xxxx@xx.com'</span></div></pre></td></tr></table></figure>
+<h3 id="Gmail"><a href="#Gmail" class="headerlink" title="Gmail"></a>Gmail</h3><blockquote>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意：Gmail具有严格的发送限制，可能会随着组织的发展而影响功能。 强烈建议为使用SMTP配置的团队使用SendGrid或Mailgun等事务服务。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">gitlab_rails[<span class="string">'smtp_enable'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_address'</span>] = <span class="string">"smtp.gmail.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_port'</span>] = 587</div><div class="line">gitlab_rails[<span class="string">'smtp_user_name'</span>] = <span class="string">"my.email@gmail.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_password'</span>] = <span class="string">"my-gmail-password"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_domain'</span>] = <span class="string">"smtp.gmail.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_authentication'</span>] = <span class="string">"login"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_enable_starttls_auto'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_tls'</span>] = <span class="literal">false</span></div><div class="line">gitlab_rails[<span class="string">'smtp_openssl_verify_mode'</span>] = <span class="string">'peer'</span> <span class="comment"># Can be: 'none', 'peer', 'client_once', 'fail_if_no_peer_cert', see http://api.rubyonrails.org/classes/ActionMailer/Base.html</span></div></pre></td></tr></table></figure>
+<blockquote>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;不要忘记将my.email@gmail.com更改为您的电子邮件地址，将my-gmail-password更改为您自己的密码。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果您遇到身份验证错误，请确保您允许安全性较低的应用访问该帐户，或尝试启用两步验证并使用应用程序密码。</p>
+</blockquote>
+<h3 id="Mailgun"><a href="#Mailgun" class="headerlink" title="Mailgun"></a>Mailgun</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">gitlab_rails[<span class="string">'smtp_enable'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_address'</span>] = <span class="string">"smtp.mailgun.org"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_port'</span>] = 587</div><div class="line">gitlab_rails[<span class="string">'smtp_authentication'</span>] = <span class="string">"plain"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_enable_starttls_auto'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_user_name'</span>] = <span class="string">"postmaster@mg.gitlab.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_password'</span>] = <span class="string">"8b6ffrmle180"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_domain'</span>] = <span class="string">"mg.gitlab.com"</span></div></pre></td></tr></table></figure>
+<h3 id="Amazon-SES"><a href="#Amazon-SES" class="headerlink" title="Amazon SES"></a>Amazon SES</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">gitlab_rails[<span class="string">'smtp_enable'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_address'</span>] = <span class="string">"email-smtp.region-1.amazonaws.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_port'</span>] = 587</div><div class="line">gitlab_rails[<span class="string">'smtp_user_name'</span>] = <span class="string">"IAMmailerKey"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_password'</span>] = <span class="string">"IAMmailerSecret"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_domain'</span>] = <span class="string">"yourdomain.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_authentication'</span>] = <span class="string">"login"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_enable_starttls_auto'</span>] = <span class="literal">true</span></div></pre></td></tr></table></figure>
+<h3 id="Mandrill"><a href="#Mandrill" class="headerlink" title="Mandrill"></a>Mandrill</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">gitlab_rails[<span class="string">'smtp_enable'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_address'</span>] = <span class="string">"smtp.mandrillapp.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_port'</span>] = 587</div><div class="line">gitlab_rails[<span class="string">'smtp_user_name'</span>] = <span class="string">"MandrillUsername"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_password'</span>] = <span class="string">"MandrillApiKey"</span> <span class="comment"># https://mandrillapp.com/settings</span></div><div class="line">gitlab_rails[<span class="string">'smtp_authentication'</span>] = <span class="string">"login"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_enable_starttls_auto'</span>] = <span class="literal">true</span></div></pre></td></tr></table></figure>
+<h3 id="SparkPost"><a href="#SparkPost" class="headerlink" title="SparkPost"></a>SparkPost</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">gitlab_rails[<span class="string">'smtp_enable'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_address'</span>] = <span class="string">"smtp.sparkpostmail.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_port'</span>] = 587</div><div class="line">gitlab_rails[<span class="string">'smtp_user_name'</span>] = <span class="string">"SMTP_Injection"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_password'</span>] = <span class="string">"SparkPost_API_KEY"</span> <span class="comment"># https://app.sparkpost.com/account/credentials</span></div><div class="line">gitlab_rails[<span class="string">'smtp_authentication'</span>] = <span class="string">"login"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_enable_starttls_auto'</span>] = <span class="literal">true</span></div></pre></td></tr></table></figure>
+<h3 id="Gandi"><a href="#Gandi" class="headerlink" title="Gandi"></a>Gandi</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">gitlab_rails[<span class="string">'smtp_enable'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_address'</span>] = <span class="string">"mail.gandi.net"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_port'</span>] = 587</div><div class="line">gitlab_rails[<span class="string">'smtp_authentication'</span>] = <span class="string">"plain"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_enable_starttls_auto'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_user_name'</span>] = <span class="string">"your.email@domain.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_password'</span>] = <span class="string">"your.password"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_domain'</span>] = <span class="string">"domain.com"</span></div></pre></td></tr></table></figure>
+<h3 id="Zoho-Mail"><a href="#Zoho-Mail" class="headerlink" title="Zoho Mail"></a>Zoho Mail</h3><blockquote>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个配置是在Zoho Mail上用自定义域进行测试的。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">gitlab_rails[<span class="string">'smtp_enable'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_address'</span>] = <span class="string">"smtp.zoho.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_port'</span>] = 587</div><div class="line">gitlab_rails[<span class="string">'smtp_authentication'</span>] = <span class="string">"plain"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_enable_starttls_auto'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_user_name'</span>] = <span class="string">"gitlab@mydomain.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_password'</span>] = <span class="string">"mypassword"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_domain'</span>] = <span class="string">"smtp.zoho.com"</span></div><div class="line">gitlab_rails[<span class="string">'gitlab_email_from'</span>] = <span class="string">'gitlab@example.com'</span></div><div class="line">gitlab_rails[<span class="string">'gitlab_email_reply_to'</span>] = <span class="string">'noreply@example.com'</span></div></pre></td></tr></table></figure>
+<h3 id="OVH"><a href="#OVH" class="headerlink" title="OVH"></a>OVH</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">gitlab_rails[<span class="string">'smtp_enable'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_address'</span>] = <span class="string">"ssl0.ovh.net"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_port'</span>] = 465</div><div class="line">gitlab_rails[<span class="string">'smtp_user_name'</span>] = <span class="string">"username@domain.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_password'</span>] = <span class="string">"password"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_domain'</span>] = <span class="string">"ssl0.ovh.net"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_authentication'</span>] = <span class="string">"login"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_enable_starttls_auto'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_tls'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_openssl_verify_mode'</span>] = <span class="string">'none'</span></div></pre></td></tr></table></figure>
+<h3 id="Outlook"><a href="#Outlook" class="headerlink" title="Outlook"></a>Outlook</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">gitlab_rails[<span class="string">'smtp_enable'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_address'</span>] = <span class="string">"smtp-mail.outlook.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_port'</span>] = 587</div><div class="line">gitlab_rails[<span class="string">'smtp_user_name'</span>] = <span class="string">"username@outlook.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_password'</span>] = <span class="string">"password"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_domain'</span>] = <span class="string">"smtp-mail.outlook.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_authentication'</span>] = <span class="string">"login"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_enable_starttls_auto'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_openssl_verify_mode'</span>] = <span class="string">'peer'</span></div></pre></td></tr></table></figure>
+<h3 id="Online-net"><a href="#Online-net" class="headerlink" title="Online.net"></a>Online.net</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">gitlab_rails[<span class="string">'smtp_enable'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_address'</span>] = <span class="string">"smtpauth.online.net"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_port'</span>] = 465</div><div class="line">gitlab_rails[<span class="string">'smtp_user_name'</span>] = <span class="string">"username@domain.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_password'</span>] = <span class="string">"password"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_domain'</span>] = <span class="string">"online.net"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_authentication'</span>] = <span class="string">"login"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_enable_starttls_auto'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_tls'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_openssl_verify_mode'</span>] = <span class="string">'none'</span></div></pre></td></tr></table></figure>
+<h3 id="Amen-fr-Securemail-pro"><a href="#Amen-fr-Securemail-pro" class="headerlink" title="Amen.fr / Securemail.pro"></a>Amen.fr / Securemail.pro</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">gitlab_rails[<span class="string">'smtp_enable'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_address'</span>] = <span class="string">"smtp-fr.securemail.pro"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_port'</span>] = 465</div><div class="line">gitlab_rails[<span class="string">'smtp_user_name'</span>] = <span class="string">"username@domain.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_password'</span>] = <span class="string">"password"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_tls'</span>] = <span class="literal">true</span></div></pre></td></tr></table></figure>
+<h3 id="1-amp-1"><a href="#1-amp-1" class="headerlink" title="1&amp;1"></a>1&amp;1</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">gitlab_rails[<span class="string">'smtp_enable'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_address'</span>] = <span class="string">"smtp.1and1.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_port'</span>] = 587</div><div class="line">gitlab_rails[<span class="string">'smtp_user_name'</span>] = <span class="string">"my.email@domain.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_password'</span>] = <span class="string">"1and1-email-password"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_domain'</span>] = <span class="string">"domain.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_authentication'</span>] = <span class="string">"login"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_enable_starttls_auto'</span>] = <span class="literal">true</span></div></pre></td></tr></table></figure>
+<h3 id="yahoo"><a href="#yahoo" class="headerlink" title="yahoo"></a>yahoo</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">gitlab_rails[<span class="string">'gitlab_email_from'</span>] = <span class="string">'user@yahoo.com'</span></div><div class="line">gitlab_rails[<span class="string">'gitlab_email_from'</span>] = <span class="string">'user@yahoo.com'</span></div><div class="line"></div><div class="line">gitlab_rails[<span class="string">'smtp_enable'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_address'</span>] = <span class="string">"smtp.mail.yahoo.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_port'</span>] = 465</div><div class="line">gitlab_rails[<span class="string">'smtp_user_name'</span>] = <span class="string">"user@yahoo.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_password'</span>] = <span class="string">"password"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_authentication'</span>] = <span class="string">"login"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_enable_starttls_auto'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_tls'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_openssl_verify_mode'</span>] = <span class="string">'peer'</span></div></pre></td></tr></table></figure>
+<h3 id="Sendgrid"><a href="#Sendgrid" class="headerlink" title="Sendgrid"></a>Sendgrid</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">gitlab_rails[<span class="string">'smtp_enable'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_address'</span>] = <span class="string">"smtp.sendgrid.net"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_port'</span>] = 587</div><div class="line">gitlab_rails[<span class="string">'smtp_user_name'</span>] = <span class="string">"a_sendgrid_crendential"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_password'</span>] = <span class="string">"a_sendgrid_password"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_domain'</span>] = <span class="string">"smtp.sendgrid.net"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_authentication'</span>] = <span class="string">"login"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_enable_starttls_auto'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_tls'</span>] = <span class="literal">false</span></div></pre></td></tr></table></figure>
+<h3 id="Yandex"><a href="#Yandex" class="headerlink" title="Yandex"></a>Yandex</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">gitlab_rails[<span class="string">'smtp_enable'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_address'</span>] = <span class="string">"smtp.yandex.ru"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_port'</span>] = 465</div><div class="line">gitlab_rails[<span class="string">'smtp_user_name'</span>] = <span class="string">"login"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_password'</span>] = <span class="string">"password"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_domain'</span>] = <span class="string">"yourdomain_or_yandex.ru"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_authentication'</span>] = <span class="string">"login"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_enable_starttls_auto'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_openssl_verify_mode'</span>] = <span class="string">'peer'</span></div></pre></td></tr></table></figure>
+<h3 id="UD-Media"><a href="#UD-Media" class="headerlink" title="UD Media"></a>UD Media</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">gitlab_rails[<span class="string">'smtp_enable'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_address'</span>] = <span class="string">"mail.udXX.udmedia.de"</span> <span class="comment"># Replace XX, see smtp server information: https://www.udmedia.de/login/mail/</span></div><div class="line">gitlab_rails[<span class="string">'smtp_port'</span>] = 587</div><div class="line">gitlab_rails[<span class="string">'smtp_user_name'</span>] = <span class="string">"login"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_password'</span>] = <span class="string">"password"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_authentication'</span>] = <span class="string">"login"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_enable_starttls_auto'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_openssl_verify_mode'</span>] = <span class="string">'peer'</span></div><div class="line">Microsoft Exchange (No authentication) </div><div class="line">gitlab_rails[<span class="string">'smtp_enable'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_address'</span>] = <span class="string">"example.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_port'</span>] = 25</div><div class="line">gitlab_rails[<span class="string">'smtp_domain'</span>] = <span class="string">"example.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_authentication'</span>] = <span class="literal">false</span></div><div class="line">gitlab_rails[<span class="string">'smtp_enable_starttls_auto'</span>] = <span class="literal">true</span></div></pre></td></tr></table></figure>
+<h3 id="Strato-de"><a href="#Strato-de" class="headerlink" title="Strato.de"></a>Strato.de</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">gitlab_rails[<span class="string">'smtp_enable'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_address'</span>] = <span class="string">"smtp.strato.de"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_port'</span>] = 465</div><div class="line">gitlab_rails[<span class="string">'smtp_user_name'</span>] = <span class="string">"username@stratodomain.de"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_password'</span>] = <span class="string">"strato_email_password"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_domain'</span>] = <span class="string">"strato.de"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_authentication'</span>] = <span class="string">"login"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_enable_starttls_auto'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_tls'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_openssl_verify_mode'</span>] = <span class="string">'none'</span></div></pre></td></tr></table></figure>
+<h3 id="Rackspace"><a href="#Rackspace" class="headerlink" title="Rackspace"></a>Rackspace</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">gitlab_rails[<span class="string">'smtp_enable'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_address'</span>] = <span class="string">"secure.emailsrvr.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_port'</span>] = 465</div><div class="line">gitlab_rails[<span class="string">'smtp_user_name'</span>] = <span class="string">"username@domain.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_password'</span>] = <span class="string">"password"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_domain'</span>] = <span class="string">"domain.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_authentication'</span>] = <span class="string">"login"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_enable_starttls_auto'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_tls'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_openssl_verify_mode'</span>] = <span class="string">'peer'</span></div><div class="line"></div><div class="line">gitlab_rails[<span class="string">'gitlab_email_from'</span>] = <span class="string">'username@domain.com'</span></div><div class="line">gitlab_rails[<span class="string">'gitlab_email_reply_to'</span>] = <span class="string">'username@domain.com'</span></div></pre></td></tr></table></figure>
+<h3 id="DomainFactory-df-eu"><a href="#DomainFactory-df-eu" class="headerlink" title="DomainFactory (df.eu)"></a>DomainFactory (df.eu)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">gitlab_rails[<span class="string">'smtp_enable'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_address'</span>] = <span class="string">"sslout.df.eu"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_port'</span>] = 465</div><div class="line">gitlab_rails[<span class="string">'smtp_user_name'</span>] = <span class="string">"username@domain.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_password'</span>] = <span class="string">"password"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_domain'</span>] = <span class="string">"domain.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_authentication'</span>] = <span class="string">"login"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_enable_starttls_auto'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_tls'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_openssl_verify_mode'</span>] = <span class="string">'none'</span></div></pre></td></tr></table></figure>
+<h3 id="Infomaniak-infomaniak-com"><a href="#Infomaniak-infomaniak-com" class="headerlink" title="Infomaniak (infomaniak.com)"></a>Infomaniak (infomaniak.com)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">gitlab_rails[<span class="string">'smtp_enable'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_address'</span>] = <span class="string">"mail.infomaniak.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_port'</span>] = 587</div><div class="line">gitlab_rails[<span class="string">'smtp_user_name'</span>] = <span class="string">"username"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_password'</span>] = <span class="string">"password"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_domain'</span>] = <span class="string">"mail.infomaniak.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_authentication'</span>] = <span class="string">"login"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_enable_starttls_auto'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_tls'</span>] = <span class="literal">false</span></div><div class="line">gitlab_rails[<span class="string">'smtp_openssl_verify_mode'</span>] = <span class="string">'none'</span></div></pre></td></tr></table></figure>
+<h3 id="GoDaddy-No-TLS"><a href="#GoDaddy-No-TLS" class="headerlink" title="GoDaddy (No TLS)"></a>GoDaddy (No TLS)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">gitlab_rails[<span class="string">'smtp_enable'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_address'</span>] = <span class="string">"smtpout.secureserver.net"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_port'</span>] = 80</div><div class="line">gitlab_rails[<span class="string">'smtp_user_name'</span>] = <span class="string">"username@domain.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_password'</span>] = <span class="string">"password"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_domain'</span>] = <span class="string">"domain.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_authentication'</span>] = <span class="string">"plain"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_enable_starttls_auto'</span>] = <span class="literal">false</span></div><div class="line">gitlab_rails[<span class="string">'smtp_tls'</span>] = <span class="literal">false</span></div></pre></td></tr></table></figure>
+<h3 id="OpenSRS-hostedemail-com"><a href="#OpenSRS-hostedemail-com" class="headerlink" title="OpenSRS (hostedemail.com)"></a>OpenSRS (hostedemail.com)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">gitlab_rails[<span class="string">'smtp_enable'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_address'</span>] = <span class="string">"mail.hostedemail.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_port'</span>] = 465</div><div class="line">gitlab_rails[<span class="string">'smtp_user_name'</span>] = <span class="string">"username@domain.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_password'</span>] = <span class="string">"password"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_domain'</span>] = <span class="string">"domain.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_authentication'</span>] = <span class="string">"login"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_tls'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_enable_starttls_auto'</span>] = <span class="literal">false</span></div><div class="line">gitlab_rails[<span class="string">'smtp_openssl_verify_mode'</span>] = <span class="string">'peer'</span></div><div class="line"></div><div class="line">gitlab_rails[<span class="string">'gitlab_email_from'</span>] = <span class="string">'username@domain.com'</span></div><div class="line">gitlab_rails[<span class="string">'gitlab_email_reply_to'</span>] = <span class="string">'username@domain.com'</span></div></pre></td></tr></table></figure>
+<h3 id="Aruba-aruba-it"><a href="#Aruba-aruba-it" class="headerlink" title="Aruba (aruba.it)"></a>Aruba (aruba.it)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">gitlab_rails[<span class="string">'smtp_enable'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_address'</span>] = <span class="string">"smtps.aruba.it"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_port'</span>] = 465</div><div class="line">gitlab_rails[<span class="string">'smtp_user_name'</span>] = <span class="string">"user@yourdomain.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_password'</span>] = <span class="string">"password"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_domain'</span>] = <span class="string">"yourdomain.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_authentication'</span>] = <span class="string">"login"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_ssl'</span>] = <span class="literal">true</span></div></pre></td></tr></table></figure>
+<h3 id="Aliyun-Direct-Mail-阿里云邮件推送"><a href="#Aliyun-Direct-Mail-阿里云邮件推送" class="headerlink" title="Aliyun Direct Mail(阿里云邮件推送)"></a>Aliyun Direct Mail(阿里云邮件推送)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">gitlab_rails[<span class="string">'gitlab_email_from'</span>] = <span class="string">'username@your domain'</span></div><div class="line">gitlab_rails[<span class="string">'smtp_enable'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_address'</span>] = <span class="string">"smtpdm.aliyun.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_port'</span>] = 80</div><div class="line">gitlab_rails[<span class="string">'smtp_user_name'</span>] = <span class="string">"username@your domain"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_password'</span>] = <span class="string">"password"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_domain'</span>] = <span class="string">"your domain"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_authentication'</span>] = <span class="string">"login"</span></div></pre></td></tr></table></figure>
+<h3 id="FastMail"><a href="#FastMail" class="headerlink" title="FastMail"></a>FastMail</h3><blockquote>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;即使未启用两步验证，FastMail也需要应用程序密码。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">gitlab_rails[<span class="string">'smtp_enable'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_address'</span>] = <span class="string">"smtp.fastmail.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_port'</span>] = 465</div><div class="line">gitlab_rails[<span class="string">'smtp_user_name'</span>] = <span class="string">"account@fastmail.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_password'</span>] = <span class="string">"app-specific-password"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_enable_starttls_auto'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_tls'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_openssl_verify_mode'</span>] = <span class="string">'peer'</span></div></pre></td></tr></table></figure>
+<h3 id="Dinahosting"><a href="#Dinahosting" class="headerlink" title="Dinahosting"></a>Dinahosting</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">gitlab_rails[<span class="string">'gitlab_email_from'</span>] = <span class="string">'username@example.com'</span></div><div class="line">gitlab_rails[<span class="string">'smtp_enable'</span>] = <span class="literal">true</span></div><div class="line">gitlab_rails[<span class="string">'smtp_address'</span>] = <span class="string">"example-com.correoseguro.dinaserver.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_port'</span>] = 587</div><div class="line">gitlab_rails[<span class="string">'smtp_user_name'</span>] = <span class="string">"username-example-com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_password'</span>] = <span class="string">"mypassword"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_domain'</span>] = <span class="string">"example-com.correoseguro.dinaserver.com"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_authentication'</span>] = <span class="string">"login"</span></div><div class="line">gitlab_rails[<span class="string">'smtp_enable_starttls_auto'</span>] = <span class="literal">false</span></div><div class="line">gitlab_rails[<span class="string">'smtp_tls'</span>] = <span class="literal">false</span></div><div class="line">gitlab_rails[<span class="string">'smtp_openssl_verify_mode'</span>] = <span class="string">'peer'</span></div></pre></td></tr></table></figure>
+<h2 id="Testing-the-SMTP-configuration-测试配置是否成功"><a href="#Testing-the-SMTP-configuration-测试配置是否成功" class="headerlink" title="Testing the SMTP configuration 测试配置是否成功"></a>Testing the SMTP configuration 测试配置是否成功</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置完成后可以用Rails控制台验证邮件是否能发送成功。 在GitLab服务器上，执行 gitlab-rails console 进入控制台。 然后在控制台提示符后输入下面的命令 发送一封测试邮件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">irb(main):003:0&gt; Notify.test_email(<span class="string">'destination_email@address.com'</span>, <span class="string">'Message Subject'</span>, <span class="string">'Message Body'</span>).deliver_now</div><div class="line"><span class="comment"># 示例</span></div><div class="line">Notify.test_email(<span class="string">'收件人邮箱'</span>, <span class="string">'邮件标题'</span>, <span class="string">'邮件正文'</span>).deliver_now</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/11/04/Git/4.GitLab简介/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">GitLab简介</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="Git/5.GitLab SMTP设置" data-title="GitLab SMTP设置" data-url="https://hcldirgit.github.io/2017/11/04/Git/5.GitLab SMTP设置/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="GitLab SMTP设置">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
