@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>python异常处理 | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;异常即是一个时间，该时间会在程序执行过程中发生，影响了程序的正常执行。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;一般情况下，在python无法正常处理程序时就会发生一个异常。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python异常处理">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/11/09/Python/2.python新教程/33.python异常处理/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;异常即是一个时间，该时间会在程序执行过程中发生，影响了程序的正常执行。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;一般情况下，在python无法正常处理程序时就会发生一个异常。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-08T16:57:28.821Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python异常处理">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;异常即是一个时间，该时间会在程序执行过程中发生，影响了程序的正常执行。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;一般情况下，在python无法正常处理程序时就会发生一个异常。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.42px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.75px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.67px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.75px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10.83px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.25px;">FTP</a> <a href="/tags/Git/" style="font-size: 12.92px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.67px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.5px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.42px;">Jenkins</a> <a href="/tags/Kubernetes/" style="font-size: 10.42px;">Kubernetes</a> <a href="/tags/LAMP/" style="font-size: 19.17px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 17.08px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.67px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.17px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.58px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.25px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.83px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.5px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.67px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 17.92px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.25px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 15px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.25px;">Puppet</a> <a href="/tags/Python/" style="font-size: 18.33px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.67px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.08px;">Samba</a> <a href="/tags/Squid/" style="font-size: 15px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 14.17px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 16.25px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.5px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 13.33px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15.42px;">shell</a> <a href="/tags/shell练习/" style="font-size: 19.58px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 13.33px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Python/2.python新教程/33.python异常处理" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/11/09/Python/2.python新教程/33.python异常处理/" class="article-date">
+  	<time datetime="2017-11-08T16:57:58.338Z" itemprop="datePublished">2017-11-09</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      python异常处理
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;异常即是一个时间，该时间会在程序执行过程中发生，影响了程序的正常执行。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一般情况下，在python无法正常处理程序时就会发生一个异常。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;异常是python对象，表示一个错误。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当python脚本发生异常时需要捕获它，否则程序会终止执行。</p>
+<h2 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;捕捉异常可以一使用<code>try/except</code>语句。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>try/except</code>语句用来检测<code>try</code>语句块中的错误，从而让<code>except</code>语句捕获异常信息并处理。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果不想在异常发生时结束程序，只需要在<code>try</code>里捕获它。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>语法</strong>：为简单的<code>try...except...else</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">try</span>:</div><div class="line">&lt;语句&gt;        <span class="comment">#运行别的代码</span></div><div class="line"><span class="keyword">except</span> &lt;名字&gt;：</div><div class="line">&lt;语句&gt;        <span class="comment">#如果在try部份引发了'name'异常</span></div><div class="line"><span class="keyword">except</span> &lt;名字&gt;，&lt;数据&gt;:</div><div class="line">&lt;语句&gt;        <span class="comment">#如果引发了'name'异常，获得附加的数据</span></div><div class="line"><span class="keyword">else</span>:</div><div class="line">&lt;语句&gt;        <span class="comment">#如果没有异常发生</span></div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>try</code>的工作原理是，当开始一个<code>try</code>语句后，python就在当前程序的上下问中作标记，这样当异常出现时就可以回到这里，<code>try</code>子句先执行，接下来会发生什么依赖于执行时是否出现异常。</p>
+<ul>
+<li>如果当<code>try</code>后的语句执行时发生异常，却没有匹配的<code>except</code>子句，异常处理完毕，控制流就通过整个<code>try</code>语句（除非在处理异常时又引发新的异常）。</li>
+<li>如果在<code>try</code>后的语句里发生了异常，却没有匹配<code>except</code>子句，异常将被递交到上层的<code>try</code>，或者到程序的最上层（这样将结束程序，并打印缺省的出错信息）。</li>
+<li>如果在<code>try</code>子句执行时没有发生异常，python将执行<code>else</code>语句后的语句（如果有<code>else</code>的话），然后控制流通过整个<code>try</code>语句。</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;打开一个文件，在该文件中的内容写入内容，且并未发生异常</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/python</span></div><div class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></div><div class="line"><span class="keyword">try</span>:</div><div class="line">    fh = open(<span class="string">'testfile'</span>, <span class="string">'w'</span>)</div><div class="line">    fh.write(<span class="string">'这是一个测试文件，用于测试异常！'</span>)</div><div class="line"><span class="keyword">except</span> IOError:</div><div class="line">    print(<span class="string">'Error:没有找到文件或读取文件失败'</span>)</div><div class="line"><span class="keyword">else</span>:</div><div class="line">    print(<span class="string">'内容写入文件成功'</span>)</div><div class="line">    fh.close()</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ python test.py </div><div class="line">内容写入文件成功</div><div class="line">$ cat testfile       <span class="comment"># 查看写入的内容</span></div><div class="line">这是一个测试文件，用于测试异常!!</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;打开一个文件，在该文件中的内容写入内容，但文件没有写入权限，发生了异常</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/python</span></div><div class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></div><div class="line"><span class="keyword">try</span>:</div><div class="line">    fh = open(<span class="string">"testfile"</span>, <span class="string">"w"</span>)</div><div class="line">    fh.write(<span class="string">"这是一个测试文件，用于测试异常!!"</span>)</div><div class="line"><span class="keyword">except</span> IOError:</div><div class="line">    <span class="keyword">print</span> <span class="string">"Error: 没有找到文件或读取文件失败"</span></div><div class="line"><span class="keyword">else</span>:</div><div class="line">    <span class="keyword">print</span> <span class="string">"内容写入文件成功"</span></div><div class="line">    fh.close()</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$chmod -w testfile   <span class="comment">#为了测试方便，先去掉testfile文件的写权限</span></div><div class="line"></div><div class="line">$ python test.py </div><div class="line">Error: 没有找到文件或读取文件失败</div></pre></td></tr></table></figure>
+<h2 id="python标准异常"><a href="#python标准异常" class="headerlink" title="python标准异常"></a>python标准异常</h2><table>
+<thead>
+<tr>
+<th>异常名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BaseException</td>
+<td>所有异常的基类</td>
+</tr>
+<tr>
+<td>SystemExit</td>
+<td>解释器请求退出</td>
+</tr>
+<tr>
+<td>KeyboardInterrupt</td>
+<td>用户中断执行(通常是输入^C)</td>
+</tr>
+<tr>
+<td>Exception</td>
+<td>常规错误的基类</td>
+</tr>
+<tr>
+<td>StopIteration</td>
+<td>迭代器没有更多的值</td>
+</tr>
+<tr>
+<td>GeneratorExit</td>
+<td>生成器(generator)发生异常来通知退出</td>
+</tr>
+<tr>
+<td>StandardError</td>
+<td>所有的内建标准异常的基类</td>
+</tr>
+<tr>
+<td>ArithmeticError</td>
+<td>所有数值计算错误的基类</td>
+</tr>
+<tr>
+<td>FloatingPointError</td>
+<td>浮点计算错误</td>
+</tr>
+<tr>
+<td>OverflowError</td>
+<td>数值运算超出最大限制</td>
+</tr>
+<tr>
+<td>ZeroDivisionError</td>
+<td>除(或取模)零 (所有数据类型)</td>
+</tr>
+<tr>
+<td>AssertionError</td>
+<td>断言语句失败</td>
+</tr>
+<tr>
+<td>AttributeError</td>
+<td>对象没有这个属性</td>
+</tr>
+<tr>
+<td>EOFError</td>
+<td>没有内建输入,到达EOF 标记</td>
+</tr>
+<tr>
+<td>EnvironmentError</td>
+<td>操作系统错误的基类</td>
+</tr>
+<tr>
+<td>IOError</td>
+<td>输入/输出操作失败</td>
+</tr>
+<tr>
+<td>OSError</td>
+<td>操作系统错误</td>
+</tr>
+<tr>
+<td>WindowsError</td>
+<td>系统调用失败</td>
+</tr>
+<tr>
+<td>ImportError</td>
+<td>导入模块/对象失败</td>
+</tr>
+<tr>
+<td>LookupError</td>
+<td>无效数据查询的基类</td>
+</tr>
+<tr>
+<td>IndexError</td>
+<td>序列中没有此索引(index)</td>
+</tr>
+<tr>
+<td>KeyError</td>
+<td>映射中没有这个键</td>
+</tr>
+<tr>
+<td>MemoryError</td>
+<td>内存溢出错误(对于Python 解释器不是致命的)</td>
+</tr>
+<tr>
+<td>NameError</td>
+<td>未声明/初始化对象 (没有属性)</td>
+</tr>
+<tr>
+<td>UnboundLocalError</td>
+<td>访问未初始化的本地变量</td>
+</tr>
+<tr>
+<td>ReferenceError</td>
+<td>弱引用(Weak reference)试图访问已经垃圾回收了的对象</td>
+</tr>
+<tr>
+<td>RuntimeError</td>
+<td>一般的运行时错误</td>
+</tr>
+<tr>
+<td>NotImplementedError</td>
+<td>尚未实现的方法</td>
+</tr>
+<tr>
+<td>SyntaxError    Python</td>
+<td>语法错误</td>
+</tr>
+<tr>
+<td>IndentationError</td>
+<td>缩进错误</td>
+</tr>
+<tr>
+<td>TabError</td>
+<td>Tab 和空格混用</td>
+</tr>
+<tr>
+<td>SystemError</td>
+<td>一般的解释器系统错误</td>
+</tr>
+<tr>
+<td>TypeError</td>
+<td>对类型无效的操作</td>
+</tr>
+<tr>
+<td>ValueError</td>
+<td>传入无效的参数</td>
+</tr>
+<tr>
+<td>UnicodeError</td>
+<td>Unicode 相关的错误</td>
+</tr>
+<tr>
+<td>UnicodeDecodeError</td>
+<td>Unicode 解码时的错误</td>
+</tr>
+<tr>
+<td>UnicodeEncodeError</td>
+<td>Unicode 编码时错误</td>
+</tr>
+<tr>
+<td>UnicodeTranslateError</td>
+<td>Unicode 转换时错误</td>
+</tr>
+<tr>
+<td>Warning</td>
+<td>警告的基类</td>
+</tr>
+<tr>
+<td>DeprecationWarning</td>
+<td>关于被弃用的特征的警告</td>
+</tr>
+<tr>
+<td>FutureWarning</td>
+<td>关于构造将来语义会有改变的警告</td>
+</tr>
+<tr>
+<td>OverflowWarning</td>
+<td>旧的关于自动提升为长整型(long)的警告</td>
+</tr>
+<tr>
+<td>PendingDeprecationWarning</td>
+<td>关于特性将会被废弃的警告</td>
+</tr>
+<tr>
+<td>RuntimeWarning</td>
+<td>可疑的运行时行为(runtime behavior)的警告</td>
+</tr>
+<tr>
+<td>SyntaxWarning</td>
+<td>可疑的语法的警告</td>
+</tr>
+<tr>
+<td>UserWarning</td>
+<td>用户代码生成的警告</td>
+</tr>
+</tbody>
+</table>
+<h2 id="使用except而带多种异常类型"><a href="#使用except而带多种异常类型" class="headerlink" title="使用except而带多种异常类型"></a>使用except而带多种异常类型</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以使用相同的<code>except</code>语句来处理多个异常信息</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">try</span>:</div><div class="line">    正常的操作</div><div class="line">   ......................</div><div class="line"><span class="keyword">except</span>(Exception1[, Exception2[,...ExceptionN]]]):</div><div class="line">   发生以上多个异常中的一个，执行这块代码</div><div class="line">   ......................</div><div class="line"><span class="keyword">else</span>:</div><div class="line">    如果没有异常执行这块代码</div></pre></td></tr></table></figure>
+<h3 id="try-finally语句"><a href="#try-finally语句" class="headerlink" title="try-finally语句"></a>try-finally语句</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>try-finally</code>语句无论是否发生异常都将执行最后的代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">try</span>:</div><div class="line">&lt;语句&gt;</div><div class="line"><span class="keyword">finally</span>:</div><div class="line">&lt;语句&gt;    <span class="comment">#退出try时总会执行</span></div><div class="line"><span class="keyword">raise</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/python</span></div><div class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></div><div class="line"></div><div class="line"><span class="keyword">try</span>:</div><div class="line">    fh = open(<span class="string">"testfile"</span>, <span class="string">"w"</span>)</div><div class="line">    fh.write(<span class="string">"这是一个测试文件，用于测试异常!!"</span>)</div><div class="line"><span class="keyword">finally</span>:</div><div class="line">    <span class="keyword">print</span> <span class="string">"Error: 没有找到文件或读取文件失败"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果打开的文件没有可写权限，输入如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ python test.py </div><div class="line">Error: 没有找到文件或读取文件失败</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;也可以写成</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/python</span></div><div class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></div><div class="line"></div><div class="line"><span class="keyword">try</span>:</div><div class="line">    fh = open(<span class="string">"testfile"</span>, <span class="string">"w"</span>)</div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        fh.write(<span class="string">"这是一个测试文件，用于测试异常!!"</span>)</div><div class="line">    <span class="keyword">finally</span>:</div><div class="line">        <span class="keyword">print</span> <span class="string">"关闭文件"</span></div><div class="line">        fh.close()</div><div class="line"><span class="keyword">except</span> IOError:</div><div class="line">    <span class="keyword">print</span> <span class="string">"Error: 没有找到文件或读取文件失败"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当在<code>try</code>块中抛出一个异常，立即执行<code>finally</code>块代码。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>finally</code>块中的所有语句执行后，异常被再次触发，并执行<code>except</code>块代码。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;参数的内容不同于异常。</p>
+<h2 id="异常的参数"><a href="#异常的参数" class="headerlink" title="异常的参数"></a>异常的参数</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一个异常可以带上参数，可作为输出的异常信息参数。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以通过<code>except</code>语句来捕获异常的参数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;变量接收的异常值通常包含在异常的语句中。在元组的表单中变量可以接收一个或者多个值。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;元组通常包含错误字符串、错误数字、错误位置。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/python</span></div><div class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></div><div class="line"></div><div class="line"><span class="comment"># 定义函数</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">temp_convert</span><span class="params">(var)</span>:</span></div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        <span class="keyword">return</span> int(var)</div><div class="line">    <span class="keyword">except</span> ValueError, Argument:</div><div class="line">        <span class="keyword">print</span> <span class="string">"参数没有包含数字\n"</span>, Argument</div><div class="line"></div><div class="line"><span class="comment"># 调用函数</span></div><div class="line">temp_convert(<span class="string">"xyz"</span>);</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ python test.py </div><div class="line">参数没有包含数字</div><div class="line">invalid literal <span class="keyword">for</span> int() <span class="keyword">with</span> base <span class="number">10</span>: <span class="string">'xyz'</span></div></pre></td></tr></table></figure>
+<h2 id="触发异常"><a href="#触发异常" class="headerlink" title="触发异常"></a>触发异常</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以使用<code>raise</code>语句自己出发异常。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>raise</code>语法格式</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">raise</span> [Exception [, args [, traceback]]]</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;语句中<code>Exception</code>是异常的类型，参数是一个异常参数值。该参数是可选的，如果不日工，异常的参数是<code>None</code>。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;最后一个参数是可选的（在实践中很少使用），如果存在，是跟踪异常对象。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一个异常可以是一个字符串、类或者对象。python的内核提供的异常，大多数都是一实例化的类，这是一个类的实例的参数。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;定义一个异常非常简单</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">functionName</span><span class="params">( level )</span>:</span></div><div class="line">    <span class="keyword">if</span> level &lt; <span class="number">1</span>:</div><div class="line">        <span class="keyword">raise</span> Exception(<span class="string">"Invalid level!"</span>, level)</div><div class="line">        <span class="comment"># 触发异常后，后面的代码就不会再执行</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>注意</strong>：为了能够捕获异常，<code>except</code>语句必须有用相同的异常来抛出类对象或者字符串。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例如捕获以上异常，<code>except</code>语句如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">try</span>:</div><div class="line">    正常逻辑</div><div class="line"><span class="keyword">except</span> <span class="string">"Invalid level!"</span>:</div><div class="line">    触发自定义异常    </div><div class="line"><span class="keyword">else</span>:</div><div class="line">    其余代码</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/python</span></div><div class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></div><div class="line"></div><div class="line"><span class="comment"># 定义函数</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">mye</span><span class="params">( level )</span>:</span></div><div class="line">    <span class="keyword">if</span> level &lt; <span class="number">1</span>:</div><div class="line">        <span class="keyword">raise</span> Exception(<span class="string">"Invalid level!"</span>, level)</div><div class="line">        <span class="comment"># 触发异常后，后面的代码就不会再执行</span></div><div class="line"></div><div class="line"><span class="keyword">try</span>:</div><div class="line">    mye(<span class="number">0</span>)                // 触发异常</div><div class="line"><span class="keyword">except</span> <span class="string">"Invalid level!"</span>:</div><div class="line">    <span class="keyword">print</span> <span class="number">1</span></div><div class="line"><span class="keyword">else</span>:</div><div class="line">    <span class="keyword">print</span> <span class="number">2</span></div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ python test.py </div><div class="line">Traceback (most recent call last):</div><div class="line">  File <span class="string">"test.py"</span>, line <span class="number">11</span>, <span class="keyword">in</span> &lt;module&gt;</div><div class="line">    mye(<span class="number">0</span>)</div><div class="line">  File <span class="string">"test.py"</span>, line <span class="number">7</span>, <span class="keyword">in</span> mye</div><div class="line">    <span class="keyword">raise</span> Exception(<span class="string">"Invalid level!"</span>, level)</div><div class="line">Exception: (<span class="string">'Invalid level!'</span>, <span class="number">0</span>)</div></pre></td></tr></table></figure>
+<h2 id="用户自定义异常"><a href="#用户自定义异常" class="headerlink" title="用户自定义异常"></a>用户自定义异常</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;通过创建一个新的异常类，程序可以命名它们自己的异常。异常应该是典型的继承自<code>Exception</code>类，通过直接或间接的方式。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下为与RuntimeError相关的实例,实例中创建了一个类，基类为RuntimeError，用于在异常触发时输出更多的信息。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在try语句块中，用户自定义的异常后执行except块语句，变量 e 是用于创建Networkerror类的实例。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Networkerror</span><span class="params">(RuntimeError)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, arg)</span>:</span></div><div class="line">        self.args = arg</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在定义以上类后，你可以触发该异常，如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">try</span>:</div><div class="line">    <span class="keyword">raise</span> Networkerror(<span class="string">"Bad hostname"</span>)</div><div class="line"><span class="keyword">except</span> Networkerror,e:</div><div class="line">    <span class="keyword">print</span> e.args</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/11/08/Python/2.python新教程/32.python类的私有变量/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">python类的私有变量</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="Python/2.python新教程/33.python异常处理" data-title="python异常处理" data-url="https://hcldirgit.github.io/2017/11/09/Python/2.python新教程/33.python异常处理/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="python异常处理">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

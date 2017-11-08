@@ -168,6 +168,73 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Squid/6. Squid优化" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Squid/6. Squid优化/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.098Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Squid/6. Squid优化/">
+        Squid优化
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Squid优化-一"><a href="#Squid优化-一" class="headerlink" title="Squid优化(一)"></a>Squid优化(一)</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;几个SQUID重要参数：</p>
+<ul>
+<li>maximum_object_size 是 能cache最大的文件大小.对应wmv,rm文件,建议设置为32768 kB</li>
+<li>maximum_object_size_in_memory 是在内存中cache的最大文件大小.</li>
+<li>cache_mem 是SQUID可用到的最大内存.经实践,4G内存的服务器用2G；超过2G导致SQUID运行不稳</li>
+</ul>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Squid/">Squid</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Squid/6. Squid优化/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Squid/4. Linux下squid.conf中cache_peer参数详解" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -735,72 +802,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Squid/11. squid内核优化 减轻timewait问题/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Squid/10. squid故障汇总" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Squid/10. squid故障汇总/" class="article-date">
-  	<time datetime="2017-10-13T13:48:39.089Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Squid/10. squid故障汇总/">
-        squid故障汇总
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;1、COSS will not function without large file support (off_t is 4 bytes long. Please reconsider recompiling squid with –with-large-files</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Bungled squid_webcache.conf 。。。。。。。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;检查是否在编译squid的时候未加入 –with-large-files 选项，如果是，重新加入此选项再编译一次squid</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;2、使用coss缓存格式的时候，squid不断重建cache</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可能原因为maxfullbufs值过低，去掉maxfullbufs限制，让其值为无限</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Squid/">Squid</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Squid/10. squid故障汇总/#more">阅读全文 >></a>
         </p>
       
     
