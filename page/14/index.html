@@ -168,6 +168,262 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Zabbix/19. zabbix进行数据库备份以及表分区" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Zabbix/19. zabbix进行数据库备份以及表分区/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.170Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Zabbix/19. zabbix进行数据库备份以及表分区/">
+        zabbix进行数据库备份以及表分区
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;由于测试环境上面使用的zabbix服务器配置比较低，经常会遇到性能瓶颈（主要是数据库和磁盘I/O等），于是倒逼我使用了一些方式来缓解这些问题。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;主要是以前使用的那个备份数据库的脚本是对zabbix数据库进行全备的，使用的又是mysql自带的工具mysqldump，当数据量大了之后进行全备所花的时间比较长，这样将会造成数据库的锁读。。。从而使zabbix服务以为mysql死掉了，产生一大堆的报警。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;后来发现原来造成数据库数据量大量增加的是zabbix数据库中的一些存储数据的大表导致的。于是备份数据库的时候可以选择跳过这些表进行备份，这样，将大大减少数据库备份所花的时间（PS：之前备份数据库所花时间在十分钟左右，现在跳过大表备份，所花时间在1S左右就能备份完，大大缩短了备份数据库时间）。</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zabbix/">Zabbix</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Zabbix/19. zabbix进行数据库备份以及表分区/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Zabbix/18. ZABBIX监控H3C设备的CPU和内存使用率" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Zabbix/18. ZABBIX监控H3C设备的CPU和内存使用率/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.169Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Zabbix/18. ZABBIX监控H3C设备的CPU和内存使用率/">
+        ZABBIX监控H3C设备的CPU和内存使用率
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;由于最近监控的H3C路由器经常出现死机现象，SNMP获取不到数据，后面检查发现是CPU使用率过高，直接导致无法处理SNMP请求，所以需求来了，怎样通过SNMP监控H3C路由器的CPU和内存使用率？</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;由于CPU和内存的IOD号是H3C厂商没有公布的，所以不好找，在网上百度了一些资料查找H3C网络设备的CPU和内存OID号，这里做个记录，以供以后参考。</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zabbix/">Zabbix</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Zabbix/18. ZABBIX监控H3C设备的CPU和内存使用率/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Zabbix/17. zabbix监控进程的CPU和内存占用量" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Zabbix/17. zabbix监控进程的CPU和内存占用量/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.167Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Zabbix/17. zabbix监控进程的CPU和内存占用量/">
+        zabbix监控进程的CPU和内存占用量
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需要对特定服务进行监控，于是，通过编写脚本获取各个进程占用系统资源的信息，从而使用zabbix采集到这些数据进行特定进程的基础监控。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;主要需要监控的程序如下：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>nginx、 redis、 mysql、 tomcat、 sentinel、 mongodb、 openfire、 kafka、 zookeeper、 twemproxy、 mycat</strong></p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zabbix/">Zabbix</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Zabbix/17. zabbix监控进程的CPU和内存占用量/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Zabbix/16. zabbix监控php状态" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Zabbix/16. zabbix监控php状态/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.166Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Zabbix/16. zabbix监控php状态/">
+        zabbix监控php状态
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;通过nginx调用php-fpm来查询php的状态信息</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先，在php的配置文件中添加一行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim /usr/<span class="built_in">local</span>/php/etc/php-fpm.conf</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pm.status_path = /phpfpmstatus</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zabbix/">Zabbix</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Zabbix/16. zabbix监控php状态/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Zabbix/15. zabbix监控nginx状态" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -562,275 +818,9 @@
 
 
   
-    <article id="post-Zabbix/1. 分布式系统监视 zabbix" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Zabbix/1. 分布式系统监视 zabbix/" class="article-date">
-  	<time datetime="2017-10-13T13:48:39.113Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Zabbix/1. 分布式系统监视 zabbix/">
-        分布式系统监视 zabbix
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;zabbix是一个基于WEB界面的提供分布式系统监视以及网络监视功能的企业级的开源解决方案。</p>
-<p><img src="https://github.com/hcldirgit/image/blob/master/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%9B%91%E8%A7%86Zabbix/01.png?raw=true" alt=""></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zabbix/">Zabbix</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Zabbix/1. 分布式系统监视 zabbix/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Tomcat/8. tomcat 的优化配置" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Tomcat/8. tomcat 的优化配置/" class="article-date">
-  	<time datetime="2017-10-13T13:48:39.111Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Tomcat/8. tomcat 的优化配置/">
-        tomcat 的优化配置
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="一、精简Tomcat和配置文件"><a href="#一、精简Tomcat和配置文件" class="headerlink" title="一、精简Tomcat和配置文件"></a>一、精简Tomcat和配置文件</h2><p>1．删除不需要的管理应用和帮助应用，提高tomcat安全性。</p>
-<ul>
-<li>删除webapps下所有文件</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rm –fr <span class="variable">$CATALINA_HOME</span>/webapps/*</div></pre></td></tr></table></figure>
-<ul>
-<li>删除server/wenapps下所有文件</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rm –fr <span class="variable">$CATALINA_HOME</span>/server/webapps/*</div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Tomcat/">Tomcat</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Tomcat/8. tomcat 的优化配置/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Tomcat/9. tomcat 性能优化" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Tomcat/9. tomcat 性能优化/" class="article-date">
-  	<time datetime="2017-10-13T13:48:39.111Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Tomcat/9. tomcat 性能优化/">
-        tomcat 性能优化
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;tomcat默认参数是为开发环境制定，而非适合生产环境，尤其是内存和线程的配置，默认都很低，容易成为性能瓶颈。</p>
-<h2 id="tomcat内存优化"><a href="#tomcat内存优化" class="headerlink" title="tomcat内存优化"></a>tomcat内存优化</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;linux修改TOMCAT_HOME/bin/catalina.sh，在前面加入</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">JAVA_OPTS=<span class="string">"-XX:PermSize=64M -XX:MaxPermSize=128m -Xms512m -Xmx1024m -Duser.timezone=Asia/Shanghai"</span></div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Tomcat/">Tomcat</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Tomcat/9. tomcat 性能优化/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Tomcat/7. Nginx + Tomcat 配置负载均衡集群" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Tomcat/7. Nginx + Tomcat 配置负载均衡集群/" class="article-date">
-  	<time datetime="2017-10-13T13:48:39.110Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Tomcat/7. Nginx + Tomcat 配置负载均衡集群/">
-        Nginx + Tomcat 配置负载均衡集群
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="一、Hello-world"><a href="#一、Hello-world" class="headerlink" title="一、Hello world"></a>一、Hello world</h2><h3 id="前期环境准备"><a href="#前期环境准备" class="headerlink" title="前期环境准备"></a>前期环境准备</h3><ol>
-<li><p>准备两个解压版tomcat，如何同时启动两个tomcat，请看我的另一篇文章《一台机器同时启动多个tomcat》。</p>
-</li>
-<li><p>nginx官网下载解压版nginx。</p>
-</li>
-<li><p>创建一个简单的web项目。为了直观的区分访问的哪个tomcat，在页面写上标记8081、8082。</p>
-</li>
-</ol>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Tomcat/">Tomcat</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Tomcat/7. Nginx + Tomcat 配置负载均衡集群/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/13/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><a class="page-number" href="/page/16/">16</a><span class="space">&hellip;</span><a class="page-number" href="/page/69/">69</a><a class="extend next" rel="next" href="/page/15/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/13/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><a class="page-number" href="/page/16/">16</a><span class="space">&hellip;</span><a class="page-number" href="/page/70/">70</a><a class="extend next" rel="next" href="/page/15/">Next &raquo;</a>
     </nav>
   
 </div>

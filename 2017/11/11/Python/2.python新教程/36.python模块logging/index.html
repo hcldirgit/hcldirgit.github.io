@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>python模块logging | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;简单将日志打印到屏幕： 123456import logging  logging.debug(&apos;debug message&apos;)  logging.info(&apos;info message&apos;)  logging.warning(&apos;warning message&apos;)  logging.error(&apos;error">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python模块logging">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/11/11/Python/2.python新教程/36.python模块logging/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;简单将日志打印到屏幕： 123456import logging  logging.debug(&apos;debug message&apos;)  logging.info(&apos;info message&apos;)  logging.warning(&apos;warning message&apos;)  logging.error(&apos;error">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-10T18:34:29.963Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python模块logging">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;简单将日志打印到屏幕： 123456import logging  logging.debug(&apos;debug message&apos;)  logging.info(&apos;info message&apos;)  logging.warning(&apos;warning message&apos;)  logging.error(&apos;error">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.43px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.7px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.74px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.48px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10.87px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.3px;">FTP</a> <a href="/tags/Git/" style="font-size: 13.04px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.74px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.61px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.43px;">Jenkins</a> <a href="/tags/Kubernetes/" style="font-size: 10.43px;">Kubernetes</a> <a href="/tags/LAMP/" style="font-size: 19.13px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.96px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.52px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.13px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.35px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.3px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.65px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.39px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.74px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 17.83px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.3px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.78px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.3px;">Puppet</a> <a href="/tags/Python/" style="font-size: 18.26px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.52px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.17px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.78px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.91px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 16.09px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.61px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 13.04px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15.22px;">shell</a> <a href="/tags/shell练习/" style="font-size: 19.57px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 13.04px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Python/2.python新教程/36.python模块logging" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/11/11/Python/2.python新教程/36.python模块logging/" class="article-date">
+  	<time datetime="2017-11-10T19:08:35.044Z" itemprop="datePublished">2017-11-11</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      python模块logging
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;简单将日志打印到屏幕：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> logging  </div><div class="line">logging.debug(<span class="string">'debug message'</span>)  </div><div class="line">logging.info(<span class="string">'info message'</span>)  </div><div class="line">logging.warning(<span class="string">'warning message'</span>)  </div><div class="line">logging.error(<span class="string">'error message'</span>)  </div><div class="line">logging.critical(<span class="string">'critical message'</span>)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">WARNING:root:warning message</div><div class="line">ERROR:root:error message</div><div class="line">CRITICAL:root:critical message</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可见，默认情况下python的logging模块将日志打印到了标准输出中，且只显示了大于等于WARNING级别的日志，这说明默认的日志级别设置为WARNING（日志级别等级CRITICAL &gt; ERROR &gt; WARNING &gt; INFO &gt; DEBUG &gt; NOTSET），默认的日志格式为日志级别：Logger名称：用户输出消息。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;灵活配置日志级别，日志格式，输出位置</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> logging  </div><div class="line">logging.basicConfig(level=logging.DEBUG,  </div><div class="line">                    format=<span class="string">'%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s'</span>,  </div><div class="line">                    datefmt=<span class="string">'%a, %d %b %Y %H:%M:%S'</span>,  </div><div class="line">                    filename=<span class="string">'/tmp/test.log'</span>,  </div><div class="line">                    filemode=<span class="string">'w'</span>)  </div><div class="line">  </div><div class="line">logging.debug(<span class="string">'debug message'</span>)  </div><div class="line">logging.info(<span class="string">'info message'</span>)  </div><div class="line">logging.warning(<span class="string">'warning message'</span>)  </div><div class="line">logging.error(<span class="string">'error message'</span>)  </div><div class="line">logging.critical(<span class="string">'critical message'</span>)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看输出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">cat /tmp/test.log </div><div class="line">Mon, 05 May 2014 16:29:53 test_logging.py[line:9] DEBUG debug message</div><div class="line">Mon, 05 May 2014 16:29:53 test_logging.py[line:10] INFO info message</div><div class="line">Mon, 05 May 2014 16:29:53 test_logging.py[line:11] WARNING warning message</div><div class="line">Mon, 05 May 2014 16:29:53 test_logging.py[line:12] ERROR error message</div><div class="line">Mon, 05 May 2014 16:29:53 test_logging.py[line:13] CRITICAL critical message</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可见在logging.basicConfig()函数中可通过具体参数来更改logging模块默认行为，可用参数有</p>
+<ul>
+<li><code>filename</code>：用指定的文件名创建FiledHandler（后边会具体讲解handler的概念），这样日志会被存储在指定的文件中。</li>
+<li><code>filemode</code>：文件打开方式，在指定了filename时使用这个参数，默认值为“a”还可指定为“w”。</li>
+<li><code>format</code>：指定handler使用的日志显示格式。 </li>
+<li><code>datefmt</code>：指定日期时间格式。 </li>
+<li><code>level</code>：设置rootlogger（后边会讲解具体概念）的日志级别 </li>
+<li><code>stream</code>：用指定的stream创建StreamHandler。可以指定输出到sys.stderr,sys.stdout或者文件，默认为sys.stderr。若同时列出了filename和stream两个参数，则stream参数会被忽略。</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;format参数中可能用到的格式化串：</p>
+<ul>
+<li><code>%(name)s</code> Logger的名字</li>
+<li><code>%(levelno)s</code> 数字形式的日志级别</li>
+<li><code>%(levelname)s</code> 文本形式的日志级别</li>
+<li><code>%(pathname)s</code> 调用日志输出函数的模块的完整路径名，可能没有</li>
+<li><code>%(filename)s</code> 调用日志输出函数的模块的文件名</li>
+<li><code>%(module)s</code> 调用日志输出函数的模块名</li>
+<li><code>%(funcName)s</code> 调用日志输出函数的函数名</li>
+<li><code>%(lineno)d</code> 调用日志输出函数的语句所在的代码行</li>
+<li><code>%(created)f</code> 当前时间，用UNIX标准的表示时间的浮 点数表示</li>
+<li><code>%(relativeCreated)d</code> 输出日志信息时的，自Logger创建以 来的毫秒数</li>
+<li><code>%(asctime)s</code> 字符串形式的当前时间。默认格式是 “2003-07-08 16:49:45,896”。逗号后面的是毫秒</li>
+<li><code>%(thread)d</code> 线程ID。可能没有</li>
+<li><code>%(threadName)s</code> 线程名。可能没有</li>
+<li><code>%(process)d</code> 进程ID。可能没有</li>
+<li><code>%(message)s</code>用户输出的消息</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;若要对logging进行更多灵活的控制有必要了解一下<code>Logger</code>，<code>Handler</code>，<code>Formatter</code>，<code>Filter</code>的概念</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上述几个例子中了解到了<code>logging.debug()</code>、<code>logging.info()</code>、<code>logging.warning()</code>、<code>logging.error()</code>、<code>logging.critical()</code>（分别用以记录不同级别的日志信息），<code>logging.basicConfig()</code>（用默认日志格式（Formatter）为日志系统建立一个默认的流处理器（StreamHandler），设置基础配置（如日志级别等）并加到root logger（根Logger）中）这几个logging模块级别的函数，另外还有一个模块级别的函数是<code>logging.getLogger([name])</code>（返回一个logger对象，如果没有指定名字将返回root logger）</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;先看一个具体的例子</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#coding:utf-8  </span></div><div class="line"><span class="keyword">import</span> logging  </div><div class="line">  </div><div class="line"><span class="comment"># 创建一个logger    </span></div><div class="line">logger = logging.getLogger()  </div><div class="line">  </div><div class="line">logger1 = logging.getLogger(<span class="string">'mylogger'</span>)  </div><div class="line">logger1.setLevel(logging.DEBUG)  </div><div class="line">  </div><div class="line">logger2 = logging.getLogger(<span class="string">'mylogger'</span>)  </div><div class="line">logger2.setLevel(logging.INFO)  </div><div class="line">  </div><div class="line">logger3 = logging.getLogger(<span class="string">'mylogger.child1'</span>)  </div><div class="line">logger3.setLevel(logging.WARNING)  </div><div class="line">  </div><div class="line">logger4 = logging.getLogger(<span class="string">'mylogger.child1.child2'</span>)  </div><div class="line">logger4.setLevel(logging.DEBUG)  </div><div class="line">  </div><div class="line">logger5 = logging.getLogger(<span class="string">'mylogger.child1.child2.child3'</span>)  </div><div class="line">logger5.setLevel(logging.DEBUG)  </div><div class="line">  </div><div class="line"><span class="comment"># 创建一个handler，用于写入日志文件    </span></div><div class="line">fh = logging.FileHandler(<span class="string">'/tmp/test.log'</span>)  </div><div class="line">  </div><div class="line"><span class="comment"># 再创建一个handler，用于输出到控制台    </span></div><div class="line">ch = logging.StreamHandler()  </div><div class="line">  </div><div class="line"><span class="comment"># 定义handler的输出格式formatter    </span></div><div class="line">formatter = logging.Formatter(<span class="string">'%(asctime)s - %(name)s - %(levelname)s - %(message)s'</span>)  </div><div class="line">fh.setFormatter(formatter)  </div><div class="line">ch.setFormatter(formatter)  </div><div class="line">  </div><div class="line"><span class="comment">#定义一个filter  </span></div><div class="line"><span class="comment">#filter = logging.Filter('mylogger.child1.child2')  </span></div><div class="line"><span class="comment">#fh.addFilter(filter)    </span></div><div class="line">  </div><div class="line"><span class="comment"># 给logger添加handler    </span></div><div class="line"><span class="comment">#logger.addFilter(filter)  </span></div><div class="line">logger.addHandler(fh)  </div><div class="line">logger.addHandler(ch)  </div><div class="line">  </div><div class="line"><span class="comment">#logger1.addFilter(filter)  </span></div><div class="line">logger1.addHandler(fh)  </div><div class="line">logger1.addHandler(ch)  </div><div class="line">  </div><div class="line">logger2.addHandler(fh)  </div><div class="line">logger2.addHandler(ch)  </div><div class="line">  </div><div class="line"><span class="comment">#logger3.addFilter(filter)  </span></div><div class="line">logger3.addHandler(fh)  </div><div class="line">logger3.addHandler(ch)  </div><div class="line">  </div><div class="line"><span class="comment">#logger4.addFilter(filter)  </span></div><div class="line">logger4.addHandler(fh)  </div><div class="line">logger4.addHandler(ch)  </div><div class="line">  </div><div class="line">logger5.addHandler(fh)  </div><div class="line">logger5.addHandler(ch)  </div><div class="line">  </div><div class="line"><span class="comment"># 记录一条日志    </span></div><div class="line">logger.debug(<span class="string">'logger debug message'</span>)  </div><div class="line">logger.info(<span class="string">'logger info message'</span>)  </div><div class="line">logger.warning(<span class="string">'logger warning message'</span>)  </div><div class="line">logger.error(<span class="string">'logger error message'</span>)  </div><div class="line">logger.critical(<span class="string">'logger critical message'</span>)  </div><div class="line">  </div><div class="line">logger1.debug(<span class="string">'logger1 debug message'</span>)  </div><div class="line">logger1.info(<span class="string">'logger1 info message'</span>)  </div><div class="line">logger1.warning(<span class="string">'logger1 warning message'</span>)  </div><div class="line">logger1.error(<span class="string">'logger1 error message'</span>)  </div><div class="line">logger1.critical(<span class="string">'logger1 critical message'</span>)  </div><div class="line">  </div><div class="line">logger2.debug(<span class="string">'logger2 debug message'</span>)  </div><div class="line">logger2.info(<span class="string">'logger2 info message'</span>)  </div><div class="line">logger2.warning(<span class="string">'logger2 warning message'</span>)  </div><div class="line">logger2.error(<span class="string">'logger2 error message'</span>)  </div><div class="line">logger2.critical(<span class="string">'logger2 critical message'</span>)  </div><div class="line">  </div><div class="line">logger3.debug(<span class="string">'logger3 debug message'</span>)  </div><div class="line">logger3.info(<span class="string">'logger3 info message'</span>)  </div><div class="line">logger3.warning(<span class="string">'logger3 warning message'</span>)  </div><div class="line">logger3.error(<span class="string">'logger3 error message'</span>)  </div><div class="line">logger3.critical(<span class="string">'logger3 critical message'</span>)  </div><div class="line">  </div><div class="line">logger4.debug(<span class="string">'logger4 debug message'</span>)  </div><div class="line">logger4.info(<span class="string">'logger4 info message'</span>)  </div><div class="line">logger4.warning(<span class="string">'logger4 warning message'</span>)  </div><div class="line">logger4.error(<span class="string">'logger4 error message'</span>)  </div><div class="line">logger4.critical(<span class="string">'logger4 critical message'</span>)  </div><div class="line">  </div><div class="line">logger5.debug(<span class="string">'logger5 debug message'</span>)  </div><div class="line">logger5.info(<span class="string">'logger5 info message'</span>)  </div><div class="line">logger5.warning(<span class="string">'logger5 warning message'</span>)  </div><div class="line">logger5.error(<span class="string">'logger5 error message'</span>)  </div><div class="line">logger5.critical(<span class="string">'logger5 critical message'</span>)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div></pre></td><td class="code"><pre><div class="line">2014-05-06 12:54:43,222 - root - WARNING - logger warning message</div><div class="line">2014-05-06 12:54:43,223 - root - ERROR - logger error message</div><div class="line">2014-05-06 12:54:43,224 - root - CRITICAL - logger critical message</div><div class="line">2014-05-06 12:54:43,224 - mylogger - INFO - logger1 info message</div><div class="line">2014-05-06 12:54:43,224 - mylogger - INFO - logger1 info message</div><div class="line">2014-05-06 12:54:43,225 - mylogger - WARNING - logger1 warning message</div><div class="line">2014-05-06 12:54:43,225 - mylogger - WARNING - logger1 warning message</div><div class="line">2014-05-06 12:54:43,226 - mylogger - ERROR - logger1 error message</div><div class="line">2014-05-06 12:54:43,226 - mylogger - ERROR - logger1 error message</div><div class="line">2014-05-06 12:54:43,227 - mylogger - CRITICAL - logger1 critical message</div><div class="line">2014-05-06 12:54:43,227 - mylogger - CRITICAL - logger1 critical message</div><div class="line">2014-05-06 12:54:43,228 - mylogger - INFO - logger2 info message</div><div class="line">2014-05-06 12:54:43,228 - mylogger - INFO - logger2 info message</div><div class="line">2014-05-06 12:54:43,229 - mylogger - WARNING - logger2 warning message</div><div class="line">2014-05-06 12:54:43,229 - mylogger - WARNING - logger2 warning message</div><div class="line">2014-05-06 12:54:43,230 - mylogger - ERROR - logger2 error message</div><div class="line">2014-05-06 12:54:43,230 - mylogger - ERROR - logger2 error message</div><div class="line">2014-05-06 12:54:43,231 - mylogger - CRITICAL - logger2 critical message</div><div class="line">2014-05-06 12:54:43,231 - mylogger - CRITICAL - logger2 critical message</div><div class="line">2014-05-06 12:54:43,232 - mylogger.child1 - WARNING - logger3 warning message</div><div class="line">2014-05-06 12:54:43,232 - mylogger.child1 - WARNING - logger3 warning message</div><div class="line">2014-05-06 12:54:43,232 - mylogger.child1 - WARNING - logger3 warning message</div><div class="line">2014-05-06 12:54:43,234 - mylogger.child1 - ERROR - logger3 error message</div><div class="line">2014-05-06 12:54:43,234 - mylogger.child1 - ERROR - logger3 error message</div><div class="line">2014-05-06 12:54:43,234 - mylogger.child1 - ERROR - logger3 error message</div><div class="line">2014-05-06 12:54:43,235 - mylogger.child1 - CRITICAL - logger3 critical message</div><div class="line">2014-05-06 12:54:43,235 - mylogger.child1 - CRITICAL - logger3 critical message</div><div class="line">2014-05-06 12:54:43,235 - mylogger.child1 - CRITICAL - logger3 critical message</div><div class="line">2014-05-06 12:54:43,237 - mylogger.child1.child2 - DEBUG - logger4 debug message</div><div class="line">2014-05-06 12:54:43,237 - mylogger.child1.child2 - DEBUG - logger4 debug message</div><div class="line">2014-05-06 12:54:43,237 - mylogger.child1.child2 - DEBUG - logger4 debug message</div><div class="line">2014-05-06 12:54:43,237 - mylogger.child1.child2 - DEBUG - logger4 debug message</div><div class="line">2014-05-06 12:54:43,239 - mylogger.child1.child2 - INFO - logger4 info message</div><div class="line">2014-05-06 12:54:43,239 - mylogger.child1.child2 - INFO - logger4 info message</div><div class="line">2014-05-06 12:54:43,239 - mylogger.child1.child2 - INFO - logger4 info message</div><div class="line">2014-05-06 12:54:43,239 - mylogger.child1.child2 - INFO - logger4 info message</div><div class="line">2014-05-06 12:54:43,240 - mylogger.child1.child2 - WARNING - logger4 warning message</div><div class="line">2014-05-06 12:54:43,240 - mylogger.child1.child2 - WARNING - logger4 warning message</div><div class="line">2014-05-06 12:54:43,240 - mylogger.child1.child2 - WARNING - logger4 warning message</div><div class="line">2014-05-06 12:54:43,240 - mylogger.child1.child2 - WARNING - logger4 warning message</div><div class="line">2014-05-06 12:54:43,242 - mylogger.child1.child2 - ERROR - logger4 error message</div><div class="line">2014-05-06 12:54:43,242 - mylogger.child1.child2 - ERROR - logger4 error message</div><div class="line">2014-05-06 12:54:43,242 - mylogger.child1.child2 - ERROR - logger4 error message</div><div class="line">2014-05-06 12:54:43,242 - mylogger.child1.child2 - ERROR - logger4 error message</div><div class="line">2014-05-06 12:54:43,243 - mylogger.child1.child2 - CRITICAL - logger4 critical message</div><div class="line">2014-05-06 12:54:43,243 - mylogger.child1.child2 - CRITICAL - logger4 critical message</div><div class="line">2014-05-06 12:54:43,243 - mylogger.child1.child2 - CRITICAL - logger4 critical message</div><div class="line">2014-05-06 12:54:43,243 - mylogger.child1.child2 - CRITICAL - logger4 critical message</div><div class="line">2014-05-06 12:54:43,244 - mylogger.child1.child2.child3 - DEBUG - logger5 debug message</div><div class="line">2014-05-06 12:54:43,244 - mylogger.child1.child2.child3 - DEBUG - logger5 debug message</div><div class="line">2014-05-06 12:54:43,244 - mylogger.child1.child2.child3 - DEBUG - logger5 debug message</div><div class="line">2014-05-06 12:54:43,244 - mylogger.child1.child2.child3 - DEBUG - logger5 debug message</div><div class="line">2014-05-06 12:54:43,244 - mylogger.child1.child2.child3 - DEBUG - logger5 debug message</div><div class="line">2014-05-06 12:54:43,246 - mylogger.child1.child2.child3 - INFO - logger5 info message</div><div class="line">2014-05-06 12:54:43,246 - mylogger.child1.child2.child3 - INFO - logger5 info message</div><div class="line">2014-05-06 12:54:43,246 - mylogger.child1.child2.child3 - INFO - logger5 info message</div><div class="line">2014-05-06 12:54:43,246 - mylogger.child1.child2.child3 - INFO - logger5 info message</div><div class="line">2014-05-06 12:54:43,246 - mylogger.child1.child2.child3 - INFO - logger5 info message</div><div class="line">2014-05-06 12:54:43,247 - mylogger.child1.child2.child3 - WARNING - logger5 warning message</div><div class="line">2014-05-06 12:54:43,247 - mylogger.child1.child2.child3 - WARNING - logger5 warning message</div><div class="line">2014-05-06 12:54:43,247 - mylogger.child1.child2.child3 - WARNING - logger5 warning message</div><div class="line">2014-05-06 12:54:43,247 - mylogger.child1.child2.child3 - WARNING - logger5 warning message</div><div class="line">2014-05-06 12:54:43,247 - mylogger.child1.child2.child3 - WARNING - logger5 warning message</div><div class="line">2014-05-06 12:54:43,249 - mylogger.child1.child2.child3 - ERROR - logger5 error message</div><div class="line">2014-05-06 12:54:43,249 - mylogger.child1.child2.child3 - ERROR - logger5 error message</div><div class="line">2014-05-06 12:54:43,249 - mylogger.child1.child2.child3 - ERROR - logger5 error message</div><div class="line">2014-05-06 12:54:43,249 - mylogger.child1.child2.child3 - ERROR - logger5 error message</div><div class="line">2014-05-06 12:54:43,249 - mylogger.child1.child2.child3 - ERROR - logger5 error message</div><div class="line">2014-05-06 12:54:43,250 - mylogger.child1.child2.child3 - CRITICAL - logger5 critical message</div><div class="line">2014-05-06 12:54:43,250 - mylogger.child1.child2.child3 - CRITICAL - logger5 critical message</div><div class="line">2014-05-06 12:54:43,250 - mylogger.child1.child2.child3 - CRITICAL - logger5 critical message</div><div class="line">2014-05-06 12:54:43,250 - mylogger.child1.child2.child3 - CRITICAL - logger5 critical message</div><div class="line">2014-05-06 12:54:43,250 - mylogger.child1.child2.child3 - CRITICAL - logger5 critical message</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;先简单介绍一下，logging库提供了多个组件：<code>Logger</code>、<code>Handler</code>、<code>Filter</code>、<code>Formatter</code>。Logger对象提供应用程序可直接使用的接口，Handler发送日志到适当的目的地，Filter提供了过滤日志信息的方法，Formatter指定日志显示格式。</p>
+<h2 id="Logger"><a href="#Logger" class="headerlink" title="Logger"></a>Logger</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Logger是一个树形层级结构，输出信息之前都要获得一个Logger（如果没有显示的获取则自动创建并使用root Logger，如第一个例子所示）。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>logger = logging.getLogger()</code>返回一个默认的Logger也即root Logger，并应用默认的日志级别、Handler和Formatter设置。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当然也可以通过Logger.setLevel(lel)指定最低的日志级别，可用的日志级别有logging.DEBUG、logging.INFO、logging.WARNING、logging.ERROR、logging.CRITICAL。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Logger.debug()、Logger.info()、Logger.warning()、Logger.error()、Logger.critical()输出不同级别的日志，只有日志等级大于或等于设置的日志级别的日志才会被输出。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们看到程序中</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">logger.debug(<span class="string">'logger debug message'</span>)  </div><div class="line">logger.info(<span class="string">'logger info message'</span>)  </div><div class="line">logger.warning(<span class="string">'logger warning message'</span>)  </div><div class="line">logger.error(<span class="string">'logger error message'</span>)  </div><div class="line">logger.critical(<span class="string">'logger critical message'</span>)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;只输出了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">12</span>:<span class="number">54</span>:<span class="number">43</span>,<span class="number">222</span> - root - WARNING - logger warning message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">12</span>:<span class="number">54</span>:<span class="number">43</span>,<span class="number">223</span> - root - ERROR - logger error message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">12</span>:<span class="number">54</span>:<span class="number">43</span>,<span class="number">224</span> - root - CRITICAL - logger critical message</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从这个输出可以看出<code>logger = logging.getLogger()</code>返回的Logger名为root。这里没有用logger.setLevel()显示的为logger设置日志级别，所以使用默认的日志级别WARNIING，故结果只输出了大于等于WARNIING级别的信息。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另外，我们明明通过logger1.setLevel(logging.DEBUG)将logger1的日志级别设置为了DEBUG，为何显示的时候没有显示出DEBUG级别的日志信息，而是从INFO级别的日志开始显示呢？原来logger1和logger2对应的是同一个Logger实例，只要logging.getLogger（name）中名称参数name相同则返回的Logger实例就是同一个，且仅有一个，也即name与Logger实例一一对应。在logger2实例中通过logger2.setLevel(logging.INFO)设置mylogger的日志级别为logging.INFO，所以最后logger1的输出遵从了后来设置的日志级别。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">logger1 = logging.getLogger(<span class="string">'mylogger'</span>)  </div><div class="line">logger1.setLevel(logging.DEBUG)  </div><div class="line">logger2 = logging.getLogger(<span class="string">'mylogger'</span>)  </div><div class="line">logger2.setLevel(logging.INFO)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为什么logger1、logger2对应的每个输出分别显示两次，logger3对应的输出显示3次，logger4对应的输出显示4次……呢？</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这是因为我们通过<code>logger = logging.getLogger()</code>显示的创建了<code>root Logger</code>，而<code>logger1 = logging.getLogger(&#39;mylogger&#39;)</code>创建了<code>root Logger</code>的孩子<code>(root.)mylogger,logger2</code>同样。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>logger3 = logging.getLogger(&#39;mylogger.child1&#39;)</code>创建了<code>(root.)mylogger.child1</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>logger4 = logging.getLogger(&#39;mylogger.child1.child2&#39;)</code>创建了<code>(root.)mylogger.child1.child2</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>logger5 = logging.getLogger(&#39;mylogger.child1.child2.child3&#39;)</code>创建了<code>(root.)mylogger.child1.child2.child3</code></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;而孩子,孙子，重孙……既会将消息分发给他的handler进行处理也会传递给所有的祖先Logger处理。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;试着注释掉如下一行程序，观察程序输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#logger.addHandler(fh)</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;发现标准输出中每条记录对应两行（因为root Logger默认使用StreamHandler）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">2014-05-06 15:10:10,980 - mylogger - INFO - logger1 info message</div><div class="line">2014-05-06 15:10:10,980 - mylogger - INFO - logger1 info message</div><div class="line">2014-05-06 15:10:10,981 - mylogger - WARNING - logger1 warning message</div><div class="line">2014-05-06 15:10:10,981 - mylogger - WARNING - logger1 warning message</div><div class="line">2014-05-06 15:10:10,982 - mylogger - ERROR - logger1 error message</div><div class="line">2014-05-06 15:10:10,982 - mylogger - ERROR - logger1 error message</div><div class="line">2014-05-06 15:10:10,984 - mylogger - CRITICAL - logger1 critical message</div><div class="line">2014-05-06 15:10:10,984 - mylogger - CRITICAL - logger1 critical message</div><div class="line">……</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;而在文件输出中每条记录对应一行（因为我们注释掉了logger.addHandler(fh)，没有对root Logger启用FileHandler）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">2014-05-06 15:10:10,980 - mylogger - INFO - logger1 info message</div><div class="line">2014-05-06 15:10:10,981 - mylogger - WARNING - logger1 warning message</div><div class="line">2014-05-06 15:10:10,982 - mylogger - ERROR - logger1 error message</div><div class="line">2014-05-06 15:10:10,984 - mylogger - CRITICAL - logger1 critical message</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;孩子,孙子，重孙……可逐层继承来自祖先的日志级别、Handler、Filter设置，也可以通过Logger.setLevel(lel)、Logger.addHandler(hdlr)、Logger.removeHandler(hdlr)、Logger.addFilter(filt)、Logger.removeFilter(filt)。设置自己特别的日志级别、Handler、Filter。若不设置则使用继承来的值。</p>
+<h2 id="Handler"><a href="#Handler" class="headerlink" title="Handler"></a>Handler</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上述例子的输出在标准输出和指定的日志文件中均可以看到，这是因为我们定义并使用了两种Handler。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">fh = logging.FileHandler(<span class="string">'/tmp/test.log'</span>)   </div><div class="line">ch = logging.StreamHandler()</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Handler对象负责发送相关的信息到指定目的地，有几个常用的Handler方法：</p>
+<ul>
+<li><code>Handler.setLevel(lel)</code>:指定日志级别，低于lel级别的日志将被忽略</li>
+<li><code>Handler.setFormatter()</code>：给这个handler选择一个Formatter</li>
+<li><code>Handler.addFilter(filt)``、Handler.removeFilter(filt)</code>：新增或删除一个filter对象</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以通过<code>addHandler()</code>方法为Logger添加多个Handler：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">logger.addHandler(fh)  </div><div class="line">logger.addHandler(ch)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有多中可用的Handler：</p>
+<ul>
+<li><code>logging.StreamHandler</code> 可以向类似与sys.stdout或者sys.stderr的任何文件对象(file object)输出信息</li>
+<li><code>logging.FileHandler</code> 用于向一个文件输出日志信息</li>
+<li><code>logging.handlers.RotatingFileHandler</code> 类似于上面的FileHandler，但是它可以管理文件大小。当文件达到一定大小之后，它会自动将当前日志文件改名，然后创建一个新的同名日志文件继续输出</li>
+<li><code>logging.handlers.TimedRotatingFileHandler</code> 和RotatingFileHandler类似，不过，它没有通过判断文件大小来决定何时重新创建日志文件，而是间隔一定时间就自动创建新的日志文件</li>
+<li><code>logging.handlers.SocketHandler</code> 使用TCP协议，将日志信息发送到网络。</li>
+<li><code>logging.handlers.DatagramHandler</code> 使用UDP协议，将日志信息发送到网络。</li>
+<li><code>logging.handlers.SysLogHandler</code> 日志输出到syslog</li>
+<li><code>logging.handlers.NTEventLogHandler</code> 远程输出日志到Windows NT/2000/XP的事件日志 </li>
+<li><code>logging.handlers.SMTPHandler</code> 远程输出日志到邮件地址</li>
+<li><code>logging.handlers.MemoryHandler</code> 日志输出到内存中的制定buffer</li>
+<li><code>logging.handlers.HTTPHandler</code> 通过”GET”或”POST”远程输出到HTTP服务器</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;各个Handler的具体用法可查看参考<a href="https://docs.python.org/2/library/logging.handlers.html#module-logging.handlers" target="_blank" rel="external">官方文档</a></p>
+<h2 id="Formatter"><a href="#Formatter" class="headerlink" title="Formatter"></a>Formatter</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Formatter对象设置日志信息最后的规则、结构和内容，默认的时间格式为%Y-%m-%d %H:%M:%S。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#定义Formatter  </span></div><div class="line">formatter = logging.Formatter(<span class="string">'%(asctime)s - %(name)s - %(levelname)s - %(message)s'</span>)  </div><div class="line"><span class="comment">#为Handler添加Formatter  </span></div><div class="line">fh.setFormatter(formatter)  </div><div class="line">ch.setFormatter(formatter)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Formatter参数中可能用到的格式化串参见上文（logging.basicConfig()函数format参数中可能用到的格式化串：）</p>
+<h2 id="Filter"><a href="#Filter" class="headerlink" title="Filter"></a>Filter</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;限制只有满足过滤规则的日志才会输出。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;比如定义了<code>filter = logging.Filter(&#39;a.b.c&#39;)</code>,并将这个Filter添加到了一个Handler上，则使用该Handler的Logger中只有名字带a.b.c前缀的Logger才能输出其日志。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;取消下列两行程序的注释</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#filter = logging.Filter('mylogger.child1.child2')  </span></div><div class="line"><span class="comment">#fh.addFilter(filter)    </span></div><div class="line">标准输出中输出结果并没有发生变化，但日志文件输出中只显示了如下内容：</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">227</span> - mylogger.child1.child2 - DEBUG - logger4 debug message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">227</span> - mylogger.child1.child2 - DEBUG - logger4 debug message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">227</span> - mylogger.child1.child2 - DEBUG - logger4 debug message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">227</span> - mylogger.child1.child2 - DEBUG - logger4 debug message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">228</span> - mylogger.child1.child2 - INFO - logger4 info message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">228</span> - mylogger.child1.child2 - INFO - logger4 info message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">228</span> - mylogger.child1.child2 - INFO - logger4 info message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">228</span> - mylogger.child1.child2 - INFO - logger4 info message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">230</span> - mylogger.child1.child2 - WARNING - logger4 warning message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">230</span> - mylogger.child1.child2 - WARNING - logger4 warning message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">230</span> - mylogger.child1.child2 - WARNING - logger4 warning message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">230</span> - mylogger.child1.child2 - WARNING - logger4 warning message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">232</span> - mylogger.child1.child2 - ERROR - logger4 error message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">232</span> - mylogger.child1.child2 - ERROR - logger4 error message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">232</span> - mylogger.child1.child2 - ERROR - logger4 error message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">232</span> - mylogger.child1.child2 - ERROR - logger4 error message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">233</span> - mylogger.child1.child2 - CRITICAL - logger4 critical message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">233</span> - mylogger.child1.child2 - CRITICAL - logger4 critical message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">233</span> - mylogger.child1.child2 - CRITICAL - logger4 critical message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">233</span> - mylogger.child1.child2 - CRITICAL - logger4 critical message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">235</span> - mylogger.child1.child2.child3 - DEBUG - logger5 debug message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">235</span> - mylogger.child1.child2.child3 - DEBUG - logger5 debug message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">235</span> - mylogger.child1.child2.child3 - DEBUG - logger5 debug message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">235</span> - mylogger.child1.child2.child3 - DEBUG - logger5 debug message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">235</span> - mylogger.child1.child2.child3 - DEBUG - logger5 debug message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">236</span> - mylogger.child1.child2.child3 - INFO - logger5 info message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">236</span> - mylogger.child1.child2.child3 - INFO - logger5 info message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">236</span> - mylogger.child1.child2.child3 - INFO - logger5 info message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">236</span> - mylogger.child1.child2.child3 - INFO - logger5 info message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">236</span> - mylogger.child1.child2.child3 - INFO - logger5 info message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">238</span> - mylogger.child1.child2.child3 - WARNING - logger5 warning message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">238</span> - mylogger.child1.child2.child3 - WARNING - logger5 warning message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">238</span> - mylogger.child1.child2.child3 - WARNING - logger5 warning message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">238</span> - mylogger.child1.child2.child3 - WARNING - logger5 warning message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">238</span> - mylogger.child1.child2.child3 - WARNING - logger5 warning message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">240</span> - mylogger.child1.child2.child3 - ERROR - logger5 error message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">240</span> - mylogger.child1.child2.child3 - ERROR - logger5 error message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">240</span> - mylogger.child1.child2.child3 - ERROR - logger5 error message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">240</span> - mylogger.child1.child2.child3 - ERROR - logger5 error message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">240</span> - mylogger.child1.child2.child3 - ERROR - logger5 error message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">242</span> - mylogger.child1.child2.child3 - CRITICAL - logger5 critical message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">242</span> - mylogger.child1.child2.child3 - CRITICAL - logger5 critical message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">242</span> - mylogger.child1.child2.child3 - CRITICAL - logger5 critical message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">242</span> - mylogger.child1.child2.child3 - CRITICAL - logger5 critical message</div><div class="line"><span class="number">2014</span><span class="number">-05</span><span class="number">-06</span> <span class="number">15</span>:<span class="number">27</span>:<span class="number">36</span>,<span class="number">242</span> - mylogger.child1.child2.child3 - CRITICAL - logger5 critical message</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当然也可以直接给Logger加Filter。若为Handler加Filter则所有使用了该Handler的Logger都会受到影响。而为Logger添加Filter只会影响到自身。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注释掉</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#fh.addFilter(filter)</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;并取消如下几行的注释</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#logger.addFilter(filter)  </span></div><div class="line"><span class="comment">#logger1.addFilter(filter)  </span></div><div class="line"><span class="comment">#logger3.addFilter(filter)  </span></div><div class="line"><span class="comment">#logger4.addFilter(filter)</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出结果</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">2014-05-06 15:32:10,746 - mylogger.child1.child2 - DEBUG - logger4 debug message</div><div class="line">2014-05-06 15:32:10,746 - mylogger.child1.child2 - DEBUG - logger4 debug message</div><div class="line">2014-05-06 15:32:10,746 - mylogger.child1.child2 - DEBUG - logger4 debug message</div><div class="line">2014-05-06 15:32:10,746 - mylogger.child1.child2 - DEBUG - logger4 debug message</div><div class="line">2014-05-06 15:32:10,748 - mylogger.child1.child2 - INFO - logger4 info message</div><div class="line">2014-05-06 15:32:10,748 - mylogger.child1.child2 - INFO - logger4 info message</div><div class="line">2014-05-06 15:32:10,748 - mylogger.child1.child2 - INFO - logger4 info message</div><div class="line">2014-05-06 15:32:10,748 - mylogger.child1.child2 - INFO - logger4 info message</div><div class="line">2014-05-06 15:32:10,751 - mylogger.child1.child2 - WARNING - logger4 warning message</div><div class="line">2014-05-06 15:32:10,751 - mylogger.child1.child2 - WARNING - logger4 warning message</div><div class="line">2014-05-06 15:32:10,751 - mylogger.child1.child2 - WARNING - logger4 warning message</div><div class="line">2014-05-06 15:32:10,751 - mylogger.child1.child2 - WARNING - logger4 warning message</div><div class="line">2014-05-06 15:32:10,753 - mylogger.child1.child2 - ERROR - logger4 error message</div><div class="line">2014-05-06 15:32:10,753 - mylogger.child1.child2 - ERROR - logger4 error message</div><div class="line">2014-05-06 15:32:10,753 - mylogger.child1.child2 - ERROR - logger4 error message</div><div class="line">2014-05-06 15:32:10,753 - mylogger.child1.child2 - ERROR - logger4 error message</div><div class="line">2014-05-06 15:32:10,754 - mylogger.child1.child2 - CRITICAL - logger4 critical message</div><div class="line">2014-05-06 15:32:10,754 - mylogger.child1.child2 - CRITICAL - logger4 critical message</div><div class="line">2014-05-06 15:32:10,754 - mylogger.child1.child2 - CRITICAL - logger4 critical message</div><div class="line">2014-05-06 15:32:10,754 - mylogger.child1.child2 - CRITICAL - logger4 critical message</div><div class="line">2014-05-06 15:32:10,755 - mylogger.child1.child2.child3 - DEBUG - logger5 debug message</div><div class="line">2014-05-06 15:32:10,755 - mylogger.child1.child2.child3 - DEBUG - logger5 debug message</div><div class="line">2014-05-06 15:32:10,755 - mylogger.child1.child2.child3 - DEBUG - logger5 debug message</div><div class="line">2014-05-06 15:32:10,755 - mylogger.child1.child2.child3 - DEBUG - logger5 debug message</div><div class="line">2014-05-06 15:32:10,755 - mylogger.child1.child2.child3 - DEBUG - logger5 debug message</div><div class="line">2014-05-06 15:32:10,757 - mylogger.child1.child2.child3 - INFO - logger5 info message</div><div class="line">2014-05-06 15:32:10,757 - mylogger.child1.child2.child3 - INFO - logger5 info message</div><div class="line">2014-05-06 15:32:10,757 - mylogger.child1.child2.child3 - INFO - logger5 info message</div><div class="line">2014-05-06 15:32:10,757 - mylogger.child1.child2.child3 - INFO - logger5 info message</div><div class="line">2014-05-06 15:32:10,757 - mylogger.child1.child2.child3 - INFO - logger5 info message</div><div class="line">2014-05-06 15:32:10,759 - mylogger.child1.child2.child3 - WARNING - logger5 warning message</div><div class="line">2014-05-06 15:32:10,759 - mylogger.child1.child2.child3 - WARNING - logger5 warning message</div><div class="line">2014-05-06 15:32:10,759 - mylogger.child1.child2.child3 - WARNING - logger5 warning message</div><div class="line">2014-05-06 15:32:10,759 - mylogger.child1.child2.child3 - WARNING - logger5 warning message</div><div class="line">2014-05-06 15:32:10,759 - mylogger.child1.child2.child3 - WARNING - logger5 warning message</div><div class="line">2014-05-06 15:32:10,761 - mylogger.child1.child2.child3 - ERROR - logger5 error message</div><div class="line">2014-05-06 15:32:10,761 - mylogger.child1.child2.child3 - ERROR - logger5 error message</div><div class="line">2014-05-06 15:32:10,761 - mylogger.child1.child2.child3 - ERROR - logger5 error message</div><div class="line">2014-05-06 15:32:10,761 - mylogger.child1.child2.child3 - ERROR - logger5 error message</div><div class="line">2014-05-06 15:32:10,761 - mylogger.child1.child2.child3 - ERROR - logger5 error message</div><div class="line">2014-05-06 15:32:10,762 - mylogger.child1.child2.child3 - CRITICAL - logger5 critical message</div><div class="line">2014-05-06 15:32:10,762 - mylogger.child1.child2.child3 - CRITICAL - logger5 critical message</div><div class="line">2014-05-06 15:32:10,762 - mylogger.child1.child2.child3 - CRITICAL - logger5 critical message</div><div class="line">2014-05-06 15:32:10,762 - mylogger.child1.child2.child3 - CRITICAL - logger5 critical message</div><div class="line">2014-05-06 15:32:10,762 - mylogger.child1.child2.child3 - CRITICAL - logger5 critical message</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;发现root、mylogger、mylogger.child1的输出全部被过滤掉了。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;除了直接在程序中设置Logger，Handler,Filter,Formatter外还可以将这些信息写进配置文件中。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例如典型的logging.conf</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">[loggers]  </div><div class="line">keys=root,simpleExample  </div><div class="line">  </div><div class="line">[handlers]  </div><div class="line">keys=consoleHandler  </div><div class="line">  </div><div class="line">[formatters]  </div><div class="line">keys=simpleFormatter  </div><div class="line">  </div><div class="line">[logger_root]  </div><div class="line">level=DEBUG  </div><div class="line">handlers=consoleHandler  </div><div class="line">  </div><div class="line">[logger_simpleExample]  </div><div class="line">level=DEBUG  </div><div class="line">handlers=consoleHandler  </div><div class="line">qualname=simpleExample  </div><div class="line">propagate=0  </div><div class="line">  </div><div class="line">[handler_consoleHandler]  </div><div class="line">class=StreamHandler  </div><div class="line">level=DEBUG  </div><div class="line">formatter=simpleFormatter  </div><div class="line">args=(sys.stdout,)  </div><div class="line">  </div><div class="line">[formatter_simpleFormatter]  </div><div class="line">format=%(asctime)s - %(name)s - %(levelname)s - %(message)s  </div><div class="line">datefmt=</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;程序可以这么写</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> logging    </div><div class="line"><span class="keyword">import</span> logging.config    </div><div class="line">    </div><div class="line">logging.config.fileConfig(<span class="string">"logging.conf"</span>)    <span class="comment"># 采用配置文件     </span></div><div class="line">    </div><div class="line"><span class="comment"># create logger     </span></div><div class="line">logger = logging.getLogger(<span class="string">"simpleExample"</span>)    </div><div class="line">    </div><div class="line"><span class="comment"># "application" code     </span></div><div class="line">logger.debug(<span class="string">"debug message"</span>)    </div><div class="line">logger.info(<span class="string">"info message"</span>)    </div><div class="line">logger.warn(<span class="string">"warn message"</span>)    </div><div class="line">logger.error(<span class="string">"error message"</span>)    </div><div class="line">logger.critical(<span class="string">"critical message"</span>)</div></pre></td></tr></table></figure>
+<h2 id="多模块使用logging"><a href="#多模块使用logging" class="headerlink" title="多模块使用logging"></a>多模块使用logging</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;logging模块保证在同一个python解释器内，多次调用logging.getLogger(‘log_name’)都会返回同一个logger实例，即使是在多个模块的情况下。所以典型的多模块场景下使用logging的方式是在main模块中配置logging，这个配置会作用于多个的子模块，然后在其他模块中直接通过getLogger获取Logger对象即可。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;main.py：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> logging    </div><div class="line"><span class="keyword">import</span> logging.config    </div><div class="line">    </div><div class="line">logging.config.fileConfig(<span class="string">'logging.conf'</span>)    </div><div class="line">root_logger = logging.getLogger(<span class="string">'root'</span>)    </div><div class="line">root_logger.debug(<span class="string">'test root logger...'</span>)    </div><div class="line">    </div><div class="line">logger = logging.getLogger(<span class="string">'main'</span>)    </div><div class="line">logger.info(<span class="string">'test main logger'</span>)    </div><div class="line">logger.info(<span class="string">'start import module \'mod\'...'</span>)    </div><div class="line"><span class="keyword">import</span> mod    </div><div class="line">    </div><div class="line">logger.debug(<span class="string">'let\'s test mod.testLogger()'</span>)    </div><div class="line">mod.testLogger()    </div><div class="line">    </div><div class="line">root_logger.info(<span class="string">'finish test...'</span>)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;子模块mod.py：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> logging    </div><div class="line"><span class="keyword">import</span> submod    </div><div class="line">    </div><div class="line">logger = logging.getLogger(<span class="string">'main.mod'</span>)    </div><div class="line">logger.info(<span class="string">'logger of mod say something...'</span>)    </div><div class="line">    </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">testLogger</span><span class="params">()</span>:</span>    </div><div class="line">    logger.debug(<span class="string">'this is mod.testLogger...'</span>)    </div><div class="line">    submod.tst()</div></pre></td></tr></table></figure></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;子子模块submod.py：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> logging    </div><div class="line">    </div><div class="line">logger = logging.getLogger(<span class="string">'main.mod.submod'</span>)    </div><div class="line">logger.info(<span class="string">'logger of submod say something...'</span>)    </div><div class="line">    </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">tst</span><span class="params">()</span>:</span>    </div><div class="line">    logger.info(<span class="string">'this is submod.tst()...'</span>)</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/11/11/Python/2.python新教程/37.python模块os/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          python模块os
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/11/10/Python/2.python新教程/35.python模块datetime/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">python模块datetime</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="Python/2.python新教程/36.python模块logging" data-title="python模块logging" data-url="https://hcldirgit.github.io/2017/11/11/Python/2.python新教程/36.python模块logging/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="python模块logging">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

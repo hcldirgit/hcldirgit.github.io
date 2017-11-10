@@ -168,6 +168,261 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Apache/44. apache2.2 到 2.4后配置文件需要更改的部分" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Apache/44. apache2.2 到 2.4后配置文件需要更改的部分/" class="article-date">
+  	<time datetime="2017-10-13T13:29:39.837Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Apache/44. apache2.2 到 2.4后配置文件需要更改的部分/">
+        apache2.2 到 2.4后配置文件需要更改的部分
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li>访问控制</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;2.2 的时候</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Order deny,allow</div><div class="line">Deny from all</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Apache/44. apache2.2 到 2.4后配置文件需要更改的部分/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Apache/61. apache的proxy代理总访问后端web的第一个虚拟主机" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Apache/61. apache的proxy代理总访问后端web的第一个虚拟主机/" class="article-date">
+  	<time datetime="2017-10-13T13:29:39.835Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Apache/61. apache的proxy代理总访问后端web的第一个虚拟主机/">
+        apache的proxy代理总访问后端web的第一个虚拟主机
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;问题，如题。怎么折腾都是一直访问第一个虚拟主机，后来找到问题所在。是我配置的不对。错误配置是这样的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">ServerName www.test.com</div><div class="line">CustomLog <span class="string">"/dev/null"</span> combined</div><div class="line">ProxyRequests Off</div><div class="line"> </div><div class="line">Order deny,allow</div><div class="line">Allow from all</div><div class="line"> </div><div class="line">ProxyPass / http://192.168.13.111/</div><div class="line">ProxyPassReverse / 192.168.13.111/</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Apache/61. apache的proxy代理总访问后端web的第一个虚拟主机/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Apache/59. apache 限制某些目录不能访问通过rewrite实现" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Apache/59. apache 限制某些目录不能访问通过rewrite实现/" class="article-date">
+  	<time datetime="2017-10-13T13:29:39.833Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Apache/59. apache 限制某些目录不能访问通过rewrite实现/">
+        apache 限制某些目录不能访问通过rewrite实现
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;deny allow肯定是可以实现的，但是这个必须指定准确的目录，如果有很多个目录，但是都包含某个名字，比如</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">bbs.1.com/1/tmp/123.html</div><div class="line"></div><div class="line">bbs.1.com/2/tmp/123.html</div><div class="line"></div><div class="line">bbs.1.com/3/1/2/tmp/123.html</div><div class="line"></div><div class="line">……</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Apache/59. apache 限制某些目录不能访问通过rewrite实现/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Apache/39. apache 设置图片等静态文件的过期时间" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Apache/39. apache 设置图片等静态文件的过期时间/" class="article-date">
+  	<time datetime="2017-10-13T13:29:39.823Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Apache/39. apache 设置图片等静态文件的过期时间/">
+        apache 设置图片等静态文件的过期时间
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;httpd.conf 中加入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">ExpiresActive on</div><div class="line">ExpiresByType image/gif  <span class="string">"access plus 1 days"</span></div><div class="line">ExpiresByType image/jpeg <span class="string">"access plus 24 hours"</span></div><div class="line">ExpiresByType image/png <span class="string">"access plus 24 hours"</span></div><div class="line">ExpiresByType text/css <span class="string">"now plus 2 hour"</span></div><div class="line">ExpiresByType application/x-javascript <span class="string">"now plus 2 hours"</span></div><div class="line">ExpiresByType application/x-shockwave-flash <span class="string">"now plus 2 hours"</span></div><div class="line">ExpiresDefault <span class="string">"now plus 0 min"</span></div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Apache/39. apache 设置图片等静态文件的过期时间/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Apache/10. Apache模块动态加载和静态加载" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -546,257 +801,9 @@
 
 
   
-    <article id="post-Apache/7. centos 6 编译安装httpd-2.4" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Apache/7. centos 6 编译安装httpd-2.4/" class="article-date">
-  	<time datetime="2017-10-13T13:29:39.787Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Apache/7. centos 6 编译安装httpd-2.4/">
-        centos 6 编译安装httpd-2.4
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;centos6 yum安装的apr版本已经不适用httpd-2.4版本了。所以，需要源码编译apr以及apr-util</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Apache/7. centos 6 编译安装httpd-2.4/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Apache/27. URL网址规范化" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Apache/27. URL网址规范化/" class="article-date">
-  	<time datetime="2017-10-13T13:29:39.776Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Apache/27. URL网址规范化/">
-        URL网址规范化
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;网址URL规范化（URL canonicalization）是近一年来在Google搜索结果中出现的一个很大的问题。它指的是搜索引擎挑选最好的URL网址作为真正网址的过程。举例来说，下面这几个URL一般来说指的是同一个文件或网页：</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Apache/27. URL网址规范化/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Apache/1. Apache编译安装" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Apache/1. Apache编译安装/" class="article-date">
-  	<time datetime="2017-10-13T13:29:39.774Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Apache/1. Apache编译安装/">
-        Apache编译安装
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Apache也需要到官网下载合适的版本，目前使用较多的版本为2.0或者2.2建议下载2.2版本。<a href="http://www.apache.org/dyn/closer.cgi" target="_blank" rel="external">Apache官网下载地址</a> 实际上，我们所谓的 apache ，真正的名字叫 httpd 。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Apache/1. Apache编译安装/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Apache/29. apache 日志切割" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Apache/29. apache 日志切割/" class="article-date">
-  	<time datetime="2017-10-13T13:29:39.772Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Apache/29. apache 日志切割/">
-        apache 日志切割
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里的日志指的是访问日志，没访问一次网站，就会记录若干条日志。前提是已经配置了日志，日志如果不去管理，时间长了日志文件会越来越大，这个时候这个日志是不可能 cat、less、 以及 vim 的，head 或 tail 还可以。如何避免产生这么大的日志文件？其实 apache 有相关配置，是日志按照我们的需求进行归档，比如每天一个新日志，或者每小时一个新日志。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Apache/29. apache 日志切割/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/66/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/65/">65</a><a class="page-number" href="/page/66/">66</a><span class="page-number current">67</span><a class="page-number" href="/page/68/">68</a><a class="page-number" href="/page/69/">69</a><a class="extend next" rel="next" href="/page/68/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/66/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/65/">65</a><a class="page-number" href="/page/66/">66</a><span class="page-number current">67</span><a class="page-number" href="/page/68/">68</a><a class="page-number" href="/page/69/">69</a><a class="page-number" href="/page/70/">70</a><a class="extend next" rel="next" href="/page/68/">Next &raquo;</a>
     </nav>
   
 </div>
