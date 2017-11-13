@@ -168,6 +168,76 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Zabbix/5. zabbix2.2 使用自定义脚本监控网卡流量" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Zabbix/5. zabbix2.2 使用自定义脚本监控网卡流量/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.185Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Zabbix/5. zabbix2.2 使用自定义脚本监控网卡流量/">
+        zabbix2.2 使用自定义脚本监控网卡流量
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li>在客户端修改配置文件  /etc/zabbix/zabbix_agentd.conf</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需要改动两个地方：</p>
+<ul>
+<li>UnsafeUserParameters=1</li>
+<li>UserParameter=my.net.if</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;/usr/local/sbin/zabbix/net.sh $1 $2   //其中UserParameter用来自定义键值，（类似于net.if.in)，自己写的脚本往往会有参数，所以需要加。这是固定写法，如果脚本压根就没有什么参数，那么这个就省了。逗号后面就是我们写的脚本的路径了，再后面就是要用到的参数，有几个就写几。</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zabbix/">Zabbix</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Zabbix/5. zabbix2.2 使用自定义脚本监控网卡流量/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Zabbix/4. Zabbix自定义监控脚本配置" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -742,70 +812,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Zabbix/20. zabbix设置邮件报警/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Zabbix/2. zabbix 服务端安装" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Zabbix/2. zabbix 服务端安装/" class="article-date">
-  	<time datetime="2017-10-13T13:48:39.171Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Zabbix/2. zabbix 服务端安装/">
-        zabbix 服务端安装
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;zabbix 是另外一个用得比较多的监控工具，同样也需要 apache+php 的支持，但它比 nagios 要多一个 mysql ，因为它有数据需要储存。所以，安装 zabbix，必须要安装 mysql 。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在安装 zabbix 之前，也需要安装 epel 扩展源，因为 centos 自带 yum 源是没有 zabbix 的。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@zabbix ~]<span class="comment"># yum install -y epel-release</span></div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zabbix/">Zabbix</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Zabbix/2. zabbix 服务端安装/#more">阅读全文 >></a>
         </p>
       
     

@@ -168,6 +168,70 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Linux安全/2. Linux可插拔认证模块（PAM）的配置文件、工作原理与流程" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Linux安全/2. Linux可插拔认证模块（PAM）的配置文件、工作原理与流程/" class="article-date">
+  	<time datetime="2017-10-13T13:29:42.085Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Linux安全/2. Linux可插拔认证模块（PAM）的配置文件、工作原理与流程/">
+        Linux可插拔认证模块（PAM）的配置文件、工作原理与流程
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PAM的配置文件：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们注意到，配置文件也放在了在应用接口层中，他与PAM API配合使用，从而达到了在应用中灵活插入所需鉴别模块的目的。他的作用主要是为应用选定具体的鉴别模块，模块间的组合以及规定模块的行为。下面是一个示例配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">cat /etc/pam.d/system-auth：</div><div class="line"><span class="comment">#%PAM-1.0</span></div><div class="line"><span class="comment"># This file is auto-generated.</span></div><div class="line"><span class="comment"># User changes will be destroyed the next time authconfig is run.</span></div><div class="line">auth required /lib/security/<span class="variable">$ISA</span>/pam_env.so</div><div class="line">auth sufficient /lib/security/<span class="variable">$ISA</span>/pam_unix.so likeauth nullok</div><div class="line">auth required /lib/security/<span class="variable">$ISA</span>/pam_deny.so</div><div class="line"> </div><div class="line">account required /lib/security/<span class="variable">$ISA</span>/pam_unix.so</div><div class="line">account sufficient /lib/security/<span class="variable">$ISA</span>/pam_succeed_if.so uid &lt; 100 quiet</div><div class="line">account required /lib/security/<span class="variable">$ISA</span>/pam_permit.so</div><div class="line"> </div><div class="line">password requisite /lib/security/<span class="variable">$ISA</span>/pam_cracklib.so retry=3</div><div class="line">password sufficient /lib/security/<span class="variable">$ISA</span>/pam_unix.so nullok use_authtok md5 shadow nis</div><div class="line">password required /lib/security/<span class="variable">$ISA</span>/pam_deny.so</div><div class="line"> </div><div class="line">session required /lib/security/<span class="variable">$ISA</span>/pam_limits.so</div><div class="line">session required /lib/security/<span class="variable">$ISA</span>/pam_unix.so</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux安全/">Linux安全</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Linux安全/2. Linux可插拔认证模块（PAM）的配置文件、工作原理与流程/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Linux安全/1. CSRF攻击防范" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -719,68 +783,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Dns、Iredmaill/10. DNS服务器(四)：DNS视图及bind中rndc的使用/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Dns、Iredmaill/7. DNS服务器(一)：基本原理" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Dns、Iredmaill/7. DNS服务器(一)：基本原理/" class="article-date">
-  	<time datetime="2017-10-13T13:29:42.019Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Dns、Iredmaill/7. DNS服务器(一)：基本原理/">
-        DNS服务器(一)：基本原理
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;网络中的主机通信是通过IP地址来实现的，通常IPv4的地址是四个数字加点组成，如果和每台主机通信我们都要去记忆IP地址的话，这通常对于人类来讲是相当痛苦的。于是网络上就有了一套为了解决这个问题的方案出现了，也就是DNS主机名称解析系统。它是一套能够将数以千万计的IP地址通过查询DNS数据库，轻松的转化成与之对应的一串单词字符串，也就是主机名，网络上称之为域名，相对于IP地址，用单词组成的域名明显好记多了。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DNS/">DNS</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Dns、Iredmaill/7. DNS服务器(一)：基本原理/#more">阅读全文 >></a>
         </p>
       
     

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>python对JSON的相关操作 | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;JSON: JavaScript Object Notation(JavaScript 对象表示法) &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;JSON 是存储和交换文本信息的语法。类似 XML。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python对JSON的相关操作">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/11/13/Python/2.python新教程/40.python对JSON的相关操作/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;JSON: JavaScript Object Notation(JavaScript 对象表示法) &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;JSON 是存储和交换文本信息的语法。类似 XML。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-13T14:31:04.021Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python对JSON的相关操作">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;JSON: JavaScript Object Notation(JavaScript 对象表示法) &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;JSON 是存储和交换文本信息的语法。类似 XML。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.43px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.7px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.74px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.48px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10.87px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.3px;">FTP</a> <a href="/tags/Git/" style="font-size: 13.04px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.74px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.61px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.43px;">Jenkins</a> <a href="/tags/Kubernetes/" style="font-size: 10.43px;">Kubernetes</a> <a href="/tags/LAMP/" style="font-size: 19.13px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.96px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.52px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.13px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.35px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.3px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.65px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.39px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.74px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 17.83px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.3px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.78px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.3px;">Puppet</a> <a href="/tags/Python/" style="font-size: 18.26px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.52px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.17px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.78px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.91px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 16.09px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.61px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 13.04px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15.22px;">shell</a> <a href="/tags/shell练习/" style="font-size: 19.57px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 13.04px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Python/2.python新教程/40.python对JSON的相关操作" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/11/13/Python/2.python新教程/40.python对JSON的相关操作/" class="article-date">
+  	<time datetime="2017-11-13T14:31:20.921Z" itemprop="datePublished">2017-11-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      python对JSON的相关操作
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;JSON: JavaScript Object Notation(JavaScript 对象表示法)</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;JSON 是存储和交换文本信息的语法。类似 XML。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;JSON 比 XML 更小、更快，更易解析。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line"><span class="string">"sites"</span>: [</div><div class="line">&#123; <span class="string">"name"</span>:<span class="string">"百度"</span> , <span class="string">"url"</span>:<span class="string">"www.baidu.com"</span> &#125;, </div><div class="line">&#123; <span class="string">"name"</span>:<span class="string">"google"</span> , <span class="string">"url"</span>:<span class="string">"www.google.com"</span> &#125;, </div><div class="line">&#123; <span class="string">"name"</span>:<span class="string">"微博"</span> , <span class="string">"url"</span>:<span class="string">"www.weibo.com"</span> &#125;</div><div class="line">]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个sites对象是包含3个站点记录（对象）的数组。</p>
+<h2 id="什么是JSON"><a href="#什么是JSON" class="headerlink" title="什么是JSON"></a>什么是JSON</h2><ul>
+<li>JSON 指的是 JavaScript 对象表示法（JavaScript Object Notation）</li>
+<li>JSON 是轻量级的文本数据交换格式</li>
+<li>JSON 独立于语言：JSON 使用 Javascript语法来描述数据对象，但是 JSON 仍然独立于语言和平台。JSON 解析器和 JSON 库支持许多不同的编程语言。 目前非常多的动态（PHP，JSP，.NET）编程语言都支持JSON。</li>
+<li>JSON 具有自我描述性，更易理解</li>
+</ul>
+<h2 id="简单数据类型的转换"><a href="#简单数据类型的转换" class="headerlink" title="简单数据类型的转换"></a>简单数据类型的转换</h2><ul>
+<li>json.loads  ： 将python字符串 转换为 python字典/列表</li>
+<li>json.dumps  :  将python字典/列表 转换为 python字符串</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用简单的<code>json.dumps</code>方法对简单数据 类型进行编码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> json</div><div class="line"> </div><div class="line">obj = [[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],<span class="number">123</span>,<span class="number">123.123</span>,<span class="string">'abc'</span>,&#123;<span class="string">'key1'</span>:(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>),<span class="string">'key2'</span>:(<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>)&#125;]</div><div class="line">encodedjson = json.dumps(obj)</div><div class="line"><span class="keyword">print</span> repr(obj)</div><div class="line"><span class="keyword">print</span> encodedjson</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="number">123</span>, <span class="number">123.123</span>, <span class="string">'abc'</span>, &#123;<span class="string">'key2'</span>: (<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>), <span class="string">'key1'</span>: (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)&#125;] </div><div class="line">[[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="number">123</span>, <span class="number">123.123</span>, <span class="string">"abc"</span>, &#123;<span class="string">"key2"</span>: [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>], <span class="string">"key1"</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]&#125;]</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;通过输出的结果可以看出，简单类型通过编码之后跟其原始的<code>repe()</code>输出结果非常像是，但是有些数据类型进行了改变，上例中元组则转换为了列表。在json的编码过程中，会存在从python原始类型向json类型的转化过程，具体转化对照</p>
+<table>
+<thead>
+<tr>
+<th>Python</th>
+<th>JSON</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dict</td>
+<td>object</td>
+</tr>
+<tr>
+<td>list,tuple</td>
+<td>array</td>
+</tr>
+<tr>
+<td>str,unicode</td>
+<td>string</td>
+</tr>
+<tr>
+<td>int,long,float</td>
+<td>number</td>
+</tr>
+<tr>
+<td>True</td>
+<td>true</td>
+</tr>
+<tr>
+<td>Flase</td>
+<td>flase</td>
+</tr>
+<tr>
+<td>None</td>
+<td>null</td>
+</tr>
+</tbody>
+</table>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>json.dumps()</code>方法换回了一个str对象<code>encodedjson</code>，接下来对<code>encodedjson</code>进行解码，得到原始数据，需要使用<code>jsonloads()</code> 函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">decodejson = json.loads(encodedjson)</div><div class="line"><span class="keyword">print</span> type(decodejson)</div><div class="line"><span class="keyword">print</span> decodejson[<span class="number">4</span>][<span class="string">'key1'</span>]</div><div class="line"><span class="keyword">print</span> decodejson</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;type <span class="string">'list'</span>&gt; </div><div class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</div><div class="line"></div><div class="line">[[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="number">123</span>, <span class="number">123.123</span>, <span class="string">u'abc'</span>, &#123;<span class="string">u'key2'</span>: [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>], <span class="string">u'key1'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]&#125;]</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>loads</code>方法返回了原始的对象，但是仍然发生了一些数据类型的转化。上例中<code>&#39;abc&#39;</code>转化为了<code>unicode</code>类型。从json到python的类型转化对照</p>
+<table>
+<thead>
+<tr>
+<th>JSON</th>
+<th>Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>object</td>
+<td>dict</td>
+</tr>
+<tr>
+<td>array</td>
+<td>list</td>
+</tr>
+<tr>
+<td>string</td>
+<td>unicode</td>
+</tr>
+<tr>
+<td>nuumber(int)</td>
+<td>int,long</td>
+</tr>
+<tr>
+<td>number(real)</td>
+<td>foat</td>
+</tr>
+<tr>
+<td>true</td>
+<td>True</td>
+</tr>
+<tr>
+<td>flase</td>
+<td>Flase</td>
+</tr>
+<tr>
+<td>null</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>json.dumps</code>方法提供了好用的参数可供选择，比较常用的有<code>sort_keys</code>（对dict对象进行排序，默认dict是无需存放的），<code>separators</code>，<code>indent</code>等参数。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;排序功能使得存储的数据更加有利于观察，也使得对json输出的对象进行比较</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">data1 = &#123;<span class="string">'b'</span>:<span class="number">789</span>,<span class="string">'c'</span>:<span class="number">456</span>,<span class="string">'a'</span>:<span class="number">123</span>&#125;</div><div class="line">data2 = &#123;<span class="string">'a'</span>:<span class="number">123</span>,<span class="string">'b'</span>:<span class="number">789</span>,<span class="string">'c'</span>:<span class="number">456</span>&#125;</div><div class="line">d1 = json.dumps(data1,sort_keys=<span class="keyword">True</span>)</div><div class="line">d2 = json.dumps(data2)</div><div class="line">d3 = json.dumps(data2,sort_keys=<span class="keyword">True</span>)</div><div class="line"><span class="keyword">print</span> d1</div><div class="line"><span class="keyword">print</span> d2</div><div class="line"><span class="keyword">print</span> d3</div><div class="line"><span class="keyword">print</span> d1==d2</div><div class="line"><span class="keyword">print</span> d1==d3</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;<span class="string">"a"</span>: <span class="number">123</span>, <span class="string">"b"</span>: <span class="number">789</span>, <span class="string">"c"</span>: <span class="number">456</span>&#125; </div><div class="line">&#123;<span class="string">"a"</span>: <span class="number">123</span>, <span class="string">"c"</span>: <span class="number">456</span>, <span class="string">"b"</span>: <span class="number">789</span>&#125; </div><div class="line">&#123;<span class="string">"a"</span>: <span class="number">123</span>, <span class="string">"b"</span>: <span class="number">789</span>, <span class="string">"c"</span>: <span class="number">456</span>&#125; </div><div class="line"><span class="keyword">False</span> </div><div class="line"><span class="keyword">True</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;本来data1和data2数据应该是一样的，但是由于dict促出的无序特性，造成两者无法比较。因此两者可以通过排序后的结果进行存储就避免了数据比较不一致的情况发生，但是排序后再进行存储，系统必定要多做一些事情，也一定会因此造成一定的性能小号，所以适当排序是很重要的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;indent参数是缩进的意思，可以使得数据存储的格式变得更加优雅。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">data1 = &#123;<span class="string">'b'</span>:<span class="number">789</span>,<span class="string">'c'</span>:<span class="number">456</span>,<span class="string">'a'</span>:<span class="number">123</span>&#125;</div><div class="line">d1 = json.dumps(data1,sort_keys=<span class="keyword">True</span>,indent=<span class="number">4</span>)</div><div class="line"><span class="keyword">print</span> d1</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123; </div><div class="line">    <span class="string">"a"</span>: <span class="number">123</span>, </div><div class="line">    <span class="string">"b"</span>: <span class="number">789</span>, </div><div class="line">    <span class="string">"c"</span>: <span class="number">456</span> </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出的数据被格式化之后，变得可读性更强，但是却是通过增加一些冗余的空白格来进行填充的。json主要是作为一种数据通信的格式存在的，而网络通信是很在乎数据的大小的，无用的空格会占用很多通信带宽，所以适当时候也要对数据进行压缩。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>separator</code>参数可以起到这样的作用，该参数传递是一个元组，包含分割对象的字符串。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">print</span> <span class="string">'DATA:'</span>, repr(data)</div><div class="line"><span class="keyword">print</span> <span class="string">'repr(data)             :'</span>, len(repr(data))</div><div class="line"><span class="keyword">print</span> <span class="string">'dumps(data)            :'</span>, len(json.dumps(data))</div><div class="line"><span class="keyword">print</span> <span class="string">'dumps(data, indent=2)  :'</span>, len(json.dumps(data, indent=<span class="number">4</span>))</div><div class="line"><span class="keyword">print</span> <span class="string">'dumps(data, separators):'</span>, len(json.dumps(data, separators=(<span class="string">','</span>,<span class="string">':'</span>)))</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">DATA: &#123;<span class="string">'a'</span>: <span class="number">123</span>, <span class="string">'c'</span>: <span class="number">456</span>, <span class="string">'b'</span>: <span class="number">789</span>&#125; </div><div class="line">repr(data)             : <span class="number">30</span> </div><div class="line">dumps(data)            : <span class="number">30</span> </div><div class="line">dumps(data, indent=<span class="number">2</span>)  : <span class="number">46</span> </div><div class="line">dumps(data, separators): <span class="number">25</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;通过移除多余的空白符，达到了压缩数据的目的，而且效果还是比较明显的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;另一个比较有用的dumps参数是<code>skipkeys</code>，默认为<code>Flase</code>.dumps方法存储dict对象是，key必须是str类型，如果出现了其他类型的话，那么会产生TypeError异常，如果开启该参数，设为True，则会过渡。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">data = &#123;<span class="string">'b'</span>:<span class="number">789</span>,<span class="string">'c'</span>:<span class="number">456</span>,(<span class="number">1</span>,<span class="number">2</span>):<span class="number">123</span>&#125;</div><div class="line"><span class="keyword">print</span> json.dumps(data,skipkeys=<span class="keyword">True</span>)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;<span class="string">"c"</span>: <span class="number">456</span>, <span class="string">"b"</span>: <span class="number">789</span>&#125;</div></pre></td></tr></table></figure>
+<h2 id="处理自己的数据类型"><a href="#处理自己的数据类型" class="headerlink" title="处理自己的数据类型"></a>处理自己的数据类型</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;json模块不仅可以处理普通的python内置类型，也可以处理自定义的数据类型，而往往处理自定义的对象是很常用的。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先，定义一个类Person。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,name,age)</span>:</span></div><div class="line">        self.name = name</div><div class="line">        self.age = age</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> <span class="string">'Person Object name : %s , age : %d'</span> % (self.name,self.age)</div><div class="line"><span class="keyword">if</span> __name__  == <span class="string">'__main__'</span>:</div><div class="line">    p = Person(<span class="string">'Peter'</span>,<span class="number">22</span>)</div><div class="line">    <span class="keyword">print</span> p</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果直接通过<code>json.dumps</code>方法对Person的实例进行处理的话，会报错，因为json无法支持这样的自动转化。通过上面所提到的json和python的类型转化对照表，可以发现，object类型是和dict相关联的，所以需要把我们自定义的类型转化为dict，然后再进行处理。这里，有两种方法可以使用。</p>
+<h3 id="方法一：自己写转化函数"><a href="#方法一：自己写转化函数" class="headerlink" title="方法一：自己写转化函数"></a>方法一：自己写转化函数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="string">'''</span></div><div class="line"><span class="string">Created on 2011-12-14</span></div><div class="line"><span class="string">@author: Peter</span></div><div class="line"><span class="string">'''</span></div><div class="line"><span class="keyword">import</span> Person</div><div class="line"><span class="keyword">import</span> json</div><div class="line"> </div><div class="line">p = Person.Person(<span class="string">'Peter'</span>,<span class="number">22</span>)</div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">object2dict</span><span class="params">(obj)</span>:</span></div><div class="line">    <span class="comment">#convert object to a dict</span></div><div class="line">    d = &#123;&#125;</div><div class="line">    d[<span class="string">'__class__'</span>] = obj.__class__.__name__</div><div class="line">    d[<span class="string">'__module__'</span>] = obj.__module__</div><div class="line">    d.update(obj.__dict__)</div><div class="line">    <span class="keyword">return</span> d</div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">dict2object</span><span class="params">(d)</span>:</span></div><div class="line">    <span class="comment">#convert dict to object</span></div><div class="line">    i<span class="string">f'__class__'</span> <span class="keyword">in</span> d:</div><div class="line">        class_name = d.pop(<span class="string">'__class__'</span>)</div><div class="line">        module_name = d.pop(<span class="string">'__module__'</span>)</div><div class="line">        module = __import__(module_name)</div><div class="line">        class_ = getattr(module,class_name)</div><div class="line">        args = dict((key.encode(<span class="string">'ascii'</span>), value) <span class="keyword">for</span> key, value <span class="keyword">in</span> d.items()) <span class="comment">#get args</span></div><div class="line">        inst = class_(**args) <span class="comment">#create new instance</span></div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        inst = d</div><div class="line">    <span class="keyword">return</span> inst</div><div class="line"> </div><div class="line">d = object2dict(p)</div><div class="line"><span class="keyword">print</span> d</div><div class="line"><span class="comment">#&#123;'age': 22, '__module__': 'Person', '__class__': 'Person', 'name': 'Peter'&#125;</span></div><div class="line"> </div><div class="line">o = dict2object(d)</div><div class="line"><span class="keyword">print</span> type(o),o</div><div class="line"><span class="comment">#&lt;class 'Person.Person'&gt; Person Object name : Peter , age : 22</span></div><div class="line"> </div><div class="line">dump = json.dumps(p,default=object2dict)</div><div class="line"><span class="keyword">print</span> dump</div><div class="line"><span class="comment">#&#123;"age": 22, "__module__": "Person", "__class__": "Person", "name": "Peter"&#125;</span></div><div class="line"> </div><div class="line">load = json.loads(dump,object_hook = dict2object)</div><div class="line"><span class="keyword">print</span> load</div><div class="line"><span class="comment">#Person Object name : Peter , age : 22</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上面代码已经写的很清楚了，实质就是自定义object类型和dict类型进行转化。<code>object2dict</code>函数将对象模块名、类名以及<code>__dict__</code>存储在dict对象里，并返回。<code>dict2object</code>函数则是反解出模块名、类名、参数，创建新的对象并返回。在<code>json.dumps</code> 方法中增加default参数，该参数表示在转化过程中调用指定的函数，同样在decode过程中<code>json.loads</code>方法增加<code>object_hook</code>,指定转化函数。</p>
+<h3 id="方法二：继承JSONEncoder和JSONDecoder类，覆写相关方法"><a href="#方法二：继承JSONEncoder和JSONDecoder类，覆写相关方法" class="headerlink" title="方法二：继承JSONEncoder和JSONDecoder类，覆写相关方法"></a>方法二：继承JSONEncoder和JSONDecoder类，覆写相关方法</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>JSONEncoder</code>类负责编码，主要是通过其<code>default</code>函数进行转化，我们可以override该方法。同理对于J<code>SONDecoder</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="string">'''</span></div><div class="line"><span class="string">Created on 2011-12-14</span></div><div class="line"><span class="string">@author: Peter</span></div><div class="line"><span class="string">'''</span></div><div class="line"><span class="keyword">import</span> Person</div><div class="line"><span class="keyword">import</span> json</div><div class="line"> </div><div class="line">p = Person.Person(<span class="string">'Peter'</span>,<span class="number">22</span>)</div><div class="line"> </div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyEncoder</span><span class="params">(json.JSONEncoder)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">default</span><span class="params">(self,obj)</span>:</span></div><div class="line">        <span class="comment">#convert object to a dict</span></div><div class="line">        d = &#123;&#125;</div><div class="line">        d[<span class="string">'__class__'</span>] = obj.__class__.__name__</div><div class="line">        d[<span class="string">'__module__'</span>] = obj.__module__</div><div class="line">        d.update(obj.__dict__)</div><div class="line">        <span class="keyword">return</span> d</div><div class="line"> </div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyDecoder</span><span class="params">(json.JSONDecoder)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        json.JSONDecoder.__init__(self,object_hook=self.dict2object)</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dict2object</span><span class="params">(self,d)</span>:</span></div><div class="line">        <span class="comment">#convert dict to object</span></div><div class="line">        i<span class="string">f'__class__'</span> <span class="keyword">in</span> d:</div><div class="line">            class_name = d.pop(<span class="string">'__class__'</span>)</div><div class="line">            module_name = d.pop(<span class="string">'__module__'</span>)</div><div class="line">            module = __import__(module_name)</div><div class="line">            class_ = getattr(module,class_name)</div><div class="line">            args = dict((key.encode(<span class="string">'ascii'</span>), value) <span class="keyword">for</span> key, value <span class="keyword">in</span> d.items()) <span class="comment">#get args</span></div><div class="line">            inst = class_(**args) <span class="comment">#create new instance</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            inst = d</div><div class="line">        <span class="keyword">return</span> inst</div><div class="line"> </div><div class="line"> </div><div class="line">d = MyEncoder().encode(p)</div><div class="line">o =  MyDecoder().decode(d)</div><div class="line"> </div><div class="line"><span class="keyword">print</span> d</div><div class="line"><span class="keyword">print</span> type(o), o</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;对于JSONDecoder类方法，稍微有点不同，但是改写起来也不是很麻烦。看代码应该就比较清楚了。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/11/11/Python/2.python新教程/39.python模块sys/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">python模块sys</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="Python/2.python新教程/40.python对JSON的相关操作" data-title="python对JSON的相关操作" data-url="https://hcldirgit.github.io/2017/11/13/Python/2.python新教程/40.python对JSON的相关操作/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="python对JSON的相关操作">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

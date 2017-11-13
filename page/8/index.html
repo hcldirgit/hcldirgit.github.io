@@ -168,11 +168,11 @@
 </nav>
       <div class="body-wrap">
   
-    <article id="post-Redis/3. Redis主从配置" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Redis/5. php 使用 redis 储存" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/10/13/Redis/3. Redis主从配置/" class="article-date">
-  	<time datetime="2017-10-13T14:03:32.204Z" itemprop="datePublished">2017-10-13</time>
+      <a href="/2017/10/13/Redis/5. php 使用 redis 储存/" class="article-date">
+  	<time datetime="2017-10-13T14:03:32.205Z" itemprop="datePublished">2017-10-13</time>
 </a>
     </div>
   
@@ -185,8 +185,8 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Redis/3. Redis主从配置/">
-        Redis主从配置
+      <a class="article-title" href="/2017/10/13/Redis/5. php 使用 redis 储存/">
+        php 使用 redis 储存
         
       </a>
     </h1>
@@ -197,11 +197,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="1-redis-安装主从"><a href="#1-redis-安装主从" class="headerlink" title="1.redis 安装主从"></a>1.redis 安装主从</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;两台服务器： master （192.168.0.79） 和 slave （192.168.0.78）</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;分别按照之前介绍的步骤安装好redis并启动</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;master 配置文件不用动</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;slave 配置文件上加一行  </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># vim /usr/local/redis/etc/redis.conf</span></div></pre></td></tr></table></figure>
+        <h2 id="1-redis-扩展模块安装"><a href="#1-redis-扩展模块安装" class="headerlink" title="1.redis 扩展模块安装"></a>1.redis 扩展模块安装</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下载模块</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@redis ~]<span class="comment"># wget https://codeload.github.com/phpredis/phpredis/zip/develop</span></div><div class="line">[root@redis ~]<span class="comment"># mv develop phpredis.zip</span></div></pre></td></tr></table></figure>
       
     </div>
     
@@ -219,7 +216,7 @@
     </div>
       
         <p class="article-more-link">
-          <a  href="/2017/10/13/Redis/3. Redis主从配置/#more">阅读全文 >></a>
+          <a  href="/2017/10/13/Redis/5. php 使用 redis 储存/#more">阅读全文 >></a>
         </p>
       
     
@@ -282,6 +279,72 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Redis/4. Redis 常用命令/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Redis/3. Redis主从配置" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Redis/3. Redis主从配置/" class="article-date">
+  	<time datetime="2017-10-13T14:03:32.204Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Redis/3. Redis主从配置/">
+        Redis主从配置
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-redis-安装主从"><a href="#1-redis-安装主从" class="headerlink" title="1.redis 安装主从"></a>1.redis 安装主从</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;两台服务器： master （192.168.0.79） 和 slave （192.168.0.78）</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;分别按照之前介绍的步骤安装好redis并启动</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;master 配置文件不用动</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;slave 配置文件上加一行  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># vim /usr/local/redis/etc/redis.conf</span></div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/">Redis</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Redis/3. Redis主从配置/#more">阅读全文 >></a>
         </p>
       
     
@@ -668,69 +731,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Redis/23. Redis 安装/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Redis/20. Redis 列表(List)" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Redis/20. Redis 列表(List)/" class="article-date">
-  	<time datetime="2017-10-13T14:03:32.199Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Redis/20. Redis 列表(List)/">
-        Redis 列表(List)
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Redis列表是简单的字符串列表，按照插入顺序排序。你可以添加一个元素导列表的头部（左边）或者尾部（右边）</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一个列表最多可以包含 232 - 1 个元素 (4294967295, 每个列表超过40亿个元素)。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/">Redis</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Redis/20. Redis 列表(List)/#more">阅读全文 >></a>
         </p>
       
     

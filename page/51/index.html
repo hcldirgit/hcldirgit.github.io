@@ -168,6 +168,70 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Puppet/4. Puppet exec" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Puppet/4. Puppet exec/" class="article-date">
+  	<time datetime="2017-10-13T13:29:40.477Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Puppet/4. Puppet exec/">
+        Puppet exec
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="exec"><a href="#exec" class="headerlink" title="exec"></a>exec</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;让puppet执行外部命令</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;多次反复用这个方式执行命令是有威胁性的,因此建议对执行的命令进行加锁或者类似的处理. 你也可以让exec只有在收到一个其他资源的事件的时候才执行. 因为exec资源是一种挥发性资源,命令执行完了,这个资源可以说就处理完了. 因此在不同的类里面,exec资源的名字可以是相同的,这是exec资源特殊的地方.例如下面的例子;</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># defined in the production class</span></div><div class="line"><span class="built_in">exec</span> &#123; <span class="string">"make"</span>:</div><div class="line">    cwd =&gt; <span class="string">"/prod/build/dir"</span>,</div><div class="line">    path =&gt; <span class="string">"/usr/bin:/usr/sbin:/bin"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">. etc. .</div><div class="line"></div><div class="line"><span class="comment"># defined in the test class</span></div><div class="line"><span class="built_in">exec</span> &#123; <span class="string">"make"</span>:</div><div class="line">    cwd =&gt; <span class="string">"/test/build/dir"</span>,</div><div class="line">    path =&gt; <span class="string">"/usr/bin:/usr/sbin:/bin"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Puppet/">Puppet</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Puppet/4. Puppet exec/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Puppet/3. Puppet cron" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -745,70 +809,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Samba/4. samba同时用匿名和用户登录/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Samba/1. samba部署和优化" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Samba/1. samba部署和优化/" class="article-date">
-  	<time datetime="2017-10-13T13:29:40.469Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Samba/1. samba部署和优化/">
-        samba部署和优化
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;samba 服务可以实现 windows 和 linux 的文件共享，配置不难，使用也非常简单。</p>
-<h2 id="1-samba-配置文件-smb-conf"><a href="#1-samba-配置文件-smb-conf" class="headerlink" title="1.samba 配置文件 smb.conf"></a>1.samba 配置文件 smb.conf</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安装系统的时候大多会默认安装 samba ，如果没有安装，在 centos 上只需要运行</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 ~]<span class="comment"># yum install -y samba samba-client</span></div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Samba/">Samba</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Samba/1. samba部署和优化/#more">阅读全文 >></a>
         </p>
       
     

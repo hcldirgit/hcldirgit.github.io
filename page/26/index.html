@@ -168,6 +168,69 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Linux安全/6. nginx 使用 user_agent 控制客户端访问" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Linux安全/6. nginx 使用 user_agent 控制客户端访问/" class="article-date">
+  	<time datetime="2017-10-13T13:29:42.112Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Linux安全/6. nginx 使用 user_agent 控制客户端访问/">
+        nginx 使用 user_agent 控制客户端访问
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;nginx的日志格式中，有一个字段叫做 $http_user_agent  这个其实是客户端浏览器的一个信息，比如咱们平时使用IE浏览器的话，nginx的日志中会记录类似于这样的信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux安全/">Linux安全</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Linux安全/6. nginx 使用 user_agent 控制客户端访问/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Linux安全/11. xss攻击入门" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -724,70 +787,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Linux安全/15. 针对访问 uri 限制 ip/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Linux安全/2. Linux可插拔认证模块（PAM）的配置文件、工作原理与流程" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Linux安全/2. Linux可插拔认证模块（PAM）的配置文件、工作原理与流程/" class="article-date">
-  	<time datetime="2017-10-13T13:29:42.085Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Linux安全/2. Linux可插拔认证模块（PAM）的配置文件、工作原理与流程/">
-        Linux可插拔认证模块（PAM）的配置文件、工作原理与流程
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PAM的配置文件：</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们注意到，配置文件也放在了在应用接口层中，他与PAM API配合使用，从而达到了在应用中灵活插入所需鉴别模块的目的。他的作用主要是为应用选定具体的鉴别模块，模块间的组合以及规定模块的行为。下面是一个示例配置文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">cat /etc/pam.d/system-auth：</div><div class="line"><span class="comment">#%PAM-1.0</span></div><div class="line"><span class="comment"># This file is auto-generated.</span></div><div class="line"><span class="comment"># User changes will be destroyed the next time authconfig is run.</span></div><div class="line">auth required /lib/security/<span class="variable">$ISA</span>/pam_env.so</div><div class="line">auth sufficient /lib/security/<span class="variable">$ISA</span>/pam_unix.so likeauth nullok</div><div class="line">auth required /lib/security/<span class="variable">$ISA</span>/pam_deny.so</div><div class="line"> </div><div class="line">account required /lib/security/<span class="variable">$ISA</span>/pam_unix.so</div><div class="line">account sufficient /lib/security/<span class="variable">$ISA</span>/pam_succeed_if.so uid &lt; 100 quiet</div><div class="line">account required /lib/security/<span class="variable">$ISA</span>/pam_permit.so</div><div class="line"> </div><div class="line">password requisite /lib/security/<span class="variable">$ISA</span>/pam_cracklib.so retry=3</div><div class="line">password sufficient /lib/security/<span class="variable">$ISA</span>/pam_unix.so nullok use_authtok md5 shadow nis</div><div class="line">password required /lib/security/<span class="variable">$ISA</span>/pam_deny.so</div><div class="line"> </div><div class="line">session required /lib/security/<span class="variable">$ISA</span>/pam_limits.so</div><div class="line">session required /lib/security/<span class="variable">$ISA</span>/pam_unix.so</div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux安全/">Linux安全</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Linux安全/2. Linux可插拔认证模块（PAM）的配置文件、工作原理与流程/#more">阅读全文 >></a>
         </p>
       
     

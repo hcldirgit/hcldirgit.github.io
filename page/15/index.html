@@ -168,6 +168,78 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Zabbix/10. Zabbix监控字符集问题" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Zabbix/10. Zabbix监控字符集问题/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.114Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Zabbix/10. Zabbix监控字符集问题/">
+        Zabbix监控字符集问题
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;zabbix监控中常碰到的字符集问题有三个：</p>
+<h2 id="一、图形中显示中文乱码"><a href="#一、图形中显示中文乱码" class="headerlink" title="一、图形中显示中文乱码"></a>一、图形中显示中文乱码</h2><p><img src="https://github.com/hcldirgit/image/blob/master/Zabbix%E7%9B%91%E6%8E%A7%E5%AD%97%E7%AC%A6%E9%9B%86%E9%97%AE%E9%A2%98/01.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解决方法：</p>
+<ol>
+<li><p>从window主机路径C:\Windows\Fonts下选择一种自己喜欢的字体，如mysh.ttf(雅黑)；</p>
+</li>
+<li><p>将拷贝出来的字体上传到zabbix server网页文件的fonts目录下，并命名为<strong>DejaVuSans.ttf</strong></p>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@zhu1 ~]<span class="comment"># mv /var/www/html/fonts/DejaVuSans.ttf /var/www/html/fonts/DejaVuSans.ttf.old</span></div><div class="line">mv /var/www/html/fonts/mysh.ttf /var/www/html/fonts/DejaVuSans.ttf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这样便能解决这个乱码问题</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zabbix/">Zabbix</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Zabbix/10. Zabbix监控字符集问题/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Zabbix/1. 分布式系统监视 zabbix" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -735,70 +807,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Tomcat/2. tomcat 安装/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Tomcat/12.tomcat单机多实例" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Tomcat/12.tomcat单机多实例/" class="article-date">
-  	<time datetime="2017-10-13T13:48:39.106Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Tomcat/12.tomcat单机多实例/">
-        tomcat单机多实例
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需求是： 同一个tomcat服务下，可以访问多个域名。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;先来看看tomcat配置文件server.xml的结构</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&lt;Server&gt;</div><div class="line"></div><div class="line">    &lt;Service name=”xxx”&gt;</div><div class="line"></div><div class="line">        &lt;Host  name=”aaa.com” appBase=”dir1″&gt;</div><div class="line"></div><div class="line">        &lt;/Host&gt;</div><div class="line"></div><div class="line">    &lt;/Service&gt;</div><div class="line"></div><div class="line">&lt;Server&gt;</div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Tomcat/">Tomcat</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Tomcat/12.tomcat单机多实例/#more">阅读全文 >></a>
         </p>
       
     

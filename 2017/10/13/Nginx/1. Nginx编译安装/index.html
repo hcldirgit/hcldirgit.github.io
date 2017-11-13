@@ -19,7 +19,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/nginx%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/01.png?raw=true">
 <meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/nginx%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/02.png?raw=true">
-<meta property="og:updated_time" content="2017-10-13T12:58:50.305Z">
+<meta property="og:updated_time" content="2017-11-13T13:44:25.382Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx编译安装">
 <meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Nginx官方网站, 从官方网站可以看到Nginx更新速度很快，这也反映了一个事实，目前使用Nginx跑网站的公司或者个人越来越多。">
@@ -216,7 +216,9 @@
 <h2 id="2-解压-nginx"><a href="#2-解压-nginx" class="headerlink" title="2.解压 nginx"></a>2.解压 nginx</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tar zxvf nginx-1.4.4.tar.gz</div></pre></td></tr></table></figure>
 <h2 id="3-配置编译参数"><a href="#3-配置编译参数" class="headerlink" title="3.配置编译参数"></a>3.配置编译参数</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> nginx-1.4.4</div><div class="line">./configure \</div><div class="line">--prefix=/usr/<span class="built_in">local</span>/nginx \</div><div class="line">--with-http_realip_module \</div><div class="line">--with-http_sub_module \</div><div class="line">--with-http_gzip_static_module \</div><div class="line">--with-http_stub_status_module \</div><div class="line">--with-pcre</div></pre></td></tr></table></figure>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编译报错</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">./configure: error: the HTTP rewrite module requires the PCRE library.</div><div class="line">```bash</div><div class="line"></div><div class="line">&amp;<span class="comment">#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;解决办法</span></div><div class="line"></div><div class="line">```bash</div><div class="line">yum -y install pcre-devel</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./configure: error: the HTTP rewrite module requires the PCRE library.</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解决办法</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y install pcre-devel</div></pre></td></tr></table></figure>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编译报错</p>
 <p><img src="https://github.com/hcldirgit/image/blob/master/nginx%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/01.png?raw=true" alt=""></p>
 <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;解决办法</p>
