@@ -168,6 +168,68 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Dns、Iredmaill/10. DNS服务器(四)：DNS视图及bind中rndc的使用" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Dns、Iredmaill/10. DNS服务器(四)：DNS视图及bind中rndc的使用/" class="article-date">
+  	<time datetime="2017-10-13T13:29:42.035Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Dns、Iredmaill/10. DNS服务器(四)：DNS视图及bind中rndc的使用/">
+        DNS服务器(四)：DNS视图及bind中rndc的使用
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一、DNS服务器视图功能的实现"><a href="#一、DNS服务器视图功能的实现" class="headerlink" title="一、DNS服务器视图功能的实现"></a>一、DNS服务器视图功能的实现</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;DNS服务器有一个高级的功能，能够实现不同的用户访问同一个域名，把域名解析成不同的IP地址，使用户能够访问离他最近的服务器上的数据，这就是DNS服务器的视图功能。使用DNS服务器的视图功能可以增加网站的响应速度。例如，当我们网站的数据同步在两台web服务器上时，一台是电信服务器，一台是网通服务器，那么我们肯定希望全国访问我们网站的用户在打开网站的时候，能够自动实现，电信用户访问电信服务器，网通用户访问网通服务器。配置这种情况的前提是，web服务器必须要有一个电信的IP地址和一个网通的IP地址。DNS服务器的这种解析功能通常也被称之为智能解析。</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DNS/">DNS</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Dns、Iredmaill/10. DNS服务器(四)：DNS视图及bind中rndc的使用/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Dns、Iredmaill/7. DNS服务器(一)：基本原理" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -606,69 +668,6 @@
 
 
   
-    <article id="post-Nginx/20. nginx配置防盗链" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Nginx/20. nginx配置防盗链/" class="article-date">
-  	<time datetime="2017-10-13T13:29:41.904Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Nginx/20. nginx配置防盗链/">
-        nginx配置防盗链
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;防盗链也可以和配置静态文件过期时间一样，和指定文件类型不记录配置在一起。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">location ~ .*\.(gif|jpg|jpeg|png|bmp|swf|flv|rar|zip|doc|pdf|gz|bz2|xls)$</div><div class="line">&#123; </div><div class="line">expires 30d;</div><div class="line">access_log off;</div><div class="line">valid_referers none blocked server_name *.123.com *.234.com *.baidu.com;</div><div class="line"><span class="keyword">if</span> (<span class="variable">$invalid_referer</span>)</div><div class="line">&#123;</div><div class="line"><span class="comment">#deny all;</span></div><div class="line"><span class="built_in">return</span> 403;</div><div class="line">rewrite ^/ http://www.example.com/nophoto.gif;</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LNMP/">LNMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Nginx/20. nginx配置防盗链/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-Nginx/5. mod_php和mod_fastcgi和php-fpm的介绍,对比,和性能数据" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -732,11 +731,11 @@
 
 
   
-    <article id="post-Nginx/24. Nginx的rewrite应用" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Nginx/20. nginx配置防盗链" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/10/13/Nginx/24. Nginx的rewrite应用/" class="article-date">
-  	<time datetime="2017-10-13T13:29:41.903Z" itemprop="datePublished">2017-10-13</time>
+      <a href="/2017/10/13/Nginx/20. nginx配置防盗链/" class="article-date">
+  	<time datetime="2017-10-13T13:29:41.904Z" itemprop="datePublished">2017-10-13</time>
 </a>
     </div>
   
@@ -749,8 +748,8 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Nginx/24. Nginx的rewrite应用/">
-        Nginx的rewrite应用
+      <a class="article-title" href="/2017/10/13/Nginx/20. nginx配置防盗链/">
+        nginx配置防盗链
         
       </a>
     </h1>
@@ -761,7 +760,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Rewrite主要的功能是实现URL重写，Nginx 的 Rewrite 规则采用 PCRE Perl 兼容正则表达式的语法进行规则匹配，如相使用 Nginx 的 Rewrite 功能，在编译 Nginx 前要编译安装 PCRE 库。</p>
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;防盗链也可以和配置静态文件过期时间一样，和指定文件类型不记录配置在一起。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">location ~ .*\.(gif|jpg|jpeg|png|bmp|swf|flv|rar|zip|doc|pdf|gz|bz2|xls)$</div><div class="line">&#123; </div><div class="line">expires 30d;</div><div class="line">access_log off;</div><div class="line">valid_referers none blocked server_name *.123.com *.234.com *.baidu.com;</div><div class="line"><span class="keyword">if</span> (<span class="variable">$invalid_referer</span>)</div><div class="line">&#123;</div><div class="line"><span class="comment">#deny all;</span></div><div class="line"><span class="built_in">return</span> 403;</div><div class="line">rewrite ^/ http://www.example.com/nophoto.gif;</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
       
     </div>
     
@@ -779,7 +779,7 @@
     </div>
       
         <p class="article-more-link">
-          <a  href="/2017/10/13/Nginx/24. Nginx的rewrite应用/#more">阅读全文 >></a>
+          <a  href="/2017/10/13/Nginx/20. nginx配置防盗链/#more">阅读全文 >></a>
         </p>
       
     

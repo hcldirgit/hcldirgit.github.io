@@ -168,6 +168,73 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Zabbix/6. zabbix使用自动发现功能监控服务器各JVM进程状态" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Zabbix/6. zabbix使用自动发现功能监控服务器各JVM进程状态/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.186Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Zabbix/6. zabbix使用自动发现功能监控服务器各JVM进程状态/">
+        zabbix使用自动发现功能监控服务器各JVM进程状态
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为什么需要做服务器jvm自动发现的监控呢？这个事情主要有两点原因：</p>
+<ol>
+<li>zabbix默认监控jvm状态是使用jmx中转进行监控的，监控效率比较低下</li>
+<li>zabbix使用jmx监控jvm的时候由于一个主机上的键值不能重复，也就导致了一台主机上只能监控一个jvm实例</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以上两点原因导致zabbix通过jmx监控jvm的实现不是很理想，加上最近老大要求收集服务器上面跑的所有java应用的信息，于是自己琢磨了下，还是自己动手，丰衣足食。利用了周末的时间，通过使用shell脚本+java工具jstat+zabbix实现监控主机上多jvm实例的功能。</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zabbix/">Zabbix</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Zabbix/6. zabbix使用自动发现功能监控服务器各JVM进程状态/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Zabbix/5. zabbix2.2 使用自定义脚本监控网卡流量" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -748,70 +815,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Zabbix/21. zabbix使用SNMP V3监控路由器接口流量/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Zabbix/20. zabbix设置邮件报警" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Zabbix/20. zabbix设置邮件报警/" class="article-date">
-  	<time datetime="2017-10-13T13:48:39.172Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Zabbix/20. zabbix设置邮件报警/">
-        zabbix设置邮件报警
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="一、首先安装mailx组件并配置好能够通过三方邮箱发送邮件"><a href="#一、首先安装mailx组件并配置好能够通过三方邮箱发送邮件" class="headerlink" title="一、首先安装mailx组件并配置好能够通过三方邮箱发送邮件"></a>一、首先安装mailx组件并配置好能够通过三方邮箱发送邮件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install mailx</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后编辑mailx的配置文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vi /etc/mail.rc</div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zabbix/">Zabbix</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Zabbix/20. zabbix设置邮件报警/#more">阅读全文 >></a>
         </p>
       
     

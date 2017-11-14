@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>python正则表达式 | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;正则表达式是一个特殊的字符序列，它能方便的检查一个字符串是否与某种模式匹配。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;python自增加了re模块，提供了Perl风格的正则表达式模式。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python正则表达式">
+<meta property="og:url" content="https://hcldirgit.github.io/2017/11/14/Python/2.python新教程/41.python正则表达式/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;正则表达式是一个特殊的字符序列，它能方便的检查一个字符串是否与某种模式匹配。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;python自增加了re模块，提供了Perl风格的正则表达式模式。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-14T15:43:45.300Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python正则表达式">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;正则表达式是一个特殊的字符序列，它能方便的检查一个字符串是否与某种模式匹配。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;python自增加了re模块，提供了Perl风格的正则表达式模式。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.43px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.7px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.74px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.48px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10.87px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.3px;">FTP</a> <a href="/tags/Git/" style="font-size: 13.04px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.74px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.61px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.43px;">Jenkins</a> <a href="/tags/Kubernetes/" style="font-size: 10.43px;">Kubernetes</a> <a href="/tags/LAMP/" style="font-size: 19.13px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.96px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.52px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.13px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.35px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.3px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.65px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.39px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.74px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 17.83px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.3px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.78px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.3px;">Puppet</a> <a href="/tags/Python/" style="font-size: 18.26px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.52px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.17px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.78px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.91px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 16.09px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.61px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 13.04px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15.22px;">shell</a> <a href="/tags/shell练习/" style="font-size: 19.57px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 13.04px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Python/2.python新教程/41.python正则表达式" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/11/14/Python/2.python新教程/41.python正则表达式/" class="article-date">
+  	<time datetime="2017-11-14T15:43:58.375Z" itemprop="datePublished">2017-11-14</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      python正则表达式
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;正则表达式是一个特殊的字符序列，它能方便的检查一个字符串是否与某种模式匹配。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;python自增加了re模块，提供了Perl风格的正则表达式模式。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;re模块使python语言拥有全部的正则表达式功能。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;compile函数根据一个模式字符串和可选的标志参数生成一个正则表达式对象。该对象拥有一系列方法用于正则表达式匹配和替换。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;re模块也提供了与这些方法功能完全一直的函数，这些函数使用一个模式字符串做为它们的第一个参数。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<a href="https://regex101.com/" target="_blank" rel="external">一个好用的在线正则表达式测试网站</a></p>
+<a id="more"></a>
+<h2 id="正则表达式模式"><a href="#正则表达式模式" class="headerlink" title="正则表达式模式"></a>正则表达式模式</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;模式字符串使用特殊的语法来表示一个正则表达式：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;字母和数字表示他们自身。一个正则表达式模式中的字母和数字匹配同样的字符串。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;多数字母和数字前加一个反斜杠时会用友不同的含义。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;反斜杠本身需要使用反斜杠转义。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;由于正则表达式通常都包含反斜杠，所以最好使用原始字符串来表示它们。模式元素（如r’\t’，等价于’\\t’）匹配相应的特殊字符。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下表列出了正则表达式模式语法中的特殊元素。如果使用模式的同时提供了可选标志参数，某些模式元素的含义会改变。</p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>^</td>
+<td>匹配字符串的开头</td>
+</tr>
+<tr>
+<td>$</td>
+<td>匹配字符串的末尾。</td>
+</tr>
+<tr>
+<td>.</td>
+<td>匹配任意字符，除了换行符，当re.DOTALL标记被指定时，则可以匹配包括换行符的任意字符。</td>
+</tr>
+<tr>
+<td>[…]</td>
+<td>用来表示一组字符,单独列出：[amk] 匹配 ‘a’，’m’或’k’</td>
+</tr>
+<tr>
+<td>[^…]</td>
+<td>不在[]中的字符：[^abc] 匹配除了a,b,c之外的字符。</td>
+</tr>
+<tr>
+<td>re*</td>
+<td>匹配0个或多个的表达式。</td>
+</tr>
+<tr>
+<td>re+</td>
+<td>匹配1个或多个的表达式。</td>
+</tr>
+<tr>
+<td>re?</td>
+<td>匹配0个或1个由前面的正则表达式定义的片段，非贪婪方式</td>
+</tr>
+<tr>
+<td>re{ n}</td>
+<td>&#160;</td>
+</tr>
+<tr>
+<td>re{ n,}</td>
+<td>精确匹配n个前面表达式。</td>
+</tr>
+<tr>
+<td>re{ n, m}</td>
+<td>匹配 n 到 m 次由前面的正则表达式定义的片段，贪婪方式</td>
+</tr>
+<tr>
+<td>a</td>
+<td>b</td>
+<td>匹配a或b</td>
+</tr>
+<tr>
+<td>(re)</td>
+<td>G匹配括号内的表达式，也表示一个组</td>
+</tr>
+<tr>
+<td>(?imx)</td>
+<td>正则表达式包含三种可选标志：i, m, 或 x 。只影响括号中的区域。</td>
+</tr>
+<tr>
+<td>(?-imx)</td>
+<td>正则表达式关闭 i, m, 或 x 可选标志。只影响括号中的区域。</td>
+</tr>
+<tr>
+<td>(?: re)</td>
+<td>类似 (…), 但是不表示一个组</td>
+</tr>
+<tr>
+<td>(?imx: re)</td>
+<td>在括号中使用i, m, 或 x 可选标志</td>
+</tr>
+<tr>
+<td>(?-imx: re)</td>
+<td>在括号中不使用i, m, 或 x 可选标志</td>
+</tr>
+<tr>
+<td>(?#…)</td>
+<td>注释.</td>
+</tr>
+<tr>
+<td>(?= re)</td>
+<td>前向肯定界定符。如果所含正则表达式，以 … 表示，在当前位置成功匹配时成功，否则失败。但一旦所含表达式已经尝试，匹配引擎根本没有提高；模式的剩余部分还要尝试界定符的右边。</td>
+</tr>
+<tr>
+<td>(?! re)</td>
+<td>前向否定界定符。与肯定界定符相反；当所含表达式不能在字符串当前位置匹配时成功</td>
+</tr>
+<tr>
+<td>(?&gt; re)</td>
+<td>匹配的独立模式，省去回溯。</td>
+</tr>
+<tr>
+<td>\w</td>
+<td>匹配字母数字及下划线</td>
+</tr>
+<tr>
+<td>\W</td>
+<td>匹配非字母数字及下划线</td>
+</tr>
+<tr>
+<td>\s</td>
+<td>匹配任意空白字符，等价于 [\t\n\r\f].</td>
+</tr>
+<tr>
+<td>\S</td>
+<td>匹配任意非空字符</td>
+</tr>
+<tr>
+<td>\d</td>
+<td>匹配任意数字，等价于 [0-9].</td>
+</tr>
+<tr>
+<td>\D</td>
+<td>匹配任意非数字</td>
+</tr>
+<tr>
+<td>\A</td>
+<td>匹配字符串开始</td>
+</tr>
+<tr>
+<td>\Z</td>
+<td>匹配字符串结束，如果是存在换行，只匹配到换行前的结束字符串。c</td>
+</tr>
+<tr>
+<td>\z</td>
+<td>匹配字符串结束</td>
+</tr>
+<tr>
+<td>\G</td>
+<td>匹配最后匹配完成的位置。</td>
+</tr>
+<tr>
+<td>\b</td>
+<td>匹配一个单词边界，也就是指单词和空格间的位置。例如， ‘er\b’ 可以匹配”never” 中的 ‘er’，但不能匹配 “verb” 中的 ‘er’。</td>
+</tr>
+<tr>
+<td>\B</td>
+<td>匹配非单词边界。’er\B’ 能匹配 “verb” 中的 ‘er’，但不能匹配 “never” 中的 ‘er’。</td>
+</tr>
+<tr>
+<td>\n, \t, 等.</td>
+<td>匹配一个换行符。匹配一个制表符。等</td>
+</tr>
+<tr>
+<td>\1…\9</td>
+<td>匹配第n个分组的内容。</td>
+</tr>
+<tr>
+<td>\10</td>
+<td>匹配第n个分组的内容，如果它经匹配。否则指的是八进制字符码的表达式。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="正则表达式实例"><a href="#正则表达式实例" class="headerlink" title="正则表达式实例"></a>正则表达式实例</h2><h3 id="字符匹配"><a href="#字符匹配" class="headerlink" title="字符匹配"></a>字符匹配</h3><table>
+<thead>
+<tr>
+<th>实例</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>python</td>
+<td>匹配“python”</td>
+</tr>
+</tbody>
+</table>
+<h3 id="字符类"><a href="#字符类" class="headerlink" title="字符类"></a>字符类</h3><table>
+<thead>
+<tr>
+<th>实例</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[Pp]ython</td>
+<td>匹配 “Python” 或 “python”</td>
+</tr>
+<tr>
+<td>rub[ye]</td>
+<td>匹配 “ruby” 或 “rube”</td>
+</tr>
+<tr>
+<td>[aeiou]</td>
+<td>匹配中括号内的任意一个字母</td>
+</tr>
+<tr>
+<td>[0-9]</td>
+<td>匹配任何数字。类似于 [0123456789]</td>
+</tr>
+<tr>
+<td>[a-z]</td>
+<td>匹配任何小写字母</td>
+</tr>
+<tr>
+<td>[A-Z]</td>
+<td>匹配任何大写字母</td>
+</tr>
+<tr>
+<td>[a-zA-Z0-9]</td>
+<td>匹配任何字母及数字</td>
+</tr>
+<tr>
+<td>[^aeiou]</td>
+<td>除了aeiou字母以外的所有字符</td>
+</tr>
+<tr>
+<td>[^0-9]</td>
+<td>匹配除了数字外的字符</td>
+</tr>
+</tbody>
+</table>
+<h3 id="特殊字符类"><a href="#特殊字符类" class="headerlink" title="特殊字符类"></a>特殊字符类</h3><table>
+<thead>
+<tr>
+<th>实例</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>.</td>
+<td>匹配除 “\n” 之外的任何单个字符。要匹配包括 ‘\n’ 在内的任何字符，请使用象 ‘[.\n]’ 的模式。</td>
+</tr>
+<tr>
+<td>\d</td>
+<td>匹配一个数字字符。等价于 [0-9]。</td>
+</tr>
+<tr>
+<td>\D</td>
+<td>匹配一个非数字字符。等价于 [^0-9]。</td>
+</tr>
+<tr>
+<td>\s</td>
+<td>匹配任何空白字符，包括空格、制表符、换页符等等。等价于 [ \f\n\r\t\v]。</td>
+</tr>
+<tr>
+<td>\S</td>
+<td>匹配任何非空白字符。等价于 [^ \f\n\r\t\v]。</td>
+</tr>
+<tr>
+<td>\w</td>
+<td>匹配包括下划线的任何单词字符。等价于’[A-Za-z0-9_]’。</td>
+</tr>
+<tr>
+<td>\W</td>
+<td>匹配任何非单词字符。等价于 ‘[^A-Za-z0-9_]’。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="re正则对象和正则匹配效率比较"><a href="#re正则对象和正则匹配效率比较" class="headerlink" title="re正则对象和正则匹配效率比较"></a>re正则对象和正则匹配效率比较</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;re模块是python中处理正则表达式的一个模块，通过re模块的方法，把正则表达式pattern编译成正则对象，以便使用正则对象的方法。那为什么要使用re模块来把正则表达式搞成正则对象呢，最主要的是可以提高代码的执行效率。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> timeit</div><div class="line"><span class="keyword">print</span> timeit.timeit(setup=<span class="string">'''import re; reg = re.complie('&lt;?P&lt;tagname&gt;\w*)&gt;.*&lt;/(?P=tagname)&gt;')'''</span>, stmt=<span class="string">'''reg.match('&lt;h1&gt;xxx&lt;/h1&gt;')'''</span>, number=<span class="number">1000000</span>)</div><div class="line"><span class="keyword">print</span> timeit.timeit(setup=<span class="string">'''import re'''</span>, stmt=<span class="string">'''re.match('&lt;?P&lt;tagname&gt;\w*)&gt;.*&lt;?P=tagname)&gt;', '&lt;h1&gt;xxx&lt;/h1&gt;')'''</span>, number=<span class="number">1000000</span>)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出结果</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="number">0.504413156462</span></div><div class="line"><span class="number">1.20703154234</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：timeit.timeit是用来统计程序执行的时间的，明显第一个print的执行时间要比第二个的执行时间快好多，这个就是把正则表达式表示成正则对象最明显的好处。</p>
+<h2 id="正则表达式修饰符-可选标志"><a href="#正则表达式修饰符-可选标志" class="headerlink" title="正则表达式修饰符-可选标志"></a>正则表达式修饰符-可选标志</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;正则表达式可以包含一些可选标志修饰符来控制匹配的模式。修饰符被指定为一个可选的标志。多个标志可以通过按位OR(|)来指定。如re.l|re.M被设置成l和M标志</p>
+<table>
+<thead>
+<tr>
+<th>修饰符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>re.I</td>
+<td>使匹配对大小写不敏感</td>
+</tr>
+<tr>
+<td>re.L</td>
+<td>做本地化识别（locale-aware）匹配</td>
+</tr>
+<tr>
+<td>re.M</td>
+<td>多行匹配，影响 ^ 和 $</td>
+</tr>
+<tr>
+<td>re.S</td>
+<td>使 . 匹配包括换行在内的所有字符</td>
+</tr>
+<tr>
+<td>re.U</td>
+<td>根据Unicode字符集解析字符。这个标志影响 \w, \W, \b, \B.</td>
+</tr>
+<tr>
+<td>re.X</td>
+<td>该标志通过给予你更灵活的格式以便你将正则表达式写得更易于理解。</td>
+</tr>
+</tbody>
+</table>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/11/13/Python/2.python新教程/40.python对JSON的相关操作/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">python对JSON的相关操作</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="Python/2.python新教程/41.python正则表达式" data-title="python正则表达式" data-url="https://hcldirgit.github.io/2017/11/14/Python/2.python新教程/41.python正则表达式/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="python正则表达式">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
