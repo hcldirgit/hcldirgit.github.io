@@ -17,7 +17,7 @@
 <meta property="og:site_name" content="失落的乐章">
 <meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;正则表达式是一个特殊的字符序列，它能方便的检查一个字符串是否与某种模式匹配。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;python自增加了re模块，提供了Perl风格的正则表达式模式。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-14T15:43:45.300Z">
+<meta property="og:updated_time" content="2017-11-15T15:56:58.988Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python正则表达式">
 <meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;正则表达式是一个特殊的字符序列，它能方便的检查一个字符串是否与某种模式匹配。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;python自增加了re模块，提供了Perl风格的正则表达式模式。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;">
@@ -517,6 +517,158 @@
 </tr>
 </tbody>
 </table>
+<h2 id="re-match函数"><a href="#re-match函数" class="headerlink" title="re.match函数"></a>re.match函数</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;re.match尝试从字符串的起始位置匹配一个模式，如果不是其实位置匹配成功的话，match()就返回none。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;函数语法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">re.match(pattern, string, flags=<span class="number">0</span>)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;函数参数说明</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pattem</td>
+<td>匹配的正则表达式</td>
+</tr>
+<tr>
+<td>string</td>
+<td>要匹配的字符串</td>
+</tr>
+<tr>
+<td>flags</td>
+<td>标志位，用于控制正则表达式的匹配方式，如：是否区分大小写，多行匹配等。</td>
+</tr>
+</tbody>
+</table>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;匹配成功re.match方法返回一个匹配的对象，否则返回none。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以使用group(num)或group()匹配对象函数来获取匹配表达式。</p>
+<table>
+<thead>
+<tr>
+<th>匹配对象方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>group(num=0)</td>
+<td>匹配的整个表达式的字符串，group()可以一次输入多个组号，在这种情况下它将返回一个包含哪些组所对应值的元组。</td>
+</tr>
+<tr>
+<td>group()</td>
+<td>返回一个包含所有小组字符串的元组，从1到所含的小组号。</td>
+</tr>
+</tbody>
+</table>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例1：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> re</div><div class="line">print(re.match(<span class="string">'www'</span>, <span class="string">'www.baidu.com'</span>).span())    <span class="comment">#在起始位置匹配</span></div><div class="line">print(re.match(<span class="string">'com'</span>, <span class="string">'www.baidu.com'</span>))           <span class="comment">#不在起始位置匹配</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(<span class="number">0</span>, <span class="number">3</span>)</div><div class="line"><span class="keyword">None</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例2：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> re</div><div class="line">line = <span class="string">"cats are smarter than dogs"</span></div><div class="line"></div><div class="line">matchobj = re.match(<span class="string">r'(.*) are (.*?) .*'</span>, line, re.M|re.I)</div><div class="line"></div><div class="line"><span class="keyword">if</span> matchobj :</div><div class="line">    <span class="keyword">print</span> <span class="string">"matchobj.group() : "</span>, matchobj.group()</div><div class="line">    <span class="keyword">print</span> <span class="string">"matchobj.group(1) : "</span>, matchobj.group(<span class="number">1</span>)</div><div class="line">    <span class="keyword">print</span> <span class="string">"matchobj.group(2) : "</span>, matchobj.group(<span class="number">2</span>)</div><div class="line"><span class="keyword">else</span>:</div><div class="line">    <span class="keyword">print</span> <span class="string">"No match!!"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">matchobj.group() : cats are smarter than dogs</div><div class="line">matchobj.group(<span class="number">1</span>) : cats</div><div class="line">matchobj.group(<span class="number">2</span>) : smarter</div></pre></td></tr></table></figure>
+<h2 id="re-search方法"><a href="#re-search方法" class="headerlink" title="re.search方法"></a>re.search方法</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;re.search扫描整个字符串并返回第一个成功的匹配。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;函数语法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">re.search(pattern, string, flags=<span class="number">0</span>)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;函数参数说明</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pattem</td>
+<td>匹配的正则表达式</td>
+</tr>
+<tr>
+<td>string</td>
+<td>要匹配的字符串</td>
+</tr>
+<tr>
+<td>flags</td>
+<td>标志位，用于控制正则表达式的匹配方式，如：是否区分大小写，多行匹配等等。</td>
+</tr>
+</tbody>
+</table>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;匹配成功re.search方法返回一个匹配的对象，否则返回None。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以使用group(num)或group()匹配对象函数来获取匹配表达式。</p>
+<table>
+<thead>
+<tr>
+<th>匹配对象方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>group(num=0)</td>
+<td>匹配的整个表达式的字符串，group()可以一次输入多个组号，在这种情况下它将返回一个包含那些组所对应值的元组。</td>
+</tr>
+<tr>
+<td>group()</td>
+<td>返回一个包含所有小组字符串的元组，从1到所含的小组号。</td>
+</tr>
+</tbody>
+</table>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例1：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> re</div><div class="line">print(re.search(<span class="string">'www'</span>, <span class="string">'www.baidu.com'</span>).span())    <span class="comment">#在起始位置匹配</span></div><div class="line">print(re.search(<span class="string">'com'</span>, <span class="string">'www.baidu.com'</span>).span())    <span class="comment">#不在起始位置匹配</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(<span class="number">0</span>, <span class="number">3</span>)</div><div class="line">(<span class="number">11</span>, <span class="number">14</span>)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例2：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> re</div><div class="line">line = <span class="string">"cats are smarter than dogs"</span>;</div><div class="line"></div><div class="line">searchobj = re.search(<span class="string">r'(.*) are (.*?) .*'</span>, line, re.M|re.I)</div><div class="line"></div><div class="line"><span class="keyword">if</span> searchobj:</div><div class="line">    <span class="keyword">print</span> <span class="string">"searchobj.group() : "</span>, searchobj.group()</div><div class="line">    <span class="keyword">print</span> <span class="string">"searchobj.group(1) : "</span>, searchobj.group(<span class="number">1</span>)</div><div class="line">    <span class="keyword">print</span> <span class="string">"searchobj.group(2) : "</span>, searchobj.group(<span class="number">2</span>)</div><div class="line"><span class="keyword">else</span>:</div><div class="line">    <span class="keyword">print</span> <span class="string">"Nothing found!!"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">searchobj.group() : cats are smarter than dogs</div><div class="line">searchobj.group(<span class="number">1</span>) : cats</div><div class="line">searchobj.group(<span class="number">2</span>) : smarter</div></pre></td></tr></table></figure>
+<h2 id="re-match与re-search的区别"><a href="#re-match与re-search的区别" class="headerlink" title="re.match与re.search的区别"></a>re.match与re.search的区别</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;re.match只匹配字符串的开始，如果字符串开始不符合正则表达式，则匹配失败，函数返回None；而re.search匹配整个字符串，知道找到一个匹配</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> re</div><div class="line"></div><div class="line">line = <span class="string">"cats are smarter than dogs"</span>;</div><div class="line"></div><div class="line">matchobj = re.match(<span class="string">r'dogs'</span>, line, re.M|re.I)</div><div class="line"></div><div class="line"><span class="keyword">if</span> matchobj:</div><div class="line">    <span class="keyword">print</span> <span class="string">"match --&gt; matchobj.group() : "</span>, matchobj.group()</div><div class="line"><span class="keyword">else</span>:</div><div class="line">    <span class="keyword">print</span> <span class="string">"No match!"</span></div><div class="line"></div><div class="line">matchobj = re.search(<span class="string">r'dogs'</span>, line, re.M|re.I)</div><div class="line"><span class="keyword">if</span> matchobj:</div><div class="line">    <span class="keyword">print</span> <span class="string">"search --&gt; matchobj.group() : "</span>, matchobj.group()</div><div class="line"><span class="keyword">else</span>:</div><div class="line">    <span class="keyword">print</span> <span class="string">"No match!!"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">No match!!</div><div class="line">search --&gt; matchobj.group() : dogs</div></pre></td></tr></table></figure>
+<h2 id="检索和替换"><a href="#检索和替换" class="headerlink" title="检索和替换"></a>检索和替换</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Python 的 re 模块提供了re.sub用于替换字符串中的匹配项。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;语法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">re.sub(pattern, repl, string, count=<span class="number">0</span>, flags=<span class="number">0</span>)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;参数：</p>
+<ul>
+<li>pattern : 正则中的模式字符串。</li>
+<li>repl : 替换的字符串，也可为一个函数。</li>
+<li>string : 要被查找替换的原始字符串。</li>
+<li>count : 模式匹配后替换的最大次数，默认 0 表示替换所有的匹配。</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> re</div><div class="line"> </div><div class="line">phone = <span class="string">"2004-959-559 # 这是一个国外电话号码"</span></div><div class="line"> </div><div class="line"><span class="comment"># 删除字符串中的 Python注释 </span></div><div class="line">num = re.sub(<span class="string">r'#.*$'</span>, <span class="string">""</span>, phone)</div><div class="line"><span class="keyword">print</span> <span class="string">"电话号码是: "</span>, num</div><div class="line"> </div><div class="line"><span class="comment"># 删除非数字(-)的字符串 </span></div><div class="line">num = re.sub(<span class="string">r'\D'</span>, <span class="string">""</span>, phone)</div><div class="line"><span class="keyword">print</span> <span class="string">"电话号码是 : "</span>, num</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">电话号码是:  <span class="number">2004</span><span class="number">-959</span><span class="number">-559</span> </div><div class="line">电话号码是 :  <span class="number">2004959559</span></div></pre></td></tr></table></figure>
+<h3 id="repl-参数是一个函数"><a href="#repl-参数是一个函数" class="headerlink" title="repl 参数是一个函数"></a>repl 参数是一个函数</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下实例中将字符串中的匹配的数字乘于 2：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> re</div><div class="line"> </div><div class="line"><span class="comment"># 将匹配的数字乘于 2</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">double</span><span class="params">(matched)</span>:</span></div><div class="line">    value = int(matched.group(<span class="string">'value'</span>))</div><div class="line">    <span class="keyword">return</span> str(value * <span class="number">2</span>)</div><div class="line"> </div><div class="line">s = <span class="string">'A23G4HFD567'</span></div><div class="line">print(re.sub(<span class="string">'(?P&lt;value&gt;\d+)'</span>, double, s))</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">A46G8HFD1134</div></pre></td></tr></table></figure>
+<h2 id="re的split、findall、finditer的方法"><a href="#re的split、findall、finditer的方法" class="headerlink" title="re的split、findall、finditer的方法"></a>re的split、findall、finditer的方法</h2><h3 id="正则对象的split方法"><a href="#正则对象的split方法" class="headerlink" title="正则对象的split方法"></a>正则对象的split方法</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;语法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">split(string[, maxsplit])</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;按照能够匹配的子串将string分割后返回列表。maxsplit用于指定最大分割次数，不指定将全部分割。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> re</div><div class="line"></div><div class="line">p = re.complie(<span class="string">r'\d+'</span>)</div><div class="line">print(p.split(<span class="string">'one1two2three3four4'</span>))</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[<span class="string">'one'</span>, <span class="string">'two'</span>, <span class="string">'three'</span>, <span class="string">'four'</span>, <span class="string">''</span>]</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：直接把p的正则当成是分隔符，然后把最后的字符串用p进行分割，然后返回回去。</p>
+<h3 id="正则对象的findall方法"><a href="#正则对象的findall方法" class="headerlink" title="正则对象的findall方法"></a>正则对象的findall方法</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;语法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">findall(string[, pos[, endpos]])</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;搜索string，以列表形式返回全部能匹配的子串</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> re</div><div class="line"></div><div class="line">p = re.compile(<span class="string">r'\d+'</span>)</div><div class="line">print(findall(<span class="string">'one1two2three3four4'</span>))</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[<span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>, <span class="string">'4'</span>]</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：findall是把匹配到的字符串最后以列表的形式返回回去。</p>
+<h3 id="正则对象的finditer方法"><a href="#正则对象的finditer方法" class="headerlink" title="正则对象的finditer方法"></a>正则对象的finditer方法</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;语法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">finditer(string[, pos[, endpos]])</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;搜索string，返回一个顺序访问每一个匹配结果（match对象）的迭代器。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> re</div><div class="line"></div><div class="line">p = re.compile(<span class="string">r'\d+'</span>)</div><div class="line">print(type(p.finditer(<span class="string">'one1two2three3four4'</span>)))</div><div class="line"><span class="keyword">for</span> m <span class="keyword">in</span> p.finditer(<span class="string">'one1two2three3four4'</span>)</div><div class="line">    print(type(m))</div><div class="line">    print(m.group())</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;type<span class="string">'callable-iterator'</span>&gt;</div><div class="line">&lt;type<span class="string">'_sre.SRE_Match&gt;</span></div><div class="line"><span class="string">1</span></div><div class="line"><span class="string">&lt;type'</span>_sre.SRE_Match&gt;</div><div class="line"><span class="number">2</span></div><div class="line">&lt;type<span class="string">'_sre.SRE_Match&gt;</span></div><div class="line"><span class="string">3</span></div><div class="line"><span class="string">&lt;type'</span>_sre.SRE_Match&gt;</div><div class="line"><span class="number">4</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明：p.finditer(‘one1two2three3four4’)是一个迭代器，而返回的每个m都是match对象。</p>
 
       
     </div>
