@@ -231,6 +231,69 @@
 
 
   
+    <article id="post-Samba/4. samba同时用匿名和用户登录" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Samba/4. samba同时用匿名和用户登录/" class="article-date">
+  	<time datetime="2017-10-13T13:29:40.470Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Samba/4. samba同时用匿名和用户登录/">
+        samba同时用匿名和用户登录
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关于同时使用匿名和用户登录，配置文件如下，已经验证成功：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">[global]</div><div class="line">        workgroup = WORKGROUP</div><div class="line">        server string = Samba Server Version %v</div><div class="line">        <span class="built_in">log</span> file = /var/<span class="built_in">log</span>/samba/<span class="built_in">log</span>.%m</div><div class="line">        max <span class="built_in">log</span> size = 50</div><div class="line">        security = user</div><div class="line">        passdb backend = tdbsam</div><div class="line">        load printers = yes</div><div class="line">        cups iptions = raw</div><div class="line">        map to guest = bad user</div><div class="line">        guest account = nobody</div><div class="line">        encrypt password = yes</div><div class="line">        smb passwd file = /etc/samba/smbpasswd</div><div class="line"></div><div class="line">[public]</div><div class="line">        comment = public</div><div class="line">        path = /data/pub/public</div><div class="line">        browseable = yes</div><div class="line">        guest ok = yes</div><div class="line">        writable = yes</div><div class="line">        printable = no</div><div class="line">        create mask = 0644</div><div class="line">        directory mask = 0755</div><div class="line"></div><div class="line">[project]</div><div class="line">        comment = project</div><div class="line">        path = /data/pub/project</div><div class="line">        browseable = yes</div><div class="line">        public = no</div><div class="line">        guest ok = no</div><div class="line">        writeable = yes</div><div class="line">        force user = root</div><div class="line">        printable = no</div><div class="line">        create mask = 0644</div><div class="line">        directory mask = 0755</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Samba/">Samba</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Samba/4. samba同时用匿名和用户登录/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Samba/1. samba部署和优化" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -281,6 +344,68 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Samba/1. samba部署和优化/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Php/7. 常见apache php_admin_value php_admin_flag 设置" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Php/7. 常见apache php_admin_value php_admin_flag 设置/" class="article-date">
+  	<time datetime="2017-10-13T13:29:40.467Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Php/7. 常见apache php_admin_value php_admin_flag 设置/">
+        常见apache php_admin_value php_admin_flag 设置
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">php_admin_value open_basedir /data/123:/tmp/</div><div class="line">php_admin_flag engine on</div><div class="line">php_admin_flag log_errors on</div><div class="line">php_admin_value max_execution_time 180</div><div class="line">php_admin_value upload_tmp_dir /mp/</div><div class="line">php_admin_value include_path /data/123/include</div><div class="line">php_admin_flag short_open_tag on</div><div class="line">php_admin_value memory_limit 8388608</div><div class="line">php_admin_value error_reporting 15</div><div class="line">php_admin_flag display_errors on</div><div class="line">php_admin_flag track_errors off</div><div class="line">php_admin_value error_log /home/logs/php_error.log</div><div class="line">php_admin_flag magic_quotes_gpc on</div><div class="line">php_admin_flag track_vars on</div><div class="line">php_admin_value auto_prepend_file /data/123/php/prepend.php</div><div class="line">php_admin_value auto_append_file /data/123/php/append.php</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Php/">Php</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Php/7. 常见apache php_admin_value php_admin_flag 设置/#more">阅读全文 >></a>
         </p>
       
     
@@ -346,68 +471,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Php/9. php.ini 配置详解/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Php/7. 常见apache php_admin_value php_admin_flag 设置" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Php/7. 常见apache php_admin_value php_admin_flag 设置/" class="article-date">
-  	<time datetime="2017-10-13T13:29:40.467Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Php/7. 常见apache php_admin_value php_admin_flag 设置/">
-        常见apache php_admin_value php_admin_flag 设置
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">php_admin_value open_basedir /data/123:/tmp/</div><div class="line">php_admin_flag engine on</div><div class="line">php_admin_flag log_errors on</div><div class="line">php_admin_value max_execution_time 180</div><div class="line">php_admin_value upload_tmp_dir /mp/</div><div class="line">php_admin_value include_path /data/123/include</div><div class="line">php_admin_flag short_open_tag on</div><div class="line">php_admin_value memory_limit 8388608</div><div class="line">php_admin_value error_reporting 15</div><div class="line">php_admin_flag display_errors on</div><div class="line">php_admin_flag track_errors off</div><div class="line">php_admin_value error_log /home/logs/php_error.log</div><div class="line">php_admin_flag magic_quotes_gpc on</div><div class="line">php_admin_flag track_vars on</div><div class="line">php_admin_value auto_prepend_file /data/123/php/prepend.php</div><div class="line">php_admin_value auto_append_file /data/123/php/append.php</div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Php/">Php</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Php/7. 常见apache php_admin_value php_admin_flag 设置/#more">阅读全文 >></a>
         </p>
       
     
@@ -753,68 +816,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Php/3. 通过http上传大文件超时的问题/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Php/1. LAMP安装php" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Php/1. LAMP安装php/" class="article-date">
-  	<time datetime="2017-10-13T13:29:40.458Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Php/1. LAMP安装php/">
-        LAMP安装php
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;为什么把 php 放到最后来安装，是有原因的，因为在编译 php 的时候，有指定 mysql 以及 apache 的路径，如果不先安装好 mysql 和 apache 就没有办法安装 php 。而 apache 和 mysql 的安装顺序就无所谓了。<br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<a href="http://www.php.net/downloads.php" target="_blank" rel="external">php官方下载地址</a></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Php/">Php</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Php/1. LAMP安装php/#more">阅读全文 >></a>
         </p>
       
     

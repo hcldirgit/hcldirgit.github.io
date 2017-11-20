@@ -168,6 +168,68 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Squid/5. Squid.conf配置文件详解" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Squid/5. Squid.conf配置文件详解/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.098Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Squid/5. Squid.conf配置文件详解/">
+        Squid.conf配置文件详解
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;squid常用命令：</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Squid/">Squid</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Squid/5. Squid.conf配置文件详解/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Squid/3. squid反向代理" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -358,69 +420,6 @@
 
 
   
-    <article id="post-Squid/15. Squid的防盗链" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Squid/15. Squid的防盗链/" class="article-date">
-  	<time datetime="2017-10-13T13:48:39.095Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Squid/15. Squid的防盗链/">
-        Squid的防盗链
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有了Varnish防盗链，自然也要有Squid的防盗链。原理都一样，对Referer进行判断，当然网上有所谓的终极解决方案还对cookies进行判断的，这里还是只讨论Referer这种。在Squid里就是在配置文件添加acl控制，在squid.conf中的acl段添加如下配置:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">acl has_referer referer_regex .</div><div class="line">acl allow_referer referer_regex -i baidu\.com</div><div class="line">acl allow_referer referer_regex -i google\.com</div><div class="line">acl allow_referer referer_regex -i yahoo\.cn</div><div class="line">acl allow_referer referer_regex -i google\.cn</div><div class="line"> </div><div class="line">http_access allow !has_referer</div><div class="line">http_access deny !allow_referer</div><div class="line">deny_info http://img1.test.com/images/noposter.jpg allow_referer</div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Squid/">Squid</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Squid/15. Squid的防盗链/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-Squid/16. 学习CDN不得不读之-Squid 高级优化指南" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -478,6 +477,69 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Squid/16. 学习CDN不得不读之-Squid 高级优化指南/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Squid/15. Squid的防盗链" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Squid/15. Squid的防盗链/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.095Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Squid/15. Squid的防盗链/">
+        Squid的防盗链
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有了Varnish防盗链，自然也要有Squid的防盗链。原理都一样，对Referer进行判断，当然网上有所谓的终极解决方案还对cookies进行判断的，这里还是只讨论Referer这种。在Squid里就是在配置文件添加acl控制，在squid.conf中的acl段添加如下配置:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">acl has_referer referer_regex .</div><div class="line">acl allow_referer referer_regex -i baidu\.com</div><div class="line">acl allow_referer referer_regex -i google\.com</div><div class="line">acl allow_referer referer_regex -i yahoo\.cn</div><div class="line">acl allow_referer referer_regex -i google\.cn</div><div class="line"> </div><div class="line">http_access allow !has_referer</div><div class="line">http_access deny !allow_referer</div><div class="line">deny_info http://img1.test.com/images/noposter.jpg allow_referer</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Squid/">Squid</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Squid/15. Squid的防盗链/#more">阅读全文 >></a>
         </p>
       
     
@@ -735,72 +797,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Squid/11. squid内核优化 减轻timewait问题/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Squid/10. squid故障汇总" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Squid/10. squid故障汇总/" class="article-date">
-  	<time datetime="2017-10-13T13:48:39.089Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Squid/10. squid故障汇总/">
-        squid故障汇总
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;1、COSS will not function without large file support (off_t is 4 bytes long. Please reconsider recompiling squid with –with-large-files</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Bungled squid_webcache.conf 。。。。。。。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;检查是否在编译squid的时候未加入 –with-large-files 选项，如果是，重新加入此选项再编译一次squid</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;2、使用coss缓存格式的时候，squid不断重建cache</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可能原因为maxfullbufs值过低，去掉maxfullbufs限制，让其值为无限</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Squid/">Squid</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Squid/10. squid故障汇总/#more">阅读全文 >></a>
         </p>
       
     
