@@ -168,69 +168,6 @@
 </nav>
       <div class="body-wrap">
   
-    <article id="post-Samba/4. samba同时用匿名和用户登录" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Samba/4. samba同时用匿名和用户登录/" class="article-date">
-  	<time datetime="2017-10-13T13:29:40.470Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Samba/4. samba同时用匿名和用户登录/">
-        samba同时用匿名和用户登录
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关于同时使用匿名和用户登录，配置文件如下，已经验证成功：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">[global]</div><div class="line">        workgroup = WORKGROUP</div><div class="line">        server string = Samba Server Version %v</div><div class="line">        <span class="built_in">log</span> file = /var/<span class="built_in">log</span>/samba/<span class="built_in">log</span>.%m</div><div class="line">        max <span class="built_in">log</span> size = 50</div><div class="line">        security = user</div><div class="line">        passdb backend = tdbsam</div><div class="line">        load printers = yes</div><div class="line">        cups iptions = raw</div><div class="line">        map to guest = bad user</div><div class="line">        guest account = nobody</div><div class="line">        encrypt password = yes</div><div class="line">        smb passwd file = /etc/samba/smbpasswd</div><div class="line"></div><div class="line">[public]</div><div class="line">        comment = public</div><div class="line">        path = /data/pub/public</div><div class="line">        browseable = yes</div><div class="line">        guest ok = yes</div><div class="line">        writable = yes</div><div class="line">        printable = no</div><div class="line">        create mask = 0644</div><div class="line">        directory mask = 0755</div><div class="line"></div><div class="line">[project]</div><div class="line">        comment = project</div><div class="line">        path = /data/pub/project</div><div class="line">        browseable = yes</div><div class="line">        public = no</div><div class="line">        guest ok = no</div><div class="line">        writeable = yes</div><div class="line">        force user = root</div><div class="line">        printable = no</div><div class="line">        create mask = 0644</div><div class="line">        directory mask = 0755</div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Samba/">Samba</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Samba/4. samba同时用匿名和用户登录/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-Samba/6. 让Samba支持软连接" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -280,6 +217,69 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Samba/6. 让Samba支持软连接/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Samba/4. samba同时用匿名和用户登录" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Samba/4. samba同时用匿名和用户登录/" class="article-date">
+  	<time datetime="2017-10-13T13:29:40.470Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Samba/4. samba同时用匿名和用户登录/">
+        samba同时用匿名和用户登录
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;关于同时使用匿名和用户登录，配置文件如下，已经验证成功：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">[global]</div><div class="line">        workgroup = WORKGROUP</div><div class="line">        server string = Samba Server Version %v</div><div class="line">        <span class="built_in">log</span> file = /var/<span class="built_in">log</span>/samba/<span class="built_in">log</span>.%m</div><div class="line">        max <span class="built_in">log</span> size = 50</div><div class="line">        security = user</div><div class="line">        passdb backend = tdbsam</div><div class="line">        load printers = yes</div><div class="line">        cups iptions = raw</div><div class="line">        map to guest = bad user</div><div class="line">        guest account = nobody</div><div class="line">        encrypt password = yes</div><div class="line">        smb passwd file = /etc/samba/smbpasswd</div><div class="line"></div><div class="line">[public]</div><div class="line">        comment = public</div><div class="line">        path = /data/pub/public</div><div class="line">        browseable = yes</div><div class="line">        guest ok = yes</div><div class="line">        writable = yes</div><div class="line">        printable = no</div><div class="line">        create mask = 0644</div><div class="line">        directory mask = 0755</div><div class="line"></div><div class="line">[project]</div><div class="line">        comment = project</div><div class="line">        path = /data/pub/project</div><div class="line">        browseable = yes</div><div class="line">        public = no</div><div class="line">        guest ok = no</div><div class="line">        writeable = yes</div><div class="line">        force user = root</div><div class="line">        printable = no</div><div class="line">        create mask = 0644</div><div class="line">        directory mask = 0755</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Samba/">Samba</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Samba/4. samba同时用匿名和用户登录/#more">阅读全文 >></a>
         </p>
       
     
@@ -548,68 +548,6 @@
 
 
   
-    <article id="post-Php/12. php 扩展模块如何安装" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Php/12. php 扩展模块如何安装/" class="article-date">
-  	<time datetime="2017-10-13T13:29:40.465Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Php/12. php 扩展模块如何安装/">
-        php 扩展模块如何安装
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;php 和 apapche 类似，核心文件为 /usr/local/php/bin/php ,针对 apache 的是 /usr/local/apache2/modules/libphp5.so 模块。这两个文件是核心，在编译 php 的时候会提前让它支持一些功能，比如支持 mysql，这个功能其实是 php 的一个模块，只不过这个模块是直接和 php 或者 libphp5.so 文件编译在一起的。当我们编译完成 php 后，发现还需要让 php 支持另外的模块，这时候可以重新编译 php ，加上配置参数，或者直接编译出一个独立的模块文件。然后让 php去调用它。下面以编译 memcache 为例；</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Php/">Php</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Php/12. php 扩展模块如何安装/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-Php/11. php的错误日志级别 error_report" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -658,6 +596,68 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Php/11. php的错误日志级别 error_report/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Php/12. php 扩展模块如何安装" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Php/12. php 扩展模块如何安装/" class="article-date">
+  	<time datetime="2017-10-13T13:29:40.465Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Php/12. php 扩展模块如何安装/">
+        php 扩展模块如何安装
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;php 和 apapche 类似，核心文件为 /usr/local/php/bin/php ,针对 apache 的是 /usr/local/apache2/modules/libphp5.so 模块。这两个文件是核心，在编译 php 的时候会提前让它支持一些功能，比如支持 mysql，这个功能其实是 php 的一个模块，只不过这个模块是直接和 php 或者 libphp5.so 文件编译在一起的。当我们编译完成 php 后，发现还需要让 php 支持另外的模块，这时候可以重新编译 php ，加上配置参数，或者直接编译出一个独立的模块文件。然后让 php去调用它。下面以编译 memcache 为例；</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Php/">Php</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Php/12. php 扩展模块如何安装/#more">阅读全文 >></a>
         </p>
       
     
