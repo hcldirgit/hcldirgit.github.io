@@ -168,6 +168,134 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Shell/12. shell中的select用法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Shell/12. shell中的select用法/" class="article-date">
+  	<time datetime="2017-10-13T13:52:13.918Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Shell/12. shell中的select用法/">
+        shell中的select用法
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;select也是循环的一种，它比较适合用在用户选择的情况下。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;比如，我们有一个这样的需求，运行脚本后，让用户去选择数字，选择1，会运行w命令，选择2运行top命令，选择3运行free命令，选择4退出。脚本这样实现：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"Please chose a number, 1: run w, 2: run top, 3: run free, 4: quit"</span></div><div class="line"><span class="built_in">echo</span></div><div class="line">select <span class="built_in">command</span> <span class="keyword">in</span> w top free quit</div><div class="line"><span class="keyword">do</span></div><div class="line">    <span class="keyword">case</span> <span class="variable">$command</span> <span class="keyword">in</span></div><div class="line">    w)</div><div class="line">        w</div><div class="line">        ;;</div><div class="line">    top)</div><div class="line">        top</div><div class="line">        ;;</div><div class="line">    free)</div><div class="line">        free</div><div class="line">        ;;</div><div class="line">    quit)</div><div class="line">        <span class="built_in">exit</span></div><div class="line">        ;;</div><div class="line">    *)</div><div class="line">        <span class="built_in">echo</span> <span class="string">"Please input a number:(1-4)."</span></div><div class="line">        ;;</div><div class="line">    <span class="keyword">esac</span></div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Shell/12. shell中的select用法/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Shell/13. for 循环" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Shell/13. for 循环/" class="article-date">
+  	<time datetime="2017-10-13T13:52:13.918Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Shell/13. for 循环/">
+        for 循环
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;shell 脚本中也算是一门简易的编程语言了，当然循环是不能缺少的。常用到的循环有 for 循环和 while 循环。for 循环的结构是在日常运维中使用最频繁的循环结构。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;一个简单的 for 循环脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@192 sbin]<span class="comment"># vim for.sh</span></div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Shell/13. for 循环/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Shell/11. case 选择" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -675,141 +803,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Shell/4. shell 结构以及执行/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Shell/3. shell 中的特殊符号" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Shell/3. shell 中的特殊符号/" class="article-date">
-  	<time datetime="2017-10-13T13:50:28.869Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Shell/3. shell 中的特殊符号/">
-        shell 中的特殊符号
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;shell中常用到的特殊字符。</p>
-<ul>
-<li>* 代表零个或多个任意字符</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost 111]<span class="comment"># ls</span></div><div class="line">1 11.txt 1.txt 22.txt 2.txt 33.txt 3.txt 44.zip 55.zip</div><div class="line">[root@localhost 111]<span class="comment"># ls *.txt</span></div><div class="line">11.txt 1.txt 22.txt 2.txt 33.txt 3.txt</div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Shell/3. shell 中的特殊符号/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Shell/5. shell 备份 mysql" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Shell/5. shell 备份 mysql/" class="article-date">
-  	<time datetime="2017-10-13T13:50:28.867Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Shell/5. shell 备份 mysql/">
-        shell 备份 mysql
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ol>
-<li>创建备份目录和文件</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mkdir/srv/bakmysql</div><div class="line">mkdir/srv/bakmysql/daily</div><div class="line">touch/srv/bakmysql/mysqlbak.log</div></pre></td></tr></table></figure>
-<ol>
-<li>启用二进制日志</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /etc/</div><div class="line">vi my.cnf</div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Shell/5. shell 备份 mysql/#more">阅读全文 >></a>
         </p>
       
     

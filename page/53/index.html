@@ -168,6 +168,164 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Php/16. CGI、FastCGI与php-fpm" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Php/16. CGI、FastCGI与php-fpm/" class="article-date">
+  	<time datetime="2017-10-13T13:29:40.460Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Php/16. CGI、FastCGI与php-fpm/">
+        CGI、FastCGI与php-fpm
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这几个概念是在学习lamp、lnmp架构中我们遇到的。好多同学对这几个概念一直不明白。下面内容希望能帮助到到家，其中一些内容参考网上的文章。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在web开发领域中有个大概念大家必须要搞清楚，那就是静态和动态。静态就是一些诸如html、图片、js、css等请求元素，它们的特点是不需要和其他资源（比如数据库）打交道，可以直接由web server（httpd、nginx等）处理。如下图：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/CGI%E3%80%81FastCGI%E4%B8%8Ephp-fpm/01.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;而动态则是需要和数据库等资源打交道的请求，在lamp/lnmp架构中，需要一个中间件（PHP解释器）去解析php代码，然后和mysql数据库打交道。如图：</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/CGI%E3%80%81FastCGI%E4%B8%8Ephp-fpm/02.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当Web Server收到 index.php 这个请求后，会启动对应的 CGI 程序，这里就是PHP的解析器。接下来PHP解析器会解析php.ini文件，初始化执行环境，然后处理请求，再以规定CGI规定的格式返回处理后的结果，退出进程，Web server再把结果返回给浏览器。这就是一个完整的动态PHP Web访问流程，接下来再引出这些概念，就好理解多了。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;再来解释几个概念：</p>
+<ul>
+<li><p>CGI：是 Web Server 与 Web Application 之间数据交换的一种协议。</p>
+</li>
+<li><p>FastCGI：同 CGI，是一种通信协议，但比 CGI 在效率上做了一些优化。同样，SCGI 协议与 FastCGI 类似。</p>
+</li>
+<li><p>PHP-CGI：是 PHP （Web Application）对 Web Server 提供的 CGI 协议的接口程序。</p>
+</li>
+<li><p>PHP-FPM：是 PHP（Web Application）对 Web Server 提供的 FastCGI 协议的接口程序，额外还提供了相对智能一些任务管理。</p>
+</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;WEB 中，Web Server 一般指Apache、Nginx、IIS、Lighttpd、Tomcat等服务器，Web Application 一般指PHP、Java、Asp.net等应用程序。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在这里还要了解另外一种方式 —— Apache的Module方式。 lamp架构中，php是以一个模块（libphp5.so）的方式被httpd调用的，这个模块是通过sapi把数据交给了php的解释器。</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/CGI%E3%80%81FastCGI%E4%B8%8Ephp-fpm/03.png?raw=true" alt=""></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SAPI提供了一个和外部通信的接口，有点类似于socket，使得PHP可以和其他应用进行交互数据（apache，nginx等）。php默认提供了很多种SAPI，常见的提供给apache和nginx的php5_module、CGI、FastCGI，给IIS的ISAPI，以及Shell的CLI。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;最后再来说一说，FastCGI为什么比CGI优秀。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;不管是CGI还是FastCGI都是专门用来和WEB服务器打交道的，web服务器收到用户请求，就会把请求提交给cgi/fastcgi程序（如php-cgi），cgi/fastcgi程序根据请求提交的参数作应处理（解析php），然后输出标准的html语句，返回给web服服务器，WEB服务器再返回给客户端，这就是普通cgi/fastcgi的工作原理。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;cgi和fastcgi不同在于，cgi需要在每一次WEB服务器把请求交给它时都需要启动一次进程，然后处理结束后还要关闭进程。这样当并发量很大时，就会造成服务器资源耗费严重。而fastcgi则为常驻进程，也就是说进程启动后会一直在线，不用频繁开启和关闭。另外fastcgi还支持分布式，也就是说可以支持在web服务器外的其他服务器上运行，通过tcp传输数据。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Php/">Php</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Php/3. 通过http上传大文件超时的问题" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Php/3. 通过http上传大文件超时的问题/" class="article-date">
+  	<time datetime="2017-10-13T13:29:40.459Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Php/3. 通过http上传大文件超时的问题/">
+        通过http上传大文件超时的问题
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;架构是 LAMP ， 上传文件的操作，并没有连接mysql，但是却使用了php资源，所以修改设置，不仅要设置apache还要设置php.ini </p>
+<ol>
+<li>apache httpd.conf 的设置</li>
+</ol>
+<ul>
+<li>Timeout 600  这个可以设置成 3600, 单位是s </li>
+</ul>
+<ol>
+<li>php.ini 相关的参数</li>
+</ol>
+<ul>
+<li>file_uploads  =  on  ; 默认为开</li>
+<li>upload_max_filesize  =  1024M  ; 上传最大值</li>
+<li>post_max_size = 1024M ; 通过表单POST给PHP的所能接收的最大值</li>
+</ul>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Php/">Php</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Php/3. 通过http上传大文件超时的问题/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Php/1. LAMP安装php" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -727,134 +885,6 @@
       
       <div class="clearfix"></div>
     </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Php/4. 下载小知识" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Php/4. 下载小知识/" class="article-date">
-  	<time datetime="2017-10-13T13:29:40.450Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Php/4. 下载小知识/">
-        下载小知识
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在官网下载的源码包都提供一个md5校验值，比如 </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">PHP 5.3.27 (tar.bz2) [11,165Kb] - 11 Jul 2013  </div><div class="line">md5: 25ae23a5b9615fe8d33de5b63e1bb788</div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Php/">Php</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Php/4. 下载小知识/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Git/2.  github常见操作和常见错误  错误提示  fatal   remote origin already exists." class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Git/2.  github常见操作和常见错误  错误提示  fatal   remote origin already exists./" class="article-date">
-  	<time datetime="2017-10-13T13:29:40.448Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Git/2.  github常见操作和常见错误  错误提示  fatal   remote origin already exists./">
-        github常见操作和常见错误  错误提示  fatal   remote origin already exists.
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果输入</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Git remote add origin git@github.com:djqiang（github帐号名）/gitdemo（项目名）.git</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;提示出错信息：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">fatal: remote origin already exists.</div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Git/">Git</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Git/2.  github常见操作和常见错误  错误提示  fatal   remote origin already exists./#more">阅读全文 >></a>
-        </p>
       
     
   </div>

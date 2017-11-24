@@ -168,6 +168,134 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Zabbix/23. zabbix使用pyora监控oracle数据库" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Zabbix/23. zabbix使用pyora监控oracle数据库/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.176Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Zabbix/23. zabbix使用pyora监控oracle数据库/">
+        zabbix使用pyora监控oracle数据库
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用Orabbix监控oracle数据库，发现可以实现对oracel数据库实行监控，但是    最近部署Orabbix监控oracle数据库，发现始终无法获取到数据库的内容。。。。。。由于Orabbix是基于java实现的，使用的是jdbc连接oracle数据库，获取到的值传递给zabbix捕捉器来捕捉，这个过程我不是很熟悉。。。。。。始终无法调试出图来。。。最后终于放弃，寻找Orabbix的替代品。在zabbix官网找了一遍，发现使用python实现的pyora这个脚本还不错，最大的优势就是能够自定义自己想监控的相关参数，只需要修改脚本，在里面添加相关函数就行。pyora是通过python使用python的一个组件cx_Oracle来获取的，获取到的数据传递给zabbix的agent，从而获取到相关监控数据，这种方式比较简单，也比较容易扩展。pyora的缺点就是本身提供的监控item比较少，而且提供的模板是一个半成品模板，需要自己根据需要设计相应的模板，从而达到监控的目的。总体来说，pyora的特点就是简单，开源，易扩展，但是整体做的不是很完整。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先，需要下载pyora，在zabbix官网上面找到的github的链接，链接在这<a href="https://github.com/bicofino/Pyora" target="_blank" rel="external">https://github.com/bicofino/Pyora</a> </p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zabbix/">Zabbix</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Zabbix/23. zabbix使用pyora监控oracle数据库/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Zabbix/22. zabbix使用percona zabbix mysql-plugin监控mysql数据库" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Zabbix/22. zabbix使用percona zabbix mysql-plugin监控mysql数据库/" class="article-date">
+  	<time datetime="2017-10-13T13:48:39.175Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Zabbix/22. zabbix使用percona zabbix mysql-plugin监控mysql数据库/">
+        zabbix使用percona zabbix mysql-plugin监控mysql数据库
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;由于zabbix自带的mysql监控模板监控的东西比较少，使用percona zabbix mysql-plugin实现对mysql的监控。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;percona zabbix mysql-plugin是percona发布的一个使用zabbix监控mysql数据库的工具，这款工具比zabbix自带的监控模板要强大的多，毕竟percona是Mysql的一个重要分支，专业做数据库的，所以，采集的数据比较全面。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面开始进入正题，部署mysql的监控。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先，需要安装安装php和php-mysql，因为用到了php脚本，所以在本机上面需要安装php，至于php的安装不是本文讨论的重点</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zabbix/">Zabbix</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Zabbix/22. zabbix使用percona zabbix mysql-plugin监控mysql数据库/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Zabbix/21. zabbix使用SNMP V3监控路由器接口流量" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -665,138 +793,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Zabbix/15. zabbix监控nginx状态/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Zabbix/14. zabbix监控mysql数据库状态" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Zabbix/14. zabbix监控mysql数据库状态/" class="article-date">
-  	<time datetime="2017-10-13T13:48:39.164Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Zabbix/14. zabbix监控mysql数据库状态/">
-        zabbix监控mysql数据库状态
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Zabbix自己提供的模板可以监控mysql slow queries,mysqlversion,uptime,alive等。</p>
-<ol>
-<li><p>Zabbix官方提供的监控mysql的模板Template AppMySQL,可以看到相关的Items和key。</p>
-</li>
-<li><p>把该模板Template App MySQL Link到相关的主机上面,发现Item的Status是不可用的，因为key的值是通过Mysql用户查看”showglobal status”信息或者用mysqladmin命令查看status或extended-status的信息而取的值。</p>
-</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mysql&gt; show global status; </div><div class="line">mysql&gt; show status;</div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zabbix/">Zabbix</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Zabbix/14. zabbix监控mysql数据库状态/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Zabbix/13. zabbix监控mongodb" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Zabbix/13. zabbix监控mongodb/" class="article-date">
-  	<time datetime="2017-10-13T13:48:39.162Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Zabbix/13. zabbix监控mongodb/">
-        zabbix监控mongodb
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;mongodb的监控，下面是部署过程：</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第一步，先在zabbix_agentd.conf中追加下面的内容，主要是调用mongo这个工具通过db.serverStatus()函数获取mongodb的状态，这里需要注意的是连接的IP和端口不能配置错误，最好是要检查一下mongodb的配置文件里面的IP和端口是否一致：</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zabbix/">Zabbix</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Zabbix/13. zabbix监控mongodb/#more">阅读全文 >></a>
         </p>
       
     
