@@ -168,6 +168,71 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Git/6.GitLab快速搭建" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/11/04/Git/6.GitLab快速搭建/" class="article-date">
+  	<time datetime="2017-11-04T15:45:51.530Z" itemprop="datePublished">2017-11-04</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/04/Git/6.GitLab快速搭建/">
+        GitLab快速搭建
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;建议使用Omnibus包安装GitLab，因为它安装起来更快、更容易升级版本，而且包含了其他安装方式所没有的可靠性功能。同时推荐承载GitLab运行的服务器至少分配4GB的内存给GitLab。</p>
+<h2 id="Omnibus包安装方法"><a href="#Omnibus包安装方法" class="headerlink" title="Omnibus包安装方法"></a>Omnibus包安装方法</h2><h3 id="CentOS-6"><a href="#CentOS-6" class="headerlink" title="CentOS 6"></a>CentOS 6</h3><h4 id="企业版安装"><a href="#企业版安装" class="headerlink" title="企业版安装"></a>企业版安装</h4><h5 id="1-安装并配置必要的依赖关系"><a href="#1-安装并配置必要的依赖关系" class="headerlink" title="1.安装并配置必要的依赖关系"></a>1.安装并配置必要的依赖关系</h5><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果想使用 Postfix 发送邮件，请在安装过程中根据提示选择 ‘Internet Site’。 也可以用 Sendmail 或者<a href="https://hcldirgit.github.io/2017/11/04/Git/5.GitLab%20SMTP%E8%AE%BE%E7%BD%AE/">配置一个自定义的 SMTP 服务</a> 并 把它作为一个 SMTP 服务器。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在 CentOS 系统上，下面的命令将会打开系统防火墙 HTTP 和 SSH 的访问。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">yum install curl openssh-server postfix cronie</div><div class="line">service postfix start</div><div class="line">chkconfig postfix on</div><div class="line">lokkit -s http -s ssh</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Git/">Git</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/11/04/Git/6.GitLab快速搭建/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Git/5.GitLab SMTP设置" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -760,76 +825,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/11/02/Python/2.python新教程/22.函数的参数/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Python/2.python新教程/21.python定义函数" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/11/02/Python/2.python新教程/21.python定义函数/" class="article-date">
-  	<time datetime="2017-11-01T16:20:49.769Z" itemprop="datePublished">2017-11-02</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/02/Python/2.python新教程/21.python定义函数/">
-        python定义函数
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;函数是组织好的，可重复使用的，用来实现单一，或相关联功能的代码段。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;函数能提高应用的模块性，和代码的重复利用率。Python提供了许多内建函数，比如print()。但也可以自己创建函数，这被叫做用户自定义函数。</p>
-<h2 id="定义一个函数"><a href="#定义一个函数" class="headerlink" title="定义一个函数"></a>定义一个函数</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以定义一个由自己想要功能的函数，规则如下</p>
-<ul>
-<li>函数代码块以 def 关键词开头，后接函数标识符名称和圆括号()。</li>
-<li>任何传入参数和自变量必须放在圆括号中间。圆括号之间可以用于定义参数。</li>
-<li>函数的第一行语句可以选择性地使用文档字符串—用于存放函数说明。<br>函数内容以冒号起始，并且缩进。</li>
-<li><code>return [表达式]</code>结束函数，选择性地返回一个值给调用方。不带表达式的return相当于返回 None。</li>
-</ul>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/11/02/Python/2.python新教程/21.python定义函数/#more">阅读全文 >></a>
         </p>
       
     

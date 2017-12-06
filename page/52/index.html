@@ -168,6 +168,79 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Samba/2. Samba服务器（多用户组、多用户有不同的访问权限）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Samba/2. Samba服务器（多用户组、多用户有不同的访问权限）/" class="article-date">
+  	<time datetime="2017-10-13T13:29:40.473Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Samba/2. Samba服务器（多用户组、多用户有不同的访问权限）/">
+        Samba服务器（多用户组、多用户有不同的访问权限）
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li><p>首先服务器采用用户验证的方式，每个用户可以访问自己的宿主目录，并且只有该用户能访问宿主目录，并具有完全的权限，而其他人不能看到你的宿主目录。</p>
+</li>
+<li><p>建立一个caiwu的文件夹，希望caiwu组和lingdao组的人能看到，network02也可以访问，但只有caiwu01有写的权限。</p>
+</li>
+<li><p>建立一个lindao的目录，只有领导组的人可以访问并读写，还有network02也可以访问，但外人看不到那个目录</p>
+</li>
+<li><p>建立一个文件交换目录exchange，所有人都能读写，包括guest用户，但每个人不能删除别人的文件。</p>
+</li>
+<li><p>建立一个公共的只读文件夹public，所有人只读这个文件夹的内容。</p>
+</li>
+</ol>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Samba/">Samba</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Samba/2. Samba服务器（多用户组、多用户有不同的访问权限）/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Samba/3. samba 用户密码的几种方式对比" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -733,68 +806,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Php/12. php 扩展模块如何安装/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Php/11. php的错误日志级别 error_report" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Php/11. php的错误日志级别 error_report/" class="article-date">
-  	<time datetime="2017-10-13T13:29:40.465Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Php/11. php的错误日志级别 error_report/">
-        php的错误日志级别 error_report
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">; E_ALL             所有错误和警告（除E_STRICT外）</div><div class="line">; E_ERROR           致命的错误。脚本的执行被暂停。</div><div class="line">; E_RECOVERABLE_ERROR    大多数的致命错误。</div><div class="line">; E_WARNING         非致命的运行时错误，只是警告，脚本的执行不会停止。</div><div class="line">; E_PARSE            编译时解析错误，解析错误应该只由分析器生成。</div><div class="line">; E_NOTICE          脚本运行时产生的提醒（往往是我们写的脚本里面的一些bug，比如某个变量没有定义），这个错误不会导致任务中断。</div><div class="line">; E_STRICT          脚本运行时产生的提醒信息，会包含一些php抛出的让我们要如何修改的建议信息。</div><div class="line">; E_CORE_ERROR      在php启动后发生的致命性错误</div><div class="line">; E_CORE_WARNING    在php启动后发生的非致命性错误，也就是警告信息</div><div class="line">; E_COMPILE_ERROR    php编译时产生的致命性错误</div><div class="line">; E_COMPILE_WARNING  php编译时产生的警告信息</div><div class="line">; E_USER_ERROR       用户生成的错误</div><div class="line">; E_USER_WARNING    用户生成的警告</div><div class="line">; E_USER_NOTICE      用户生成的提醒</div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Php/">Php</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Php/11. php的错误日志级别 error_report/#more">阅读全文 >></a>
         </p>
       
     

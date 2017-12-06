@@ -168,6 +168,68 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Php/11. php的错误日志级别 error_report" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Php/11. php的错误日志级别 error_report/" class="article-date">
+  	<time datetime="2017-10-13T13:29:40.465Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Php/11. php的错误日志级别 error_report/">
+        php的错误日志级别 error_report
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">; E_ALL             所有错误和警告（除E_STRICT外）</div><div class="line">; E_ERROR           致命的错误。脚本的执行被暂停。</div><div class="line">; E_RECOVERABLE_ERROR    大多数的致命错误。</div><div class="line">; E_WARNING         非致命的运行时错误，只是警告，脚本的执行不会停止。</div><div class="line">; E_PARSE            编译时解析错误，解析错误应该只由分析器生成。</div><div class="line">; E_NOTICE          脚本运行时产生的提醒（往往是我们写的脚本里面的一些bug，比如某个变量没有定义），这个错误不会导致任务中断。</div><div class="line">; E_STRICT          脚本运行时产生的提醒信息，会包含一些php抛出的让我们要如何修改的建议信息。</div><div class="line">; E_CORE_ERROR      在php启动后发生的致命性错误</div><div class="line">; E_CORE_WARNING    在php启动后发生的非致命性错误，也就是警告信息</div><div class="line">; E_COMPILE_ERROR    php编译时产生的致命性错误</div><div class="line">; E_COMPILE_WARNING  php编译时产生的警告信息</div><div class="line">; E_USER_ERROR       用户生成的错误</div><div class="line">; E_USER_WARNING    用户生成的警告</div><div class="line">; E_USER_NOTICE      用户生成的提醒</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Php/">Php</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Php/11. php的错误日志级别 error_report/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Php/16. CGI、FastCGI与php-fpm" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -799,92 +861,6 @@
         <p class="article-more-link">
           <a  href="/2017/10/13/Php/6. LAMP测试 php 解析/#more">阅读全文 >></a>
         </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Php/15. php中几个和mysql相关的扩展模块" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Php/15. php中几个和mysql相关的扩展模块/" class="article-date">
-  	<time datetime="2017-10-13T13:29:40.451Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Php/15. php中几个和mysql相关的扩展模块/">
-        php中几个和mysql相关的扩展模块
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在编译php的时候，有这么几个和mysql相关的编译选项：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">--with-mysql</div><div class="line">--with-mysqli</div><div class="line">--with-pdo-mysql</div><div class="line">--<span class="built_in">enable</span>-mysqlnd</div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;那这几个选项到底有什么不同呢？</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;php官方文档上有这么一段话：</p>
-<blockquote>
-<p>MySQL:This extension is deprecated as of PHP 5.5.0, and has been removed as of php 7.0.0.<br>MYSQLI: mysql Improved Extension<br>MySQLND: MySQL Native Drive<br>PDO:The PHP Data Objects。extension defines a lightweight, consistent interface for accessing databases in PHP。</p>
-</blockquote>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;翻译成中文大概意思是：</p>
-<blockquote>
-<p>MySQL扩展：在5.5.0版本中开始废弃，7.0.0版本中已经移除（也就是不支持了）<br>MySQLI扩展：是mysql扩展的增强版<br>MySQLnd：这是官方驱动，或者叫做原生驱动<br>PDO：PHP Data Objects，是PHP应用中的一个数据库抽象层规范</p>
-</blockquote>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在PHP扩展的角度上看，MYSQL和MYSQLi还是比较上层的扩展，依赖更底层的库去连接和访问数据库。 MYSQLND 就是所说的底层的数据库驱动。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从应用的层面上看，我们通过PHP 的MYSQL或者MYSQLi扩展提供的API去操作数据库。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从底层来看，MYSQLND提供了底层和数据库交互的支持(可以简单理解为和MySQL server进行网络协议交互)。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;而PDO，则提供了一个统一的API接口，使得你的PHP应用不去关心具体要连接的数据库服务器系统类型。也就是说，如果你使用PDO的API，可以在任何需要的时候无缝切换数据库服务器。比如MYSQL,SQLITE任何数据库都行。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;即从大部分功能上看，PDO提供的API接口和MYSQLI提供的接口对于普通的增删改查效果是一致的。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;最后再贴几个php的代码，来区分几个扩展的用法：</p>
-<ol>
-<li>mysql连接</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line"><span class="variable">$conn</span> = @ mysql_connect(<span class="string">"localhost"</span>, <span class="string">"root"</span>, <span class="string">""</span>) or die(<span class="string">"数据库连接错误"</span>);</div><div class="line">mysql_select_db(<span class="string">"bbs"</span>, <span class="variable">$conn</span>);</div><div class="line">mysql_query(<span class="string">"set names 'utf8'"</span>);</div><div class="line"><span class="built_in">echo</span> <span class="string">"数据库连接成功"</span>;</div><div class="line">?&gt;</div></pre></td></tr></table></figure>
-<ol>
-<li>mysqli连接</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line"><span class="variable">$conn</span> = mysqli_connect(<span class="string">'localhost'</span>, <span class="string">'root'</span>, <span class="string">''</span>, <span class="string">'bbs'</span>);</div><div class="line"><span class="keyword">if</span>(!<span class="variable">$conn</span>)&#123;</div><div class="line">    die(<span class="string">"数据库连接错误"</span> . mysqli_connect_error());</div><div class="line">&#125;</div><div class="line"><span class="keyword">else</span>&#123;</div><div class="line">    <span class="built_in">echo</span><span class="string">"数据库连接成功"</span>;</div><div class="line">&#125;</div><div class="line">?&gt;</div></pre></td></tr></table></figure>
-<ol>
-<li>PDO连接</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">try&#123;</div><div class="line">    <span class="variable">$pdo</span>=new pdo(<span class="string">"mysql:host=localhost;dbname=bbs"</span>,<span class="string">"root"</span>,<span class="string">""</span>);</div><div class="line">&#125;</div><div class="line">catch(PDDException <span class="variable">$e</span>)&#123;</div><div class="line">    <span class="built_in">echo</span><span class="string">"数据库连接错误"</span>;</div><div class="line">&#125;</div><div class="line"><span class="built_in">echo</span><span class="string">"数据库连接成功"</span>;</div><div class="line">?&gt;</div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Php/">Php</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
       
     
   </div>
