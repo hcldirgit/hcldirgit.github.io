@@ -168,6 +168,83 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Python/2.python新教程/37.python模块os" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/11/11/Python/2.python新教程/37.python模块os/" class="article-date">
+  	<time datetime="2017-11-10T19:08:35.045Z" itemprop="datePublished">2017-11-11</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/11/Python/2.python新教程/37.python模块os/">
+        python模块os
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Python的标准库中的os模块包含普遍的操作系统功能。如果需要程序能够与平台无关的话，这个模块尤为重要。它允许一个程序在编写后不需要任何改动，也不会发生任何问题，就可以在Linux和Windows下运行。os模块设计目录和文件等的操作。</p>
+<ul>
+<li>得到当前工作目录，即当前Python脚本工作的目录路径: <code>os.getcwd()</code></li>
+<li>返回指定目录下的所有文件和目录名:<code>os.listdir()</code></li>
+<li>函数用来删除一个文件:<code>os.remove()</code></li>
+</ul>
+<h2 id="删除目录"><a href="#删除目录" class="headerlink" title="删除目录"></a>删除目录</h2><ul>
+<li><code>os.rmdir(&quot;dir&quot;)</code>只能删除空目录</li>
+<li><code>shutil.rmtree(&quot;dir&quot;)</code>    空目录、有内容的目录都可以删</li>
+<li>删除多个目录：<code>os.removedirs（r“c：\python”</code>）</li>
+<li>检验给出的路径是否是一个文件：<code>os.path.isfile()</code></li>
+<li>检验给出的路径是否是一个目录：<code>os.path.isdir()</code></li>
+<li>判断是否是绝对路径：<code>os.path.isabs()</code></li>
+<li>检验给出的路径是否真地存:<code>os.path.exists()</code></li>
+<li>返回一个路径的目录名和文件名:<code>os.path.split()</code></li>
+</ul>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/11/11/Python/2.python新教程/37.python模块os/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Python/2.python新教程/36.python模块logging" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -807,71 +884,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/11/06/Python/2.python新教程/30.python类的继承/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Python/2.python新教程/29.python的类和构造器" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/11/06/Python/2.python新教程/29.python的类和构造器/" class="article-date">
-  	<time datetime="2017-11-06T15:58:54.755Z" itemprop="datePublished">2017-11-06</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/06/Python/2.python新教程/29.python的类和构造器/">
-        python的类和构造器
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;面向对象最重要的概念就是类（class）和实例（instance），必须牢记类是抽象的模版，比如studen类，而实例是根据类创建出来的一个个具体的“对象”，每个对象都拥有相同的方法，但各自的数据可能不同。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在python中，定义类是通过<code>class</code>关键字</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">student</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="keyword">pass</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<code>class</code>后面紧接着是类名，即<code>student</code>，类名通常是大写开头的单词，紧接着是<code>(object)</code>，表示该类是从哪个类继承下来的，通常，如果没有适合的继承类，就使用<code>(object)</code>类，这是所有类最终都会继承的类。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/11/06/Python/2.python新教程/29.python的类和构造器/#more">阅读全文 >></a>
         </p>
       
     

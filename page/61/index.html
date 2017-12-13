@@ -168,6 +168,74 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-MySQL/36. 使用mysql-proxy 快速实现mysql 集群读写分离" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/MySQL/36. 使用mysql-proxy 快速实现mysql 集群读写分离/" class="article-date">
+  	<time datetime="2017-10-13T13:29:39.995Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/MySQL/36. 使用mysql-proxy 快速实现mysql 集群读写分离/">
+        使用mysql-proxy 快速实现mysql 集群读写分离
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;目前较为常见的mysql读写分离分为两种： </p>
+<ol>
+<li><p>基于程序代码内部实现：在代码中对select操作分发到从库；其它操作由主库执行；这类方法也是目前生产环境应用最广泛，知名的如DISCUZ X2。优点是性能较好，因为在程序代码中实现，不需要增加额外的设备作为硬件开支。缺点是需要开发人员来实现，运维人员无从下手。 </p>
+</li>
+<li><p>基于中间代理层实现：我们都知道代理一般是位于客户端和服务器之间，代理服务器接到客户端请求后通过判断然后转发到后端数据库。在这有两个代表性程序</p>
+</li>
+</ol>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/MySQL/36. 使用mysql-proxy 快速实现mysql 集群读写分离/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-MySQL/19. mysqld_multi stop 不能停掉mysql" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -721,69 +789,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/MySQL/33. mysql主从数据库不同步的2种解决方法/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-MySQL/23. mysql主从复制" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/MySQL/23. mysql主从复制/" class="article-date">
-  	<time datetime="2017-10-13T13:29:39.986Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/MySQL/23. mysql主从复制/">
-        mysql 主从复制
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="mysql复制"><a href="#mysql复制" class="headerlink" title="mysql复制"></a>mysql复制</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MySQL复制支持单向，异步复制。通过一台主服务器将更新写入二进制日志文件，并维护文件的一个索引以跟踪日志循环。这些日志可以记录发送到从服务器的更新。当一个从服务器连接主服务器时，它通知主服务器从服务器在日志中读取的最后一次成功更新的位置。从服务器接收从那时起发生的任何更新，然后封锁并等待主服务器通知新的更新。MySQL主从复制是异步进行的。同步需要版本为5.5,使用google提供的插件来实现。</p>
-<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MySQL主从复制操作很灵活既可以实现整个服务的级别的复制，也可以实现对某个库，甚至某个数据库中的指定的某个对象进行复制。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/MySQL/23. mysql主从复制/#more">阅读全文 >></a>
         </p>
       
     
