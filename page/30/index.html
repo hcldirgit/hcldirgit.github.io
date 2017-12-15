@@ -168,10 +168,10 @@
 </nav>
       <div class="body-wrap">
   
-    <article id="post-Nginx/12. LNMP常见的502错误" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Nginx/11. php-fpm配置文件" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/10/13/Nginx/12. LNMP常见的502错误/" class="article-date">
+      <a href="/2017/10/13/Nginx/11. php-fpm配置文件/" class="article-date">
   	<time datetime="2017-10-13T13:29:41.900Z" itemprop="datePublished">2017-10-13</time>
 </a>
     </div>
@@ -185,8 +185,8 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Nginx/12. LNMP常见的502错误/">
-        LNMP常见的502错误
+      <a class="article-title" href="/2017/10/13/Nginx/11. php-fpm配置文件/">
+        php-fpm配置文件 高并发参数配置及linux内核参数优化
         
       </a>
     </h1>
@@ -197,7 +197,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;对于 LNMP 来说，最常见的问题就是502问题了。配置完环境后，一访问网站直接提示“502 Bad Gateway”。出现502的原因大致分为两种</p>
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;  之前给出了 php-fpm.conf 的内容，下面给出一个模版，配置如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">[global]</div><div class="line">pid = /usr/<span class="built_in">local</span>/php/var/run/php-fpm.pid</div><div class="line">error_log = /usr/<span class="built_in">local</span>/php/var/<span class="built_in">log</span>/php-fpm.log</div><div class="line">[www]</div><div class="line">listen = /tmp/php-fcgi.sock</div><div class="line">user = php-fpm</div><div class="line">group = php-fpm</div><div class="line">listen.owner = nobody <span class="comment">#和后面的nginx一致</span></div><div class="line">listen.group = nobody <span class="comment">#同上</span></div><div class="line">pm = dynamic</div><div class="line">pm.max_children = 50</div><div class="line">pm.start_servers = 20</div><div class="line">pm.min_spare_servers = 5</div><div class="line">pm.max_spare_servers = 35</div><div class="line">pm.max_requests = 500</div><div class="line">rlimit_files = 1024</div></pre></td></tr></table></figure>
       
     </div>
     
@@ -215,7 +216,7 @@
     </div>
       
         <p class="article-more-link">
-          <a  href="/2017/10/13/Nginx/12. LNMP常见的502错误/#more">阅读全文 >></a>
+          <a  href="/2017/10/13/Nginx/11. php-fpm配置文件/#more">阅读全文 >></a>
         </p>
       
     
@@ -355,6 +356,70 @@
 
 
   
+    <article id="post-Nginx/18. nginx日志切割" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/13/Nginx/18. nginx日志切割/" class="article-date">
+  	<time datetime="2017-10-13T13:29:41.897Z" itemprop="datePublished">2017-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/13/Nginx/18. nginx日志切割/">
+        nginx日志切割
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;nginx 没有 apache自动切割的工具，只有写脚本，也可以借助 centos 自带的日志归档工具 logrotate 。</p>
+<h2 id="1-nginx-日志切割脚本"><a href="#1-nginx-日志切割脚本" class="headerlink" title="1.nginx 日志切割脚本"></a>1.nginx 日志切割脚本</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先确定访问日志路径，假定为 /tmp/axxess.log ，还要确定 nginx 的 pid 文件所在路径，假定为 /usr/local/nginx/var/nginx.pid。下面开始写日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[root@lnmp ~]<span class="comment"># vim /usr/local/sbin/nginx_logrotate.sh</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line">d=`data -d <span class="string">"-1 day"</span> +%F`</div><div class="line">[ -d /tmp/nginx_log ] || mkdir /tmp/nginx_log</div><div class="line">mv /tmp/access.log /tmp/nginx_log/<span class="variable">$d</span>.<span class="built_in">log</span></div><div class="line">/etc/init.d/nginx reload &gt; /dev/null</div><div class="line"><span class="built_in">cd</span> /tmp/nginx_log/</div><div class="line">gizp -f <span class="variable">$d</span>.<span class="built_in">log</span></div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LNMP/">LNMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+        <p class="article-more-link">
+          <a  href="/2017/10/13/Nginx/18. nginx日志切割/#more">阅读全文 >></a>
+        </p>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Nginx/3. Apache和Nginx运行原理解析" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -407,70 +472,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/10/13/Nginx/3. Apache和Nginx运行原理解析/#more">阅读全文 >></a>
-        </p>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Nginx/18. nginx日志切割" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/13/Nginx/18. nginx日志切割/" class="article-date">
-  	<time datetime="2017-10-13T13:29:41.897Z" itemprop="datePublished">2017-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Nginx/18. nginx日志切割/">
-        nginx日志切割
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;nginx 没有 apache自动切割的工具，只有写脚本，也可以借助 centos 自带的日志归档工具 logrotate 。</p>
-<h2 id="1-nginx-日志切割脚本"><a href="#1-nginx-日志切割脚本" class="headerlink" title="1.nginx 日志切割脚本"></a>1.nginx 日志切割脚本</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先确定访问日志路径，假定为 /tmp/axxess.log ，还要确定 nginx 的 pid 文件所在路径，假定为 /usr/local/nginx/var/nginx.pid。下面开始写日志</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[root@lnmp ~]<span class="comment"># vim /usr/local/sbin/nginx_logrotate.sh</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line">d=`data -d <span class="string">"-1 day"</span> +%F`</div><div class="line">[ -d /tmp/nginx_log ] || mkdir /tmp/nginx_log</div><div class="line">mv /tmp/access.log /tmp/nginx_log/<span class="variable">$d</span>.<span class="built_in">log</span></div><div class="line">/etc/init.d/nginx reload &gt; /dev/null</div><div class="line"><span class="built_in">cd</span> /tmp/nginx_log/</div><div class="line">gizp -f <span class="variable">$d</span>.<span class="built_in">log</span></div></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LNMP/">LNMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-        <p class="article-more-link">
-          <a  href="/2017/10/13/Nginx/18. nginx日志切割/#more">阅读全文 >></a>
         </p>
       
     
