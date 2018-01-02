@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>python线程 | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Python中提供了threading模块来对多线程的操作， 1. 多线程实例&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;线程是应用程序中工作的最小单元。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python线程">
+<meta property="og:url" content="https://hcldirgit.github.io/2018/01/02/Python/2.python新教程/47.python线程(1)/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Python中提供了threading模块来对多线程的操作， 1. 多线程实例&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;线程是应用程序中工作的最小单元。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/python%E5%A4%9A%E7%BA%BF%E7%A8%8B/01.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/python%E5%A4%9A%E7%BA%BF%E7%A8%8B/02.png?raw=true">
+<meta property="og:updated_time" content="2017-12-20T15:15:44.931Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python线程">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;Python中提供了threading模块来对多线程的操作， 1. 多线程实例&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;线程是应用程序中工作的最小单元。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/python%E5%A4%9A%E7%BA%BF%E7%A8%8B/01.png?raw=true">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.45px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.64px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.82px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.64px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10.91px;">Docker</a> <a href="/tags/FTP/" style="font-size: 11.36px;">FTP</a> <a href="/tags/Git/" style="font-size: 13.18px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.82px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.73px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.45px;">Jenkins</a> <a href="/tags/Kubernetes/" style="font-size: 10.45px;">Kubernetes</a> <a href="/tags/LAMP/" style="font-size: 19.09px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 17.27px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.82px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.09px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.55px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.36px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.91px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.73px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.82px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 18.18px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11.36px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 15px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11.36px;">Puppet</a> <a href="/tags/Python/" style="font-size: 18.64px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.82px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12.27px;">Samba</a> <a href="/tags/Squid/" style="font-size: 15px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 14.09px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 16.36px;">Zabbix</a> <a href="/tags/haproxy/" style="font-size: 12.73px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 13.18px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15.45px;">shell</a> <a href="/tags/shell练习/" style="font-size: 19.55px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 13.18px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Python/2.python新教程/47.python线程(1)" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/01/02/Python/2.python新教程/47.python线程(1)/" class="article-date">
+  	<time datetime="2018-01-02T13:55:32.801Z" itemprop="datePublished">2018-01-02</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      python线程
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Python中提供了threading模块来对多线程的操作，</p>
+<h2 id="1-多线程实例"><a href="#1-多线程实例" class="headerlink" title="1. 多线程实例"></a>1. 多线程实例</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;线程是应用程序中工作的最小单元。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;多线程是现实有两种方式：</p>
+<h3 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;将要执行的方法作为参数传给Thread的构造方法（和多进程类似）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">t = threading.Thread(target=action, args=(i,))</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从Thread继承，并重写run()</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyThread</span><span class="params">(threading.Thread)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, arg)</span>:</span></div><div class="line">        super(MyThread, self).__init__()<span class="comment">#注意：一定要显式的调用父类的初始化函数。</span></div><div class="line">        self.arg = arg</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span><span class="comment">#定义每个线程要运行的函数</span></div><div class="line">        time.sleep(<span class="number">5</span>)</div><div class="line">        <span class="keyword">with</span> open(<span class="string">'&#123;0&#125;.txt'</span>.format(self.arg), <span class="string">'wb'</span>) <span class="keyword">as</span> f:</div><div class="line">            f.write(str(self.arg))</div><div class="line">        <span class="keyword">print</span> <span class="string">'the arg is:%s\r'</span> % self.arg</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;看源码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">P = threading.Thread</div><div class="line">p.start() _start_new_thread(self.__bootstrap, ())  self.__bootstrap_inner()  </div><div class="line">self.run()</div><div class="line"> <span class="keyword">try</span>:</div><div class="line">            <span class="keyword">if</span> self.__target:</div><div class="line">                self.__target(*self.__args, **self.__kwargs)</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;所以如果重写了run，就直接调用run的函数了，如果run没有重新，就调用target函数。</p>
+<h2 id="2-线程锁"><a href="#2-线程锁" class="headerlink" title="2. 线程锁"></a>2. 线程锁</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;通过threading.Lock()来创建锁，函数在执行的只有先要获得锁，左后执行完以后要释放锁：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">with</span> lock：</div><div class="line">lock.acquire()</div><div class="line">lock.release()</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;实例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"><span class="comment"># -*- coding:utf-8 -*-</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> threading</div><div class="line"><span class="keyword">import</span> time</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">worker</span><span class="params">(name, lock)</span>:</span></div><div class="line">    <span class="keyword">with</span> lock:</div><div class="line">    print(<span class="string">"start &#123;0&#125;"</span>.format(name))</div><div class="line">    time.sleep(<span class="number">5</span>)</div><div class="line">    print(<span class="string">"end &#123;0&#125;"</span>.format(name))</div><div class="line">    </div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</div><div class="line">    lock = threading.Lock()</div><div class="line">    t1 = threading.Thread(target=worker, args=(<span class="string">"worker1"</span>, lock))</div><div class="line">    t2 = threading.Thread(target=worker, args=(<span class="string">"worker2"</span>, lock))</div><div class="line">    t1.start()</div><div class="line">    t2.start()</div></pre></td></tr></table></figure>
+<h2 id="3-线程共享变量"><a href="#3-线程共享变量" class="headerlink" title="3. 线程共享变量"></a>3. 线程共享变量</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;多线程和多进程不同之处在于多线程本身就是可以和父进程共享内存的，这也是为什么其中一个线程挂掉以后，为什么其他线程也会死掉的道理。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"><span class="comment"># -*- coding:utf-8 -*-</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> threading</div><div class="line"></div><div class="line">l = list()</div><div class="line">l += range(<span class="number">1</span>, <span class="number">10</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">worker</span><span class="params">()</span>:</span></div><div class="line">    l.append(<span class="string">"ling"</span>)</div><div class="line">    l.append(<span class="string">"shang"</span>)</div><div class="line">    l.append(<span class="string">"hello"</span>)</div><div class="line">    <span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</div><div class="line">    t = threading.Thread(target=worker)</div><div class="line">    t.start()</div><div class="line">    print(l)</div></pre></td></tr></table></figure>
+<h2 id="4-线程池"><a href="#4-线程池" class="headerlink" title="4. 线程池"></a>4. 线程池</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;通过传入一个参数组来实现多线程，并且它的多线程是有序的，顺序与参数组中的参数顺序保持一致。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安装包：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install threadpool</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;调用格式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> threadpool <span class="keyword">import</span> *</div><div class="line">pool = ThreadPool(poolsize) </div><div class="line">requests = makeRequests(some_callable, list_of_args, callback)</div><div class="line">[pool.putRequest(req) <span class="keyword">for</span> req <span class="keyword">in</span> requests] </div><div class="line">pool.wait()</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"><span class="comment"># -*- coding:utf-8 -*-</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> threadpool</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">(m, n, o)</span>:</span></div><div class="line">    <span class="string">""""""</span></div><div class="line">    <span class="keyword">print</span> <span class="string">"m = %s, n = %s, o = %s"</span> % (m, n, o)</div><div class="line">    </div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    <span class="comment"># 方法1</span></div><div class="line">    lst_vars_1 = [<span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>]</div><div class="line">    lst_vars_2 = [<span class="string">'4'</span>, <span class="string">'5'</span>, <span class="string">'6'</span>]</div><div class="line">    func_var = [(lst_vars_1, <span class="keyword">None</span>), (lst_vars_2, <span class="keyword">None</span>)]</div><div class="line">    </div><div class="line">    <span class="comment"># 方法2</span></div><div class="line">    dict_vars_1 = &#123;<span class="string">'m'</span>: <span class="string">'1'</span>, <span class="string">'n'</span>: <span class="string">'2'</span>, <span class="string">'o'</span>: <span class="string">'3'</span>&#125;</div><div class="line">    dict_vars_2 = &#123;<span class="string">'m'</span>: <span class="string">'4'</span>, <span class="string">'n'</span>: <span class="string">'5'</span>, <span class="string">'o'</span>: <span class="string">'6'</span>&#125;</div><div class="line">    func_var = [(<span class="keyword">None</span>, dict_vars_1), (<span class="keyword">None</span>, dict_vars_2)]</div><div class="line">    </div><div class="line">    pool = threadpool.ThreadPool(<span class="number">2</span>)</div><div class="line">    requests = threadpool.makeRequests(hello, func_var)</div><div class="line">    [pool.putRequest(req) <span class="keyword">for</span> req <span class="keyword">in</span> requests]</div><div class="line">    pool.wait()</div></pre></td></tr></table></figure>
+<h2 id="消息列队"><a href="#消息列队" class="headerlink" title="消息列队"></a>消息列队</h2><p>“&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;”消息队列”是在消息的传输过程中保存消息的容器。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;消息队列最经典的用法就是消费者和生成者之间通过消息管道来传递消息，消费者和生成者是不通的进程。生产者往管道中写消息，消费者从管道中读消息。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;操作系统提供了很多机制来实现进程间的通信，multiprocessing模块就提供了Queue和Pipe两种方法来实现。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;使用multiprocessing里面的Queue来实现消息队列</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Queue</div><div class="line">q = Queue</div><div class="line">q.put(data)</div><div class="line">data = q.get(data)</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"><span class="comment"># -*- coding:utf-8 -*-</span></div><div class="line"><span class="comment"># @Time    : 2017/6/6 17:36</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Process, Queue</div><div class="line"><span class="keyword">import</span> os, time, random</div><div class="line"></div><div class="line"><span class="comment"># 写数据进程执行的代码:</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">write</span><span class="params">(q)</span>:</span></div><div class="line">    print(<span class="string">'Process to write: %s'</span> % os.getpid())</div><div class="line">    <span class="keyword">for</span> value <span class="keyword">in</span> [<span class="string">'A'</span>, <span class="string">'B'</span>, <span class="string">'C'</span>]:</div><div class="line">    print(<span class="string">'Put %s to queue...'</span> % value)</div><div class="line">    q.put(value)</div><div class="line">    time.sleep(random.random())</div><div class="line">    </div><div class="line"><span class="comment"># 读数据进程执行的代码:</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">read</span><span class="params">(q)</span>:</span></div><div class="line">    print(<span class="string">'Process to read: %s'</span> % os.getpid())</div><div class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">    value = q.get(<span class="keyword">True</span>)</div><div class="line">    print(<span class="string">'Get %s from queue.'</span> % value)</div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__==<span class="string">'__main__'</span>:</div><div class="line">    <span class="comment"># 父进程创建Queue，并传给各个子进程：</span></div><div class="line">    q = Queue()</div><div class="line">    pw = Process(target=write, args=(q,))</div><div class="line">    pr = Process(target=read, args=(q,))</div><div class="line">    <span class="comment"># 启动子进程pw，写入:</span></div><div class="line">    pw.start()</div><div class="line">    <span class="comment"># 启动子进程pr，读取:</span></div><div class="line">    pr.start()</div><div class="line">    <span class="comment"># 等待pw结束:</span></div><div class="line">    pw.join()</div><div class="line">    <span class="comment"># pr进程里是死循环，无法等待其结束，只能强行终止:</span></div><div class="line">    pr.terminate()</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;通过Mutiprocess里面的Pipe来实现消息队列：</p>
+<ul>
+<li>Pipe方法返回(conn1, conn2)代表一个管道的两个端。Pipe方法有duplex参数，如果duplex参数为True(默认值)，那么这个管道是全双工模式，也就是说conn1和conn2均可收发。duplex为False，conn1只负责接受消息，conn2只负责发送消息。</li>
+<li>send和recv方法分别是发送和接受消息的方法。close方法表示关闭管道，当消息接受结束以后，关闭管道。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"><span class="comment"># -*- coding:utf-8 -*-</span></div><div class="line"><span class="comment"># @Time    : 2017/6/6 16:32</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> multiprocessing</div><div class="line"><span class="keyword">import</span> time</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">proc1</span><span class="params">(pipe)</span>:</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">5</span>):</div><div class="line">        <span class="keyword">print</span> <span class="string">"send: %s"</span> %(i)</div><div class="line">        pipe.send(i)</div><div class="line">        <span class="comment"># print(dir(pipe))</span></div><div class="line">        time.sleep(<span class="number">1</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">proc2</span><span class="params">(pipe)</span>:</span></div><div class="line">    n = <span class="number">5</span></div><div class="line">    <span class="keyword">while</span> n:</div><div class="line">        <span class="keyword">print</span> <span class="string">"proc2 rev:"</span>, pipe.recv()</div><div class="line">        time.sleep(<span class="number">1</span>)</div><div class="line">        n -= <span class="number">1</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</div><div class="line">    pipe = multiprocessing.Pipe(duplex=<span class="keyword">False</span>)</div><div class="line">    print(type(pipe))</div><div class="line">    print(pipe)</div><div class="line">    p1 = multiprocessing.Process(target=proc1, args=(pipe[<span class="number">1</span>],))</div><div class="line">    p2 = multiprocessing.Process(target=proc2, args=(pipe[<span class="number">0</span>],))</div><div class="line"></div><div class="line">    p1.start()</div><div class="line">    p2.start()</div><div class="line"></div><div class="line">    p1.join()</div><div class="line">    p2.join()</div><div class="line">    pipe[<span class="number">0</span>].close()</div><div class="line">    pipe[<span class="number">1</span>].close()</div></pre></td></tr></table></figure>
+<h2 id="Queue模块"><a href="#Queue模块" class="headerlink" title="Queue模块"></a>Queue模块</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Python提供了Queue模块来专门实现消息队列 Queue对象</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Queue对象实现一个fifo队列（其他的还有lifo、priority队列，这里不再介绍）。queue只有maxsize一个构造参数，用来指定队列容量，指定为0的时候代表容量无限。主要有以下成员函数：</p>
+<ul>
+<li>Queue.qsize()：返回消息队列的当前空间。返回的值不一定可靠。</li>
+<li>Queue.empty()：判断消息队列是否为空，返回True或False。同样不可靠。</li>
+<li>Queue.full()：类似上边，判断消息队列是否满</li>
+<li>Queue.put(item, block=True, timeout=None)：往消息队列中存放消息。block可以控制是否阻塞，timeout指定阻塞时候的等待时间。如果不阻塞或者超时，会引起一个full exception。</li>
+<li>Queue.put_nowait(item)：相当于put(item, False).</li>
+<li>Queue.get(block=True, timeout=None)：获取一个消息，其他同put。</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;以下两个函数用来判断消息对应的任务是否完成。</p>
+<ul>
+<li>Queue.task_done()：接受消息的线程通过调用这个函数来说明消息对应的任务已完成。</li>
+<li>Queue.join()： 实际上意味着等到队列为空，再执行别的操作</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"><span class="comment"># -*- coding: utf-8 -*-</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">import</span> random,threading,time</div><div class="line"><span class="keyword">from</span> Queue <span class="keyword">import</span> Queue</div><div class="line"><span class="comment">#Producer thread</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Producer</span><span class="params">(threading.Thread)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, t_name, queue)</span>:</span></div><div class="line">        threading.Thread.__init__(self,name=t_name)</div><div class="line">        self.data=queue</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):    <span class="comment">#随机产生10个数字 ，可以修改为任意大小</span></div><div class="line">            <span class="comment"># randomnum=random.randint(1,99)</span></div><div class="line">            <span class="keyword">print</span> <span class="string">"%s: %s is producing %d to the queue!"</span> % (time.ctime(), self.getName(), i)</div><div class="line">            self.data.put(i)  <span class="comment">#将数据依次存入队列</span></div><div class="line">            <span class="comment"># time.sleep(1)</span></div><div class="line">        <span class="keyword">print</span> <span class="string">"%s: %s finished!"</span> %(time.ctime(), self.getName())</div><div class="line"> </div><div class="line"><span class="comment">#Consumer thread</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Consumer_even</span><span class="params">(threading.Thread)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,t_name,queue)</span>:</span></div><div class="line">        threading.Thread.__init__(self,name=t_name)</div><div class="line">        self.data=queue</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">while</span> <span class="number">1</span>:</div><div class="line">            <span class="keyword">try</span>:</div><div class="line">                val_even = self.data.get(<span class="number">1</span>,<span class="number">5</span>)  <span class="comment">#get(self, block=True, timeout=None) ,1就是阻塞等待,5是超时5秒</span></div><div class="line">                <span class="keyword">if</span> val_even%<span class="number">2</span>==<span class="number">0</span>:</div><div class="line">                    <span class="keyword">print</span> <span class="string">"%s: %s is consuming. %d in the queue is consumed!"</span> % (time.ctime(),self.getName(),val_even)</div><div class="line">                    time.sleep(<span class="number">2</span>)</div><div class="line">                <span class="keyword">else</span>:</div><div class="line">                    self.data.put(val_even)</div><div class="line">                    time.sleep(<span class="number">2</span>)</div><div class="line">            <span class="keyword">except</span>:     <span class="comment">#等待输入，超过5秒  就报异常</span></div><div class="line">                <span class="keyword">print</span> <span class="string">"%s: %s finished!"</span> %(time.ctime(),self.getName())</div><div class="line">                <span class="keyword">break</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Consumer_odd</span><span class="params">(threading.Thread)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,t_name,queue)</span>:</span></div><div class="line">        threading.Thread.__init__(self, name=t_name)</div><div class="line">        self.data=queue</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">while</span> <span class="number">1</span>:</div><div class="line">            <span class="keyword">try</span>:</div><div class="line">                val_odd = self.data.get(<span class="number">1</span>,<span class="number">5</span>)</div><div class="line">                <span class="keyword">if</span> val_odd%<span class="number">2</span>!=<span class="number">0</span>:</div><div class="line">                    <span class="keyword">print</span> <span class="string">"%s: %s is consuming. %d in the queue is consumed!"</span> % (time.ctime(), self.getName(), val_odd)</div><div class="line">                    time.sleep(<span class="number">2</span>)</div><div class="line">                <span class="keyword">else</span>:</div><div class="line">                    self.data.put(val_odd)</div><div class="line">                    time.sleep(<span class="number">2</span>)</div><div class="line">            <span class="keyword">except</span>:</div><div class="line">                <span class="keyword">print</span> <span class="string">"%s: %s finished!"</span> % (time.ctime(), self.getName())</div><div class="line">                <span class="keyword">break</span></div><div class="line"><span class="comment">#Main thread</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line">    queue = Queue()</div><div class="line">    producer = Producer(<span class="string">'Pro.'</span>, queue)</div><div class="line">    consumer_even = Consumer_even(<span class="string">'Con_even.'</span>, queue)</div><div class="line">    consumer_odd = Consumer_odd(<span class="string">'Con_odd.'</span>,queue)</div><div class="line">    producer.start()</div><div class="line">    consumer_even.start()</div><div class="line">    consumer_odd.start()</div><div class="line">    producer.join()</div><div class="line">    consumer_even.join()</div><div class="line">    consumer_odd.join()</div><div class="line">    <span class="keyword">print</span> <span class="string">'All threads terminate!'</span></div><div class="line"> </div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">main()</div></pre></td></tr></table></figure>
+<h2 id="Celery异步分布式"><a href="#Celery异步分布式" class="headerlink" title="Celery异步分布式"></a>Celery异步分布式</h2><h3 id="什么是celery"><a href="#什么是celery" class="headerlink" title="什么是celery"></a>什么是celery</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Celery是一个python开发的异步分布式任务调度模块。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Celery本身并不提供消息服务，使用第三方服务，也就是borker来传递任务，目前支持rebbimq，redis， 数据库等。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里使用redis</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;连接url的格式为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis://:password@hostname:port/db_number</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">BROKER_URL = <span class="string">'redis://localhost:6379/0'</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/python%E5%A4%9A%E7%BA%BF%E7%A8%8B/01.png?raw=true" alt="images"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安装celery</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">pip install celery</div><div class="line">pip install redis</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在服务器上安装redis服务器，并启动redis</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;第一个简单的例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">[root@localhost celery]<span class="comment"># cat ling.py</span></div><div class="line"><span class="comment">#/usr/bin/env python</span></div><div class="line"><span class="comment">#-*- coding:utf-8 -*-</span></div><div class="line"></div><div class="line">from celery import Celery</div><div class="line">broker=<span class="string">"redis://192.168.48.131:6379/5"</span></div><div class="line">backend=<span class="string">"redis://192.168.48.131:6379/6"</span></div><div class="line">app = Celery(<span class="string">"ling"</span>, broker=broker, backend=backend)</div><div class="line"></div><div class="line">@app.task</div><div class="line">def add(x, y):</div><div class="line"><span class="built_in">return</span> x+y</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动worker</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#celery -A ling worker -l info</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;生产者</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">form ling <span class="keyword">import</span> add</div><div class="line">re = add.delay(<span class="number">10</span>, <span class="number">20</span>)</div><div class="line">print(re.result)	<span class="comment">#获取结果</span></div><div class="line">print(re.ready)		<span class="comment">#是否处理</span></div><div class="line">print(re.get(timeout=<span class="number">1</span>))		<span class="comment">#获取结果</span></div><div class="line">print(re.status)		<span class="comment">#是否处理</span></div></pre></td></tr></table></figure>
+<h2 id="celery模块调用"><a href="#celery模块调用" class="headerlink" title="celery模块调用"></a>celery模块调用</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;既然crlery是一个分布式的任务调度模块，那么celery是如何和分布式挂钩呢，celery可以支持多台不通的计算机执行不同的任务或者相同的任务。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果说celery的分布式应用的是话，我觉得就要提到celery的消息路由机制，就是要提一下AMQP协议。具体的可以查看AMQP的文档。简单是说就是可以有多个消息队列（Message Queue），不同的消息可以指定发送给不同的Message Queue，而这是通过Exchange来实现的。发送消息到Message Queue中时，可以指定routiing key，Exchange通过routing key来把消息路由（routes）到不同的Message Queue中去。</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/python%E5%A4%9A%E7%BA%BF%E7%A8%8B/02.png?raw=true" alt="images"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;多worker，多队列</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">root@localhost celery]<span class="comment"># cat tasks.py</span></div><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"><span class="comment">#-*- coding:utf-8 -*-</span></div><div class="line">from celery import Celery</div><div class="line"></div><div class="line">app = Celery()</div><div class="line">app.config_from_object(<span class="string">"celeryconfig"</span>)</div><div class="line"></div><div class="line">@app.task</div><div class="line">def taskA(x,y):</div><div class="line"><span class="built_in">return</span> x + y</div><div class="line"></div><div class="line">@app.task</div><div class="line">def taskB(x,y,z):</div><div class="line"><span class="built_in">return</span> x + y + z</div><div class="line"></div><div class="line">@app.task</div><div class="line">def add(x,y):</div><div class="line"><span class="built_in">return</span> x + y</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">[root@localhost celery]<span class="comment"># cat celeryconfig.py</span></div><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"><span class="comment">#-*- coding:utf-8 -*-</span></div><div class="line"></div><div class="line">from kombu import Exchange,Queue</div><div class="line"></div><div class="line">BROKER_URL = <span class="string">"redis://192.168.48.131:6379/1"</span> </div><div class="line">CELERY_RESULT_BACKEND = <span class="string">"redis://192.168.48.131:6379/2"</span></div><div class="line"></div><div class="line">CELERY_QUEUES = (</div><div class="line">Queue(<span class="string">"default"</span>,Exchange(<span class="string">"default"</span>),routing_key=<span class="string">"default"</span>),</div><div class="line">Queue(<span class="string">"for_task_A"</span>,Exchange(<span class="string">"for_task_A"</span>),routing_key=<span class="string">"for_task_A"</span>),</div><div class="line">Queue(<span class="string">"for_task_B"</span>,Exchange(<span class="string">"for_task_B"</span>),routing_key=<span class="string">"for_task_B"</span>) </div><div class="line">)</div><div class="line"></div><div class="line">CELERY_ROUTES = &#123;</div><div class="line"><span class="string">'tasks.taskA'</span>:&#123;<span class="string">"queue"</span>:<span class="string">"for_task_A"</span>,<span class="string">"routing_key"</span>:<span class="string">"for_task_A"</span>&#125;,</div><div class="line"><span class="string">'tasks.taskB'</span>:&#123;<span class="string">"queue"</span>:<span class="string">"for_task_B"</span>,<span class="string">"routing_key"</span>:<span class="string">"for_task_B"</span>&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置文件一般单独写在一个文件中。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动一个worker来指定taskA</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">celery -A tasks worker -l info -n workerA.%h -Q for_task_A</div><div class="line">celery -A tasks worker -l info -n workerB.%h -Q for_task_B</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> tasks <span class="keyword">import</span> *</div><div class="line">re1 = taskA.delay(<span class="number">100</span>, <span class="number">200</span>)</div><div class="line">print(re1.result)</div><div class="line">re2 = taskB.delay(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</div><div class="line">print(re2.result)</div><div class="line">re3 = add.delay(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</div><div class="line">print(re3.status)     <span class="comment">#PENDING</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;我们看到状态是PENDING，表示没有执行，这个是因为没有celeryconfig.py文件中指定改route到哪一个Queue中，所以会被发动到默认的名字celery的Queue中，但是我们还没有启动worker执行celery中的任务。下面，我们来启动一个worker来执行celery队列中的任务。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">celery -A tasks worker -l info -n worker.%h -Q celery </div><div class="line"></div><div class="line">print(re3.status)    <span class="comment">#SUCCESS</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Celery与定时任务</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下面我们接着在celeryconfig.py中添加CELERYBEAT_SCHEDULE变量：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">CELERY_TIMEZONE = <span class="string">'UTC'</span></div><div class="line">CELERYBEAT_SCHEDULE = &#123;</div><div class="line">    <span class="string">'taskA_schedule'</span> : &#123;</div><div class="line">        <span class="string">'task'</span>:<span class="string">'tasks.taskA'</span>,</div><div class="line">        <span class="string">'schedule'</span>:<span class="number">20</span>,</div><div class="line">        <span class="string">'args'</span>:(<span class="number">5</span>,<span class="number">6</span>)</div><div class="line">    &#125;,</div><div class="line">    <span class="string">'taskB_scheduler'</span> : &#123;</div><div class="line">        <span class="string">'task'</span>:<span class="string">"tasks.taskB"</span>,</div><div class="line">        <span class="string">"schedule"</span>:<span class="number">200</span>,</div><div class="line">        <span class="string">"args"</span>:(<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>)</div><div class="line">    &#125;,</div><div class="line">    <span class="string">'add_schedule'</span>: &#123;</div><div class="line">        <span class="string">"task"</span>:<span class="string">"tasks.add"</span>,</div><div class="line">        <span class="string">"schedule"</span>:<span class="number">10</span>,</div><div class="line">        <span class="string">"args"</span>:(<span class="number">1</span>,<span class="number">2</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意格式，否则会有问题</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/12/14/Python/2.python新教程/47.python线程/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">python线程</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="Python/2.python新教程/47.python线程(1)" data-title="python线程" data-url="https://hcldirgit.github.io/2018/01/02/Python/2.python新教程/47.python线程(1)/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="python线程">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2018 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
