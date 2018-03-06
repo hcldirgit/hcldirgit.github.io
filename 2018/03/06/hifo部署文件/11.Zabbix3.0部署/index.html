@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Zabbix3.0部署 | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一、安装前准备1、安装依赖包1yum -y install wget net-snmp-devel OpenIPMI-devel httpd openssl-devel java lrzsz fping-devel libcurl-devel perl-DBI pcre-devel libxml2 libxml2-devel mysql-devel gcc php php-bcmath php-g">
+<meta name="keywords" content="Zabbix">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Zabbix3.0部署">
+<meta property="og:url" content="https://hcldirgit.github.io/2018/03/06/hifo部署文件/11.Zabbix3.0部署/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="一、安装前准备1、安装依赖包1yum -y install wget net-snmp-devel OpenIPMI-devel httpd openssl-devel java lrzsz fping-devel libcurl-devel perl-DBI pcre-devel libxml2 libxml2-devel mysql-devel gcc php php-bcmath php-g">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/01.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/02.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/03.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/04.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/05.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/06.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/07.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/08.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/09.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/10.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/11.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/12.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/13.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/14.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/15.png?raw=true">
+<meta property="og:updated_time" content="2018-03-03T00:40:22.907Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Zabbix3.0部署">
+<meta name="twitter:description" content="一、安装前准备1、安装依赖包1yum -y install wget net-snmp-devel OpenIPMI-devel httpd openssl-devel java lrzsz fping-devel libcurl-devel perl-DBI pcre-devel libxml2 libxml2-devel mysql-devel gcc php php-bcmath php-g">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/01.png?raw=true">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.45px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.64px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.36px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.18px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10.91px;">Docker</a> <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/FTP/" style="font-size: 10.91px;">FTP</a> <a href="/tags/FastDFS/" style="font-size: 10px;">FastDFS</a> <a href="/tags/Git/" style="font-size: 12.73px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.36px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.27px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.45px;">Jenkins</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Kubernetes/" style="font-size: 10.45px;">Kubernetes</a> <a href="/tags/LAMP/" style="font-size: 19.09px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.82px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 15.91px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.09px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.09px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.36px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.45px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.73px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.36px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 18.18px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 10.91px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.55px;">Php</a> <a href="/tags/Puppet/" style="font-size: 10.91px;">Puppet</a> <a href="/tags/Python/" style="font-size: 18.64px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.36px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 11.82px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.55px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.64px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 17.27px;">Zabbix</a> <a href="/tags/Zookeeper/" style="font-size: 10px;">Zookeeper</a> <a href="/tags/haproxy/" style="font-size: 12.27px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 12.73px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15px;">shell</a> <a href="/tags/shell练习/" style="font-size: 19.55px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 12.73px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-hifo部署文件/11.Zabbix3.0部署" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/03/06/hifo部署文件/11.Zabbix3.0部署/" class="article-date">
+  	<time datetime="2018-03-06T12:53:40.745Z" itemprop="datePublished">2018-03-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Zabbix3.0部署
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zabbix/">Zabbix</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一、安装前准备"><a href="#一、安装前准备" class="headerlink" title="一、安装前准备"></a>一、安装前准备</h2><h3 id="1、安装依赖包"><a href="#1、安装依赖包" class="headerlink" title="1、安装依赖包"></a>1、安装依赖包</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y install wget net-snmp-devel OpenIPMI-devel httpd openssl-devel java lrzsz fping-devel libcurl-devel perl-DBI pcre-devel libxml2 libxml2-devel mysql-devel gcc php php-bcmath php-gd php-xml php-mbstring php-ldap php-mysql.x86_64 php-pear php-xmlrpc  net-tools wget vim-enhanced</div></pre></td></tr></table></figure>
+<h3 id="2、关闭防火墙"><a href="#2、关闭防火墙" class="headerlink" title="2、关闭防火墙"></a>2、关闭防火墙</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">systemctl stop firewalld.service</div><div class="line">systemctl disable firewalld.service</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需要关闭selinux，一定要关闭，开启selinux会引起一连串问题，甚至zabbix的discovery功能也不能正常使用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed -i &quot;s/SELINUX=enforcing/SELINUX=disabled/g&quot; /etc/selinux/config</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;确认是否修改成功</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">grep SELINUX /etc/selinux/config</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后重启系统即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">reboot</div></pre></td></tr></table></figure>
+<h2 id="二、zabbix-server3-0安装"><a href="#二、zabbix-server3-0安装" class="headerlink" title="二、zabbix server3.0安装"></a>二、zabbix server3.0安装</h2><h3 id="1、搭建lamp环境"><a href="#1、搭建lamp环境" class="headerlink" title="1、搭建lamp环境"></a>1、搭建lamp环境</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@zabbix ~]# yum -y install mariadb mariadb-server php php-mysql httpd</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;lamp安装完成后，先配置mysql数据库</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;设置开机启动mysql，并启动mysql</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@zabbix ~]# systemctl enable mariadb.service</div><div class="line">[root@zabbix ~]# systemctl start mariadb.service</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;初始化mysql数据库，并配置root用户密码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@zabbix ~]# mysql_secure_installation</div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/01.png?raw=true" alt="01"></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/02.png?raw=true" alt="02"></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/03.png?raw=true" alt="03"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注意：在上图中的Enter current passwdord for root处，直接敲回车键即可。因为centos7上mysql的默认root用户密码为空。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上图中主要是为root用户配置密码，并刷新相关权限。密码设置为hifo123456</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Mysql初始化完毕后，创建zabbix数据库及其用户</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@zabbix ~]# mysql -uroot -phifo123456 -e &quot;create database zabbix default character set utf8 collate utf8_bin;&quot;</div><div class="line">[root@zabbix ~]# mysql -uroot -phifo123456 -e &quot;grant all on zabbix.* to &quot;zabbix&quot;@&quot;%&quot; identified by &quot;zabbix&quot;;&quot;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;测试刚创建的zabbix用户，是否可以连接mysql数据库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@zabbix ~]# mysql -uzabbix -pzabbix</div><div class="line">MariaDB [(none)]&gt; show databases;</div><div class="line">MariaDB [(none)]&gt; quit</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动apache以及开放80端口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@zabbix ~]# systemctl start httpd.service</div><div class="line">[root@zabbix ~]# netstat -ltun</div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/04.png?raw=true" alt="04"></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/05.png?raw=true" alt="05"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;lamp环境已经全部搭建完毕</p>
+<h3 id="2、安装zabbix-server3-0"><a href="#2、安装zabbix-server3-0" class="headerlink" title="2、安装zabbix server3.0"></a>2、安装zabbix server3.0</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;lamp环境搭建好后就可以正式安装zabbix3.0</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;添加zabbix3.0的yum源</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rpm -ivh http://repo.zabbix.com/zabbix/3.0/rhel/7/x86_64/zabbix-release-3.0-1.el7.noarch.rpm</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安装完毕以后，就可以安装zabbix3.0</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@zabbix ~]# yum -y install zabbix-server-mysql zabbix-web-mysql zabbix-get</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安装完成后，就可以进行zabbix的相关配置</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;导入zabbix数据库结构</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@zabbix ~]# cd /usr/share/doc/zabbix-server-mysql-3.0.5/</div><div class="line">[root@zabbix zabbix-server-mysql-3.0.5]# zcat create.sql.gz | mysql -uroot -phifo123456 zabbix</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;数据库导入完毕后，修改zabbix server的配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">[root@zabbix ~]# vi /etc/zabbix/zabbix_server.conf</div><div class="line">LogFile=/var/log/zabbix/zabbix_server.log</div><div class="line">LogFileSize=0</div><div class="line">PidFile=/var/run/zabbix/zabbix_server.pid</div><div class="line">DBHost=localhost</div><div class="line">DBName=zabbix</div><div class="line">DBUser=zabbix</div><div class="line">DBPassword=zabbix</div><div class="line">SNMPTrapperFile=/var/log/snmptrap/snmptrap.log</div><div class="line">Timeout=4</div><div class="line">AlertScriptsPath=/usr/lib/zabbix/alertscripts</div><div class="line">ExternalScripts=/usr/lib/zabbix/externalscripts</div><div class="line">LogSlowQueries=3000</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改完成后，在修改zabbix.conf文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim /etc/httpd/conf.d/zabbix.conf</div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/06.png?raw=true" alt="06"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改为</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/07.png?raw=true" alt="07"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改完成后，把zabbix-server加入开机启动，并启动zabbix-server</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@zabbix ~]# systemctl start zabbix-server.service</div><div class="line">[root@zabbix ~]# systemctl enable zabbix-server.service</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;最后重启apache</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@zabbix ~]# systemctl restart httpd.service</div></pre></td></tr></table></figure>
+<h2 id="三、配置zabbix"><a href="#三、配置zabbix" class="headerlink" title="三、配置zabbix"></a>三、配置zabbix</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;浏览器输入<a href="http://ip/zabbix/setup.php" target="_blank" rel="external">http://ip/zabbix/setup.php</a></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/08.png?raw=true" alt="08"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Next step</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/09.png?raw=true" alt="09"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Next step</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/10.png?raw=true" alt="10"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;上图中需要填写前面创建的zabbix数据库的用户核密码，Next step</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/11.png?raw=true" alt="11"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Next step</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/12.png?raw=true" alt="12"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Next step</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/13.png?raw=true" alt="13"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Finish</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/14.png?raw=true" alt="14"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;默认用户名是Admin，密码zabbix。然后点击sign in</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/Zabbix3.0%E9%83%A8%E7%BD%B2/15.png?raw=true" alt="15"></p>
+<h2 id="四、安装zabbix-agent"><a href="#四、安装zabbix-agent" class="headerlink" title="四、安装zabbix agent"></a>四、安装zabbix agent</h2><h3 id="1、安装zabbix-agent"><a href="#1、安装zabbix-agent" class="headerlink" title="1、安装zabbix agent"></a>1、安装zabbix agent</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@zabbix ~]# yum -y install  zabbix-agent</div></pre></td></tr></table></figure>
+<h3 id="2、配置zabbix-agent"><a href="#2、配置zabbix-agent" class="headerlink" title="2、配置zabbix agent"></a>2、配置zabbix agent</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[root@zabbix ~]# vim /etc/zabbix/zabbix_agentd.conf</div><div class="line">PidFile=/var/run/zabbix/zabbix_agentd.pid</div><div class="line">LogFile=/var/log/zabbix/zabbix_agentd.log</div><div class="line">LogFileSize=0</div><div class="line">Server=127.0.0.1</div><div class="line">ServerActive=127.0.0.1</div><div class="line">Hostname=127.0.0.1</div><div class="line">Include=/etc/zabbix/zabbix_agentd.d/</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置完成后，启动客户端</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@zabbix ~]# zabbix_agentd -c /etc/zabbix/zabbix_agentd.conf</div><div class="line">[root@zabbix ~]# systemctl start zabbix-agent</div><div class="line">[root@zabbix ~]# systemctl restart zabbix-agent</div><div class="line">[root@zabbix ~]# systemctl enable zabbix-agent</div></pre></td></tr></table></figure>
+<h2 id="五、添加客户端"><a href="#五、添加客户端" class="headerlink" title="五、添加客户端"></a>五、添加客户端</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在需要监控的机器上安装zabbix</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install -y zabbix-agent</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后更改客户端机器上的zabbix_agentd.conf配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">vim /etc/zabbix_agentd.conf</div><div class="line"></div><div class="line">server=10.8.8.26  #服务器ip</div><div class="line">serveractive=0.0.0.010050  #也可以是服务器ip</div><div class="line">hostname=memcache     #被监控客户端名称</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动客户端</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/etc/init.d/zabbix-agent start</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后在 web 界面下，点 configura（配置） –&gt; host（主机） 右上角点 create host （创建主机）其中 host name（主机名称） ，visible name（可见的名称） 自定义 ，可以选择 groups（组），这里默认即可， ip address（ip地址）写入客户端 ip</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;还可以配置监控项目模版： 点 “templates”（模版） ，点 add （添加），在弹出的小窗口中选择 Template OS Linux ，然后点 select（选择），最后点 save（存档） ，这些模块肯定是不能满足需求的，所以可以自定义监控模版。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;zabbix 自带了很多模版，模版中有很多监控项目，比如 CPU、网卡、内存、进程等等。使用系统自带模版有点太多了，所以可以自定义模版。点 configuration（配置） 选择 templates（模版） ，点右上角的 cteate template（创建模版）。 Template name（模版名称） 和 Visible name（可见的名称） 自定义，Groups（组） 选择 templates ，点 save存档 。然后去挑选一些项目拷贝到该模版下：比如找到 Templates OS Linux 点一下 items（项目） ，选择想要的项目，然后在下面选择 copy selected to …（复制所选的到…） 然后点 go（确认） 。Group 选择 templates ，找到刚才自定义的 templates ， 点 copy 。然后点 configuration（配置）选择 templates 可以看到新建的 templates 中已经有刚刚 copy 的 items 了。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以使用和上面相同的方法自定义拷贝 Triggers（触发器），它用来设置告警的阀值，当然也可以自定义编辑它</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/06/hifo部署文件/12.大数据MongoDB部署/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          大数据MongoDB部署
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/06/hifo部署文件/5.Kafka集群配置/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Kafka集群配置</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="hifo部署文件/11.Zabbix3.0部署" data-title="Zabbix3.0部署" data-url="https://hcldirgit.github.io/2018/03/06/hifo部署文件/11.Zabbix3.0部署/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="Zabbix3.0部署">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2018 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

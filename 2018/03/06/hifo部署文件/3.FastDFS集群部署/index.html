@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>FastDFS集群部署 | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="服务器规划 Tracker server：10.8.8.52，10.8.8.53 Storage server：10.8.8.50，10.8.8.51 Storage server服务器40T硬盘挂载路径 /home/hifo  一、所有tracker和storage节点都执行1、安装所需的依赖包1yum install make cmake gcc gcc-c++ 2、安装libfastcomm">
+<meta name="keywords" content="FastDFS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FastDFS集群部署">
+<meta property="og:url" content="https://hcldirgit.github.io/2018/03/06/hifo部署文件/3.FastDFS集群部署/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="服务器规划 Tracker server：10.8.8.52，10.8.8.53 Storage server：10.8.8.50，10.8.8.51 Storage server服务器40T硬盘挂载路径 /home/hifo  一、所有tracker和storage节点都执行1、安装所需的依赖包1yum install make cmake gcc gcc-c++ 2、安装libfastcomm">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/FastDFS%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/01.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/FastDFS%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/02.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/FastDFS%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/03.png?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/FastDFS%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/04.png?raw=true">
+<meta property="og:updated_time" content="2018-03-03T00:40:22.457Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="FastDFS集群部署">
+<meta name="twitter:description" content="服务器规划 Tracker server：10.8.8.52，10.8.8.53 Storage server：10.8.8.50，10.8.8.51 Storage server服务器40T硬盘挂载路径 /home/hifo  一、所有tracker和storage节点都执行1、安装所需的依赖包1yum install make cmake gcc gcc-c++ 2、安装libfastcomm">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/FastDFS%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/01.png?raw=true">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.45px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.64px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.36px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.18px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10.91px;">Docker</a> <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/FTP/" style="font-size: 10.91px;">FTP</a> <a href="/tags/FastDFS/" style="font-size: 10px;">FastDFS</a> <a href="/tags/Git/" style="font-size: 12.73px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.36px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.27px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.45px;">Jenkins</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Kubernetes/" style="font-size: 10.45px;">Kubernetes</a> <a href="/tags/LAMP/" style="font-size: 19.09px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.82px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 15.91px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.09px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.09px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.36px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.45px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.73px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.36px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 18.18px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 10.91px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.55px;">Php</a> <a href="/tags/Puppet/" style="font-size: 10.91px;">Puppet</a> <a href="/tags/Python/" style="font-size: 18.64px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.36px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 11.82px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.55px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.64px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 17.27px;">Zabbix</a> <a href="/tags/Zookeeper/" style="font-size: 10px;">Zookeeper</a> <a href="/tags/haproxy/" style="font-size: 12.27px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 12.73px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15px;">shell</a> <a href="/tags/shell练习/" style="font-size: 19.55px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 12.73px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-hifo部署文件/3.FastDFS集群部署" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/03/06/hifo部署文件/3.FastDFS集群部署/" class="article-date">
+  	<time datetime="2018-03-06T12:53:40.829Z" itemprop="datePublished">2018-03-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      FastDFS集群部署
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FastDFS/">FastDFS</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="服务器规划"><a href="#服务器规划" class="headerlink" title="服务器规划"></a>服务器规划</h2><ul>
+<li>Tracker server：10.8.8.52，10.8.8.53</li>
+<li>Storage server：10.8.8.50，10.8.8.51</li>
+<li>Storage server服务器40T硬盘挂载路径 <strong>/home/hifo</strong></li>
+</ul>
+<h2 id="一、所有tracker和storage节点都执行"><a href="#一、所有tracker和storage节点都执行" class="headerlink" title="一、所有tracker和storage节点都执行"></a>一、所有tracker和storage节点都执行</h2><h3 id="1、安装所需的依赖包"><a href="#1、安装所需的依赖包" class="headerlink" title="1、安装所需的依赖包"></a>1、安装所需的依赖包</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install make cmake gcc gcc-c++</div></pre></td></tr></table></figure>
+<h2 id="2、安装libfastcommon"><a href="#2、安装libfastcommon" class="headerlink" title="2、安装libfastcommon"></a>2、安装libfastcommon</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/src</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;安装unzip命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">yum install –y unzip zip</div><div class="line"></div><div class="line">unzip libfastcommon-master.zip</div></pre></td></tr></table></figure>
+<h3 id="3、编译安装"><a href="#3、编译安装" class="headerlink" title="3、编译安装"></a>3、编译安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> libfastcommon-master</div><div class="line">./make.sh</div><div class="line">./make.sh install</div></pre></td></tr></table></figure>
+<h3 id="4、安装FastDFS"><a href="#4、安装FastDFS" class="headerlink" title="4、安装FastDFS"></a>4、安装FastDFS</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/src</div><div class="line">tar -xzvf FastDFS_v5.08.tar.gz</div><div class="line"><span class="built_in">cd</span> FastDFS</div><div class="line">./make.sh</div><div class="line">./make.sh install</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;采用默认安装方式，相应的文件与目录检查如下：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;服务脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">/etc/init.d/fdfs_storaged</div><div class="line">/etc/init.d/fdfs_trackerd</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ll /etc/fdfs/</div><div class="line">-rw-r--r-- 1 root root  1461 1月   4 14:34 client.conf.sample</div><div class="line">-rw-r--r-- 1 root root  7927 1月   4 14:34 storage.conf.sample</div><div class="line">-rw-r--r-- 1 root root  7200 1月   4 14:34 tracker.conf.sample</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;命令工具：（/usr/bin目录下）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">ll /usr/bin/fdfs_*</div><div class="line">-rwxr-xr-x    1 root root     260584 1月   4 14:34 fdfs_appender_test</div><div class="line">-rwxr-xr-x    1 root root     260281 1月   4 14:34 fdfs_appender_test1</div><div class="line">-rwxr-xr-x    1 root root     250625 1月   4 14:34 fdfs_append_file</div><div class="line">-rwxr-xr-x    1 root root     250045 1月   4 14:34 fdfs_crc32</div><div class="line">-rwxr-xr-x    1 root root     250708 1月   4 14:34 fdfs_delete_file</div><div class="line">-rwxr-xr-x    1 root root     251515 1月   4 14:34 fdfs_download_file</div><div class="line">-rwxr-xr-x    1 root root     251273 1月   4 14:34 fdfs_file_info</div><div class="line">-rwxr-xr-x    1 root root     266401 1月   4 14:34 fdfs_monitor</div><div class="line">-rwxr-xr-x    1 root root     873233 1月   4 14:34 fdfs_storaged</div><div class="line">-rwxr-xr-x    1 root root     266952 1月   4 14:34 fdfs_test</div><div class="line">-rwxr-xr-x    1 root root     266153 1月   4 14:34 fdfs_test1</div><div class="line">-rwxr-xr-x    1 root root     371336 1月   4 14:34 fdfs_trackerd</div><div class="line">-rwxr-xr-x    1 root root     251651 1月   4 14:34 fdfs_upload_appender</div><div class="line">-rwxr-xr-x    1 root root     252781 1月   4 14:34 fdfs_upload_file</div></pre></td></tr></table></figure>
+<h2 id="二、配置tracker服务器"><a href="#二、配置tracker服务器" class="headerlink" title="二、配置tracker服务器"></a>二、配置tracker服务器</h2><h3 id="1、复制tracker样例配置文件，并重命名"><a href="#1、复制tracker样例配置文件，并重命名" class="headerlink" title="1、复制tracker样例配置文件，并重命名"></a>1、复制tracker样例配置文件，并重命名</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cp /etc/fdfs/tracker.conf.sample /etc/fdfs/tracker.conf</div></pre></td></tr></table></figure>
+<h3 id="2、修改tracker配置文件"><a href="#2、修改tracker配置文件" class="headerlink" title="2、修改tracker配置文件"></a>2、修改tracker配置文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim /etc/fdfs/tracker.conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改内容如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">disabled=<span class="literal">false</span>              <span class="comment"># 启用配置文件</span></div><div class="line">port=22122                  <span class="comment"># tracker服务器端口（默认22122）</span></div><div class="line">base_path=/fastdfs/tracker  <span class="comment"># 存储日志和数据的根目录</span></div><div class="line">store_group=g02</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其他参数保留默认配置</p>
+<h3 id="3、创建base-path指定目录"><a href="#3、创建base-path指定目录" class="headerlink" title="3、创建base_path指定目录"></a>3、创建base_path指定目录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkdir –p /fastdfs/tracker</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动tracker服务器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/etc/init.d/fdfs_trackerd start</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;初次启动会在<strong>/fastdfs/tracker</strong>目录下生成logs、data两个目录。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;检查 FastDFS Tarcker Server是否启动成功：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ps aux|grep fdfs_trackerd</div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/FastDFS%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/01.png?raw=true" alt="01"></p>
+<h2 id="三、配置storage服务器"><a href="#三、配置storage服务器" class="headerlink" title="三、配置storage服务器"></a>三、配置storage服务器</h2><h3 id="1、复制storage样例配置文件，并重命名"><a href="#1、复制storage样例配置文件，并重命名" class="headerlink" title="1、复制storage样例配置文件，并重命名"></a>1、复制storage样例配置文件，并重命名</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cp /etc/fdfs/storage.conf.sample /etc/fdfs/storage.conf</div></pre></td></tr></table></figure>
+<h3 id="2、编辑配置文件"><a href="#2、编辑配置文件" class="headerlink" title="2、编辑配置文件"></a>2、编辑配置文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim /etc/fdfs/storage.conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">disabled=<span class="literal">false</span>                      <span class="comment"># 启用配置文件</span></div><div class="line">port=23000                          <span class="comment"># storage服务端口</span></div><div class="line">base_path=/home/hifo         <span class="comment"># 数据和日志文件存储根目录</span></div><div class="line">store_path0=/home/hifo       <span class="comment"># 第一个存储目录</span></div><div class="line">tracker_server=10.8.8.52:22122  <span class="comment"># tracker服务器IP和端口</span></div><div class="line">tracker_server=10.8.8.3:22122  <span class="comment">#tracker服务器IP2和端口</span></div><div class="line">http.server_port=8888               <span class="comment"># http访问文件的端口</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其他参数保留默认配置</p>
+<h3 id="3、创建基础数据目录"><a href="#3、创建基础数据目录" class="headerlink" title="3、创建基础数据目录"></a>3、创建基础数据目录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkdir –p /home/hifo</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;因挂载40T硬盘的时候已创建，所以现在不用创建。</p>
+<h3 id="4、启动storage服务器"><a href="#4、启动storage服务器" class="headerlink" title="4、启动storage服务器"></a>4、启动storage服务器</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/etc/init.d/fdfs_storaged start</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;初次启动，会在/home/hifo目录下生成logs、data两个目录。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;检查FastDFS Storage Server是否启动成功</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ps aux|grep fdfs_storaged</div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/FastDFS%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/02.png?raw=true" alt="02"></p>
+<h2 id="四、文件上传测试"><a href="#四、文件上传测试" class="headerlink" title="四、文件上传测试"></a>四、文件上传测试</h2><h3 id="1、修改tracker服务器客户端配置文件"><a href="#1、修改tracker服务器客户端配置文件" class="headerlink" title="1、修改tracker服务器客户端配置文件"></a>1、修改tracker服务器客户端配置文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cp /etc/fdfs/client.conf.sample /etc/fdfs/client.conf</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim /etc/fdfs/client.conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改以下配置，其他保持默认</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">base_path=/fastdfs/tracker</div><div class="line">tracker_server=10.8.8.52:22122  <span class="comment"># tracker服务器IP和端口</span></div><div class="line">tracker_server=10.8.8.53:22122  <span class="comment">#tracker服务器IP2和端口</span></div></pre></td></tr></table></figure>
+<h3 id="2、执行文件上传命令"><a href="#2、执行文件上传命令" class="headerlink" title="2、执行文件上传命令"></a>2、执行文件上传命令</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;/usr/local/src/1.png是需要上传文件路径</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/bin/fdfs_upload_file /etc/fdfs/client.conf /usr/<span class="built_in">local</span>/src/1.png</div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/FastDFS%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/03.png?raw=true" alt="03"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;返回文件ID号：group1/M00/00/00/CggIM1o6bpKAcmdXAABUIb1c0_k448.png</p>
+<h2 id="五、在storage节点安装fastdfs-nginx-module"><a href="#五、在storage节点安装fastdfs-nginx-module" class="headerlink" title="五、在storage节点安装fastdfs-nginx-module"></a>五、在storage节点安装fastdfs-nginx-module</h2><h3 id="1、fasgdfs-nginx-module作用说明"><a href="#1、fasgdfs-nginx-module作用说明" class="headerlink" title="1、fasgdfs-nginx-module作用说明"></a>1、fasgdfs-nginx-module作用说明</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;FastDFS通过Tracker服务器，将文件放在Storage服务器存储，但是同组存储服务器之间需要进入文件复制，有同步延迟的问题。假设Tracker服务器将文件上传到了IP01，上传成功后文件ID已经返回给客户端。此时FastDFS存储集群机制会将这个文件同步到同组存储IP02，在文件还没有复制完成的情况下，客户端如果用这个文件ID在IP02上取文件，就会出现文件无法访问的错误。而fastdfs-nginx-module可以重定向文件连接到源服务器取文件，避免客户端由于复制延迟导致的文件无法访问的错误。（解压后的fastdfs-nginx-module在nginx安装时使用）</p>
+<h3 id="2、解压fastdfs-nginx-module"><a href="#2、解压fastdfs-nginx-module" class="headerlink" title="2、解压fastdfs-nginx-module"></a>2、解压fastdfs-nginx-module</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/src</div><div class="line">tar -xzvf fastdfs-nginx-module_v1.16.tar.gz</div></pre></td></tr></table></figure>
+<h3 id="3、修改fastdfs-nginx-module的config配置文件"><a href="#3、修改fastdfs-nginx-module的config配置文件" class="headerlink" title="3、修改fastdfs-nginx-module的config配置文件"></a>3、修改fastdfs-nginx-module的config配置文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> fastdfs-nginx-module/src</div><div class="line">vim config</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;将</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CORE_INCS=<span class="string">"<span class="variable">$CORE_INCS</span> /usr/local/include/fastdfs /usr/local/include/fastcommon/"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CORE_INCS=<span class="string">"<span class="variable">$CORE_INCS</span> /usr/include/fastdfs /usr/include/fastcommon/</span></div></pre></td></tr></table></figure>
+<h3 id="4、安装Nginx上传当前的版本Nginx（nginx-1-10-0-tar-gz）到-us-local-src目录"><a href="#4、安装Nginx上传当前的版本Nginx（nginx-1-10-0-tar-gz）到-us-local-src目录" class="headerlink" title="4、安装Nginx上传当前的版本Nginx（nginx-1.10.0.tar.gz）到/us/local/src目录"></a>4、安装Nginx上传当前的版本Nginx（nginx-1.10.0.tar.gz）到/us/local/src目录</h3><h3 id="5、安装编译Nginx所需的依赖包"><a href="#5、安装编译Nginx所需的依赖包" class="headerlink" title="5、安装编译Nginx所需的依赖包"></a>5、安装编译Nginx所需的依赖包</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install gcc gcc-c++ make automake autoconf libtool pcre* zlib openssl openssl-devel</div></pre></td></tr></table></figure>
+<h3 id="6、编译安装Nginx（添加fastdfs-nginx-module模块）"><a href="#6、编译安装Nginx（添加fastdfs-nginx-module模块）" class="headerlink" title="6、编译安装Nginx（添加fastdfs-nginx-module模块）"></a>6、编译安装Nginx（添加fastdfs-nginx-module模块）</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/src/</div><div class="line">tar -zxvf nginx-1.10.0.tar.gz</div><div class="line">tar –zxvf ngx_cache_purge_2.3.tar.gz</div><div class="line"></div><div class="line"><span class="built_in">cd</span> nginx-1.10.0</div><div class="line"></div><div class="line">./configure --prefix=/opt/nginx --add-module=/usr/<span class="built_in">local</span>/src/fastdfs-nginx-module/src --add-module=/usr/<span class="built_in">local</span>/src/ngx_cache_purge-2.3</div><div class="line"> </div><div class="line">make &amp;&amp; make install</div></pre></td></tr></table></figure>
+<h3 id="7、复制fastdfs-nginx-module源码中的配置文件到-etc-fdfs目录，并修改"><a href="#7、复制fastdfs-nginx-module源码中的配置文件到-etc-fdfs目录，并修改" class="headerlink" title="7、复制fastdfs-nginx-module源码中的配置文件到/etc/fdfs目录，并修改"></a>7、复制fastdfs-nginx-module源码中的配置文件到/etc/fdfs目录，并修改</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cp /usr/<span class="built_in">local</span>/src/fastdfs-nginx-module/src/mod_fastdfs.conf      /etc/fdfs/ </div><div class="line">vim /etc/fdfs/mod_fastdfs.conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改以下配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">connect_timeout=10</div><div class="line">base_path=/tmp  </div><div class="line">tracker_server=10.8.8.52:22122  <span class="comment"># tracker服务器IP和端口</span></div><div class="line">tracker_server=10.8.8.53:22122  <span class="comment">#tracker服务器IP2和端口</span></div><div class="line">url_have_group_name=<span class="literal">true</span>   <span class="comment">#url中包含group名称</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在最后添加[g02]</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[g02] </div><div class="line">group_name=g02</div><div class="line">storage_server_port=23000 </div><div class="line">store_path_count=1 </div><div class="line">store_path0=/home/hifo</div></pre></td></tr></table></figure>
+<h3 id="8、复制fastdfs的部分配置文件到-etc-fdfs目录"><a href="#8、复制fastdfs的部分配置文件到-etc-fdfs目录" class="headerlink" title="8、复制fastdfs的部分配置文件到/etc/fdfs目录"></a>8、复制fastdfs的部分配置文件到/etc/fdfs目录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/src/FastDFS/conf</div><div class="line">cp http.conf mime.types /etc/fdfs/</div></pre></td></tr></table></figure>
+<h3 id="9、在-fastdfs-storage文件存储目录下创建软连接，将其连接到实际存放数据的目录"><a href="#9、在-fastdfs-storage文件存储目录下创建软连接，将其连接到实际存放数据的目录" class="headerlink" title="9、在/fastdfs/storage文件存储目录下创建软连接，将其连接到实际存放数据的目录"></a>9、在/fastdfs/storage文件存储目录下创建软连接，将其连接到实际存放数据的目录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ln -s /home/hifo/data/ /home/hifo/data/M00</div><div class="line">ln -s /home/hifo/data/ /opt/nginx/html/g02/M00</div></pre></td></tr></table></figure>
+<h3 id="10、配置nginx"><a href="#10、配置nginx" class="headerlink" title="10、配置nginx"></a>10、配置nginx</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">user nobody;</div><div class="line">worker_processes 1;</div><div class="line">events &#123;</div><div class="line">    worker_connections 1024;</div><div class="line">&#125;</div><div class="line">http &#123;</div><div class="line">    include mime.types;</div><div class="line">    default_type application/octet-stream;</div><div class="line">    sendfile on;</div><div class="line">    keepalive_timeout 65;</div><div class="line">    server &#123;</div><div class="line">        listen 4141;</div><div class="line">        server_name 10.8.8.50   <span class="comment">#本机IP</span></div><div class="line">        location ~/g02/M00 &#123;</div><div class="line">            ngx_fastdfs_module;</div><div class="line">        &#125;</div><div class="line">        error_page 500 502 503 504 /50x.html;</div><div class="line"></div><div class="line">        location = /50x.html &#123;</div><div class="line">            root html;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"> upstream storage_server_g02&#123;                                                                                              </div><div class="line">                 server 10.8.8.50:8888 weight=10;                                       </div><div class="line">                 server 10.8.8.51:8888 weight=10;                                </div><div class="line">        &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动nginx</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/opt/nginx/sbin/nginx -c /opt/nginx/conf/nginx.conf</div></pre></td></tr></table></figure>
+<h2 id="六、验证"><a href="#六、验证" class="headerlink" title="六、验证"></a>六、验证</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;通过浏览器方法测试上传的文件</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/FastDFS%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/04.png?raw=true" alt="04"></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/06/hifo部署文件/4.Zookeeper集群部署/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          Zookeeper集群部署
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/06/hifo部署文件/9.Redis三主三从集群部署/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Redis三主三从集群部署</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="hifo部署文件/3.FastDFS集群部署" data-title="FastDFS集群部署" data-url="https://hcldirgit.github.io/2018/03/06/hifo部署文件/3.FastDFS集群部署/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="FastDFS集群部署">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2018 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

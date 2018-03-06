@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>zabbix监控nginx | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;要对nginx进行监控，都需要做什么。  开启nginx监控 编写脚本来进行数据采集 设置用户自定义参数 重启zabbix-agent 添加item 创建图形 创建触发器 创建模版">
+<meta name="keywords" content="Zabbix">
+<meta property="og:type" content="article">
+<meta property="og:title" content="zabbix监控nginx">
+<meta property="og:url" content="https://hcldirgit.github.io/2018/03/06/hifo zabbix/13.zabbix监控nginx/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;要对nginx进行监控，都需要做什么。  开启nginx监控 编写脚本来进行数据采集 设置用户自定义参数 重启zabbix-agent 添加item 创建图形 创建触发器 创建模版">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7nginx/01.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7nginx/02.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7nginx/03.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7nginx/04.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7nginx/05.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7nginx/06.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7nginx/07.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7nginx/08.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7nginx/09.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7nginx/10.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7nginx/11.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7nginx/12.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7nginx/13.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7nginx/14.jpg?raw=true">
+<meta property="og:updated_time" content="2018-03-06T12:52:15.792Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="zabbix监控nginx">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;要对nginx进行监控，都需要做什么。  开启nginx监控 编写脚本来进行数据采集 设置用户自定义参数 重启zabbix-agent 添加item 创建图形 创建触发器 创建模版">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7nginx/01.jpg?raw=true">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.45px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.64px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.36px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.18px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10.91px;">Docker</a> <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/FTP/" style="font-size: 10.91px;">FTP</a> <a href="/tags/FastDFS/" style="font-size: 10px;">FastDFS</a> <a href="/tags/Git/" style="font-size: 12.73px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.36px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.27px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.45px;">Jenkins</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Kubernetes/" style="font-size: 10.45px;">Kubernetes</a> <a href="/tags/LAMP/" style="font-size: 19.09px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.82px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 15.91px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.09px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.09px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.36px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.45px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.73px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.36px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 18.18px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 10.91px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.55px;">Php</a> <a href="/tags/Puppet/" style="font-size: 10.91px;">Puppet</a> <a href="/tags/Python/" style="font-size: 18.64px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.36px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 11.82px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.55px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.64px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 17.27px;">Zabbix</a> <a href="/tags/Zookeeper/" style="font-size: 10px;">Zookeeper</a> <a href="/tags/haproxy/" style="font-size: 12.27px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 12.73px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15px;">shell</a> <a href="/tags/shell练习/" style="font-size: 19.55px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 12.73px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-hifo zabbix/13.zabbix监控nginx" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/03/06/hifo zabbix/13.zabbix监控nginx/" class="article-date">
+  	<time datetime="2018-03-06T12:53:10.383Z" itemprop="datePublished">2018-03-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      zabbix监控nginx
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zabbix/">Zabbix</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;要对nginx进行监控，都需要做什么。</p>
+<ul>
+<li>开启nginx监控</li>
+<li>编写脚本来进行数据采集</li>
+<li>设置用户自定义参数</li>
+<li>重启zabbix-agent</li>
+<li>添加item</li>
+<li>创建图形</li>
+<li>创建触发器</li>
+<li>创建模版</li>
+</ul>
+<a id="more"></a>
+<h2 id="编写数据采集脚本"><a href="#编写数据采集脚本" class="headerlink" title="编写数据采集脚本"></a>编写数据采集脚本</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;nginx在10.8.8.22上启用的，因此脚本要上传到10.8.8.22上。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改 zabbix_agentd.conf，把 Include 修改为只引入后缀名为.conf 的文件，更严<br>谨，而且除了配置文件之外，脚本也能放到这里。不会影响受到影响</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Include=/etc/zabbix/zabbix_agentd.d/*.conf</div></pre></td></tr></table></figure>
+<h3 id="编写监控脚本"><a href="#编写监控脚本" class="headerlink" title="编写监控脚本"></a>编写监控脚本</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="comment">############################################################</span></div><div class="line"><span class="comment"># $Name:         zabbix_nginx.sh</span></div><div class="line"><span class="comment"># $Version:      v1.0</span></div><div class="line"><span class="comment"># $Function:     zabbix plugins</span></div><div class="line"><span class="comment"># $Author:       yanyi</span></div><div class="line"><span class="comment"># $organization: dcgamer.top</span></div><div class="line"><span class="comment"># $Description:  Monitor Nginx Status</span></div><div class="line"><span class="comment">############################################################</span></div><div class="line"> NGINX_PORT=8080</div><div class="line"> NGINX_COMMAND=<span class="variable">$1</span></div><div class="line"> <span class="function"><span class="title">nginx_active</span></span>()&#123;</div><div class="line"> /usr/bin/curl <span class="string">"http://10.8.8.22:"</span><span class="variable">$NGINX_PORT</span><span class="string">"/nginx_status/"</span> 2&gt;/dev/null| grep <span class="string">'Active'</span> | awk <span class="string">'&#123;print $NF&#125;'</span></div><div class="line"> &#125;</div><div class="line"> <span class="function"><span class="title">nginx_reading</span></span>()&#123;</div><div class="line"> /usr/bin/curl <span class="string">"http://10.8.8.22:"</span><span class="variable">$NGINX_PORT</span><span class="string">"/nginx_status/"</span> 2&gt;/dev/null| grep <span class="string">'Reading'</span> | awk <span class="string">'&#123;print $2&#125;'</span></div><div class="line">&#125;</div><div class="line"> <span class="function"><span class="title">nginx_writing</span></span>()&#123;</div><div class="line"> /usr/bin/curl <span class="string">"http://10.8.8.22:"</span><span class="variable">$NGINX_PORT</span><span class="string">"/nginx_status/"</span> 2&gt;/dev/null| grep <span class="string">'Writing'</span> | awk <span class="string">'&#123;print $4&#125;'</span></div><div class="line">&#125;</div><div class="line"> <span class="function"><span class="title">nginx_waiting</span></span>()&#123;</div><div class="line"> /usr/bin/curl <span class="string">"http://10.8.8.22:"</span><span class="variable">$NGINX_PORT</span><span class="string">"/nginx_status/"</span> 2&gt;/dev/null| grep <span class="string">'Waiting'</span> | awk <span class="string">'&#123;print $6&#125;'</span></div><div class="line">&#125;</div><div class="line"> <span class="function"><span class="title">nginx_accepts</span></span>()&#123;</div><div class="line"> /usr/bin/curl <span class="string">"http://10.8.8.22:"</span><span class="variable">$NGINX_PORT</span><span class="string">"/nginx_status/"</span> 2&gt;/dev/null| awk NR==3 | awk <span class="string">'&#123;print $1&#125;'</span></div><div class="line">&#125;</div><div class="line"> <span class="function"><span class="title">nginx_handled</span></span>()&#123;</div><div class="line"> /usr/bin/curl <span class="string">"http://10.8.8.22:"</span><span class="variable">$NGINX_PORT</span><span class="string">"/nginx_status/"</span> 2&gt;/dev/null| awk NR==3 | awk <span class="string">'&#123;print $2&#125;'</span></div><div class="line">&#125;</div><div class="line"> <span class="function"><span class="title">nginx_requests</span></span>()&#123;</div><div class="line"> /usr/bin/curl <span class="string">"http://10.8.8.22:"</span><span class="variable">$NGINX_PORT</span><span class="string">"/nginx_status/"</span> 2&gt;/dev/null| awk NR==3 | awk <span class="string">'&#123;print $3&#125;'</span></div><div class="line">&#125;</div><div class="line"> <span class="keyword">case</span> <span class="variable">$NGINX_COMMAND</span> <span class="keyword">in</span></div><div class="line">                active)</div><div class="line">                        nginx_active;</div><div class="line">                        ;;</div><div class="line">                reading)</div><div class="line">                        nginx_reading;</div><div class="line">                        ;;</div><div class="line">                writing)</div><div class="line">                        nginx_writing;</div><div class="line">                        ;;</div><div class="line">                waiting)</div><div class="line">                        nginx_waiting;</div><div class="line">                        ;;</div><div class="line">                accepts)</div><div class="line">                        nginx_accepts;</div><div class="line">                        ;;</div><div class="line">                handled)</div><div class="line">                        nginx_handled;</div><div class="line">                        ;;</div><div class="line">                requests)</div><div class="line">                        nginx_requests;</div><div class="line">                <span class="keyword">esac</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;给脚本添加执行权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chmod +x zabbix_nginx.sh</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;重要的是这个脚本有zabbix的执行权限，然后它会在运行的时候在tmp目录下生成tmp文件。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;测试一下这个文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@zabbix-server zabbix_agentd.d]<span class="comment"># ./zabbix_nginx.sh active</span></div><div class="line">1</div><div class="line">[root@zabbix-server zabbix_agentd.d]<span class="comment"># ./zabbix_nginx.sh reading</span></div><div class="line">0</div><div class="line">[root@zabbix-server zabbix_agentd.d]<span class="comment"># ./zabbix_nginx.sh writing</span></div><div class="line">1</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;接下来再查看一下nginx的配置文件关于状态显示的部分</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">location /nginx_status &#123;</div><div class="line">            stub_status on;</div><div class="line">            access_log  off;</div><div class="line">            allow       10.8.8.0/24;</div><div class="line">            allow       192.168.5.0/24;</div><div class="line">            deny        all;</div><div class="line">        &#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注：添加权限的设置目的是更安全</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编写配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@zabbix-server zabbix_agentd.d]<span class="comment"># cat zabbix_nginx.conf </span></div><div class="line">UserParameter=nginx_status[*],/etc/zabbix/zabbix_agentd.d/zabbix_nginx.sh <span class="string">"<span class="variable">$1</span>"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;延伸：当我们要传递多个参数的时候可以使用“[*]”的写法，比如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">UserParameter=nginx.status[*],/etc/zabbix/zabbix_agentd.d/zabbix_nginx.sh <span class="string">"<span class="variable">$1</span>"</span> <span class="string">"<span class="variable">$2</span>"</span> <span class="string">"<span class="variable">$3</span>"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里的 linux.status[*]的写法其实意思就是我可以传递多个参数</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;那么在使用 zabbix_get 的时候就可以通过这个来传递多个参数，比如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@Zabbix-server ~]<span class="comment"># zabbix_get -s x.x.x.x -k nginx_status[参数 1,参数 2,参数 3]</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;配置完成以后，进行get测试</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@zabbix-server zabbix_agentd.d]<span class="comment"># zabbix_get -s 10.8.8.22 -k nginx_status[active]</span></div><div class="line">1</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;通过检测，证明没有问题，接下来就是要把这些监控的内容全部添加到一个模版中去。</p>
+<h3 id="添加一个模版"><a href="#添加一个模版" class="headerlink" title="添加一个模版"></a>添加一个模版</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;操作步骤：configuration–&gt;template–&gt;create template</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7nginx/01.jpg?raw=true" alt="01"></p>
+<h3 id="添加监控项"><a href="#添加监控项" class="headerlink" title="添加监控项"></a>添加监控项</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;操作步骤：configuration–&gt;templates–&gt;刚才加的模版–&gt;item–&gt;create item</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7nginx/02.jpg?raw=true" alt="02"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;application就是item的组</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;当然监控项不止这一个，可以使用简便的方法实现这个items的添加，就是对刚才已经添加好的进行克隆。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;单击刚才添加的监控项，拉到最下面，然后有一个clone。全部添加好以后如图所示</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7nginx/03.jpg?raw=true" alt="03"></p>
+<h3 id="添加触发器"><a href="#添加触发器" class="headerlink" title="添加触发器"></a>添加触发器</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;触发器是当达成某一个条件以后会执行某一个动作，比如cpu使用率达到多少以后要进行报警，报警以后要执行发邮件 ，或者发微信、发短信的操作。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;首先看一下报警脚本的存放位置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@zabbix-server ~]# cat /etc/zabbix/zabbix_server.conf | grep &quot;Alert*&quot;</div><div class="line">### Option: AlertScriptsPath</div><div class="line"># AlertScriptsPath=$&#123;datadir&#125;/zabbix/alertscripts</div><div class="line">AlertScriptsPath=/usr/lib/zabbix/alertscripts</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用shell实现一个简单报警的步骤</p>
+<ol>
+<li>报警脚本存放的位置</li>
+<li>要支持三个参数，收件人、主题、内容</li>
+<li>执行权限</li>
+<li>web界面添加</li>
+<li>修改action</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里模拟一个发短信的报警脚本。将报警内容输出到/tmp/sms.log，也可以通过脚本实现发送邮件等。关于短信发送的相关信息可以参考<a href="http://www.alidayu.com/" target="_blank" rel="external">阿里大于</a>，在<a href="https://api.alidayu.com/doc2/apiDetail?apiId=25450" target="_blank" rel="external">阿里大于的帮助平台</a>提供有短信发送的API以及相关参数。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编写报警脚本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[root@zabbix-server ~]<span class="comment"># cd /usr/lib/zabbix/alertscripts/</span></div><div class="line">[root@zabbix-server alertscripts]<span class="comment"># cat sms.sh </span></div><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line">ALERT_TO=<span class="variable">$1</span></div><div class="line">ALERT_TITLE=<span class="variable">$2</span></div><div class="line">ALERT_BODY=<span class="variable">$3</span></div><div class="line"><span class="built_in">echo</span> <span class="variable">$ALERT_TO</span> &gt;&gt; /tmp/sms.log</div><div class="line"><span class="built_in">echo</span> <span class="variable">$ALERT_TITLE</span> &gt;&gt; /tmp/sms.log</div><div class="line"><span class="built_in">echo</span> <span class="variable">$ALERT_BODY</span> &gt;&gt; /tmp/sms.log</div><div class="line">当我们接收到报警脚本以后会把上面的内容追加到/tmp/sms.log 中。</div><div class="line">[root@zabbix-server tmp]<span class="comment"># chmod +x  /usr/lib/zabbix/alertscripts/sms.sh</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;添加告警类型：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;操作步骤：administrator–&gt;media type–&gt;add</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7nginx/04.jpg?raw=true" alt="04"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;操作步骤：configuration–&gt;actions–&gt;operations</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改用户的media为SMS</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7nginx/05.jpg?raw=true" alt="05"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;添加触发器：这里添加一个触发器，当nginx的active nember大于3的时候就报警，之所有设置大于3是因为方便看到结果。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;操作步骤：选择configuration，然后选择host对应的主机，直接选择触发器，创建触发器，起名字</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7nginx/06.jpg?raw=true" alt="06"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;expression表达式既可以自己写也可以通过add来进行添加自动生成</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;观察右上角的报警，通过ab进行压力测试以后可以很快的达成我们想要的结果</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7nginx/07.jpg?raw=true" alt="07"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后查看tmp下是否有sms.log文件并且文件中是否有内容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[root@zabbix-server tmp]<span class="comment"># tail -f sms.log    </span></div><div class="line"> Original ev* (*UNKNOWN*:*UNKNOWN*): *UNKNOWN*ame): Linux mobanji 3.10.0-514.el7.x86_64 <span class="comment">#1 SMP Tue Nov 22 16:42:41 UTC 2016 x86_64</span></div><div class="line">xxxxx.@qq.com</div><div class="line">PROBLEM: Nginx Active&gt;3</div><div class="line"> Original ev* (*UNKNOWN*:*UNKNOWN*): *UNKNOWN*tatus[active]): 4</div><div class="line">xxxxx.@qq.com</div><div class="line">PROBLEM: Nginx Active&gt;3</div><div class="line"> Original ev* (*UNKNOWN*:*UNKNOWN*): *UNKNOWN*tatus[active]): 4</div><div class="line">xxxxx.@qq.com</div><div class="line">PROBLEM: Nginx Active&gt;3</div><div class="line"> Original ev* (*UNKNOWN*:*UNKNOWN*): *UNKNOWN*tatus[active]): 4</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;可以发现，确实是执行报警脚本了，现在把压力测试关掉</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">xxxxx.@qq.com</div><div class="line">PROBLEM: Nginx Active&gt;3</div><div class="line"> Original ev* (*UNKNOWN*:*UNKNOWN*): *UNKNOWN*tatus[active]): 4</div><div class="line">xxxxx.@qq.com</div><div class="line">OK: Nginx Active&gt;3</div><div class="line"> Original ev* (*UNKNOWN*:*UNKNOWN*): *UNKNOWN*tatus[active]): 1</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;发现故障恢复了也会发送相关的信息</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在实际运维的过程当中，应该对需要发送的信息进行相关的优化，因为国内一条短信的长度是有限制的，一个汉字和一个字母都算作一个字符。超过限制就会分为两条甚至多条进行发送，因此要把关键的信息挑出来</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7nginx/08.jpg?raw=true" alt="08"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看日志信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">xxxxx.@qq.com</div><div class="line">状态：PROBLEM</div><div class="line">主机：(Zabbix server 监控项：nginx_status[active]): 5</div><div class="line">xxxxx.@qq.com</div><div class="line">状态：OK</div><div class="line">主机：(Zabbix server 监控项：nginx_status[active]): 1</div></pre></td></tr></table></figure>
+<h3 id="添加图形"><a href="#添加图形" class="headerlink" title="添加图形"></a>添加图形</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后添加完图形以后就可以对模版进行应用了。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;点击到对应的主机–&gt;template–&gt;搜索创建的模版–&gt;add–&gt;update</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;添加完成模版以后添加图形：模版–&gt;创建的模版–&gt;graphs–&gt;create graphs</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7nginx/09.jpg?raw=true" alt="09"></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7nginx/10.jpg?raw=true" alt="10"></p>
+<h3 id="模版的导出"><a href="#模版的导出" class="headerlink" title="模版的导出"></a>模版的导出</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;configuration–&gt;勾选模版–&gt;选择最下面的export–&gt;导出</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;因为zabbix所有导出的模版都是一个名字，因此对于导出的模版要进行重命名</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7nginx/11.jpg?raw=true" alt="11"></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7nginx/12.jpg?raw=true" alt="12"></p>
+<h3 id="模版的导入"><a href="#模版的导入" class="headerlink" title="模版的导入"></a>模版的导入</h3><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在模版界面的右上角</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7nginx/13.jpg?raw=true" alt="13"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;进行压力测试</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@zabbix-server ~]<span class="comment"># ab -c 10 -n 1000000 http://10.8.8.22:8080/</span></div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7nginx/14.jpg?raw=true" alt="14"></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/06/hifo zabbix/5.zabbix的主面板/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          zabbix的主面板
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/01/02/Python/2.python新教程/48.socket/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">socket</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="hifo zabbix/13.zabbix监控nginx" data-title="zabbix监控nginx" data-url="https://hcldirgit.github.io/2018/03/06/hifo zabbix/13.zabbix监控nginx/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="zabbix监控nginx">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2018 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

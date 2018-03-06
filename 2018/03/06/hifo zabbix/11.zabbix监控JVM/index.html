@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>zabbix监控JVM | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="keywords" content="Zabbix">
+<meta property="og:type" content="article">
+<meta property="og:title" content="zabbix监控JVM">
+<meta property="og:url" content="https://hcldirgit.github.io/2018/03/06/hifo zabbix/11.zabbix监控JVM/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7JVM/01.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7JVM/02.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7JVM/03.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7JVM/04.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7JVM/05.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7JVM/06.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7JVM/07.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7JVM/08.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7JVM/09.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7JVM/10.jpg?raw=true">
+<meta property="og:updated_time" content="2018-03-06T12:52:15.872Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="zabbix监控JVM">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7JVM/01.jpg?raw=true">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.45px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.64px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.36px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.18px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10.91px;">Docker</a> <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/FTP/" style="font-size: 10.91px;">FTP</a> <a href="/tags/FastDFS/" style="font-size: 10px;">FastDFS</a> <a href="/tags/Git/" style="font-size: 12.73px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.36px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.27px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.45px;">Jenkins</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Kubernetes/" style="font-size: 10.45px;">Kubernetes</a> <a href="/tags/LAMP/" style="font-size: 19.09px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.82px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 15.91px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.09px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.09px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.36px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.45px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.73px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.36px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 18.18px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 10.91px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.55px;">Php</a> <a href="/tags/Puppet/" style="font-size: 10.91px;">Puppet</a> <a href="/tags/Python/" style="font-size: 18.64px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.36px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 11.82px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.55px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.64px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 17.27px;">Zabbix</a> <a href="/tags/Zookeeper/" style="font-size: 10px;">Zookeeper</a> <a href="/tags/haproxy/" style="font-size: 12.27px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 12.73px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15px;">shell</a> <a href="/tags/shell练习/" style="font-size: 19.55px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 12.73px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-hifo zabbix/11.zabbix监控JVM" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/03/06/hifo zabbix/11.zabbix监控JVM/" class="article-date">
+  	<time datetime="2018-03-06T12:53:10.453Z" itemprop="datePublished">2018-03-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      zabbix监控JVM
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zabbix/">Zabbix</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7JVM/01.jpg?raw=true" alt="01"></p>
+<a id="more"></a>
+<h2 id="使用zabbix-java-gateway监控tomcat"><a href="#使用zabbix-java-gateway监控tomcat" class="headerlink" title="使用zabbix-java-gateway监控tomcat"></a>使用zabbix-java-gateway监控tomcat</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;从图里可以看出，java gateway相当于一个代理，java gateway本身并不存什么数据</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">##centos7 默认最小化安装以后并不会进行自动补全需要安装如下的套件。</span></div><div class="line">yum -y install bash-completion</div><div class="line"><span class="comment">##java-gateway 本身就是一个 java 程序，所以要安装一个 jdk</span></div><div class="line">yum -y install zabbix-java-gateway java-1.8.0</div><div class="line">vim /etc/zabbiix/zabbix_java_gateway.conf</div><div class="line">探测进程(默认 5 个)：</div><div class="line">START_POLLERS=10</div><div class="line">超时时间（1-30）</div><div class="line">TIMEOUT：网络环境差就要改长一点。</div><div class="line">启动服务：</div><div class="line">[root@zabbix-server ~]<span class="comment"># systemctl start zabbix-java-gateway.service</span></div><div class="line">查看端口</div><div class="line">[root@zabbix-server ~]<span class="comment"># netstat -ntupl | grep java</span></div><div class="line">tcp6       0      0 :::10052                :::*                    LISTEN      39419/java </div><div class="line">可以发现 java-gateway 监控的是 10052 端口。这个 java-gateway 相当于一个代理，具体装在哪一台机器上其实是无关紧要的。</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;需要告诉zabbix-server，java-gateway在哪</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim /etc/zabbix/zabbix_server.conf</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">JavaGateway=192.168.56.11</div><div class="line"><span class="comment">#要启动多少个进程去轮询</span></div><div class="line">StartJavaPollers=5</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;重启zabbix-server，然后准备一个tomcat，这里把tomcat安装在 192.168.56.12</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">[root@Zabbix-agent tools]<span class="comment"># wget http://mirror.bit.edu.cn/apache/tomcat/tomcat-8/v8.5.13/bin/apache-tomcat-8.5.13.tar.gz</span></div><div class="line">[root@Zabbix-agent tools]<span class="comment"># tar xf apache-tomcat-8.5.13.tar.gz </span></div><div class="line">[root@Zabbix-agent tools]<span class="comment"># mv apache-tomcat-8.5.13 /usr/local/</span></div><div class="line">[root@Zabbix-agent tools]<span class="comment"># cd /usr/local/</span></div><div class="line">[root@Zabbix-agent <span class="built_in">local</span>]<span class="comment"># ln -s ./apache-tomcat-8.5.13/ /usr/local/tomcat</span></div><div class="line">[root@Zabbix-agent <span class="built_in">local</span>]<span class="comment"># yum -y install java-1.8.0</span></div><div class="line">[root@Zabbix-agent <span class="built_in">local</span>]<span class="comment"># /usr/local/tomcat/bin/startup.sh </span></div><div class="line">Using CATALINA_BASE:   /usr/<span class="built_in">local</span>/tomcat</div><div class="line">Using CATALINA_HOME:   /usr/<span class="built_in">local</span>/tomcat</div><div class="line">Using CATALINA_TMPDIR: /usr/<span class="built_in">local</span>/tomcat/temp</div><div class="line">Using JRE_HOME:        /usr</div><div class="line">Using CLASSPATH:       /usr/<span class="built_in">local</span>/tomcat/bin/bootstrap.jar:/usr/<span class="built_in">local</span>/tomcat/bin/tomcat-juli.jar</div><div class="line">Tomcat started.</div><div class="line">[root@Zabbix-agent logs]<span class="comment"># netstat -ntlp                 </span></div><div class="line">Active Internet connections (only servers)</div><div class="line">Proto Recv-Q Send-Q Local Address               Foreign Address             State       PID/Program name   </div><div class="line">tcp        0      0 0.0.0.0:10050               0.0.0.0:*                   LISTEN      1879/zabbix_agentd  </div><div class="line">tcp        0      0 0.0.0.0:22                  0.0.0.0:*                   LISTEN      1584/sshd           </div><div class="line">tcp        0      0 127.0.0.1:25                0.0.0.0:*                   LISTEN      1675/master         </div><div class="line">tcp        0      0 :::10050                    :::*                        LISTEN      1879/zabbix_agentd  </div><div class="line">tcp        0      0 ::ffff:127.0.0.1:8005       :::*                        LISTEN      1814/java           </div><div class="line">tcp        0      0 :::8009                     :::*                        LISTEN      1814/java           </div><div class="line">tcp        0      0 :::8080                     :::*                        LISTEN      1814/java           </div><div class="line">tcp        0      0 :::22                       :::*                        LISTEN      1584/sshd           </div><div class="line">tcp        0      0 ::1:25                      :::*                        LISTEN      1675/master    </div><div class="line">[root@Zabbix-agent logs]<span class="comment"># lsof -i :8080                 </span></div><div class="line">COMMAND  PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME</div><div class="line">java    1814 root   48u  IPv6  12681      0t0  TCP *:webcache (LISTEN)</div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7JVM/02.jpg?raw=true" alt="02"></p>
+<h2 id="tomcat监控管理"><a href="#tomcat监控管理" class="headerlink" title="tomcat监控管理"></a>tomcat监控管理</h2><p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7JVM/03.jpg?raw=true" alt="03"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;搜索JMX</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7JVM/04.jpg?raw=true" alt="04"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;JMX监控有三种类型</p>
+<ol>
+<li>无密码认证</li>
+<li>用户名密码认证</li>
+<li>SSL认证</li>
+</ol>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;开启JMX远程监控</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@Zabbix-agent logs]<span class="comment"># vim /usr/local/tomcat/bin/catalina.sh</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在 catalina.sh 文件中添加如下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">CATALINA_OPTS=<span class="string">"<span class="variable">$CATALINA_OPTS</span> -Dcom.sun.management.jmxremote</span></div><div class="line"><span class="string">  -Dcom.sun.management.jmxremote.port=8888</span></div><div class="line"><span class="string">  -Dcom.sun.management.jmxremote.ssl=false</span></div><div class="line"><span class="string">  -Dcom.sun.management.jmxremote.authenticate=false</span></div><div class="line"><span class="string">  -Djava.rmi.server.hostname=192.168.56.12"</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;保存后进行重启，发现没起来，于是查看错误日志，有这么一条错误</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Error: Exception thrown by the agent : java.net.MalformedURLException: Local host name unknown: java.net.UnknownHostException: Zabbix-agent: Zabbix-agent: No address associated with hostname</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;很可能是本地hosts文件没把现在设置的临时hostname加进去，因此修改/etc/hosts文件，添加主机名后重启</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">[root@Zabbix-agent logs]<span class="comment"># /usr/local/tomcat/bin/shutdown.sh </span></div><div class="line">[root@Zabbix-agent logs]<span class="comment"># /usr/local/tomcat/bin/startup.sh </span></div><div class="line">Using CATALINA_BASE:   /usr/<span class="built_in">local</span>/tomcat</div><div class="line">Using CATALINA_HOME:   /usr/<span class="built_in">local</span>/tomcat</div><div class="line">Using CATALINA_TMPDIR: /usr/<span class="built_in">local</span>/tomcat/temp</div><div class="line">Using JRE_HOME:        /usr</div><div class="line">Using CLASSPATH:       /usr/<span class="built_in">local</span>/tomcat/bin/bootstrap.jar:/usr/<span class="built_in">local</span>/tomcat/bin/tomcat-juli.jar</div><div class="line">Tomcat started.</div><div class="line">[root@Zabbix-agent logs]<span class="comment"># netstat -ntlp</span></div><div class="line">Active Internet connections (only servers)</div><div class="line">Proto Recv-Q Send-Q Local Address               Foreign Address             State       PID/Program name   </div><div class="line">tcp        0      0 0.0.0.0:10050               0.0.0.0:*                   LISTEN      1879/zabbix_agentd  </div><div class="line">tcp        0      0 0.0.0.0:22                  0.0.0.0:*                   LISTEN      1584/sshd           </div><div class="line">tcp        0      0 127.0.0.1:25                0.0.0.0:*                   LISTEN      1675/master         </div><div class="line">tcp        0      0 :::10050                    :::*                        LISTEN      1879/zabbix_agentd  </div><div class="line">tcp        0      0 ::ffff:127.0.0.1:8005       :::*                        LISTEN      5100/java           </div><div class="line">tcp        0      0 :::8009                     :::*                        LISTEN      5100/java           </div><div class="line">tcp        0      0 :::8080                     :::*                        LISTEN      5100/java           </div><div class="line">tcp        0      0 :::54357                    :::*                        LISTEN      5100/java           </div><div class="line">tcp        0      0 :::22                       :::*                        LISTEN      1584/sshd           </div><div class="line">tcp        0      0 :::8888                     :::*                        LISTEN      5100/java           </div><div class="line">tcp        0      0 ::1:25                      :::*                        LISTEN      1675/master         </div><div class="line">tcp        0      0 :::35578                    :::*                        LISTEN      5100/java</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;启动成功。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后用windows平台的java套件中的jconsole软件来进行测试。记得安装jdk。目标程序在C:/ProgramFiles(x86)/java/jdk1.8.x.x/bin下，打开jconsole.exe，输入远程连接地址：端口号，点击连接</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7JVM/05.jpg?raw=true" alt="05"></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7JVM/06.jpg?raw=true" alt="06"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;出现如下内容就证明JMX没有问题。那么接下来就可以进行jvm的监控了。</p>
+<h2 id="添加JVM监控"><a href="#添加JVM监控" class="headerlink" title="添加JVM监控"></a>添加JVM监控</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;因为当前tomcat是在agent节点部署的，因此按照如下步骤进行部署：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Configuration–&gt;Host–&gt;Zabix-agent主机–&gt;在JMX部分添加如下配置</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7JVM/07.jpg?raw=true" alt="07"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;模版选择如下</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7JVM/08.jpg?raw=true" alt="08"></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7JVM/09.jpg?raw=true" alt="09"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;查看图形</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9B%91%E6%8E%A7JVM/10.jpg?raw=true" alt="10"></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/06/hifo zabbix/7.zabbix使用agent的方式进行主机的监控/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          zabbix使用agent的方式进行主机的监控
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/06/hifo zabbix/9.zabbix的snmp监控/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">zabbix的snmp监控</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="hifo zabbix/11.zabbix监控JVM" data-title="zabbix监控JVM" data-url="https://hcldirgit.github.io/2018/03/06/hifo zabbix/11.zabbix监控JVM/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="zabbix监控JVM">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2018 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>zabbix的主面板 | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;主面板可以说是总体信息的一个概括，平场也会较多的使用到Dashboard">
+<meta name="keywords" content="Zabbix">
+<meta property="og:type" content="article">
+<meta property="og:title" content="zabbix的主面板">
+<meta property="og:url" content="https://hcldirgit.github.io/2018/03/06/hifo zabbix/5.zabbix的主面板/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;主面板可以说是总体信息的一个概括，平场也会较多的使用到Dashboard">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9A%84%E4%B8%BB%E9%9D%A2%E6%9D%BF/01.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9A%84%E4%B8%BB%E9%9D%A2%E6%9D%BF/02.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9A%84%E4%B8%BB%E9%9D%A2%E6%9D%BF/03.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9A%84%E4%B8%BB%E9%9D%A2%E6%9D%BF/04.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9A%84%E4%B8%BB%E9%9D%A2%E6%9D%BF/05.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9A%84%E4%B8%BB%E9%9D%A2%E6%9D%BF/06.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9A%84%E4%B8%BB%E9%9D%A2%E6%9D%BF/07.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9A%84%E4%B8%BB%E9%9D%A2%E6%9D%BF/08.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9A%84%E4%B8%BB%E9%9D%A2%E6%9D%BF/09.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9A%84%E4%B8%BB%E9%9D%A2%E6%9D%BF/10.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9A%84%E4%B8%BB%E9%9D%A2%E6%9D%BF/11.jpg?raw=true">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9A%84%E4%B8%BB%E9%9D%A2%E6%9D%BF/12.jpg?raw=true">
+<meta property="og:updated_time" content="2018-03-06T12:52:15.442Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="zabbix的主面板">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;主面板可以说是总体信息的一个概括，平场也会较多的使用到Dashboard">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9A%84%E4%B8%BB%E9%9D%A2%E6%9D%BF/01.jpg?raw=true">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.45px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.64px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.36px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.18px;">DNS</a> <a href="/tags/Docker/" style="font-size: 10.91px;">Docker</a> <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/FTP/" style="font-size: 10.91px;">FTP</a> <a href="/tags/FastDFS/" style="font-size: 10px;">FastDFS</a> <a href="/tags/Git/" style="font-size: 12.73px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.36px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.27px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.45px;">Jenkins</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Kubernetes/" style="font-size: 10.45px;">Kubernetes</a> <a href="/tags/LAMP/" style="font-size: 19.09px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 16.82px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 15.91px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19.09px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.09px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.36px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 15.45px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.73px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.36px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 18.18px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 10.91px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 14.55px;">Php</a> <a href="/tags/Puppet/" style="font-size: 10.91px;">Puppet</a> <a href="/tags/Python/" style="font-size: 18.64px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.36px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 11.82px;">Samba</a> <a href="/tags/Squid/" style="font-size: 14.55px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 13.64px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 17.27px;">Zabbix</a> <a href="/tags/Zookeeper/" style="font-size: 10px;">Zookeeper</a> <a href="/tags/haproxy/" style="font-size: 12.27px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 12.73px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15px;">shell</a> <a href="/tags/shell练习/" style="font-size: 19.55px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 12.73px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-hifo zabbix/5.zabbix的主面板" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/03/06/hifo zabbix/5.zabbix的主面板/" class="article-date">
+  	<time datetime="2018-03-06T12:53:10.383Z" itemprop="datePublished">2018-03-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      zabbix的主面板
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zabbix/">Zabbix</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;主面板可以说是总体信息的一个概括，平场也会较多的使用到Dashboard</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9A%84%E4%B8%BB%E9%9D%A2%E6%9D%BF/01.jpg?raw=true" alt="01"></p>
+<a id="more"></a>
+<ul>
+<li>我们将我们常用的图形，常用的聚合图形以及常用的拓扑图添加在这里。</li>
+<li>要时刻关注zabbix status下备禁用主机的个数。</li>
+<li>Number of ltems，关于监控项，要么就删除了，要么就不让它报警。尽量不要去禁用。</li>
+<li>Required server performance，new value per second：值越大能监控的设备就越多。</li>
+<li>Host Status：主机状态是按照主机组来进行监控的。</li>
+<li>最新数据：可以选择什么设备组，组内的机器，最新的内容。</li>
+</ul>
+<h2 id="添加聚合图形（Screen）"><a href="#添加聚合图形（Screen）" class="headerlink" title="添加聚合图形（Screen）"></a>添加聚合图形（Screen）</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Screen的添加在zabbix3.0可以直接在monitor下create</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;创建screen：点击导航栏Monitor–&gt;Screen–&gt;create screen</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9A%84%E4%B8%BB%E9%9D%A2%E6%9D%BF/02.jpg?raw=true" alt="02"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;点击Add添加聚合图形，添加完成以后跳转到Screen列表，点击刚才添加的zabbix-agent–&gt;点击右上角的Edit Screen–&gt;点击change</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9A%84%E4%B8%BB%E9%9D%A2%E6%9D%BF/03.jpg?raw=true" alt="03"></p>
+<ul>
+<li>Recourse：这里默认的是图形，其实资源不仅仅是图形资源，还可以是URL，Map等。如果开发想要显示一个东西只挂一个URL就能实现，或者说想让zabbix显示一个表格，只要可以让表格以网页的形式显示出来的话，那么添加一个URL这个事就搞定了。</li>
+<li>graph选择图形，比如cpu负载，使用率，内存使用率等。</li>
+<li>dynamic勾上</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;比如在资源处添加一张图片的URL</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9A%84%E4%B8%BB%E9%9D%A2%E6%9D%BF/04.jpg?raw=true" alt="04"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;想做到也是轻而易举的，因此可以显示各种各样的东西，添加一个URL就能实现。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;点击小加号，然后点击change，创建的这么一个screen可以添加多个图形，比如如下情况</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9A%84%E4%B8%BB%E9%9D%A2%E6%9D%BF/05.jpg?raw=true" alt="05"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;点击右上角的加号，可以把添加的screen，map等添加到dashboard常用的图形，常用的screen等模块，供日常快捷调用。</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9A%84%E4%B8%BB%E9%9D%A2%E6%9D%BF/06.jpg?raw=true" alt="06"></p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9A%84%E4%B8%BB%E9%9D%A2%E6%9D%BF/07.jpg?raw=true" alt="07"></p>
+<h2 id="自定义MAP"><a href="#自定义MAP" class="headerlink" title="自定义MAP"></a>自定义MAP</h2><p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;map就是架构图，zabbix可以画一个架构图出来。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;操作步骤：monitors–&gt;maps</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;点击以后可以发现有一个默认的Local Network，点进去以后可以发现有一个3D的主机图标。然后同样可以点击右上角的Edit Map进行修改</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9A%84%E4%B8%BB%E9%9D%A2%E6%9D%BF/08.jpg?raw=true" alt="08"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;点击左上角的add可以进行设备添加，添加完成以后单击一下设备就可以进行编辑。</p>
+<ul>
+<li>Type：选择host，主机</li>
+<li>Label：标签，比如｛HOST.NAME｝就是主机名，｛HOST.CONN｝和｛HOST.IP｝都是主机IP</li>
+<li>Host：选择一台添加的监控主机，直接点击右侧的Select进行选择。</li>
+<li>选择下面的Apply进行添加</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;调整图形的大小，选择红框内的Properties点进去。可以改以下图形的大小</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9A%84%E4%B8%BB%E9%9D%A2%E6%9D%BF/09.jpg?raw=true" alt="09"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;比如把图形改成800*600，改完以后提交</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9A%84%E4%B8%BB%E9%9D%A2%E6%9D%BF/10.jpg?raw=true" alt="10"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;两台主机之间还可以进行连线，如果要把两台主机连起来，先点击一台，然后按住ctrl键再点玲玲一台，可以发现两台都备选中了，都有边框，然后点击上面Link旁边的add，一根线就连起来了，那么连起来作用是什么呢？可以在线上显示实时流量。编辑完以后一定要update，否则没保存白忙活。</p>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9A%84%E4%B8%BB%E9%9D%A2%E6%9D%BF/11.jpg?raw=true" alt="11"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;添加需要显示的项目，这个项目可以从哪里找：在主机–&gt;items–&gt;找到需要监控的项目以后在连接线的项目处修改labels</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;zabbix-agent:net.if.out[ens33].last(0)&#125;</div></pre></td></tr></table></figure>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E7%9A%84%E4%B8%BB%E9%9D%A2%E6%9D%BF/12.jpg?raw=true" alt="12"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;同时需要注意的是，这个流量是in和out方向的，在找item的时候看好了需要显示的内容然后再写。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/06/hifo zabbix/3.zabbix开启报警提示音/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          zabbix开启报警提示音
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/06/hifo zabbix/13.zabbix监控nginx/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">zabbix监控nginx</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="hifo zabbix/5.zabbix的主面板" data-title="zabbix的主面板" data-url="https://hcldirgit.github.io/2018/03/06/hifo zabbix/5.zabbix的主面板/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="zabbix的主面板">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2018 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
