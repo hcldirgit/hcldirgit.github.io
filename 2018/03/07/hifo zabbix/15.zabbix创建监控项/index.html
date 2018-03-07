@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>zabbix创建监控项 | 失落的乐章</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;操作步骤： &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;configuration–&amp;gt;Host–&amp;gt;选择对应的想要添加的监控项的主机的item选项–&amp;gt;create item。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;">
+<meta name="keywords" content="Zabbix">
+<meta property="og:type" content="article">
+<meta property="og:title" content="zabbix创建监控项">
+<meta property="og:url" content="https://hcldirgit.github.io/2018/03/07/hifo zabbix/15.zabbix创建监控项/index.html">
+<meta property="og:site_name" content="失落的乐章">
+<meta property="og:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;操作步骤： &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;configuration–&amp;gt;Host–&amp;gt;选择对应的想要添加的监控项的主机的item选项–&amp;gt;create item。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E5%88%9B%E5%BB%BA%E7%9B%91%E6%8E%A7%E9%A1%B9/01.jpg?raw=true">
+<meta property="og:updated_time" content="2018-03-07T12:44:13.151Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="zabbix创建监控项">
+<meta name="twitter:description" content="&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;操作步骤： &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;configuration–&amp;gt;Host–&amp;gt;选择对应的想要添加的监控项的主机的item选项–&amp;gt;create item。 &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;">
+<meta name="twitter:image" content="https://github.com/hcldirgit/image/blob/master/zabbix%E5%88%9B%E5%BB%BA%E7%9B%91%E6%8E%A7%E9%A1%B9/01.jpg?raw=true">
+  
+    <link rel="alternative" href="/atom.xml" title="失落的乐章" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://github.com/hcldirgit/image/blob/master/0.png?raw=true">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-85415703-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">失落的乐章</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">技术面前，永远都是学生。</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Ansible/" style="font-size: 10.5px;">Ansible</a> <a href="/tags/Apache/" style="font-size: 18.5px;">Apache</a> <a href="/tags/Cacti/" style="font-size: 11.5px;">Cacti</a> <a href="/tags/DNS/" style="font-size: 13.5px;">DNS</a> <a href="/tags/Docker/" style="font-size: 11px;">Docker</a> <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/FTP/" style="font-size: 11px;">FTP</a> <a href="/tags/FastDFS/" style="font-size: 10px;">FastDFS</a> <a href="/tags/Git/" style="font-size: 13px;">Git</a> <a href="/tags/HA集群/" style="font-size: 11.5px;">HA集群</a> <a href="/tags/Hadoop/" style="font-size: 12.5px;">Hadoop</a> <a href="/tags/Jenkins/" style="font-size: 10.5px;">Jenkins</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Kubernetes/" style="font-size: 10.5px;">Kubernetes</a> <a href="/tags/LAMP/" style="font-size: 19px;">LAMP</a> <a href="/tags/LNMP/" style="font-size: 17px;">LNMP</a> <a href="/tags/LVS/" style="font-size: 16.5px;">LVS</a> <a href="/tags/Linux/" style="font-size: 19px;">Linux</a> <a href="/tags/Linux命令/" style="font-size: 20px;">Linux命令</a> <a href="/tags/Linux安全/" style="font-size: 14.5px;">Linux安全</a> <a href="/tags/Memcached/" style="font-size: 11.5px;">Memcached</a> <a href="/tags/MongoDB/" style="font-size: 16px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 17.5px;">MySQL</a> <a href="/tags/NFS/" style="font-size: 10px;">NFS</a> <a href="/tags/Nagios/" style="font-size: 11.5px;">Nagios</a> <a href="/tags/Nginx/" style="font-size: 18px;">Nginx</a> <a href="/tags/OpenStack/" style="font-size: 11px;">OpenStack</a> <a href="/tags/Php/" style="font-size: 15px;">Php</a> <a href="/tags/Puppet/" style="font-size: 11px;">Puppet</a> <a href="/tags/Python/" style="font-size: 18.5px;">Python</a> <a href="/tags/Redis/" style="font-size: 16.5px;">Redis</a> <a href="/tags/Resin/" style="font-size: 10px;">Resin</a> <a href="/tags/Saltstack/" style="font-size: 10px;">Saltstack</a> <a href="/tags/Samba/" style="font-size: 12px;">Samba</a> <a href="/tags/Squid/" style="font-size: 15px;">Squid</a> <a href="/tags/Tomcat/" style="font-size: 14px;">Tomcat</a> <a href="/tags/Zabbix/" style="font-size: 18px;">Zabbix</a> <a href="/tags/Zookeeper/" style="font-size: 10px;">Zookeeper</a> <a href="/tags/haproxy/" style="font-size: 12.5px;">haproxy</a> <a href="/tags/keepalived/" style="font-size: 13px;">keepalived</a> <a href="/tags/shell/" style="font-size: 15.5px;">shell</a> <a href="/tags/shell练习/" style="font-size: 19.5px;">shell练习</a> <a href="/tags/正则表达式/" style="font-size: 13px;">正则表达式</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">失落的乐章</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">失落的乐章</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">技术面前，永远都是学生。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-hifo zabbix/15.zabbix创建监控项" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/03/07/hifo zabbix/15.zabbix创建监控项/" class="article-date">
+  	<time datetime="2018-03-07T12:45:34.448Z" itemprop="datePublished">2018-03-07</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      zabbix创建监控项
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zabbix/">Zabbix</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;操作步骤：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;configuration–&gt;Host–&gt;选择对应的想要添加的监控项的主机的item选项–&gt;create item。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如图所示：</p>
+<a id="more"></a>
+<p><img src="https://github.com/hcldirgit/image/blob/master/zabbix%E5%88%9B%E5%BB%BA%E7%9B%91%E6%8E%A7%E9%A1%B9/01.jpg?raw=true" alt="01"></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;监控项：</p>
+<ul>
+<li>名称：随便取，但是要有意义</li>
+<li>类型：zabbix agent 默认的</li>
+<li>key：可以选择（能支持的key有很多），自己创建一个叫nginx.active</li>
+<li>host interface：选择默认就好</li>
+<li>type of information：监控项的数据类型，默认就是numberic</li>
+<li>data type：decimal</li>
+<li>Units：默认就是不设置，这个是单位值</li>
+<li>Use Custom multipllier：用户收到的值都会乘以这个文本框内的值</li>
+<li>update interval：默认是30s，一般不要低于60s，没有必要那么频繁</li>
+<li>custom intervals：自定义创建时间间隔，比如固定的时间段监控的比较频繁，可以把interval在固定时间段调短</li>
+<li>History storage period：历史数据存储的周期</li>
+<li>trend storage period：趋势图要保存多久，默认是365，电商可能要存三年</li>
+<li>show value：值映射</li>
+<li>New Application：监控项的组。比如很多监控项可以划分到一个监控项的组里</li>
+<li>Applications：如果上面的那个没写可以在这里选择一个</li>
+<li>Populartes host inventory field：资产管理。如果选择auto会自动获取并映射过去自动填充</li>
+<li>Description：必须要写，描述这个监控项是干什么用的</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这里就以监控nginx的活动连接数为例：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改nginx的配置文件，添加状态模块开启的一段配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">location /nginx_status &#123;</div><div class="line">    stub_status on;</div><div class="line">    access_log off;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;然后重启nginx，在zabbix server端访问一下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">curl www.17gp.com/nginx_status</div><div class="line">Active connections: 2 </div><div class="line">server accepts handled requests</div><div class="line"> 11049 11049 11676 </div><div class="line">Reading: 0 Writing: 2 Waiting: 0</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;说明设置OK了，然后把这个Active connections取出来</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">curl -s http://www.17gp.com/nginx_status | awk <span class="string">'NR==1 &#123;print $NF&#125;'</span></div><div class="line">4</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在脚本这执行成功说明已经可以正常的取到nginx的动态连接数了，但是要想让zabbix去监控到这个数据，这就需要让zabbix去执行这个命令取到这个值。这里需要改一下zabbix的配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim /etc/zabbix/zabbix_agentd.conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;将</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Include=/etc/zabbix/zabbix_agentd</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;修改为</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Include=/etc/zabbix/zabbix_agentd/*.conf</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这个配置文件中的注释需要打开，目的是允许存放个人自定义的配置文件。比如写的nginx监控动态连接数的文件。而且这个目录默认是不存在的，需要创建。但是针对不同的系统版本文件目录名也不一样，比如在centos7上，这个目录就叫做zabbix_agentd.d，而且centos7上的目录是存在的，无需手动创建。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;创建监控nginx动态链接数的配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /etc/zabbix/zabbix_agentd</div><div class="line">cat nginx.conf</div><div class="line"></div><div class="line">UserParameter=nginx.active,/usr/bin/curl -s <span class="string">"http://www.17gp.com/nginx_status"</span> | awk <span class="string">'NR==1 &#123;print $NF&#125;'</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;其中UserParameter=nginx.active为定义key，nginx.active就是key的名称，逗号后面就是对应的这个key要执行什么命令，就是刚才在命令行执行的获取Active Connetions的命令，注意这里尽量要写绝对路径。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;在server端使用zabbix-get取值测试</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">yum install -y zabbix-get</div><div class="line">zabbix_get -s 222.180.150.202 -p 10050 -k<span class="string">"nginx.active"</span></div><div class="line">5</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;测试成功，说明求值没有问题，zabbix也可以进行正常的调用。这样一个item就添加完成了。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;最后针对监控的项的参数设置再详细说明一下：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>Name：</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;监控项的名称，可以使用如下宏变量：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;$1,$2…$9，这9个参数对应item key的参数位置。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例如：Free disk space on $1</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果 item key 为 “vfs.fs.size[/,free]”，那么对应的名称会变成“Free disk space on /”，$1对应了第一个参数“/”</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>Type of Information：</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;简单来说就是key返回的值的数据类型，主要有以下几种</p>
+<ul>
+<li>Numeric (unsigned) – 64bit unsigned integer</li>
+<li>Numeric (float) – floating point</li>
+<li>numberCharacter – 字符串，最长 255 字节</li>
+<li>Log – 日志文件. key 必须为 log[].</li>
+<li>Text – 大小无限制的文本</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>Units:</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;前面说到这个是单位值，默认情况下，如果原始值超过1000，呢吗它会先除以1000并且显示出来。例如，设置了单位为bps并且收到的值为11102，将会显示为11.1Kbps</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如果单位备指定<strong>B</strong>（byte），<strong>Bps</strong>（bytes per second），呢么它会除以1024然后再显示数据。所以在监控流量和文件大小的时候不要用错单位，否则会出现数据不一致的情况。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;如下为时间单位：</p>
+<ul>
+<li>unixtime - 转为 “yyyy.mm.dd hh:mm:ss”，只能使用正数</li>
+<li>uptime - 转为 “hh:mm:ss”或者“N days，hh:mm:ss”</li>
+</ul>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例如，收到的值为881764（单位秒），它将会被显示为 “10d 4h 56m”，只会显示3个单元。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有时候只会显示2个单元，例如“1m 5h”（不包含分、秒、毫秒），如果返回的值小于0.001，它只会显示“〈1 ms”经用单位：ms、rpm、RPM、%</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Units可以结合Use Custom multiple使用，乘以对应的倍数显示想要的数值。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<strong>show value</strong></p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;值映射，需要配置数字银蛇到字符的映射表。</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;例如：</p>
+<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;1=&gt;ttlsa.com 访问正常。如果 key 返回的数据为 1，那么监控页面不会显示 1，而是显示 ttlsa.com 访问正常。 key 返回的数据只能为整数，并且不做任何修改保存到数据库中。只有在显示的时候才会根据映射表来展示相应的内容。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/03/07/hifo zabbix/17.Item types/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Item types</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="hifo zabbix/15.zabbix创建监控项" data-title="zabbix创建监控项" data-url="https://hcldirgit.github.io/2018/03/07/hifo zabbix/15.zabbix创建监控项/"  data-images="https://github.com/hcldirgit/image/blob/master/0.png?raw=true" data-content="zabbix创建监控项">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2018 失落的乐章
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
